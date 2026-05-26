@@ -7,6 +7,9 @@
 - Sets can be edited, but edits should preserve audit-relevant timestamps if later needed.
 - Exercises with historical sets should be archived, not physically deleted, unless the user explicitly purges data.
 - A set must reference either an official exercise or a custom exercise.
+- A set exercise reference must keep a non-empty display name snapshot.
+- Official exercise references may keep a catalog version snapshot for historical readability.
+- A logged-set comment is optional, but must be non-empty when present.
 
 ## Workout group rules
 

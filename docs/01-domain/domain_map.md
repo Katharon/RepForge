@@ -23,7 +23,7 @@ WorkoutGroup
  ├─ focus/mode
  └─ GroupExercise[]
 
-TrainingSession
+WorkoutSession
  ├─ selected WorkoutGroup
  ├─ startedAt/endedAt
  ├─ readiness snapshot
@@ -113,7 +113,7 @@ A user-created local exercise. It may have manually defined muscle activation da
 
 A user-owned group/training day containing ordered exercise references.
 
-### TrainingSession
+### WorkoutSession
 
 A performed workout session with readiness snapshot and performed sets.
 
@@ -128,6 +128,7 @@ A generated read model, not usually persisted as a canonical aggregate. It can b
 ## Domain invariants
 
 - A workout set must reference an existing official or custom exercise at creation time.
+- A workout set keeps a stable exercise reference and display-name snapshot so history remains readable after catalog or custom-exercise changes.
 - Repetitions must be a positive integer.
 - Weight/load must be non-negative.
 - Performed timestamp must be valid and timezone-aware at storage boundaries.

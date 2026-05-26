@@ -77,11 +77,11 @@ Fields:
 - `exerciseRefs[]`
 - `archivedAt`
 
-### TrainingSession
+### WorkoutSession
 
 Fields:
 
-- `trainingSessionId`
+- `workoutSessionId`
 - `workoutGroupId` optional
 - `startedAt`
 - `endedAt` optional
@@ -94,7 +94,7 @@ Fields:
 
 - `workoutSetId`
 - `exerciseRef`
-- `trainingSessionId` optional
+- `workoutSessionId` optional
 - `repetitions`
 - `load`
 - `performedAt`
@@ -106,9 +106,15 @@ Fields:
 
 ## Value objects
 
-- `ExerciseRef`: references either official catalog ID or custom exercise ID.
-- `Load`: numeric value plus unit.
-- `RepetitionCount`: positive integer.
+- `WorkoutSetId`: stable local ID for a logged set.
+- `WorkoutSessionId`: stable local ID for a workout session.
+- `OfficialExerciseId`: stable ID for a bundled official exercise.
+- `CustomExerciseId`: stable local ID for a user-created exercise.
+- `ExerciseRef`: references either official catalog ID or custom exercise ID and stores a display-name snapshot.
+- `LoadKg`: non-negative finite load in kilograms.
+- `Repetitions`: positive integer.
+- `PerformedAt`: timestamp for when the set was logged.
+- `SetComment`: optional non-blank logged-set comment.
 - `VolumeLoad`: calculated `load * repetitions`.
 - `MuscleId`: stable ID for muscle/muscle group.
 - `ActivationWeight`: decimal 0.0–1.0 estimate.

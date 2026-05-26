@@ -51,6 +51,13 @@ If strict TDD is impractical because this is a repository/bootstrap slice, expla
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
 
+## Implementation note
+
+Slice 06 adds the first pure-Dart `training_log` domain boundary with stable
+IDs, safe exercise references, logged-set value objects, a `WorkoutSet` entity,
+and a domain-only `WorkoutSetRepository` contract. The set/session grouping ID
+uses `WorkoutSessionId` to keep workout-tracking terminology consistent.
+
 ## Validation commands
 
 ```bash

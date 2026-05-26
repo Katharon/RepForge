@@ -8,7 +8,7 @@ Each slice is an incremental Codex task. Codex should implement exactly one slic
 - [03 — Architecture skeleton and composition root](slice_03_architecture_skeleton_and_composition_root.md) — done
 - [04 — Design tokens and app theme](slice_04_design_tokens_and_app_theme.md) — done
 - [05 — Navigation shell and route map](slice_05_navigation_shell_and_route_map.md) — done
-- [06 — Domain foundation for training log](slice_06_domain_foundation_for_training_log.md)
+- [06 — Domain foundation for training log](slice_06_domain_foundation_for_training_log.md) — done
 - [07 — Analytics formula domain tests](slice_07_analytics_formula_domain_tests.md)
 - [08 — Drift local database foundation](slice_08_drift_local_database_foundation.md)
 - [09 — Repository implementations and mappers](slice_09_repository_implementations_and_mappers.md)

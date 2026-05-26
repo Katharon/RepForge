@@ -1,0 +1,48 @@
+import '../value_objects/exercise_ref.dart';
+import '../value_objects/logged_set_values.dart';
+import '../value_objects/stable_ids.dart';
+
+final class WorkoutSet {
+  const WorkoutSet({
+    required this.id,
+    required this.exerciseRef,
+    required this.repetitions,
+    required this.load,
+    required this.performedAt,
+    this.workoutSessionId,
+    this.comment,
+  });
+
+  final WorkoutSetId id;
+  final ExerciseRef exerciseRef;
+  final WorkoutSessionId? workoutSessionId;
+  final Repetitions repetitions;
+  final LoadKg load;
+  final PerformedAt performedAt;
+  final SetComment? comment;
+
+  @override
+  bool operator ==(Object other) {
+    return other is WorkoutSet &&
+        other.id == id &&
+        other.exerciseRef == exerciseRef &&
+        other.workoutSessionId == workoutSessionId &&
+        other.repetitions == repetitions &&
+        other.load == load &&
+        other.performedAt == performedAt &&
+        other.comment == comment;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hash(
+      id,
+      exerciseRef,
+      workoutSessionId,
+      repetitions,
+      load,
+      performedAt,
+      comment,
+    );
+  }
+}

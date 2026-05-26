@@ -25,8 +25,8 @@ Custom user entities use local UUIDs:
 
 - `customExerciseId`
 - `workoutGroupId`
-- `sessionId`
-- `setEntryId`
+- `workoutSessionId`
+- `workoutSetId`
 
 Historical set entries reference an exercise through a stable reference object, not through mutable display text.
 

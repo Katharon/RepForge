@@ -19,7 +19,8 @@ All slices are planned until implemented and committed.
 - Slice 03: done architecture skeleton and composition root.
 - Slice 04: done design tokens and app theme.
 - Slice 05: done navigation shell and route map.
-- Slice 06–10: planned foundation.
+- Slice 06: done training-log domain foundation.
+- Slice 07–10: planned foundation.
 - Slice 11–23: planned local tracking MVP with bundled catalog, custom exercises, workout groups, analytics foundations, settings, onboarding.
 - Slice 24–31: planned local hardening.
 - Slice 32–38: planned post-MVP monetization/optional cloud boundaries.
@@ -56,7 +57,7 @@ Planning docs were updated with:
 - training disclaimer/safety boundary,
 - naming candidate list.
 
-Slice 00 has completed documentation/governance implementation and is committed. Slice 01 has completed Flutter bootstrap implementation and is committed. Slice 02 has completed quality-gate implementation and is committed. Slice 03 has completed architecture skeleton implementation and is committed. Slice 04 has completed design-system implementation and is committed. Slice 05 has completed navigation-shell implementation and is committed.
+Slice 00 has completed documentation/governance implementation and is committed. Slice 01 has completed Flutter bootstrap implementation and is committed. Slice 02 has completed quality-gate implementation and is committed. Slice 03 has completed architecture skeleton implementation and is committed. Slice 04 has completed design-system implementation and is committed. Slice 05 has completed navigation-shell implementation and is committed. Slice 06 has completed training-log domain foundation implementation and is committed.
 
 ## Slice log
 
@@ -67,4 +68,5 @@ Slice 00 has completed documentation/governance implementation and is committed.
 | 2026-05-27 | 02 — Analysis options, formatting, test gates | done | this commit | Tightened practical Flutter analyzer settings, documented validation commands, added `scripts/check.sh`, and added a minimal GitHub Actions quality workflow. | `git status --short`; `flutter --version`; `flutter pub get`; `flutter gen-l10n`; `dart format --output=none --set-exit-if-changed .`; `flutter analyze`; `flutter test`; `scripts/check.sh`; `find . -maxdepth 3 -type f \| sort`; requested `rg` checks. | None. |
 | 2026-05-27 | 03 — Architecture skeleton and composition root | done | aa1870e | Moved the localized placeholder app into `lib/src/app`, added a minimal explicit composition root, documented `core`/`features` extension points, and updated widget smoke tests. | `git status --short`; `flutter pub get`; `flutter gen-l10n`; `dart format --output=none --set-exit-if-changed .`; `flutter analyze`; `flutter test`; `find lib test -maxdepth 5 -type f \| sort`; requested `rg` guardrail checks; `scripts/check.sh`. Flutter/Dart commands required SDK-cache escalation after sandbox read-only failures. | None. |
 | 2026-05-27 | 04 — Design tokens and app theme | done | 0e72d36 | Added dark-first Material 3 theme tokens, metric colors, numeric typography helpers, the feature-neutral `AppCard`, and applied the RepForge theme to the localized placeholder app. | `git status --short`; `git rev-parse --short HEAD`; `flutter pub get`; `flutter gen-l10n`; `dart format --output=none --set-exit-if-changed .`; `flutter analyze`; `flutter test`; `find lib test -maxdepth 6 -type f \| sort`; requested `rg` guardrail checks; `scripts/check.sh`. | None. |
-| 2026-05-27 | 05 — Navigation shell and route map | done | this commit | Added a minimal `go_router` route map, localized mobile navigation shell, placeholder destinations for Today, Groups, Exercises, Analytics, and Settings, and widget tests for routes/locales/taps. | `git status --short`; `git rev-parse --short HEAD`; `flutter pub get`; `flutter gen-l10n`; `dart format --output=none --set-exit-if-changed .`; `flutter analyze`; `flutter test`; `find lib test -maxdepth 6 -type f \| sort`; requested `rg` guardrail checks; `scripts/check.sh`. | None. |
+| 2026-05-27 | 05 — Navigation shell and route map | done | 9b9d23e | Added a minimal `go_router` route map, localized mobile navigation shell, placeholder destinations for Today, Groups, Exercises, Analytics, and Settings, and widget tests for routes/locales/taps. | `git status --short`; `git rev-parse --short HEAD`; `flutter pub get`; `flutter gen-l10n`; `dart format --output=none --set-exit-if-changed .`; `flutter analyze`; `flutter test`; `find lib test -maxdepth 6 -type f \| sort`; requested `rg` guardrail checks; `scripts/check.sh`. | None. |
+| 2026-05-27 | 06 — Domain foundation for training log | done | this commit | Added pure-Dart training-log domain value objects, stable IDs, exercise references with snapshots, the `WorkoutSet` entity, and the domain-only `WorkoutSetRepository` contract. | `git status --short`; `git rev-parse --short HEAD`; `flutter pub get`; `flutter gen-l10n`; `dart format --output=none --set-exit-if-changed .`; `flutter analyze`; `flutter test`; `find lib test -maxdepth 8 -type f \| sort`; requested training-log and dependency guardrail `rg` checks; `scripts/check.sh`. | None. |

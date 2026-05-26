@@ -4,6 +4,9 @@
 
 ### Added
 
+- Added the pure-Dart training-log domain foundation for Slice 06, including
+  stable IDs, exercise references with snapshots, logged-set value objects,
+  `WorkoutSet`, and repository contracts.
 - Added a minimal localized navigation shell and stable route map for Today,
   Groups, Exercises, Analytics, and Settings for Slice 05.
 - Added the dark-first RepForge Material 3 theme foundation, design tokens, and
