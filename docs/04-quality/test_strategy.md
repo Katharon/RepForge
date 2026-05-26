@@ -77,9 +77,17 @@ Official exercise catalog must have:
 ## Validation commands
 
 ```bash
-dart format --set-exit-if-changed .
+flutter pub get
+flutter gen-l10n
+dart format --output=none --set-exit-if-changed .
 flutter analyze
 flutter test
+```
+
+The same local quality gate is available through:
+
+```bash
+scripts/check.sh
 ```
 
 Add as applicable:

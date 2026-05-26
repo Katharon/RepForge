@@ -66,7 +66,15 @@ Feature-first Clean Architecture adapted to Flutter:
 ## Initial validation commands
 
 ```bash
-dart format --set-exit-if-changed .
+scripts/check.sh
+```
+
+The script runs:
+
+```bash
+flutter pub get
+flutter gen-l10n
+dart format --output=none --set-exit-if-changed .
 flutter analyze
 flutter test
 ```

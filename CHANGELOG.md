@@ -4,6 +4,8 @@
 
 ### Added
 
+- Added Flutter quality gates for formatting, localization generation, analysis, and tests.
+- Added a local validation script and minimal GitHub Actions quality workflow.
 - Bootstrapped the RepForge Flutter app for Android and iOS.
 - Added English/German Flutter localization foundation and widget smoke tests.
 - Established Slice 00 repository governance baseline for RepForge.
