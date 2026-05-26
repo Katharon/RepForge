@@ -14,6 +14,7 @@ Treat Markdown files in `docs/` as the project specification. The most important
 6. `docs/02-architecture/exercise_catalog_distribution.md`
 7. `docs/05-codex/codex_workflow.md`
 8. `docs/06-slices/index.md`
+9. `docs/02-architecture/data_versioning_backward_compatibility.md` for persistence, catalog, analytics, or export/import changes.
 
 ## Non-negotiable rules
 
@@ -29,7 +30,9 @@ Treat Markdown files in `docs/` as the project specification. The most important
 10. Local Drift/SQLite is allowed and expected for user data, imported official catalog data, analytics queries, migrations, and offline use.
 11. Keep all user training data local-first and exportable.
 12. Update affected documentation after each slice.
-13. Commit each slice with one Conventional Commit.
+13. Update slice status after each slice.
+14. Validate before committing.
+15. Commit each slice with one Conventional Commit.
 
 ## Product intent
 
@@ -42,7 +45,7 @@ The user can:
 - Assign exercises to groups.
 - Log sets with weight and repetitions quickly.
 - See analytics for exercise progression, session volume, weekly muscle load, recovery, and potential imbalances.
-- Receive adaptive recommendations based on focus, available time, equipment, recent training, soreness, recovery, and muscle balance.
+- Later receive adaptive recommendations based on focus, available time, equipment, recent training, soreness, recovery, and muscle balance.
 
 ## Official exercise catalog rule
 
@@ -73,3 +76,4 @@ Prefer small, production-quality increments over broad prototypes. Keep code rea
 - Treat official catalog JSON assets as canonical and Drift as the local imported runtime database.
 - Keep German and English localization complete for every user-visible MVP string.
 - Keep free vs premium boundaries clear: tracking/groups/base analytics free; coach/guidance/recommendations premium later.
+- RepForge still needs trademark and store-availability verification before public launch.

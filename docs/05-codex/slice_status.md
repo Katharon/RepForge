@@ -4,6 +4,7 @@ Status values:
 
 - `planned`
 - `in_progress`
+- `ready-to-commit`
 - `done`
 - `blocked`
 - `deferred`
@@ -12,12 +13,14 @@ All slices are planned until implemented and committed.
 
 ## Current status
 
-- Slice 00–10: planned foundation.
+- Slice 00: ready-to-commit repository governance and docs baseline.
+- Slice 01–10: planned foundation.
 - Slice 11–23: planned local tracking MVP with bundled catalog, custom exercises, workout groups, analytics foundations, settings, onboarding.
 - Slice 24–31: planned local hardening.
 - Slice 32–38: planned post-MVP monetization/optional cloud boundaries.
 - Slice 39–42: planned release pipeline and production checklist.
 - Slice 43–54: planned advanced catalog, training intelligence, recovery, muscle balance, quick session, wearable design, and social design.
+- Slice 55–56: planned legal/compliance/resilience and backward-compatibility hardening.
 
 ## Critical project decision
 
@@ -48,6 +51,10 @@ Planning docs were updated with:
 - training disclaimer/safety boundary,
 - naming candidate list.
 
-Implementation has not started yet. Slice 00 remains the first implementation slice.
+Slice 00 has completed documentation/governance implementation and is committed.
 
-| 56 | Data versioning and backward compatibility hardening | Planned | Hardens stable IDs, deprecation, migrations, import/export versioning, and historical session safety. |
+## Slice log
+
+| Date | Slice | Status | Commit | Summary | Validation | Follow-ups |
+| --- | --- | --- | --- | --- | --- | --- |
+| 2026-05-26 | 00 — Repository governance and docs baseline | done | this commit | Normalized root governance files, GitHub templates, and Codex slice instructions for the RepForge v9 baseline. | `git status --short`; `find . -maxdepth 3 -type f \| sort`; required `test -f` checks; RepForge/guardrail `rg` checks. `markdownlint` skipped because it is not installed. | None. |

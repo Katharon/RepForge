@@ -12,7 +12,7 @@ Codex should implement one precise slice at a time with minimal context usage an
 4. Implement the smallest complete production-quality change.
 5. Run validation commands.
 6. Update documentation if reality differs from docs.
-7. Update `docs/05-codex/slice_status.md`.
+7. Update affected docs and `docs/05-codex/slice_status.md`.
 8. Commit with the exact Conventional Commit message from the slice.
 9. Report summary, tests, validation, changed files, commit hash, and follow-ups.
 
@@ -23,6 +23,8 @@ Do not read the whole repository. Start with:
 - `AGENTS.md`
 - the slice file,
 - only the domain/architecture/UX docs named by that slice.
+
+If a slice is documentation-only, do not run Flutter/Dart commands that require an app scaffold. Use repository/documentation checks instead and state why code tests were not applicable.
 
 For catalog-related slices, always include:
 
@@ -37,3 +39,5 @@ For recommendation/training-science slices, always include:
 ## Critical no-go
 
 Do not introduce a cloud database for the official exercise catalog. Use bundled versioned JSON assets and local import.
+
+Do not add Firebase, ads, remote analytics, paid runtime services, cloud sync, auth, payments, wearables, or social features before their explicit slices.

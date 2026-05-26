@@ -12,7 +12,7 @@ The app handles training and body-performance data. Treat this as personal healt
 - Store secrets, tokens, and encryption keys in platform secure storage.
 - Never trust local premium flags as the authority for paid entitlement.
 - Keep notification payloads minimal and non-sensitive.
-- Avoid hardcoded API keys except public Firebase configuration values that are expected in mobile apps.
+- Avoid hardcoded API keys. Firebase is not part of the MVP baseline.
 - Validate all user inputs and imported files.
 
 ## Reporting a vulnerability

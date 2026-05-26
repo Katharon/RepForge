@@ -2,7 +2,7 @@
 
 Each slice is an incremental Codex task. Codex should implement exactly one slice per prompt unless the user explicitly says otherwise.
 
-- [00 — Repository governance and docs baseline](slice_00_repository_governance_and_docs_baseline.md)
+- [00 — Repository governance and docs baseline](slice_00_repository_governance_and_docs_baseline.md) — ready-to-commit
 - [01 — Flutter project bootstrap](slice_01_flutter_project_bootstrap.md)
 - [02 — Analysis options, formatting, test gates](slice_02_analysis_options_formatting_test_gates.md)
 - [03 — Architecture skeleton and composition root](slice_03_architecture_skeleton_and_composition_root.md)

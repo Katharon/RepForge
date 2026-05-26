@@ -10,6 +10,8 @@
 6. Update affected documentation and `docs/05-codex/slice_status.md`.
 7. Commit using Conventional Commits.
 
+Keep the MVP local-first. Do not add a cloud database, Firebase, ads, remote analytics, paid runtime service, or backend dependency unless a future slice explicitly calls for it.
+
 ## Commit format
 
 Use Conventional Commits:

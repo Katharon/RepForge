@@ -2,7 +2,7 @@
 
 Modern Flutter rebuild of an old Setgraph-style workout tracking app.
 
-The product is a local-first, privacy-conscious strength-training tracker and coaching assistant. The first production path is **offline-capable tracking, workout groups, custom exercises, rest timers, analytics, recovery/readiness feedback, and intelligent recommendations**. Cloud databases are **not** part of the MVP and must not be introduced for the official exercise catalog.
+The product is a local-first, privacy-conscious strength-training tracker with a later coaching layer. The MVP path is **offline-capable tracking, workout groups, custom exercises, a small official base exercise catalog, and analytics**. Cloud databases are **not** part of the MVP and must not be introduced for the official exercise catalog.
 
 ## Product thesis
 
@@ -12,7 +12,7 @@ Most gym apps either log sets or generate generic plans. This app should do both
 2. Organize training around user-defined groups such as `Push Day`, `Pull Day`, `Leg Day`, `Upper`, `Lower`, `Full Body`, or custom splits.
 3. Support custom exercises and an official bundled exercise catalog.
 4. Interpret progress through understandable metrics: sets, repetitions, volume, kg/rep, estimated 1RM, deltas to previous comparable sessions, time-window trends, muscle load, fatigue, recovery, and imbalance signals.
-5. Guide the user toward productive training with less guesswork: next exercise suggestions, alternatives, quick sessions, volume adjustments, deload hints, and imbalance prevention.
+5. Later, guide the user toward productive training with less guesswork: next exercise suggestions, alternatives, quick sessions, volume adjustments, deload hints, and imbalance signals.
 
 ## Key architectural decision
 
@@ -30,17 +30,16 @@ The official exercise catalog is distributed as **versioned app assets**, not as
 - Exercise catalog with official and custom exercises.
 - Assign exercises to groups.
 - Fast set logging with weight, reps, timestamp, label, and comment.
-- Rest timer with local notifications.
+- Future local feature: rest timer with local notifications.
 - Exercise detail timeline and edit flow.
 - Analytics matrix: sets, repetitions, volume, kg/rep, estimated 1RM, density, trends, and deltas.
 - Muscle activation and weekly load visualization.
-- Recovery/readiness input: DOMS, perceived exertion, strength drop, time since last stimulus.
-- Adaptive recommendations: next exercise, alternatives, quick session mode, balanced volume targets.
+- Future Premium: recovery/readiness input, adaptive recommendations, quick session mode, muscle-balance insights, wearable-derived interpretation, and advanced reports.
 - Future: body metrics, calories, wearable heart-rate integration, friends/social feed, optional sync.
 
 ## Repository principles
 
-The Markdown files in `docs/` are the source of truth. Codex must keep docs, tests, and implementation synchronized after every slice.
+The Markdown files in `docs/` are the source of truth. Codex must read only slice-relevant files, validate before committing, and keep docs, tests, implementation, and slice status synchronized after every slice.
 
 Important documents:
 
@@ -97,6 +96,8 @@ Current product decisions:
 - Product name: RepForge.
 - MVP: tracking, workout groups, custom exercises, official base catalog, and analytics.
 - Languages: English and German from MVP start; system locale first, English fallback.
+- Free tier: tracking, groups, custom exercises, official base catalog, base analytics, and local export/import.
+- Premium tier later: coach, guidance, recommendations, recovery/readiness, muscle balance, quick sessions, wearables, and advanced reports.
 - Official catalog: versioned JSON assets imported into local Drift/SQLite.
 - Cost model: no paid cloud database, no mandatory backend, no paid runtime services in MVP.
 - Monetization: freemium; coach/guidance features are Premium later.

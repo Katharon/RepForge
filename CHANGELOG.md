@@ -2,8 +2,14 @@
 
 ## Unreleased
 
+### Added
+
+- Established Slice 00 repository governance baseline for RepForge.
+- Added required root governance files and GitHub issue/PR templates.
+
 ### Changed
 
+- Aligned root and Codex documentation with the v9 local-first, no-cloud, no-ads, zero-recurring-cost MVP decisions.
 - Clarified that the official exercise catalog is not backed by a paid cloud database.
 - Added bundled versioned catalog asset strategy for weekly exercise patches.
 - Expanded domain model around workout groups, custom exercises, official exercises, muscle activation, recovery, readiness, recommendations, quick sessions, and imbalance prevention.

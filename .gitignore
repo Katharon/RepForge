@@ -1,0 +1,25 @@
+# OS and editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Logs and local environment
+*.log
+.env
+.env.*
+!.env.example
+
+# Flutter/Dart outputs for future slices
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+coverage/
+
+# Local test artifacts
+test-results/
+screenshots/
