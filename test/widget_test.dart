@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:repforge/src/app/composition_root.dart';
+import 'package:repforge/src/app/navigation/app_route.dart';
 import 'package:repforge/src/app/repforge_app.dart';
 import 'package:repforge/src/core/theme/theme.dart';
 import 'package:repforge/src/core/widgets/widgets.dart';
@@ -15,31 +16,79 @@ void main() {
     expect(dependencies.configuration.locale, isNull);
   });
 
-  testWidgets('starts with English placeholder by default', (tester) async {
+  test('route map exposes stable route names and paths', () {
+    expect(AppRoute.today.name, 'today');
+    expect(AppRoute.today.path, '/today');
+    expect(AppRoute.groups.name, 'groups');
+    expect(AppRoute.groups.path, '/groups');
+    expect(AppRoute.exercises.name, 'exercises');
+    expect(AppRoute.exercises.path, '/exercises');
+    expect(AppRoute.analytics.name, 'analytics');
+    expect(AppRoute.analytics.path, '/analytics');
+    expect(AppRoute.settings.name, 'settings');
+    expect(AppRoute.settings.path, '/settings');
+  });
+
+  testWidgets('starts with English navigation labels by default', (
+    tester,
+  ) async {
     final dependencies = const CompositionRoot().compose();
 
     await tester.pumpWidget(RepForgeApp(dependencies: dependencies));
 
-    expect(find.text('RepForge'), findsAtLeastNWidgets(1));
+    expect(find.text('Today'), findsWidgets);
+    expect(find.text('Groups'), findsWidgets);
+    expect(find.text('Exercises'), findsWidgets);
+    expect(find.text('Analytics'), findsWidgets);
+    expect(find.text('Settings'), findsWidgets);
     expect(
-      find.text('Local-first workout tracking is being forged.'),
+      find.text('Today is ready for the next tracking slice.'),
       findsOneWidget,
     );
     expect(find.byType(AppCard), findsOneWidget);
   });
 
-  testWidgets('supports German localization', (tester) async {
+  testWidgets('renders German navigation labels with forced German locale', (
+    tester,
+  ) async {
     final dependencies = const CompositionRoot(
       configuration: AppConfiguration(locale: Locale('de')),
     ).compose();
 
     await tester.pumpWidget(RepForgeApp(dependencies: dependencies));
 
-    expect(find.text('RepForge'), findsAtLeastNWidgets(1));
+    expect(find.text('Heute'), findsWidgets);
+    expect(find.text('Gruppen'), findsWidgets);
+    expect(find.text('Uebungen'), findsWidgets);
+    expect(find.text('Analyse'), findsWidgets);
+    expect(find.text('Einstellungen'), findsWidgets);
     expect(
-      find.text('Lokales Workout-Tracking entsteht Schritt fuer Schritt.'),
+      find.text('Heute wartet auf den naechsten Tracking-Slice.'),
       findsOneWidget,
     );
+  });
+
+  testWidgets('tapping each destination shows the matching placeholder', (
+    tester,
+  ) async {
+    final dependencies = const CompositionRoot().compose();
+
+    await tester.pumpWidget(RepForgeApp(dependencies: dependencies));
+
+    const destinations = <String, String>{
+      'Groups': 'Workout groups will be connected in a later slice.',
+      'Exercises': 'Exercises will use the bundled catalog and custom entries.',
+      'Analytics': 'Analytics will show local training trends later.',
+      'Settings': 'Settings will stay local-first when implemented.',
+      'Today': 'Today is ready for the next tracking slice.',
+    };
+
+    for (final entry in destinations.entries) {
+      await tester.tap(find.text(entry.key).last);
+      await tester.pumpAndSettle();
+
+      expect(find.text(entry.value), findsOneWidget);
+    }
   });
 
   testWidgets('applies the dark RepForge theme', (tester) async {

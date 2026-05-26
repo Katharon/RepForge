@@ -17,4 +17,39 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get homePlaceholderMessage =>
       'Lokales Workout-Tracking entsteht Schritt fuer Schritt.';
+
+  @override
+  String get navToday => 'Heute';
+
+  @override
+  String get navGroups => 'Gruppen';
+
+  @override
+  String get navExercises => 'Uebungen';
+
+  @override
+  String get navAnalytics => 'Analyse';
+
+  @override
+  String get navSettings => 'Einstellungen';
+
+  @override
+  String get todayPlaceholderMessage =>
+      'Heute wartet auf den naechsten Tracking-Slice.';
+
+  @override
+  String get groupsPlaceholderMessage =>
+      'Workout-Gruppen werden in einem spaeteren Slice verbunden.';
+
+  @override
+  String get exercisesPlaceholderMessage =>
+      'Uebungen nutzen spaeter den gebuendelten Katalog und eigene Eintraege.';
+
+  @override
+  String get analyticsPlaceholderMessage =>
+      'Analysen zeigen spaeter lokale Trainingstrends.';
+
+  @override
+  String get settingsPlaceholderMessage =>
+      'Einstellungen bleiben bei der Umsetzung lokal-first.';
 }

@@ -11,5 +11,45 @@
   "homePlaceholderMessage": "Local-first workout tracking is being forged.",
   "@homePlaceholderMessage": {
     "description": "Short placeholder message shown before feature slices are implemented."
+  },
+  "navToday": "Today",
+  "@navToday": {
+    "description": "Bottom navigation label for the Today destination."
+  },
+  "navGroups": "Groups",
+  "@navGroups": {
+    "description": "Bottom navigation label for workout groups."
+  },
+  "navExercises": "Exercises",
+  "@navExercises": {
+    "description": "Bottom navigation label for exercises."
+  },
+  "navAnalytics": "Analytics",
+  "@navAnalytics": {
+    "description": "Bottom navigation label for analytics."
+  },
+  "navSettings": "Settings",
+  "@navSettings": {
+    "description": "Bottom navigation label for settings."
+  },
+  "todayPlaceholderMessage": "Today is ready for the next tracking slice.",
+  "@todayPlaceholderMessage": {
+    "description": "Placeholder message for the Today destination."
+  },
+  "groupsPlaceholderMessage": "Workout groups will be connected in a later slice.",
+  "@groupsPlaceholderMessage": {
+    "description": "Placeholder message for the workout groups destination."
+  },
+  "exercisesPlaceholderMessage": "Exercises will use the bundled catalog and custom entries.",
+  "@exercisesPlaceholderMessage": {
+    "description": "Placeholder message for the exercises destination."
+  },
+  "analyticsPlaceholderMessage": "Analytics will show local training trends later.",
+  "@analyticsPlaceholderMessage": {
+    "description": "Placeholder message for the analytics destination."
+  },
+  "settingsPlaceholderMessage": "Settings will stay local-first when implemented.",
+  "@settingsPlaceholderMessage": {
+    "description": "Placeholder message for the settings destination."
   }
 }

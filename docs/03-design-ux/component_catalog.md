@@ -3,6 +3,8 @@
 ## Core app components
 
 - `AppScaffold`
+- `NavigationShell` — implemented as the feature-neutral mobile shell for the
+  main MVP destinations.
 - `AppCard` — implemented as the feature-neutral base surface component.
 - `MetricRail`
 - `MetricValueText`

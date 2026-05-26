@@ -11,5 +11,45 @@
   "homePlaceholderMessage": "Lokales Workout-Tracking entsteht Schritt fuer Schritt.",
   "@homePlaceholderMessage": {
     "description": "Kurzer Platzhaltertext vor der Umsetzung der Feature-Slices."
+  },
+  "navToday": "Heute",
+  "@navToday": {
+    "description": "Label in der unteren Navigation fuer Heute."
+  },
+  "navGroups": "Gruppen",
+  "@navGroups": {
+    "description": "Label in der unteren Navigation fuer Workout-Gruppen."
+  },
+  "navExercises": "Uebungen",
+  "@navExercises": {
+    "description": "Label in der unteren Navigation fuer Uebungen."
+  },
+  "navAnalytics": "Analyse",
+  "@navAnalytics": {
+    "description": "Label in der unteren Navigation fuer Analyse."
+  },
+  "navSettings": "Einstellungen",
+  "@navSettings": {
+    "description": "Label in der unteren Navigation fuer Einstellungen."
+  },
+  "todayPlaceholderMessage": "Heute wartet auf den naechsten Tracking-Slice.",
+  "@todayPlaceholderMessage": {
+    "description": "Platzhaltertext fuer Heute."
+  },
+  "groupsPlaceholderMessage": "Workout-Gruppen werden in einem spaeteren Slice verbunden.",
+  "@groupsPlaceholderMessage": {
+    "description": "Platzhaltertext fuer Workout-Gruppen."
+  },
+  "exercisesPlaceholderMessage": "Uebungen nutzen spaeter den gebuendelten Katalog und eigene Eintraege.",
+  "@exercisesPlaceholderMessage": {
+    "description": "Platzhaltertext fuer Uebungen."
+  },
+  "analyticsPlaceholderMessage": "Analysen zeigen spaeter lokale Trainingstrends.",
+  "@analyticsPlaceholderMessage": {
+    "description": "Platzhaltertext fuer Analyse."
+  },
+  "settingsPlaceholderMessage": "Einstellungen bleiben bei der Umsetzung lokal-first.",
+  "@settingsPlaceholderMessage": {
+    "description": "Platzhaltertext fuer Einstellungen."
   }
 }

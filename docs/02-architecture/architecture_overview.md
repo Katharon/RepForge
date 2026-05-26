@@ -12,6 +12,7 @@ lib/
       app_bootstrap.dart
       composition_root.dart
       localization/
+      navigation/
       repforge_app.dart
     core/
     features/

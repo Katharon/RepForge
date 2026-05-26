@@ -6,11 +6,10 @@ Introduce main navigation destinations and route structure with placeholder scre
 
 ## Read first
 
-1. `AGENTS.md`
-2. `docs/03-design-ux/information_architecture.md`
-3. `docs/03-design-ux/navigation.md`
-4. `docs/02-architecture/architecture_overview.md`
-5. `docs/06-slices/slice_05_navigation_shell_route_map.md`
+Use the read list from the active Slice 05 prompt. The implementation was based
+on the current RepForge architecture, tech-stack, design-system, component,
+workflow, slice-status, changelog, pubspec, app-shell, composition-root, and
+widget-test files.
 
 ## Current assumptions
 
@@ -49,6 +48,21 @@ If strict TDD is impractical because this is a repository/bootstrap slice, expla
 - All relevant tests pass.
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
+
+## Implementation note
+
+Slice 05 adds `go_router` because
+`docs/02-architecture/tech_stack_and_packages.md` already identifies it as the
+intended routing package. The implementation keeps routing minimal:
+
+- stable pure-Dart route identifiers and paths in `AppRoute`,
+- a small `MaterialApp.router` setup in the app shell,
+- a mobile-first Material 3 bottom `NavigationBar`,
+- localized English/German destination labels,
+- placeholder pages only for Today, Groups, Exercises, Analytics, and Settings.
+
+No feature behavior, persistence, catalog import, analytics logic, backend,
+Firebase, ads, sync, payments, or remote services were introduced.
 
 ## Validation commands
 

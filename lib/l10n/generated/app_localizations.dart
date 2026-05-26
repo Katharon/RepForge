@@ -115,6 +115,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Local-first workout tracking is being forged.'**
   String get homePlaceholderMessage;
+
+  /// Bottom navigation label for the Today destination.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get navToday;
+
+  /// Bottom navigation label for workout groups.
+  ///
+  /// In en, this message translates to:
+  /// **'Groups'**
+  String get navGroups;
+
+  /// Bottom navigation label for exercises.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercises'**
+  String get navExercises;
+
+  /// Bottom navigation label for analytics.
+  ///
+  /// In en, this message translates to:
+  /// **'Analytics'**
+  String get navAnalytics;
+
+  /// Bottom navigation label for settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get navSettings;
+
+  /// Placeholder message for the Today destination.
+  ///
+  /// In en, this message translates to:
+  /// **'Today is ready for the next tracking slice.'**
+  String get todayPlaceholderMessage;
+
+  /// Placeholder message for the workout groups destination.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout groups will be connected in a later slice.'**
+  String get groupsPlaceholderMessage;
+
+  /// Placeholder message for the exercises destination.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercises will use the bundled catalog and custom entries.'**
+  String get exercisesPlaceholderMessage;
+
+  /// Placeholder message for the analytics destination.
+  ///
+  /// In en, this message translates to:
+  /// **'Analytics will show local training trends later.'**
+  String get analyticsPlaceholderMessage;
+
+  /// Placeholder message for the settings destination.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings will stay local-first when implemented.'**
+  String get settingsPlaceholderMessage;
 }
 
 class _AppLocalizationsDelegate
