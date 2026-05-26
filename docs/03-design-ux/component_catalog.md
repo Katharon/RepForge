@@ -3,7 +3,7 @@
 ## Core app components
 
 - `AppScaffold`
-- `AppCard`
+- `AppCard` — implemented as the feature-neutral base surface component.
 - `MetricRail`
 - `MetricValueText`
 - `DateStrip`

@@ -78,6 +78,13 @@ Support:
 - Match device setting.
 - High-contrast mode consideration.
 
+## Implementation
+
+Slice 04 implements the dark-first foundation in `lib/src/core/theme` with
+typed color, spacing, radius, metric-color, typography, and Material 3 theme
+helpers. The app currently forces the dark RepForge theme until a later settings
+slice introduces user-selectable theme behavior.
+
 ## v5 visual direction
 
 The visual direction is **Setgraph-inspired, not Setgraph-copied**.

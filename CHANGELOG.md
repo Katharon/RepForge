@@ -4,6 +4,8 @@
 
 ### Added
 
+- Added the dark-first RepForge Material 3 theme foundation, design tokens, and
+  base `AppCard` component for Slice 04.
 - Added a minimal `lib/src` architecture skeleton and explicit app composition
   root for Slice 03.
 - Added Flutter quality gates for formatting, localization generation, analysis, and tests.

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../core/theme/theme.dart';
+import '../core/widgets/widgets.dart';
 import 'composition_root.dart';
 import 'localization/app_localizations.dart';
 
@@ -15,10 +17,9 @@ class RepForgeApp extends StatelessWidget {
       locale: dependencies.configuration.locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF3B5BDB)),
-        useMaterial3: true,
-      ),
+      theme: RepForgeTheme.dark(),
+      darkTheme: RepForgeTheme.dark(),
+      themeMode: ThemeMode.dark,
       home: const HomePlaceholderPage(),
     );
   }
@@ -32,28 +33,28 @@ class HomePlaceholderPage extends StatelessWidget {
     final localizations = AppLocalizations.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(localizations.appTitle),
-      ),
+      appBar: AppBar(title: Text(localizations.appTitle)),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                localizations.homePlaceholderTitle,
-                style: Theme.of(context).textTheme.headlineMedium,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 12),
-              Text(
-                localizations.homePlaceholderMessage,
-                style: Theme.of(context).textTheme.bodyLarge,
-                textAlign: TextAlign.center,
-              ),
-            ],
+          padding: const EdgeInsets.all(RepForgeSpacing.xl),
+          child: AppCard(
+            padding: const EdgeInsets.all(RepForgeSpacing.xl),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  localizations.homePlaceholderTitle,
+                  style: Theme.of(context).textTheme.metricValue,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: RepForgeSpacing.md),
+                Text(
+                  localizations.homePlaceholderMessage,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           ),
         ),
       ),

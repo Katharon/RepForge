@@ -39,6 +39,13 @@ If strict TDD is impractical because this is a repository/bootstrap slice, expla
 - Add fakes/mocks instead of using real platform services in unit tests.
 - Update affected docs if implementation decisions differ from the initial plan.
 
+## Implementation note
+
+Slice 04 adds the dark-first RepForge Material 3 theme under
+`lib/src/core/theme`, introduces typed tokens for colors, spacing, radius,
+metric colors, and numeric typography helpers, wires the theme into the app
+shell, and adds the feature-neutral `AppCard` in `lib/src/core/widgets`.
+
 ## Acceptance criteria
 
 - Slice goal is implemented.
