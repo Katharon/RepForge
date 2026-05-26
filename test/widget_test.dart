@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:repforge/main.dart';
+import 'package:repforge/src/app/composition_root.dart';
+import 'package:repforge/src/app/repforge_app.dart';
 
 void main() {
+  test('composition root creates app dependencies', () {
+    const compositionRoot = CompositionRoot();
+
+    final dependencies = compositionRoot.compose();
+
+    expect(dependencies.configuration.locale, isNull);
+  });
+
   testWidgets('starts with English placeholder by default', (tester) async {
-    await tester.pumpWidget(const RepForgeApp());
+    final dependencies = const CompositionRoot().compose();
+
+    await tester.pumpWidget(RepForgeApp(dependencies: dependencies));
 
     expect(find.text('RepForge'), findsAtLeastNWidgets(1));
     expect(
@@ -15,7 +26,11 @@ void main() {
   });
 
   testWidgets('supports German localization', (tester) async {
-    await tester.pumpWidget(const RepForgeApp(locale: Locale('de')));
+    final dependencies = const CompositionRoot(
+      configuration: AppConfiguration(locale: Locale('de')),
+    ).compose();
+
+    await tester.pumpWidget(RepForgeApp(dependencies: dependencies));
 
     expect(find.text('RepForge'), findsAtLeastNWidgets(1));
     expect(

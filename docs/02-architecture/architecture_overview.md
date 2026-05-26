@@ -6,49 +6,56 @@ Use feature-first Clean Architecture adapted to Flutter.
 
 ```text
 lib/
-  app/
-    composition/
-    navigation/
-    theme/
-  features/
-    training_log/
+  main.dart
+  src/
+    app/
+      app_bootstrap.dart
+      composition_root.dart
+      localization/
+      repforge_app.dart
+    core/
+    features/
+      training_log/
+        domain/
+        application/
+        data/
+        presentation/
+      exercise_catalog/
+        domain/
+        application/
+        data/
+        presentation/
+      analytics/
+        domain/
+        application/
+        presentation/
+      training_intelligence/
+        domain/
+        application/
+        presentation/
+      rest_timer/
+        domain/
+        application/
+        data/
+        presentation/
+      settings/
+        domain/
+        application/
+        data/
+        presentation/
+      entitlements/        # post-MVP
+      sync/                # post-MVP optional
+      wearables/           # future
+      social/              # future
+    shared/
       domain/
       application/
       data/
       presentation/
-    exercise_catalog/
-      domain/
-      application/
-      data/
-      presentation/
-    analytics/
-      domain/
-      application/
-      presentation/
-    training_intelligence/
-      domain/
-      application/
-      presentation/
-    rest_timer/
-      domain/
-      application/
-      data/
-      presentation/
-    settings/
-      domain/
-      application/
-      data/
-      presentation/
-    entitlements/        # post-MVP
-    sync/                # post-MVP optional
-    wearables/           # future
-    social/              # future
-  shared/
-    domain/
-    application/
-    data/
-    presentation/
 ```
+
+Feature folders are created when their slice introduces a real boundary. Empty
+future feature directories are avoided unless a concise README is useful.
 
 ## Dependency rule
 

@@ -4,6 +4,8 @@
 
 ### Added
 
+- Added a minimal `lib/src` architecture skeleton and explicit app composition
+  root for Slice 03.
 - Added Flutter quality gates for formatting, localization generation, analysis, and tests.
 - Added a local validation script and minimal GitHub Actions quality workflow.
 - Bootstrapped the RepForge Flutter app for Android and iOS.

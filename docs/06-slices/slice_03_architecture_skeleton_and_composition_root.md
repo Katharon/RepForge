@@ -40,6 +40,13 @@ If strict TDD is impractical because this is a repository/bootstrap slice, expla
 - Add fakes/mocks instead of using real platform services in unit tests.
 - Update affected docs if implementation decisions differ from the initial plan.
 
+## Implementation note
+
+Slice 03 moves the localized placeholder app into `lib/src/app`, keeps
+`lib/main.dart` as a minimal bootstrap entry point, adds a small explicit
+composition root for current app configuration, and documents `core` and
+`features` as future extension points without adding empty feature folders.
+
 ## Acceptance criteria
 
 - Slice goal is implemented.

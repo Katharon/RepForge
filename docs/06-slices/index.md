@@ -5,7 +5,7 @@ Each slice is an incremental Codex task. Codex should implement exactly one slic
 - [00 — Repository governance and docs baseline](slice_00_repository_governance_and_docs_baseline.md) — done
 - [01 — Flutter project bootstrap](slice_01_flutter_project_bootstrap.md) — done
 - [02 — Analysis options, formatting, test gates](slice_02_analysis_options_formatting_test_gates.md) — done
-- [03 — Architecture skeleton and composition root](slice_03_architecture_skeleton_and_composition_root.md)
+- [03 — Architecture skeleton and composition root](slice_03_architecture_skeleton_and_composition_root.md) — ready-to-commit
 - [04 — Design tokens and app theme](slice_04_design_tokens_and_app_theme.md)
 - [05 — Navigation shell and route map](slice_05_navigation_shell_and_route_map.md)
 - [06 — Domain foundation for training log](slice_06_domain_foundation_for_training_log.md)
