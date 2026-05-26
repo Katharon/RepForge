@@ -4,6 +4,9 @@
 
 ### Added
 
+- Added the pure-Dart analytics formula foundation for Slice 07, including
+  formula identity metadata, Epley estimated 1RM, workout-set summaries, and
+  period comparison helpers.
 - Added the pure-Dart training-log domain foundation for Slice 06, including
   stable IDs, exercise references with snapshots, logged-set value objects,
   `WorkoutSet`, and repository contracts.

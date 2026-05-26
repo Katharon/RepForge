@@ -2,6 +2,10 @@
 
 ## Set-level formulas
 
+Slice 07 implements the first MVP analytics formula foundation in pure Dart.
+These formulas are deterministic derived values. Raw `WorkoutSet` history remains
+the source of truth and is not modified by analytics calculations.
+
 ```text
 setVolume = load * repetitions
 ```
@@ -21,6 +25,16 @@ sessionRepetitions = sum(repetitions)
 sessionKgPerRep = sessionVolume / sessionRepetitions
 ```
 
+MVP workout-set summary semantics:
+
+- empty input: set count, repetitions, and volume are `0`; average kg/rep, best
+  set load, and best estimated 1RM are unavailable.
+- zero-load sets: valid and deterministic; volume, average kg/rep, and estimated
+  1RM can be `0` when repetitions exist.
+- decimal loads: supported in kilograms.
+- best set load: highest logged set load in kg.
+- best estimated 1RM: highest estimated 1RM across the input sets.
+
 ## Previous comparable session delta
 
 Use this when the user asks: `How did I perform compared with last time?`
@@ -38,6 +52,15 @@ if previous == 0:
 else:
   deltaPercent = deltaAbsolute / previous
 ```
+
+MVP period comparisons expose:
+
+- current value,
+- optional previous value,
+- optional absolute delta,
+- optional percent change as a decimal ratio.
+
+Percent change is unavailable when the previous value is absent or `0`.
 
 ## Time-window delta
 
@@ -67,6 +90,14 @@ Rules:
 - Label as estimate.
 - Avoid overemphasis for very high-rep sets.
 - Let user choose formula later.
+
+MVP implementation:
+
+- formula identity: `epley_one_rep_max`, version `1`.
+- inputs: validated `LoadKg` and `Repetitions` from the training-log domain.
+- zero-load sets return an estimate of `0 kg`.
+- derived estimates carry their formula identity so future formula changes can be
+  additive and explainable.
 
 ## Muscle load estimate
 

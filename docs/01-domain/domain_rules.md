@@ -31,7 +31,11 @@
 ## Analytics rules
 
 - Empty periods produce empty/zero states, not errors.
-- Percentage deltas must handle zero baselines explicitly.
+- Percentage deltas must handle zero baselines explicitly and remain unavailable
+  when the previous value is absent or zero.
+- Analytics formulas must not mutate raw logged sets.
+- Visible estimated metrics should carry enough formula identity/version context
+  to explain future formula changes.
 - Estimated 1RM is hidden or marked low-confidence for unsuitable rep ranges.
 - kg/rep is derived from total volume divided by total repetitions.
 - Muscle load is an estimate and must not be presented as exact physiology.

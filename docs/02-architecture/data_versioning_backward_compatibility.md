@@ -115,6 +115,8 @@ For derived metrics:
 - raw set history is the source of truth,
 - derived metrics can be recalculated,
 - formula versions should be documented when visible numbers can change,
+- non-persisted formula results should still carry explicit formula identity
+  when practical, so current calculations are explainable,
 - UI should use hedging for approximate values,
 - reports may show "estimated" or "calculated with current formula" where appropriate.
 

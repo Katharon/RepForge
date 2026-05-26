@@ -116,6 +116,13 @@ Fields:
 - `PerformedAt`: timestamp for when the set was logged.
 - `SetComment`: optional non-blank logged-set comment.
 - `VolumeLoad`: calculated `load * repetitions`.
+- `FormulaIdentity`: stable name and version for an analytics formula.
+- `EstimatedOneRepMax`: estimated one-repetition maximum in kilograms with the
+  formula identity used to calculate it.
+- `WorkoutSetAnalyticsSummary`: derived set count, repetitions, volume, average
+  kg/rep, best set load, and best estimated 1RM for a set list.
+- `PeriodComparison`: current value, optional previous value, absolute delta, and
+  percent change when defined.
 - `MuscleId`: stable ID for muscle/muscle group.
 - `ActivationWeight`: decimal 0.0–1.0 estimate.
 - `MuscleLoad`: weighted set/volume contribution by muscle.
@@ -134,3 +141,12 @@ Fields:
 - `ImbalanceWarning`
 - `RecommendedExerciseItem`
 - `QuickSessionPlan`
+
+## Domain services
+
+- `EpleyOneRepMaxFormula`: MVP estimated 1RM formula
+  `loadKg * (1 + repetitions / 30)` with identity `epley_one_rep_max` version
+  `1`.
+- `WorkoutSetAnalyticsFormulaService`: pure aggregation service for
+  `WorkoutSet` lists; it calculates MVP summary metrics without mutating logged
+  sets or persisting derived values.

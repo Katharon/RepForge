@@ -50,6 +50,14 @@ If strict TDD is impractical because this is a repository/bootstrap slice, expla
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
 
+## Implementation note
+
+Slice 07 added a pure-Dart analytics domain boundary with Epley estimated 1RM
+formula identity/version metadata, workout-set aggregation summaries, and period
+comparison helpers. The implementation is domain-only and does not add UI,
+persistence, repositories, catalog import, BLoC/Cubit flows, caching, or app
+wiring.
+
 ## Validation commands
 
 ```bash
