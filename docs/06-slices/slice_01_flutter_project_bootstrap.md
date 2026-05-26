@@ -2,140 +2,100 @@
 
 ## Goal
 
-Create the initial Flutter app with package name, supported platforms, minimal app entry point, and clean initial commit.
+Bootstrap a clean Flutter app foundation for RepForge without implementing product features.
 
 ## Read first
 
 1. `AGENTS.md`
-2. `docs/00-project/vision.md`
-3. `docs/02-architecture/folder_structure.md`
-4. `docs/06-slices/slice_01_flutter_project_bootstrap.md`
+2. `README.md`
+3. `CHANGELOG.md`
+4. `docs/00-project/project_memory_brief.md`
+5. `docs/00-project/business_model_zero_cost.md`
+6. `docs/02-architecture/architecture_overview.md`
+7. `docs/02-architecture/tech_stack_and_packages.md`
+8. `docs/02-architecture/localization_i18n.md`
+9. `docs/05-codex/codex_workflow.md`
+10. `docs/05-codex/commit_conventions.md`
+11. `docs/06-slices/index.md`
+12. `docs/06-slices/slice_01_flutter_project_bootstrap.md`
 
 ## Current assumptions
 
-- Work from the current repository state.
-- Keep changes limited to this slice.
-- Keep documentation synchronized with implementation.
-- Prefer the smallest production-quality increment over a broad prototype.
+- Slice 00 has established the repository governance baseline.
+- Product name: `RepForge`.
+- Dart/Flutter package name: `repforge`.
+- App identifiers are provisional until trademark and store availability are verified.
+- Android and iOS are the first target platforms.
+- English and German localization are prepared from the start, with English as fallback.
+- The MVP remains local-first and near-zero-cost.
 
 ## Non-goals
 
-- Do not implement real features.
-- Do not add Firebase, payments, notifications, or persistence yet.
+- Do not implement workout tracking, groups, exercises, analytics, rest timers, onboarding, settings, payments, premium gates, notifications, Firebase, sync, ads, wearables, or coach logic.
+- Do not implement Clean Architecture folders beyond the minimal Flutter bootstrap.
+- Do not add BLoC/Cubit, `go_router`, Drift/SQLite, catalog import, backend APIs, remote analytics, cloud databases, or paid runtime services.
+- Do not rename or rewrite the documentation tree.
 
 ## TDD requirements
 
-Use the generated default Flutter test as smoke test.
-
-If strict TDD is impractical because this is a repository/bootstrap slice, explain why and add the earliest possible smoke test.
+This bootstrap slice uses widget smoke tests. Tests should prove the app starts and that both English and German localization paths can render the placeholder shell.
 
 ## Implementation requirements
 
-- Follow `AGENTS.md`.
-- Keep layer boundaries from the architecture docs.
-- Use explicit, readable names from the ubiquitous language.
-- Handle loading, empty, error, and success states where this slice touches UI.
-- Add fakes/mocks instead of using real platform services in unit tests.
-- Update affected docs if implementation decisions differ from the initial plan.
+- Bootstrap Flutter at the repository root without overwriting governance/docs files.
+- Use project name `repforge` and display name `RepForge`.
+- Generate Android and iOS platforms only.
+- Use a provisional bundle/application identifier and document that it is not a store/trademark claim.
+- Replace counter-demo UI with a minimal localized RepForge placeholder.
+- Add `flutter_localizations`, `intl`, `l10n.yaml`, English ARB, and German ARB.
+- Use system locale by default and English fallback through Flutter localization.
+- Keep `pubspec.yaml` minimal and aligned with the documented package policy.
+- Keep generated boilerplate reasonable and defer architecture folders to later slices.
 
 ## Acceptance criteria
 
-- Slice goal is implemented.
-- Tests required by this slice are added or updated.
-- Formatting passes.
-- Static analysis passes.
-- All relevant tests pass.
-- `docs/05-codex/slice_status.md` is updated.
-- No unrelated future feature is introduced.
+- Flutter app compiles for the current bootstrap scope.
+- Android/iOS project files exist.
+- `pubspec.yaml` is minimal and uses package name `repforge`.
+- App display name is `RepForge`.
+- English and German ARB files exist.
+- Generated localization classes are available.
+- Widget smoke tests pass.
+- No cloud/backend/Firebase/ads/paid-service dependencies are introduced.
+- `CHANGELOG.md`, `docs/05-codex/slice_status.md`, and `docs/06-slices/index.md` are updated.
 
 ## Validation commands
 
 ```bash
-dart format --set-exit-if-changed .
+git status --short
+flutter --version
+flutter doctor -v
+flutter pub get
+flutter gen-l10n
 flutter analyze
 flutter test
+find . -maxdepth 3 -type f | sort
+rg "RepForge" README.md AGENTS.md CHANGELOG.md pubspec.yaml lib test docs/00-project docs/02-architecture docs/05-codex docs/06-slices
+rg "Firebase|Supabase|Appwrite|Firestore|RevenueCat|google_mobile_ads|AdMob|remote analytics|cloud database" pubspec.yaml lib test docs || true
 ```
 
-Add slice-specific commands if appropriate, such as:
-
-```bash
-flutter test integration_test
-flutter build apk --debug
-```
+Optional platform-tooling gaps for non-target platforms are not Slice 01 failures. Android/iOS bootstrap plus `flutter analyze` and `flutter test` are the important gates.
 
 ## Documentation updates
 
 Update these if changed by implementation:
 
+- `CHANGELOG.md`
 - `docs/05-codex/slice_status.md`
-- Any architecture/domain/UX document made stale by this slice
-- `CHANGELOG.md` only for user-visible or release-relevant changes
+- `docs/06-slices/index.md`
+- Any minimal architecture/project-layout doc made stale by this slice
+
+## Implementation note
+
+Slice 01 bootstrapped the Flutter project at the repository root with Android and iOS only. The package is `repforge`, the display name is `RepForge`, and the generated provisional native identifiers use `com.repforge.repforge`. English and German ARB files plus generated Flutter localization classes are in `lib/l10n/`. The app shell is a localized placeholder only; no workout features, persistence, routing, BLoC, notifications, payments, Firebase, ads, analytics SDKs, or backend services were introduced.
 
 ## Commit message
 
 ```text
-chore(repo): bootstrap Flutter project
+chore: bootstrap Flutter app
 ```
-
-## Ready-to-use Codex prompt
-
-```text
-You are working in the `gesundheit-gym-app` Flutter repository.
-
-Read first, in this order:
-1. AGENTS.md
-2. docs/00-project/vision.md
-3. docs/02-architecture/folder_structure.md
-4. docs/06-slices/slice_01_flutter_project_bootstrap.md
-
-Implement Slice 01: Flutter project bootstrap.
-
-Goal:
-Create the initial Flutter app with package name, supported platforms, minimal app entry point, and clean initial commit.
-
-Non-goals:
-- Do not implement real features.
-- Do not add Firebase, payments, notifications, or persistence yet.
-
-Architecture and quality rules:
-- Follow AGENTS.md strictly.
-- Keep domain pure Dart and presentation thin.
-- Use constructor injection and the documented composition-root approach.
-- Do not add unrelated packages or features.
-- Keep the repository fresh-context safe by updating docs when assumptions change.
-
-TDD requirements:
-Use the generated default Flutter test as smoke test.
-
-Implementation requirements:
-- Make the smallest complete production-quality change for this slice.
-- Keep naming aligned with the ubiquitous language and docs.
-- Add loading/empty/error handling for UI touched by this slice.
-- Use fakes/mocks for platform services in tests.
-
-Validation commands:
-```bash
-dart format --set-exit-if-changed .
-flutter analyze
-flutter test
-```
-Run stronger commands if applicable:
-```bash
-flutter test integration_test
-flutter build apk --debug
-```
-
-Documentation:
-- Update docs/05-codex/slice_status.md.
-- Update any affected docs if implementation reveals a stale or wrong assumption.
-
-Commit:
-Create one git commit with this exact message:
-`chore(repo): bootstrap Flutter project`
-
-When finished, report summary, tests, validation results, changed files, commit hash, and follow-ups.
-```
-
-## v5 adjustment
-
-Add Flutter localization dependencies and `l10n.yaml` scaffold if practical. Do not add many user-facing strings without localization path.

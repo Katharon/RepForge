@@ -4,6 +4,8 @@
 
 ### Added
 
+- Bootstrapped the RepForge Flutter app for Android and iOS.
+- Added English/German Flutter localization foundation and widget smoke tests.
 - Established Slice 00 repository governance baseline for RepForge.
 - Added required root governance files and GitHub issue/PR templates.
 

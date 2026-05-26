@@ -1,0 +1,15 @@
+{
+  "@@locale": "de",
+  "appTitle": "RepForge",
+  "@appTitle": {
+    "description": "App-Titel."
+  },
+  "homePlaceholderTitle": "RepForge",
+  "@homePlaceholderTitle": {
+    "description": "Titel auf dem ersten Platzhalterbildschirm."
+  },
+  "homePlaceholderMessage": "Lokales Workout-Tracking entsteht Schritt fuer Schritt.",
+  "@homePlaceholderMessage": {
+    "description": "Kurzer Platzhaltertext vor der Umsetzung der Feature-Slices."
+  }
+}

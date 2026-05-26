@@ -14,11 +14,24 @@ Thumbs.db
 
 # Flutter/Dart outputs for future slices
 .dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
 .packages
 .pub-cache/
 .pub/
 build/
 coverage/
+**/doc/api/
+**/ios/Flutter/.last_build_id
+android/.gradle/
+android/app/profile/
+android/app/release/
+android/local.properties
+ios/Flutter/ephemeral/
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
 
 # Local test artifacts
 test-results/

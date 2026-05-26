@@ -13,8 +13,9 @@ All slices are planned until implemented and committed.
 
 ## Current status
 
-- Slice 00: ready-to-commit repository governance and docs baseline.
-- Slice 01–10: planned foundation.
+- Slice 00: done repository governance and docs baseline.
+- Slice 01: done Flutter project bootstrap.
+- Slice 02–10: planned foundation.
 - Slice 11–23: planned local tracking MVP with bundled catalog, custom exercises, workout groups, analytics foundations, settings, onboarding.
 - Slice 24–31: planned local hardening.
 - Slice 32–38: planned post-MVP monetization/optional cloud boundaries.
@@ -51,10 +52,11 @@ Planning docs were updated with:
 - training disclaimer/safety boundary,
 - naming candidate list.
 
-Slice 00 has completed documentation/governance implementation and is committed.
+Slice 00 has completed documentation/governance implementation and is committed. Slice 01 has completed Flutter bootstrap implementation and is committed.
 
 ## Slice log
 
 | Date | Slice | Status | Commit | Summary | Validation | Follow-ups |
 | --- | --- | --- | --- | --- | --- | --- |
 | 2026-05-26 | 00 — Repository governance and docs baseline | done | this commit | Normalized root governance files, GitHub templates, and Codex slice instructions for the RepForge v9 baseline. | `git status --short`; `find . -maxdepth 3 -type f \| sort`; required `test -f` checks; RepForge/guardrail `rg` checks. `markdownlint` skipped because it is not installed. | None. |
+| 2026-05-27 | 01 — Flutter project bootstrap | done | this commit | Bootstrapped Android/iOS Flutter app at repository root with package `repforge`, localized RepForge placeholder shell, English/German ARB files, and widget smoke tests. | `git status --short`; `flutter --version`; `flutter doctor -v`; `flutter pub get`; `flutter gen-l10n`; `dart format --set-exit-if-changed lib test`; `flutter analyze`; `flutter test`; `find . -maxdepth 3 -type f \| sort`; requested `rg` checks. | None. |

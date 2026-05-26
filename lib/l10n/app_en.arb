@@ -1,0 +1,15 @@
+{
+  "@@locale": "en",
+  "appTitle": "RepForge",
+  "@appTitle": {
+    "description": "Application title."
+  },
+  "homePlaceholderTitle": "RepForge",
+  "@homePlaceholderTitle": {
+    "description": "Title shown on the initial placeholder screen."
+  },
+  "homePlaceholderMessage": "Local-first workout tracking is being forged.",
+  "@homePlaceholderMessage": {
+    "description": "Short placeholder message shown before feature slices are implemented."
+  }
+}
