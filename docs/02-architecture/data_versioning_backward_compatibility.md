@@ -82,6 +82,11 @@ references, display-name snapshots, optional catalog-version snapshots,
 optional session/comment fields, raw repetitions/load, and performed
 timestamps. Raw logged sets are source-of-truth training data.
 
+The app composition root owns the runtime `RepForgeDatabase` instance it
+creates through the local database factory and closes it through
+`AppDependencies.close()`. Tests may inject in-memory executors or caller-owned
+database instances so validation never touches real app storage.
+
 Training-log repository history queries match exercises by stable source and ID,
 not by display-name snapshot. Mapper code must preserve each persisted snapshot
 as logged. Custom exercise rows with catalog-version snapshots are invalid

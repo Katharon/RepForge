@@ -49,6 +49,15 @@ If strict TDD is impractical because this is a repository/bootstrap slice, expla
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
 
+## Implementation note
+
+Slice 10 wires the current local infrastructure only. The composition root
+creates a local Drift database through `RepForgeDatabaseFactory`, exposes the
+`WorkoutSetRepository` domain contract backed by `DriftWorkoutSetRepository`,
+and gives `AppDependencies` an idempotent `close()` hook for composition-owned
+resources. No UI feature, BLoC/Cubit factory, use-case layer, catalog import,
+sync, backend, Firebase, ads, payments, or coach logic belongs to this slice.
+
 ## Validation commands
 
 ```bash

@@ -6,14 +6,14 @@ import 'package:repforge/src/app/navigation/app_route.dart';
 import 'package:repforge/src/app/repforge_app.dart';
 import 'package:repforge/src/core/theme/theme.dart';
 import 'package:repforge/src/core/widgets/widgets.dart';
+import 'package:repforge/src/features/training_log/domain/training_log_domain.dart';
 
 void main() {
-  test('composition root creates app dependencies', () {
-    const compositionRoot = CompositionRoot();
-
-    final dependencies = compositionRoot.compose();
+  test('test app dependencies expose configuration and repository', () {
+    final dependencies = _testAppDependencies();
 
     expect(dependencies.configuration.locale, isNull);
+    expect(dependencies.workoutSetRepository, isNotNull);
   });
 
   test('route map exposes stable route names and paths', () {
@@ -32,7 +32,7 @@ void main() {
   testWidgets('starts with English navigation labels by default', (
     tester,
   ) async {
-    final dependencies = const CompositionRoot().compose();
+    final dependencies = _testAppDependencies();
 
     await tester.pumpWidget(RepForgeApp(dependencies: dependencies));
 
@@ -51,9 +51,9 @@ void main() {
   testWidgets('renders German navigation labels with forced German locale', (
     tester,
   ) async {
-    final dependencies = const CompositionRoot(
+    final dependencies = _testAppDependencies(
       configuration: AppConfiguration(locale: Locale('de')),
-    ).compose();
+    );
 
     await tester.pumpWidget(RepForgeApp(dependencies: dependencies));
 
@@ -71,7 +71,7 @@ void main() {
   testWidgets('tapping each destination shows the matching placeholder', (
     tester,
   ) async {
-    final dependencies = const CompositionRoot().compose();
+    final dependencies = _testAppDependencies();
 
     await tester.pumpWidget(RepForgeApp(dependencies: dependencies));
 
@@ -92,7 +92,7 @@ void main() {
   });
 
   testWidgets('applies the dark RepForge theme', (tester) async {
-    final dependencies = const CompositionRoot().compose();
+    final dependencies = _testAppDependencies();
 
     await tester.pumpWidget(RepForgeApp(dependencies: dependencies));
 
@@ -108,6 +108,16 @@ void main() {
     );
     expect(theme?.colorScheme.primary, RepForgeColorTokens.accentPrimaryGreen);
     expect(metricColors?.volume, RepForgeColorTokens.metricVolumeBlue);
+  });
+
+  testWidgets('app disposal and explicit dependency close are idempotent', (
+    tester,
+  ) async {
+    final dependencies = _testAppDependencies();
+
+    await tester.pumpWidget(RepForgeApp(dependencies: dependencies));
+    await tester.pumpWidget(const SizedBox.shrink());
+    await dependencies.close();
   });
 
   testWidgets('AppCard renders themed card styling', (tester) async {
@@ -132,4 +142,37 @@ void main() {
     expect(decoration.color, RepForgeColorTokens.surfaceCard);
     expect(decoration.borderRadius, BorderRadius.circular(RepForgeRadius.lg));
   });
+}
+
+AppDependencies _testAppDependencies({
+  AppConfiguration configuration = const AppConfiguration(),
+}) {
+  return AppDependencies(
+    configuration: configuration,
+    workoutSetRepository: _FakeWorkoutSetRepository(),
+  );
+}
+
+final class _FakeWorkoutSetRepository implements WorkoutSetRepository {
+  @override
+  Future<WorkoutSet?> findById(WorkoutSetId id) {
+    throw UnimplementedError('Widget smoke tests do not read workout sets.');
+  }
+
+  @override
+  Future<List<WorkoutSet>> historyForExercise(ExerciseRef exerciseRef) {
+    throw UnimplementedError('Widget smoke tests do not read workout sets.');
+  }
+
+  @override
+  Future<void> save(WorkoutSet set) {
+    throw UnimplementedError('Widget smoke tests do not write workout sets.');
+  }
+
+  @override
+  Future<List<WorkoutSet>> setsForWorkoutSession(
+    WorkoutSessionId workoutSessionId,
+  ) {
+    throw UnimplementedError('Widget smoke tests do not read workout sets.');
+  }
 }

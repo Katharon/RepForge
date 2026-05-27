@@ -4,6 +4,9 @@
 
 ### Added
 
+- Added explicit dependency-injection wiring for Slice 10, including a local
+  Drift database factory, composition-root `WorkoutSetRepository` construction,
+  and idempotent dependency close semantics.
 - Added the training-log Drift repository and mapper layer for Slice 09,
   including stable-ID upserts, deterministic history/session queries, and
   persisted-data validation for custom exercise catalog snapshots.

@@ -115,7 +115,8 @@ Units, theme, defaults, profile settings, equipment, export/import entry points.
 
 ## Composition root
 
-Use constructor injection. A small composition root creates:
+Use constructor injection. The current foundation uses a small explicit
+composition root instead of a service locator. It creates:
 
 - database,
 - repositories,
@@ -123,7 +124,11 @@ Use constructor injection. A small composition root creates:
 - Cubits/Blocs,
 - platform adapters.
 
-`get_it` is acceptable for registration, but do not hide dependencies inside domain/application code.
+Slice 10 wires the local Drift database through a small local database factory
+and exposes the current `WorkoutSetRepository` domain contract from
+`AppDependencies`. The database itself remains an owned composition resource
+with an idempotent close hook; UI code should depend on domain/application
+contracts, not Drift tables or database internals.
 
 ## Catalog import boundary
 
