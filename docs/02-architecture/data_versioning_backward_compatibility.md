@@ -95,6 +95,11 @@ catalog-version snapshot, and assignment position. The migration is additive
 only and must not rewrite `workout_sets` or official catalog tables. Official
 catalog imports must not overwrite workout groups or assignments.
 
+Schema version 4 additively adds nullable `workout_sets.set_label` for the
+single MVP set marker. Existing logged rows with null or empty labels continue
+to mean `none`; unsupported non-empty stored labels fail deterministically in
+the training-log mapper instead of being silently reinterpreted.
+
 The app composition root owns the runtime `RepForgeDatabase` instance it
 creates through the local database factory and closes it through
 `AppDependencies.close()`. Tests may inject in-memory executors or caller-owned

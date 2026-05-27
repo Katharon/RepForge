@@ -1,5 +1,6 @@
 import '../value_objects/exercise_ref.dart';
 import '../value_objects/logged_set_values.dart';
+import '../value_objects/set_label.dart';
 import '../value_objects/stable_ids.dart';
 
 final class WorkoutSet {
@@ -11,6 +12,7 @@ final class WorkoutSet {
     required this.performedAt,
     this.workoutSessionId,
     this.comment,
+    this.label = WorkoutSetLabel.none,
   });
 
   final WorkoutSetId id;
@@ -20,6 +22,7 @@ final class WorkoutSet {
   final LoadKg load;
   final PerformedAt performedAt;
   final SetComment? comment;
+  final WorkoutSetLabel label;
 
   @override
   bool operator ==(Object other) {
@@ -30,7 +33,8 @@ final class WorkoutSet {
         other.repetitions == repetitions &&
         other.load == load &&
         other.performedAt == performedAt &&
-        other.comment == comment;
+        other.comment == comment &&
+        other.label == label;
   }
 
   @override
@@ -43,6 +47,7 @@ final class WorkoutSet {
       load,
       performedAt,
       comment,
+      label,
     );
   }
 }

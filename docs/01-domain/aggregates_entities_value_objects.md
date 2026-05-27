@@ -122,6 +122,8 @@ Fields:
 - `LoadKg`: non-negative finite load in kilograms.
 - `Repetitions`: positive integer.
 - `PerformedAt`: timestamp for when the set was logged.
+- `WorkoutSetLabel`: one compact set marker: none, warmup, failure, personal
+  record, drop set, or pain.
 - `SetComment`: optional non-blank logged-set comment.
 - `VolumeLoad`: calculated `load * repetitions`.
 - `FormulaIdentity`: stable name and version for an analytics formula.

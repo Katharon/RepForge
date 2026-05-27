@@ -117,11 +117,53 @@ void main() {
         throwsA(isA<TrainingLogValidationException>()),
       );
     });
+
+    test('WorkoutSetLabel supports the compact MVP marker set', () {
+      expect(WorkoutSetLabel.fromStorageValue(null), WorkoutSetLabel.none);
+      expect(WorkoutSetLabel.fromStorageValue(''), WorkoutSetLabel.none);
+      expect(WorkoutSetLabel.fromStorageValue('none'), WorkoutSetLabel.none);
+      expect(
+        WorkoutSetLabel.fromStorageValue('warmup'),
+        WorkoutSetLabel.warmup,
+      );
+      expect(
+        WorkoutSetLabel.fromStorageValue('failure'),
+        WorkoutSetLabel.failure,
+      );
+      expect(
+        WorkoutSetLabel.fromStorageValue('personalRecord'),
+        WorkoutSetLabel.personalRecord,
+      );
+      expect(
+        WorkoutSetLabel.fromStorageValue('dropSet'),
+        WorkoutSetLabel.dropSet,
+      );
+      expect(WorkoutSetLabel.fromStorageValue('pain'), WorkoutSetLabel.pain);
+    });
+
+    test('WorkoutSetLabel rejects unsupported persisted labels', () {
+      expect(
+        () => WorkoutSetLabel.fromStorageValue('tempo'),
+        throwsA(
+          isA<TrainingLogValidationException>().having(
+            (TrainingLogValidationException error) => error.field,
+            'field',
+            'setLabel',
+          ),
+        ),
+      );
+    });
   });
 
   group('WorkoutSet', () {
+    test('defaults the set label to none', () {
+      final set = _setForTimeline('set-default-label');
+
+      expect(set.label, WorkoutSetLabel.none);
+    });
+
     test(
-      'keeps stable ids, snapshots, timestamp, and optional session link',
+      'keeps stable ids, snapshots, timestamp, optional session link, comment, and label',
       () {
         final performedAt = PerformedAt(DateTime.utc(2026, 5, 27, 10, 45));
         final exerciseRef = ExerciseRef.official(
@@ -138,6 +180,7 @@ void main() {
           load: LoadKg(140),
           performedAt: performedAt,
           comment: SetComment('Top set'),
+          label: WorkoutSetLabel.personalRecord,
         );
 
         expect(set.id, WorkoutSetId('set-1'));
@@ -147,6 +190,7 @@ void main() {
         expect(set.load.value, 140);
         expect(set.performedAt, performedAt);
         expect(set.comment, SetComment('Top set'));
+        expect(set.label, WorkoutSetLabel.personalRecord);
       },
     );
   });

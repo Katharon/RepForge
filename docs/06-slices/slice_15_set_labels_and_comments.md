@@ -9,7 +9,7 @@ Implement labels such as None/Failure and comments across domain, data, and UI.
 1. `AGENTS.md`
 2. `docs/01-domain/domain_rules.md`
 3. `docs/00-project/screenshot_inventory.md`
-4. `docs/06-slices/slice_15_set_labels_comments.md`
+4. `docs/06-slices/slice_15_set_labels_and_comments.md`
 
 ## Current assumptions
 
@@ -78,6 +78,27 @@ Update these if changed by implementation:
 feat(training-log): add set labels and comments
 ```
 
+## Implementation note
+
+Slice 15 implemented a compact foundation only:
+
+- Added `WorkoutSetLabel` as a pure-Dart enum with stable storage values:
+  `none`, `warmup`, `failure`, `personalRecord`, `dropSet`, and `pain`.
+- Added `WorkoutSet.label` with default `none` semantics while preserving the
+  existing optional `SetComment` behavior.
+- Extended `WorkoutSetForm` and the Slice 14 save/update use cases to carry
+  label input, with blank label input mapping to `none`.
+- Bumped Drift to schema version 4 and additively added nullable
+  `workout_sets.set_label`; existing rows with null or empty labels map to
+  `none`, while unsupported non-empty labels fail deterministically through
+  training-log validation.
+- Updated repository/mapper tests so labels round-trip through save/find,
+  update, history, timeline, and legacy-row reads.
+
+Labels are intentionally a single small marker for MVP. They may later inform
+analytics, coach guidance, stimulus, and muscle-load calculations, but this
+slice does not implement those features.
+
 ## Ready-to-use Codex prompt
 
 ```text
@@ -87,7 +108,7 @@ Read first, in this order:
 1. AGENTS.md
 2. docs/01-domain/domain_rules.md
 3. docs/00-project/screenshot_inventory.md
-4. docs/06-slices/slice_15_set_labels_comments.md
+4. docs/06-slices/slice_15_set_labels_and_comments.md
 
 Implement Slice 15: Set labels and comments.
 

@@ -23,6 +23,7 @@ void main() {
       repetitionsInput: '5',
       performedAt: DateTime.utc(2026, 5, 27, 10, 30),
       commentInput: ' Top set ',
+      labelInput: 'personalRecord',
     );
 
     final saved = await saveWorkoutSet(
@@ -36,6 +37,7 @@ void main() {
     expect(saved.load, LoadKg(100.5));
     expect(saved.performedAt, PerformedAt(DateTime.utc(2026, 5, 27, 10, 30)));
     expect(saved.comment, SetComment('Top set'));
+    expect(saved.label, WorkoutSetLabel.personalRecord);
     expect(await repository.findById(WorkoutSetId('set-1')), saved);
   });
 
@@ -53,6 +55,7 @@ void main() {
         load: LoadKg(100),
         performedAt: PerformedAt(DateTime.utc(2026, 5, 27, 10)),
         comment: SetComment('Original'),
+        label: WorkoutSetLabel.warmup,
       );
       await repository.save(existing);
 
@@ -67,6 +70,7 @@ void main() {
           repetitionsInput: '6',
           performedAt: DateTime.utc(2026, 5, 28, 11),
           commentInput: 'Smooth',
+          labelInput: 'failure',
         ),
       );
 
@@ -77,6 +81,7 @@ void main() {
       expect(updated.load, LoadKg(102.5));
       expect(updated.performedAt, PerformedAt(DateTime.utc(2026, 5, 28, 11)));
       expect(updated.comment, SetComment('Smooth'));
+      expect(updated.label, WorkoutSetLabel.failure);
       expect(await repository.findById(existing.id), updated);
     },
   );
@@ -133,12 +138,36 @@ void main() {
 
     expect(set.comment, isNull);
   });
+
+  test('treats blank optional labels as none', () {
+    final set = _form(
+      labelInput: '   ',
+    ).toNewWorkoutSet(workoutSetId: WorkoutSetId('set-blank-label'));
+
+    expect(set.label, WorkoutSetLabel.none);
+  });
+
+  test('rejects unsupported label input deterministically', () {
+    expect(
+      () => _form(
+        labelInput: 'tempo',
+      ).toNewWorkoutSet(workoutSetId: WorkoutSetId('set-invalid-label')),
+      throwsA(
+        isA<TrainingLogValidationException>().having(
+          (TrainingLogValidationException error) => error.field,
+          'field',
+          'setLabel',
+        ),
+      ),
+    );
+  });
 }
 
 WorkoutSetForm _form({
   String loadKgInput = '100',
   String repetitionsInput = '5',
   String? commentInput,
+  String? labelInput,
 }) {
   return WorkoutSetForm(
     targetExerciseRef: _exerciseRef(),
@@ -146,6 +175,7 @@ WorkoutSetForm _form({
     repetitionsInput: repetitionsInput,
     performedAt: DateTime.utc(2026, 5, 27, 12),
     commentInput: commentInput,
+    labelInput: labelInput,
   );
 }
 

@@ -34,8 +34,8 @@ void main() {
     expect(tables, hasLength(8));
   });
 
-  test('uses schema version 3', () {
-    expect(database.schemaVersion, 3);
+  test('uses schema version 4', () {
+    expect(database.schemaVersion, 4);
   });
 
   test('accepts an official exercise workout set with snapshots', () async {
@@ -55,6 +55,7 @@ void main() {
             loadKg: 100,
             performedAt: performedAt,
             comment: const Value<String?>('Top set'),
+            setLabel: const Value<String?>('personalRecord'),
           ),
         );
 
@@ -70,6 +71,7 @@ void main() {
     expect(row.loadKg, 100);
     expect(row.performedAt.toUtc(), performedAt);
     expect(row.comment, 'Top set');
+    expect(row.setLabel, 'personalRecord');
   });
 
   test('accepts a custom exercise workout set without catalog data', () async {
@@ -95,7 +97,7 @@ void main() {
     expect(row.catalogVersionSnapshot, isNull);
   });
 
-  test('accepts absent optional session and comment fields', () async {
+  test('accepts absent optional session, comment, and label fields', () async {
     await database
         .into(database.workoutSets)
         .insert(
@@ -115,6 +117,7 @@ void main() {
 
     expect(row.workoutSessionId, isNull);
     expect(row.comment, isNull);
+    expect(row.setLabel, isNull);
   });
 
   group('constraints', () {
@@ -153,6 +156,13 @@ void main() {
       );
     });
 
+    test('reject unsupported set labels', () async {
+      await expectLater(
+        _insertSet(database, setLabel: const Value<String?>('tempo')),
+        throwsA(isA<Exception>()),
+      );
+    });
+
     test('reject duplicate workout set ids', () async {
       await _insertSet(database);
 
@@ -171,6 +181,7 @@ Future<int> _insertSet(
   int repetitions = 5,
   double loadKg = 100,
   Value<String?> comment = const Value<String?>.absent(),
+  Value<String?> setLabel = const Value<String?>.absent(),
 }) {
   return database
       .into(database.workoutSets)
@@ -185,6 +196,7 @@ Future<int> _insertSet(
           loadKg: loadKg,
           performedAt: DateTime.utc(2026, 5, 27, 12),
           comment: comment,
+          setLabel: setLabel,
         ),
       );
 }

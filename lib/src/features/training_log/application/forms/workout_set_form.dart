@@ -8,6 +8,7 @@ final class WorkoutSetForm {
     required this.performedAt,
     this.existingWorkoutSetId,
     this.commentInput,
+    this.labelInput,
   });
 
   final WorkoutSetId? existingWorkoutSetId;
@@ -16,6 +17,7 @@ final class WorkoutSetForm {
   final String repetitionsInput;
   final DateTime performedAt;
   final String? commentInput;
+  final String? labelInput;
 
   WorkoutSet toNewWorkoutSet({
     required WorkoutSetId workoutSetId,
@@ -29,6 +31,7 @@ final class WorkoutSetForm {
       load: _parseLoad(),
       performedAt: PerformedAt(performedAt),
       comment: _parseComment(),
+      label: _parseLabel(),
     );
   }
 
@@ -41,6 +44,7 @@ final class WorkoutSetForm {
       load: _parseLoad(),
       performedAt: PerformedAt(performedAt),
       comment: _parseComment(),
+      label: _parseLabel(),
     );
   }
 
@@ -72,5 +76,9 @@ final class WorkoutSetForm {
     }
 
     return SetComment(comment);
+  }
+
+  WorkoutSetLabel _parseLabel() {
+    return WorkoutSetLabel.fromStorageValue(labelInput);
   }
 }

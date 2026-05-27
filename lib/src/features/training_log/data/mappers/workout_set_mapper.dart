@@ -24,6 +24,7 @@ final class WorkoutSetMapper {
       loadKg: Value<double>(set.load.value),
       performedAt: Value<DateTime>(set.performedAt.value.toUtc()),
       comment: Value<String?>(set.comment?.value),
+      setLabel: Value<String?>(set.label.storageValue),
     );
   }
 
@@ -51,6 +52,7 @@ final class WorkoutSetMapper {
       load: LoadKg(row.loadKg),
       performedAt: PerformedAt(row.performedAt.toUtc()),
       comment: row.comment == null ? null : SetComment(row.comment!),
+      label: WorkoutSetLabel.fromStorageValue(row.setLabel),
     );
   }
 

@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' hide isNotNull, isNull;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:repforge/src/features/training_log/data/repositories/drift_workout_set_repository.dart';
@@ -18,7 +19,7 @@ void main() {
   });
 
   test('saves and finds a workout set by stable id', () async {
-    final set = _set(id: 'set-1');
+    final set = _set(id: 'set-1', label: WorkoutSetLabel.personalRecord);
 
     await repository.save(set);
 
@@ -303,6 +304,41 @@ void main() {
     },
   );
 
+  test('timelineForExercise returns labels with workout sets', () async {
+    await repository.save(
+      _set(
+        id: 'set-warmup',
+        performedAt: DateTime.utc(2026, 5, 27, 9),
+        label: WorkoutSetLabel.warmup,
+      ),
+    );
+    await repository.save(
+      _set(
+        id: 'set-failure',
+        performedAt: DateTime.utc(2026, 5, 27, 10),
+        label: WorkoutSetLabel.failure,
+      ),
+    );
+
+    final exerciseRef = ExerciseRef.official(
+      id: OfficialExerciseId('barbell-bench-press'),
+      displayNameSnapshot: 'Bench',
+    );
+    final history = await repository.historyForExercise(exerciseRef);
+    final timeline = await repository.timelineForExercise(
+      WorkoutSetTimelineQuery(exerciseRef: exerciseRef, limit: 10),
+    );
+
+    expect(history.map((WorkoutSet set) => set.label), <WorkoutSetLabel>[
+      WorkoutSetLabel.warmup,
+      WorkoutSetLabel.failure,
+    ]);
+    expect(timeline.items.map((WorkoutSet set) => set.label), <WorkoutSetLabel>[
+      WorkoutSetLabel.failure,
+      WorkoutSetLabel.warmup,
+    ]);
+  });
+
   test('timelineForExercise supports custom exercise references', () async {
     final customRef = ExerciseRef.custom(
       id: CustomExerciseId('custom-row'),
@@ -371,6 +407,139 @@ void main() {
       expect(found?.comment, isNull);
       expect(row.workoutSessionId, isNull);
       expect(row.comment, isNull);
+    },
+  );
+
+  test('save round-trips label and stores the stable label value', () async {
+    await repository.save(
+      _set(id: 'set-label', label: WorkoutSetLabel.dropSet),
+    );
+
+    final found = await repository.findById(WorkoutSetId('set-label'));
+    final row = await database.select(database.workoutSets).getSingle();
+
+    expect(found?.label, WorkoutSetLabel.dropSet);
+    expect(row.setLabel, 'dropSet');
+  });
+
+  test(
+    'save can update label without changing id or ExerciseRef snapshot',
+    () async {
+      final exerciseRef = ExerciseRef.official(
+        id: OfficialExerciseId('barbell-bench-press'),
+        displayNameSnapshot: 'Old Bench Snapshot',
+        catalogVersionSnapshot: '2026.05.0',
+      );
+      await repository.save(
+        _set(
+          id: 'set-label-update',
+          exerciseRef: exerciseRef,
+          label: WorkoutSetLabel.warmup,
+        ),
+      );
+
+      await repository.save(
+        _set(
+          id: 'set-label-update',
+          exerciseRef: exerciseRef,
+          label: WorkoutSetLabel.failure,
+        ),
+      );
+
+      final found = await repository.findById(WorkoutSetId('set-label-update'));
+
+      expect(found?.id, WorkoutSetId('set-label-update'));
+      expect(found?.exerciseRef, exerciseRef);
+      expect(found?.label, WorkoutSetLabel.failure);
+    },
+  );
+
+  test('legacy null label maps to none', () async {
+    await database
+        .into(database.workoutSets)
+        .insert(
+          WorkoutSetsCompanion.insert(
+            workoutSetId: 'set-legacy-label',
+            exerciseSource: 'official',
+            exerciseId: 'barbell-bench-press',
+            exerciseDisplayNameSnapshot: 'Barbell Bench Press',
+            catalogVersionSnapshot: const Value<String?>('2026.05.0'),
+            repetitions: 5,
+            loadKg: 100,
+            performedAt: DateTime.utc(2026, 5, 27, 12),
+          ),
+        );
+
+    final found = await repository.findById(WorkoutSetId('set-legacy-label'));
+
+    expect(found?.label, WorkoutSetLabel.none);
+  });
+
+  test('legacy empty label maps to none', () async {
+    await database
+        .into(database.workoutSets)
+        .insert(
+          WorkoutSetsCompanion.insert(
+            workoutSetId: 'set-empty-label',
+            exerciseSource: 'official',
+            exerciseId: 'barbell-bench-press',
+            exerciseDisplayNameSnapshot: 'Barbell Bench Press',
+            catalogVersionSnapshot: const Value<String?>('2026.05.0'),
+            repetitions: 5,
+            loadKg: 100,
+            performedAt: DateTime.utc(2026, 5, 27, 12),
+            setLabel: const Value<String?>(''),
+          ),
+        );
+
+    final found = await repository.findById(WorkoutSetId('set-empty-label'));
+
+    expect(found?.label, WorkoutSetLabel.none);
+  });
+
+  test(
+    'invalid stored label throws deterministic validation exception',
+    () async {
+      await database.customStatement('PRAGMA ignore_check_constraints = ON');
+      await database.customInsert(
+        '''
+      INSERT INTO workout_sets (
+        workout_set_id,
+        exercise_source,
+        exercise_id,
+        exercise_display_name_snapshot,
+        catalog_version_snapshot,
+        repetitions,
+        load_kg,
+        performed_at,
+        set_label
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ''',
+        variables: <Variable<Object>>[
+          const Variable<String>('set-invalid-label'),
+          const Variable<String>('official'),
+          const Variable<String>('barbell-bench-press'),
+          const Variable<String>('Barbell Bench Press'),
+          const Variable<String>('2026.05.0'),
+          const Variable<int>(5),
+          const Variable<double>(100),
+          Variable<DateTime>(DateTime.utc(2026, 5, 27, 12)),
+          const Variable<String>('tempo'),
+        ],
+      );
+      await database.customStatement('PRAGMA ignore_check_constraints = OFF');
+
+      await expectLater(
+        repository.findById(WorkoutSetId('set-invalid-label')),
+        throwsA(
+          isA<TrainingLogValidationException>().having(
+            (TrainingLogValidationException error) => error.field,
+            'field',
+            'setLabel',
+          ),
+        ),
+      );
     },
   );
 
@@ -445,6 +614,7 @@ WorkoutSet _set({
   num loadKg = 100,
   DateTime? performedAt,
   String? comment,
+  WorkoutSetLabel label = WorkoutSetLabel.none,
 }) {
   return WorkoutSet(
     id: WorkoutSetId(id),
@@ -462,5 +632,6 @@ WorkoutSet _set({
     load: LoadKg(loadKg),
     performedAt: PerformedAt(performedAt ?? DateTime.utc(2026, 5, 27, 12)),
     comment: comment == null ? null : SetComment(comment),
+    label: label,
   );
 }

@@ -17,7 +17,7 @@ Each slice is an incremental Codex task. Codex should implement exactly one slic
 - [12 — Workout groups and exercise assignment foundation](slice_12_workout_program_list_and_edit_foundation.md) — done
 - [13 — Exercise detail set timeline](slice_13_exercise_detail_set_timeline.md) — done
 - [14 — Add/edit workout set form](slice_14_add_edit_workout_set_form.md) — done
-- [15 — Set labels and comments](slice_15_set_labels_and_comments.md)
+- [15 — Set labels and comments](slice_15_set_labels_and_comments.md) — done
 - [16 — Rest timer domain and state](slice_16_rest_timer_domain_and_state.md)
 - [17 — Local notifications for rest timer](slice_17_local_notifications_for_rest_timer.md)
 - [18 — Exercise analytics use cases](slice_18_exercise_analytics_use_cases.md)

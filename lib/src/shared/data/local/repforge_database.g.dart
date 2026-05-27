@@ -131,6 +131,19 @@ class $WorkoutSetsTable extends WorkoutSets
     requiredDuringInsert: false,
     $customConstraints: 'NULL CHECK (comment IS NULL OR length(comment) > 0)',
   );
+  static const VerificationMeta _setLabelMeta = const VerificationMeta(
+    'setLabel',
+  );
+  @override
+  late final GeneratedColumn<String> setLabel = GeneratedColumn<String>(
+    'set_label',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints:
+        'NULL CHECK (set_label IS NULL OR set_label = \'\' OR set_label IN (\'none\', \'warmup\', \'failure\', \'personalRecord\', \'dropSet\', \'pain\'))',
+  );
   @override
   List<GeneratedColumn> get $columns => [
     workoutSetId,
@@ -143,6 +156,7 @@ class $WorkoutSetsTable extends WorkoutSets
     loadKg,
     performedAt,
     comment,
+    setLabel,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -251,6 +265,12 @@ class $WorkoutSetsTable extends WorkoutSets
         comment.isAcceptableOrUnknown(data['comment']!, _commentMeta),
       );
     }
+    if (data.containsKey('set_label')) {
+      context.handle(
+        _setLabelMeta,
+        setLabel.isAcceptableOrUnknown(data['set_label']!, _setLabelMeta),
+      );
+    }
     return context;
   }
 
@@ -300,6 +320,10 @@ class $WorkoutSetsTable extends WorkoutSets
         DriftSqlType.string,
         data['${effectivePrefix}comment'],
       ),
+      setLabel: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}set_label'],
+      ),
     );
   }
 
@@ -320,6 +344,7 @@ class WorkoutSetRow extends DataClass implements Insertable<WorkoutSetRow> {
   final double loadKg;
   final DateTime performedAt;
   final String? comment;
+  final String? setLabel;
   const WorkoutSetRow({
     required this.workoutSetId,
     required this.exerciseSource,
@@ -331,6 +356,7 @@ class WorkoutSetRow extends DataClass implements Insertable<WorkoutSetRow> {
     required this.loadKg,
     required this.performedAt,
     this.comment,
+    this.setLabel,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -355,6 +381,9 @@ class WorkoutSetRow extends DataClass implements Insertable<WorkoutSetRow> {
     if (!nullToAbsent || comment != null) {
       map['comment'] = Variable<String>(comment);
     }
+    if (!nullToAbsent || setLabel != null) {
+      map['set_label'] = Variable<String>(setLabel);
+    }
     return map;
   }
 
@@ -376,6 +405,9 @@ class WorkoutSetRow extends DataClass implements Insertable<WorkoutSetRow> {
       comment: comment == null && nullToAbsent
           ? const Value.absent()
           : Value(comment),
+      setLabel: setLabel == null && nullToAbsent
+          ? const Value.absent()
+          : Value(setLabel),
     );
   }
 
@@ -399,6 +431,7 @@ class WorkoutSetRow extends DataClass implements Insertable<WorkoutSetRow> {
       loadKg: serializer.fromJson<double>(json['loadKg']),
       performedAt: serializer.fromJson<DateTime>(json['performedAt']),
       comment: serializer.fromJson<String?>(json['comment']),
+      setLabel: serializer.fromJson<String?>(json['setLabel']),
     );
   }
   @override
@@ -419,6 +452,7 @@ class WorkoutSetRow extends DataClass implements Insertable<WorkoutSetRow> {
       'loadKg': serializer.toJson<double>(loadKg),
       'performedAt': serializer.toJson<DateTime>(performedAt),
       'comment': serializer.toJson<String?>(comment),
+      'setLabel': serializer.toJson<String?>(setLabel),
     };
   }
 
@@ -433,6 +467,7 @@ class WorkoutSetRow extends DataClass implements Insertable<WorkoutSetRow> {
     double? loadKg,
     DateTime? performedAt,
     Value<String?> comment = const Value.absent(),
+    Value<String?> setLabel = const Value.absent(),
   }) => WorkoutSetRow(
     workoutSetId: workoutSetId ?? this.workoutSetId,
     exerciseSource: exerciseSource ?? this.exerciseSource,
@@ -449,6 +484,7 @@ class WorkoutSetRow extends DataClass implements Insertable<WorkoutSetRow> {
     loadKg: loadKg ?? this.loadKg,
     performedAt: performedAt ?? this.performedAt,
     comment: comment.present ? comment.value : this.comment,
+    setLabel: setLabel.present ? setLabel.value : this.setLabel,
   );
   WorkoutSetRow copyWithCompanion(WorkoutSetsCompanion data) {
     return WorkoutSetRow(
@@ -478,6 +514,7 @@ class WorkoutSetRow extends DataClass implements Insertable<WorkoutSetRow> {
           ? data.performedAt.value
           : this.performedAt,
       comment: data.comment.present ? data.comment.value : this.comment,
+      setLabel: data.setLabel.present ? data.setLabel.value : this.setLabel,
     );
   }
 
@@ -493,7 +530,8 @@ class WorkoutSetRow extends DataClass implements Insertable<WorkoutSetRow> {
           ..write('repetitions: $repetitions, ')
           ..write('loadKg: $loadKg, ')
           ..write('performedAt: $performedAt, ')
-          ..write('comment: $comment')
+          ..write('comment: $comment, ')
+          ..write('setLabel: $setLabel')
           ..write(')'))
         .toString();
   }
@@ -510,6 +548,7 @@ class WorkoutSetRow extends DataClass implements Insertable<WorkoutSetRow> {
     loadKg,
     performedAt,
     comment,
+    setLabel,
   );
   @override
   bool operator ==(Object other) =>
@@ -525,7 +564,8 @@ class WorkoutSetRow extends DataClass implements Insertable<WorkoutSetRow> {
           other.repetitions == this.repetitions &&
           other.loadKg == this.loadKg &&
           other.performedAt == this.performedAt &&
-          other.comment == this.comment);
+          other.comment == this.comment &&
+          other.setLabel == this.setLabel);
 }
 
 class WorkoutSetsCompanion extends UpdateCompanion<WorkoutSetRow> {
@@ -539,6 +579,7 @@ class WorkoutSetsCompanion extends UpdateCompanion<WorkoutSetRow> {
   final Value<double> loadKg;
   final Value<DateTime> performedAt;
   final Value<String?> comment;
+  final Value<String?> setLabel;
   final Value<int> rowid;
   const WorkoutSetsCompanion({
     this.workoutSetId = const Value.absent(),
@@ -551,6 +592,7 @@ class WorkoutSetsCompanion extends UpdateCompanion<WorkoutSetRow> {
     this.loadKg = const Value.absent(),
     this.performedAt = const Value.absent(),
     this.comment = const Value.absent(),
+    this.setLabel = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   WorkoutSetsCompanion.insert({
@@ -564,6 +606,7 @@ class WorkoutSetsCompanion extends UpdateCompanion<WorkoutSetRow> {
     required double loadKg,
     required DateTime performedAt,
     this.comment = const Value.absent(),
+    this.setLabel = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : workoutSetId = Value(workoutSetId),
        exerciseSource = Value(exerciseSource),
@@ -583,6 +626,7 @@ class WorkoutSetsCompanion extends UpdateCompanion<WorkoutSetRow> {
     Expression<double>? loadKg,
     Expression<DateTime>? performedAt,
     Expression<String>? comment,
+    Expression<String>? setLabel,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -598,6 +642,7 @@ class WorkoutSetsCompanion extends UpdateCompanion<WorkoutSetRow> {
       if (loadKg != null) 'load_kg': loadKg,
       if (performedAt != null) 'performed_at': performedAt,
       if (comment != null) 'comment': comment,
+      if (setLabel != null) 'set_label': setLabel,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -613,6 +658,7 @@ class WorkoutSetsCompanion extends UpdateCompanion<WorkoutSetRow> {
     Value<double>? loadKg,
     Value<DateTime>? performedAt,
     Value<String?>? comment,
+    Value<String?>? setLabel,
     Value<int>? rowid,
   }) {
     return WorkoutSetsCompanion(
@@ -628,6 +674,7 @@ class WorkoutSetsCompanion extends UpdateCompanion<WorkoutSetRow> {
       loadKg: loadKg ?? this.loadKg,
       performedAt: performedAt ?? this.performedAt,
       comment: comment ?? this.comment,
+      setLabel: setLabel ?? this.setLabel,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -669,6 +716,9 @@ class WorkoutSetsCompanion extends UpdateCompanion<WorkoutSetRow> {
     if (comment.present) {
       map['comment'] = Variable<String>(comment.value);
     }
+    if (setLabel.present) {
+      map['set_label'] = Variable<String>(setLabel.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -688,6 +738,7 @@ class WorkoutSetsCompanion extends UpdateCompanion<WorkoutSetRow> {
           ..write('loadKg: $loadKg, ')
           ..write('performedAt: $performedAt, ')
           ..write('comment: $comment, ')
+          ..write('setLabel: $setLabel, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -3066,6 +3117,7 @@ typedef $$WorkoutSetsTableCreateCompanionBuilder =
       required double loadKg,
       required DateTime performedAt,
       Value<String?> comment,
+      Value<String?> setLabel,
       Value<int> rowid,
     });
 typedef $$WorkoutSetsTableUpdateCompanionBuilder =
@@ -3080,6 +3132,7 @@ typedef $$WorkoutSetsTableUpdateCompanionBuilder =
       Value<double> loadKg,
       Value<DateTime> performedAt,
       Value<String?> comment,
+      Value<String?> setLabel,
       Value<int> rowid,
     });
 
@@ -3139,6 +3192,11 @@ class $$WorkoutSetsTableFilterComposer
 
   ColumnFilters<String> get comment => $composableBuilder(
     column: $table.comment,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get setLabel => $composableBuilder(
+    column: $table.setLabel,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -3201,6 +3259,11 @@ class $$WorkoutSetsTableOrderingComposer
     column: $table.comment,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get setLabel => $composableBuilder(
+    column: $table.setLabel,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$WorkoutSetsTableAnnotationComposer
@@ -3257,6 +3320,9 @@ class $$WorkoutSetsTableAnnotationComposer
 
   GeneratedColumn<String> get comment =>
       $composableBuilder(column: $table.comment, builder: (column) => column);
+
+  GeneratedColumn<String> get setLabel =>
+      $composableBuilder(column: $table.setLabel, builder: (column) => column);
 }
 
 class $$WorkoutSetsTableTableManager
@@ -3305,6 +3371,7 @@ class $$WorkoutSetsTableTableManager
                 Value<double> loadKg = const Value.absent(),
                 Value<DateTime> performedAt = const Value.absent(),
                 Value<String?> comment = const Value.absent(),
+                Value<String?> setLabel = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => WorkoutSetsCompanion(
                 workoutSetId: workoutSetId,
@@ -3317,6 +3384,7 @@ class $$WorkoutSetsTableTableManager
                 loadKg: loadKg,
                 performedAt: performedAt,
                 comment: comment,
+                setLabel: setLabel,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -3331,6 +3399,7 @@ class $$WorkoutSetsTableTableManager
                 required double loadKg,
                 required DateTime performedAt,
                 Value<String?> comment = const Value.absent(),
+                Value<String?> setLabel = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => WorkoutSetsCompanion.insert(
                 workoutSetId: workoutSetId,
@@ -3343,6 +3412,7 @@ class $$WorkoutSetsTableTableManager
                 loadKg: loadKg,
                 performedAt: performedAt,
                 comment: comment,
+                setLabel: setLabel,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

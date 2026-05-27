@@ -4,6 +4,10 @@
 
 ### Added
 
+- Added Slice 15 set-label foundation for workout sets, including the compact
+  `none`/`warmup`/`failure`/`personalRecord`/`dropSet`/`pain` marker set,
+  form/application handoff, Drift schema v4 persistence, and mapper validation
+  while preserving existing optional comments.
 - Added Slice 14 add/edit/delete workout-set foundation with pure-Dart
   application use cases, compact form input parsing, and targeted Drift delete
   support.

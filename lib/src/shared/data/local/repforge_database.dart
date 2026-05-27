@@ -44,6 +44,17 @@ class WorkoutSets extends Table {
     'NULL CHECK (comment IS NULL OR length(comment) > 0)',
   )();
 
+  TextColumn get setLabel => text().nullable().customConstraint(
+    "NULL CHECK (set_label IS NULL OR set_label = '' OR set_label IN ("
+    "'none', "
+    "'warmup', "
+    "'failure', "
+    "'personalRecord', "
+    "'dropSet', "
+    "'pain'"
+    '))',
+  )();
+
   @override
   Set<Column<Object>> get primaryKey => <Column<Object>>{workoutSetId};
 }
@@ -202,7 +213,7 @@ class RepForgeDatabase extends _$RepForgeDatabase {
   RepForgeDatabase(super.executor);
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -218,6 +229,9 @@ class RepForgeDatabase extends _$RepForgeDatabase {
       if (from < 3) {
         await migrator.createTable(workoutGroups);
         await migrator.createTable(workoutGroupExerciseAssignments);
+      }
+      if (from < 4) {
+        await migrator.addColumn(workoutSets, workoutSets.setLabel);
       }
     },
     // Future migrations must preserve logged set history and prefer additive
