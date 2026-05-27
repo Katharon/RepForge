@@ -245,6 +245,8 @@ void main() {
       ),
       completion(isA<WorkoutSetTimelinePage>()),
     );
+    expect(repository.deleteById(WorkoutSetId('set-1')), completes);
+    expect(repository.findById(WorkoutSetId('set-1')), completion(isNull));
   });
 }
 
@@ -267,6 +269,11 @@ final class _InMemoryWorkoutSetRepository implements WorkoutSetRepository {
   @override
   Future<void> save(WorkoutSet set) async {
     _sets[set.id] = set;
+  }
+
+  @override
+  Future<void> deleteById(WorkoutSetId id) async {
+    _sets.remove(id);
   }
 
   @override

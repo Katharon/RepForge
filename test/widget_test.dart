@@ -155,6 +155,11 @@ AppDependencies _testAppDependencies({
 
 final class _FakeWorkoutSetRepository implements WorkoutSetRepository {
   @override
+  Future<void> deleteById(WorkoutSetId id) {
+    throw UnimplementedError('Widget smoke tests do not delete workout sets.');
+  }
+
+  @override
   Future<WorkoutSet?> findById(WorkoutSetId id) {
     throw UnimplementedError('Widget smoke tests do not read workout sets.');
   }

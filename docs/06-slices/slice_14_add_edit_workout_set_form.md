@@ -73,6 +73,24 @@ Update these if changed by implementation:
 - Any architecture/domain/UX document made stale by this slice
 - `CHANGELOG.md` only for user-visible or release-relevant changes
 
+## Implementation note
+
+Slice 14 implemented the compact foundation rather than a full screen flow:
+
+- Added pure-Dart training-log application use cases for saving, updating, and
+  deleting workout sets.
+- Added `WorkoutSetForm` to parse compact load/repetition/comment input into
+  existing domain value objects, with blank optional comments treated as absent.
+- Kept update behavior snapshot-safe by preserving the existing
+  `WorkoutSetId`, `ExerciseRef`, and optional workout-session link.
+- Extended `WorkoutSetRepository` with `deleteById` and implemented targeted
+  deletion in Drift.
+- Added focused application and repository tests for create, edit, delete,
+  validation, and deleted-set query behavior.
+
+No BLoC, screen, routing, or localization changes were added because this slice
+only needed the reusable add/edit/delete foundation.
+
 ## Commit message
 
 ```text

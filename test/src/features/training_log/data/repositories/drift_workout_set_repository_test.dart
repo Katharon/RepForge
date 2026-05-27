@@ -398,6 +398,41 @@ void main() {
       expect(row.catalogVersionSnapshot, isNull);
     },
   );
+
+  test('deleteById removes only the target set', () async {
+    await repository.save(_set(id: 'set-delete'));
+    await repository.save(_set(id: 'set-keep'));
+
+    await repository.deleteById(WorkoutSetId('set-delete'));
+
+    expect(await repository.findById(WorkoutSetId('set-delete')), isNull);
+    expect(await repository.findById(WorkoutSetId('set-keep')), isNotNull);
+  });
+
+  test('timeline and history no longer return deleted sets', () async {
+    await repository.save(
+      _set(id: 'set-delete', performedAt: DateTime.utc(2026, 5, 27, 11)),
+    );
+    await repository.save(
+      _set(id: 'set-keep', performedAt: DateTime.utc(2026, 5, 27, 10)),
+    );
+
+    await repository.deleteById(WorkoutSetId('set-delete'));
+
+    final exerciseRef = ExerciseRef.official(
+      id: OfficialExerciseId('barbell-bench-press'),
+      displayNameSnapshot: 'Bench',
+    );
+    final history = await repository.historyForExercise(exerciseRef);
+    final timeline = await repository.timelineForExercise(
+      WorkoutSetTimelineQuery(exerciseRef: exerciseRef, limit: 10),
+    );
+
+    expect(history.map((WorkoutSet set) => set.id.value), <String>['set-keep']);
+    expect(timeline.items.map((WorkoutSet set) => set.id.value), <String>[
+      'set-keep',
+    ]);
+  });
 }
 
 WorkoutSet _set({

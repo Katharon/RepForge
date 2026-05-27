@@ -4,6 +4,9 @@
 
 ### Added
 
+- Added Slice 14 add/edit/delete workout-set foundation with pure-Dart
+  application use cases, compact form input parsing, and targeted Drift delete
+  support.
 - Added Slice 13 exercise set timeline paging with pure-Dart cursor/page query
   types and Drift keyset paging over `performedAt` plus stable workout-set ID.
 - Added the Slice 12 workout group assignment foundation, including pure-Dart

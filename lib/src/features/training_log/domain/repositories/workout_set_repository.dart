@@ -6,6 +6,8 @@ import '../value_objects/workout_set_timeline.dart';
 abstract interface class WorkoutSetRepository {
   Future<void> save(WorkoutSet set);
 
+  Future<void> deleteById(WorkoutSetId id);
+
   Future<WorkoutSet?> findById(WorkoutSetId id);
 
   Future<List<WorkoutSet>> historyForExercise(ExerciseRef exerciseRef);

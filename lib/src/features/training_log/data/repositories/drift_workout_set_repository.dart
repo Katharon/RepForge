@@ -16,6 +16,15 @@ final class DriftWorkoutSetRepository implements WorkoutSetRepository {
   }
 
   @override
+  Future<void> deleteById(WorkoutSetId id) async {
+    await (_database.delete(_database.workoutSets)
+          ..where(($WorkoutSetsTable table) {
+            return table.workoutSetId.equals(id.value);
+          }))
+        .go();
+  }
+
+  @override
   Future<WorkoutSet?> findById(WorkoutSetId id) async {
     final rows =
         await (_database.select(_database.workoutSets)
