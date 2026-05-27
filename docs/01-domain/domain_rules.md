@@ -22,11 +22,19 @@
 ## Catalog rules
 
 - Official catalog data is versioned and bundled with the app.
+- Official catalog JSON must declare a non-empty `catalogVersion` and supported
+  `schemaVersion`.
+- Official exercise entries must have non-empty stable IDs, English names, and
+  German names.
+- Official exercise entries must include equipment tags, movement-pattern tags,
+  and at least one primary muscle group.
 - Official catalog imports are idempotent.
 - Official catalog imports must not overwrite user overrides.
+- Official catalog imports must not mutate historical `workout_sets` snapshots.
 - Official exercise IDs must be stable.
 - Corrections to official exercises must be represented as versioned changes.
 - Custom exercise names may collide with official names, but UI should disambiguate source.
+- Catalog listing/query APIs must use explicit pagination limits and offsets.
 
 ## Analytics rules
 

@@ -82,6 +82,12 @@ references, display-name snapshots, optional catalog-version snapshots,
 optional session/comment fields, raw repetitions/load, and performed
 timestamps. Raw logged sets are source-of-truth training data.
 
+Schema version 2 adds the first official exercise catalog runtime tables:
+`official_exercises`, official exercise equipment tags, movement patterns,
+muscle groups, and `catalog_imports`. The migration is additive only and must
+not rewrite, drop, or reinterpret v1 `workout_sets` rows. Official catalog
+imports write only official catalog tables and import-version metadata.
+
 The app composition root owns the runtime `RepForgeDatabase` instance it
 creates through the local database factory and closes it through
 `AppDependencies.close()`. Tests may inject in-memory executors or caller-owned
@@ -120,6 +126,10 @@ Rules:
 
 - `catalogVersion` changes whenever official content changes.
 - `schemaVersion` changes whenever JSON shape changes.
+- Slice 11 ships `assets/catalog/official_exercises_v1.json` as the first
+  bundled official catalog asset.
+- The Slice 11 parser supports schema version `1` and rejects unsupported
+  schemas before Drift import.
 - build-time validation must reject invalid catalog files.
 - importer tests must cover older schema versions if they remain supported.
 - unsupported schema versions must fail safely before modifying Drift.

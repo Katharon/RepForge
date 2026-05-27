@@ -4,6 +4,10 @@
 
 ### Added
 
+- Added the Slice 11 official exercise catalog foundation, including a bundled
+  versioned JSON catalog asset, pure-Dart catalog models/query contracts,
+  parser validation, Drift schema v2 catalog tables, idempotent official import,
+  and pagination-ready catalog queries.
 - Added explicit dependency-injection wiring for Slice 10, including a local
   Drift database factory, composition-root `WorkoutSetRepository` construction,
   and idempotent dependency close semantics.

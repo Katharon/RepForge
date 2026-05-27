@@ -15,18 +15,25 @@ void main() {
   });
 
   test('creates the schema in memory', () async {
-    final tables = await database
-        .customSelect(
-          "SELECT name FROM sqlite_master WHERE type = 'table' AND name = ?",
-          variables: <Variable<String>>[const Variable<String>('workout_sets')],
-        )
-        .get();
+    final tables = await database.customSelect('''
+          SELECT name
+          FROM sqlite_master
+          WHERE type = 'table'
+          AND name IN (
+            'workout_sets',
+            'official_exercises',
+            'official_exercise_equipment_tags',
+            'official_exercise_movement_patterns',
+            'official_exercise_muscle_groups',
+            'catalog_imports'
+          )
+          ''').get();
 
-    expect(tables, hasLength(1));
+    expect(tables, hasLength(6));
   });
 
-  test('uses schema version 1', () {
-    expect(database.schemaVersion, 1);
+  test('uses schema version 2', () {
+    expect(database.schemaVersion, 2);
   });
 
   test('accepts an official exercise workout set with snapshots', () async {

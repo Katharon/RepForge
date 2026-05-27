@@ -12,8 +12,8 @@ Each slice is an incremental Codex task. Codex should implement exactly one slic
 - [07 — Analytics formula domain tests](slice_07_analytics_formula_domain_tests.md) — done
 - [08 — Drift local database foundation](slice_08_drift_local_database_foundation.md) — done
 - [09 — Repository implementations and mappers](slice_09_repository_implementations_and_mappers.md) — done
-- [10 — Dependency injection wiring](slice_10_dependency_injection_wiring.md) — in_progress
-- [11 — Exercise catalog feature](slice_11_exercise_catalog_feature.md)
+- [10 — Dependency injection wiring](slice_10_dependency_injection_wiring.md) — done
+- [11 — Exercise catalog feature](slice_11_exercise_catalog_feature.md) — done
 - [12 — Workout groups and exercise assignment foundation](slice_12_workout_program_list_and_edit_foundation.md)
 - [13 — Exercise detail set timeline](slice_13_exercise_detail_set_timeline.md)
 - [14 — Add/edit workout set form](slice_14_add_edit_workout_set_form.md)

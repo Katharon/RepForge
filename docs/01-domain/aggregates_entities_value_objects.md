@@ -44,6 +44,13 @@ Fields:
 
 Rule: Official definitions are immutable after import. New corrections create a new catalog version or migration rule.
 
+Slice 11 implements the first small official catalog foundation with the
+runtime domain name `OfficialExercise`. It includes stable catalog ID, catalog
+version, English/German names, equipment tags, movement patterns, and
+primary/secondary muscle groups. UI flows, custom exercises, aliases, user
+overrides, rest defaults, tracking modes, and difficulty metadata remain later
+slices.
+
 ### CustomExercise
 
 User-created exercise.
@@ -130,6 +137,13 @@ Fields:
 - `ReadinessScore`: derived non-medical readiness signal.
 - `SorenessScore`: user input 0–10 or enum none/light/moderate/high.
 - `RecommendationReason`: explainable reason shown in UI.
+- `CatalogVersion`: stable official catalog content version.
+- `EquipmentTag`: stable equipment tag used by official catalog filtering.
+- `MuscleGroup`: stable muscle metadata tag used by official catalog filtering.
+- `MovementPattern`: stable movement-pattern tag for official exercises.
+- `ExerciseCatalogQuery`: explicit `limit`/`offset` official catalog query with
+  optional search/equipment/muscle filters.
+- `ExerciseCatalogPage`: paginated official catalog query result.
 
 ## Read models
 

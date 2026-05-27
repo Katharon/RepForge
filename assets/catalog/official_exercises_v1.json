@@ -1,0 +1,72 @@
+{
+  "catalogVersion": "2026.05.0",
+  "schemaVersion": 1,
+  "exercises": [
+    {
+      "catalogId": "barbell_back_squat",
+      "localizedNames": {
+        "en": "Barbell Back Squat",
+        "de": "Kniebeuge mit Langhantel"
+      },
+      "equipment": ["barbell", "rack"],
+      "movementPatterns": ["squat", "knee_dominant"],
+      "primaryMuscles": ["quadriceps", "glutes"],
+      "secondaryMuscles": ["hamstrings", "erector_spinae"]
+    },
+    {
+      "catalogId": "barbell_bench_press",
+      "localizedNames": {
+        "en": "Barbell Bench Press",
+        "de": "Bankdruecken mit Langhantel"
+      },
+      "equipment": ["barbell", "bench", "rack"],
+      "movementPatterns": ["horizontal_push"],
+      "primaryMuscles": ["chest"],
+      "secondaryMuscles": ["triceps", "front_deltoids"]
+    },
+    {
+      "catalogId": "barbell_deadlift",
+      "localizedNames": {
+        "en": "Barbell Deadlift",
+        "de": "Kreuzheben mit Langhantel"
+      },
+      "equipment": ["barbell"],
+      "movementPatterns": ["hinge"],
+      "primaryMuscles": ["hamstrings", "glutes", "erector_spinae"],
+      "secondaryMuscles": ["traps", "forearms"]
+    },
+    {
+      "catalogId": "barbell_overhead_press",
+      "localizedNames": {
+        "en": "Barbell Overhead Press",
+        "de": "Schulterdruecken mit Langhantel"
+      },
+      "equipment": ["barbell", "rack"],
+      "movementPatterns": ["vertical_push"],
+      "primaryMuscles": ["shoulders"],
+      "secondaryMuscles": ["triceps", "upper_chest"]
+    },
+    {
+      "catalogId": "barbell_bent_over_row",
+      "localizedNames": {
+        "en": "Barbell Bent-Over Row",
+        "de": "Langhantelrudern vorgebeugt"
+      },
+      "equipment": ["barbell"],
+      "movementPatterns": ["horizontal_pull"],
+      "primaryMuscles": ["lats", "upper_back"],
+      "secondaryMuscles": ["rear_deltoids", "biceps"]
+    },
+    {
+      "catalogId": "bodyweight_pull_up",
+      "localizedNames": {
+        "en": "Pull-Up",
+        "de": "Klimmzug"
+      },
+      "equipment": ["pull_up_bar"],
+      "movementPatterns": ["vertical_pull"],
+      "primaryMuscles": ["lats", "upper_back"],
+      "secondaryMuscles": ["biceps", "forearms"]
+    }
+  ]
+}
