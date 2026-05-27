@@ -76,10 +76,17 @@ If an official exercise becomes incorrect or obsolete, mark it as deprecated:
 
 ## Drift schema evolution
 
+Schema version 1 starts the local Drift baseline with persisted workout-set
+history. The v1 `workout_sets` table stores stable set IDs, stable exercise
+references, display-name snapshots, optional catalog-version snapshots,
+optional session/comment fields, raw repetitions/load, and performed
+timestamps. Raw logged sets are source-of-truth training data.
+
 Drift schema changes must be backward-compatible where possible:
 
 - prefer additive columns with defaults,
 - prefer new tables over destructive rewrites,
+- preserve v1 `workout_sets` rows and snapshot meaning across migrations,
 - keep migration steps deterministic,
 - migrate in transactions,
 - test migration from previous schema versions,

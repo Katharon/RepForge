@@ -4,6 +4,24 @@
 
 Add Drift/SQLite local database schema for official catalog imports, custom exercises, workout groups, sets, labels, user profile, and preferences with migration test scaffolding.
 
+## Slice 08 implementation note
+
+The implemented Slice 08 scope was intentionally narrowed by the active
+implementation prompt. Slice 08 now establishes only the minimal local Drift
+foundation: dependencies, schema version 1, generated database code, and a
+single `workout_sets` table that preserves stable exercise references and
+display-name/catalog snapshots for historical logged sets.
+
+Official catalog tables, custom exercise tables, workout groups, labels, user
+profile, preferences, repository implementations, mappers, catalog import, UI,
+BLoC/Cubit flows, sync, Firebase, backend services, ads, and payment runtime
+services remain out of scope for this slice.
+
+The database boundary lives at `lib/src/shared/data/local/` because the Drift
+database is shared infrastructure that will be wired by the composition root in
+a later slice. Domain code remains pure Dart and does not import Drift,
+SQLite, Flutter, presentation, or generated localization code.
+
 ## Read first
 
 1. `AGENTS.md`
@@ -69,7 +87,7 @@ Update these if changed by implementation:
 ## Commit message
 
 ```text
-feat(persistence): add Drift local database foundation
+feat(data): add Drift local database foundation
 ```
 
 ## Ready-to-use Codex prompt

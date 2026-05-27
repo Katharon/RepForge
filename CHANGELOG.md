@@ -4,6 +4,9 @@
 
 ### Added
 
+- Added the Drift/SQLite local database foundation for Slice 08, including
+  schema version 1, a historical workout-set table, generated Drift code, and
+  in-memory schema tests.
 - Added the pure-Dart analytics formula foundation for Slice 07, including
   formula identity metadata, Epley estimated 1RM, workout-set summaries, and
   period comparison helpers.

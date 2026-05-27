@@ -10,7 +10,7 @@ Each slice is an incremental Codex task. Codex should implement exactly one slic
 - [05 — Navigation shell and route map](slice_05_navigation_shell_and_route_map.md) — done
 - [06 — Domain foundation for training log](slice_06_domain_foundation_for_training_log.md) — done
 - [07 — Analytics formula domain tests](slice_07_analytics_formula_domain_tests.md) — done
-- [08 — Drift local database foundation](slice_08_drift_local_database_foundation.md)
+- [08 — Drift local database foundation](slice_08_drift_local_database_foundation.md) — done
 - [09 — Repository implementations and mappers](slice_09_repository_implementations_and_mappers.md)
 - [10 — Dependency injection wiring](slice_10_dependency_injection_wiring.md)
 - [11 — Exercise catalog feature](slice_11_exercise_catalog_feature.md)
