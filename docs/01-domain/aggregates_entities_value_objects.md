@@ -76,13 +76,14 @@ Fields:
 
 - `workoutGroupId`
 - `name`
-- `description`
-- `icon`
-- `colorToken`
 - `sortOrder`
-- `groupFocus`
-- `exerciseRefs[]`
+- `exerciseAssignments[]`
 - `archivedAt`
+
+Slice 12 implements the first local workout-group foundation with stable group
+IDs, bounded names, non-negative sort order, nullable UTC archive timestamp, and
+ordered exercise assignments. Description, icon, color, group focus, UI flows,
+and recommendation-aware ordering remain later slices.
 
 ### WorkoutSession
 
@@ -144,6 +145,17 @@ Fields:
 - `ExerciseCatalogQuery`: explicit `limit`/`offset` official catalog query with
   optional search/equipment/muscle filters.
 - `ExerciseCatalogPage`: paginated official catalog query result.
+- `WorkoutGroupId`: stable local ID for a user-defined workout group.
+- `WorkoutGroupName`: trimmed, bounded workout group name.
+- `WorkoutGroupSortOrder`: non-negative user-controlled group order.
+- `WorkoutGroupExerciseAssignmentId`: stable local ID for an assigned exercise
+  inside a workout group.
+- `AssignmentPosition`: non-negative order of an exercise assignment within a
+  group.
+- `WorkoutGroupExerciseAssignment`: stable exercise reference plus group and
+  position.
+- `WorkoutGroupQuery` / `WorkoutGroupAssignmentQuery`: explicit `limit` and
+  `offset` list queries.
 
 ## Read models
 

@@ -88,6 +88,13 @@ muscle groups, and `catalog_imports`. The migration is additive only and must
 not rewrite, drop, or reinterpret v1 `workout_sets` rows. Official catalog
 imports write only official catalog tables and import-version metadata.
 
+Schema version 3 adds `workout_groups` and
+`workout_group_exercise_assignments`. Assignment rows store stable exercise
+source, stable exercise ID, display-name snapshot, optional official
+catalog-version snapshot, and assignment position. The migration is additive
+only and must not rewrite `workout_sets` or official catalog tables. Official
+catalog imports must not overwrite workout groups or assignments.
+
 The app composition root owns the runtime `RepForgeDatabase` instance it
 creates through the local database factory and closes it through
 `AppDependencies.close()`. Tests may inject in-memory executors or caller-owned
@@ -98,6 +105,11 @@ not by display-name snapshot. Mapper code must preserve each persisted snapshot
 as logged. Custom exercise rows with catalog-version snapshots are invalid
 persisted data because custom exercises do not belong to an official catalog
 version.
+
+Workout-group assignment mapper code follows the same rule: official assignment
+rows may carry catalog-version snapshots, while custom assignment rows with
+catalog-version snapshots are invalid persisted data and must fail
+deterministically.
 
 Drift schema changes must be backward-compatible where possible:
 

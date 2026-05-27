@@ -4,6 +4,9 @@
 
 ### Added
 
+- Added the Slice 12 workout group assignment foundation, including pure-Dart
+  group/assignment domain contracts, Drift schema v3 group tables,
+  mapper/repository persistence, and pagination-ready group/assignment queries.
 - Added the Slice 11 official exercise catalog foundation, including a bundled
   versioned JSON catalog asset, pure-Dart catalog models/query contracts,
   parser validation, Drift schema v2 catalog tables, idempotent official import,

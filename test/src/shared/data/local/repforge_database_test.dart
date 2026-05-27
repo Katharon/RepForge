@@ -25,15 +25,17 @@ void main() {
             'official_exercise_equipment_tags',
             'official_exercise_movement_patterns',
             'official_exercise_muscle_groups',
-            'catalog_imports'
+            'catalog_imports',
+            'workout_groups',
+            'workout_group_exercise_assignments'
           )
           ''').get();
 
-    expect(tables, hasLength(6));
+    expect(tables, hasLength(8));
   });
 
-  test('uses schema version 2', () {
-    expect(database.schemaVersion, 2);
+  test('uses schema version 3', () {
+    expect(database.schemaVersion, 3);
   });
 
   test('accepts an official exercise workout set with snapshots', () async {

@@ -134,6 +134,58 @@ class CatalogImports extends Table {
   Set<Column<Object>> get primaryKey => <Column<Object>>{catalogVersion};
 }
 
+@DataClassName('WorkoutGroupRow')
+class WorkoutGroups extends Table {
+  TextColumn get workoutGroupId => text().customConstraint(
+    'NOT NULL CHECK (length(workout_group_id) > 0)',
+  )();
+
+  TextColumn get name =>
+      text().customConstraint('NOT NULL CHECK (length(name) > 0)')();
+
+  IntColumn get sortOrder =>
+      integer().customConstraint('NOT NULL CHECK (sort_order >= 0)')();
+
+  DateTimeColumn get archivedAt => dateTime().nullable()();
+
+  @override
+  Set<Column<Object>> get primaryKey => <Column<Object>>{workoutGroupId};
+}
+
+@DataClassName('WorkoutGroupExerciseAssignmentRow')
+class WorkoutGroupExerciseAssignments extends Table {
+  TextColumn get assignmentId =>
+      text().customConstraint('NOT NULL CHECK (length(assignment_id) > 0)')();
+
+  TextColumn get workoutGroupId => text().customConstraint(
+    'NOT NULL CHECK (length(workout_group_id) > 0)',
+  )();
+
+  TextColumn get exerciseSource => text().customConstraint(
+    "NOT NULL CHECK (exercise_source IN ('official', 'custom'))",
+  )();
+
+  TextColumn get exerciseId =>
+      text().customConstraint('NOT NULL CHECK (length(exercise_id) > 0)')();
+
+  TextColumn get exerciseDisplayNameSnapshot => text().customConstraint(
+    'NOT NULL CHECK (length(exercise_display_name_snapshot) > 0)',
+  )();
+
+  TextColumn get catalogVersionSnapshot => text().nullable().customConstraint(
+    'NULL CHECK ('
+    'catalog_version_snapshot IS NULL OR '
+    'length(catalog_version_snapshot) > 0'
+    ')',
+  )();
+
+  IntColumn get position =>
+      integer().customConstraint('NOT NULL CHECK (position >= 0)')();
+
+  @override
+  Set<Column<Object>> get primaryKey => <Column<Object>>{assignmentId};
+}
+
 @DriftDatabase(
   tables: <Type>[
     WorkoutSets,
@@ -142,13 +194,15 @@ class CatalogImports extends Table {
     OfficialExerciseMovementPatterns,
     OfficialExerciseMuscleGroups,
     CatalogImports,
+    WorkoutGroups,
+    WorkoutGroupExerciseAssignments,
   ],
 )
 class RepForgeDatabase extends _$RepForgeDatabase {
   RepForgeDatabase(super.executor);
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -160,6 +214,10 @@ class RepForgeDatabase extends _$RepForgeDatabase {
         await migrator.createTable(officialExerciseMovementPatterns);
         await migrator.createTable(officialExerciseMuscleGroups);
         await migrator.createTable(catalogImports);
+      }
+      if (from < 3) {
+        await migrator.createTable(workoutGroups);
+        await migrator.createTable(workoutGroupExerciseAssignments);
       }
     },
     // Future migrations must preserve logged set history and prefer additive

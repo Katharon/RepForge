@@ -2,136 +2,65 @@
 
 ## Goal
 
-Implement user-defined workout groups such as Push Day, Pull Day, Leg Day, and allow assigning ordered official/custom exercises to each group.
+Implement the first local-first workout group foundation: pure-Dart
+workout-group and assignment domain types, additive Drift persistence,
+mapper/repository support, deterministic assignment ordering, and focused tests.
 
-## Read first
+## Implemented scope
 
-1. `AGENTS.md`
-2. `docs/00-project/product_requirements.md`
-3. `docs/01-domain/domain_map.md`
-4. `docs/03-design-ux/information_architecture.md`
-5. `docs/06-slices/slice_12_workout_program_list_and_edit_foundation.md`
+- Added `lib/src/features/workout_groups/` with pure-Dart domain entities,
+  value objects, paginated query/page types, and repository contract.
+- Added Drift schema version `3` with `workout_groups` and
+  `workout_group_exercise_assignments`.
+- Added repository support for saving/finding/listing groups, saving/removing
+  assignments, and listing assignments with explicit `limit`/`offset`.
+- Reused `ExerciseRef` semantics for assignment references so official and
+  future custom exercises keep stable source/id and display-name snapshots.
+- Preserved official assignment `catalogVersionSnapshot` values and rejected
+  invalid persisted custom assignment rows that contain catalog snapshots.
+- Stored `archivedAt` only as a nullable UTC timestamp; no archive workflow was
+  implemented.
 
 ## Non-goals
 
-- Do not implement recommendation ordering yet.
-- Do not implement advanced analytics yet.
-- Do not rename existing domain concepts outside this slice unless required.
+- No UI, BLoC/Cubit, forms, navigation changes, or composition-root wiring.
+- No app-start group behavior.
+- No workout-set history paging implementation.
+- No custom exercise creation/editing flow.
+- No recommendation ordering, planning engine, analytics UI, sync, backend,
+  Firebase, ads, payments, notifications, cloud services, or remote catalog
+  fetching.
 
-## TDD requirements
+## Implementation notes
 
-Write domain/use-case/BLoC tests for create group, rename group, reorder group, add exercise, remove exercise, and archive group before implementation.
+Workout groups and assignments are local user data. Assignment rows intentionally
+store stable exercise references and snapshots instead of foreign keys to
+official catalog rows, so catalog imports and future catalog updates cannot
+destroy or reinterpret group assignments.
 
-## Implementation requirements
-
-- Use the product term Workout Group for user-facing grouping.
-- Allow exercises from official catalog and custom exercises.
-- Preserve historical sets if an exercise is removed from a group.
-- Support basic ordering.
-- Prepare UI for later recommended order without implementing recommendation logic.
-- Follow `AGENTS.md`.
-- Keep layer boundaries from the architecture docs.
-- Handle loading, empty, error, and success states where UI is touched.
-- Update affected docs if implementation decisions differ from the plan.
-
-## Acceptance criteria
-
-- Slice goal is implemented.
-- Tests required by this slice are added or updated.
-- Formatting passes.
-- Static analysis passes.
-- All relevant tests pass.
-- `docs/05-codex/slice_status.md` is updated.
-- No unrelated future feature is introduced.
+List APIs use explicit offset pagination for the small group/assignment
+foundation. Future large workout-set history lists should prefer cursor/keyset
+paging over `performedAt` plus stable ID rather than large offset paging.
 
 ## Validation commands
 
 ```bash
-dart format --set-exit-if-changed .
+git status --short
+git rev-parse --short HEAD
+flutter pub get
+flutter gen-l10n
+dart run build_runner build --delete-conflicting-outputs
+dart format --output=none --set-exit-if-changed .
 flutter analyze
 flutter test
+scripts/check.sh
 ```
 
-Add slice-specific commands if appropriate:
-
-```bash
-flutter test integration_test
-flutter build apk --debug
-```
-
-## Documentation updates
-
-Update these if changed by implementation:
-
-- `docs/05-codex/slice_status.md`
-- Any architecture/domain/UX document made stale by this slice
-- `CHANGELOG.md` only for user-visible or release-relevant changes
+Additional Slice 12 guardrails check group identifiers, pagination terms,
+cloud/backend dependency bans, and domain purity.
 
 ## Commit message
 
 ```text
-feat(training-log): add workout groups and exercise assignment
-```
-
-## Ready-to-use Codex prompt
-
-```text
-You are working in the `gesundheit-gym-app` Flutter repository.
-
-Read first, in this order:
-1. AGENTS.md
-2. docs/00-project/product_requirements.md
-3. docs/01-domain/domain_map.md
-4. docs/03-design-ux/information_architecture.md
-5. docs/06-slices/slice_12_workout_program_list_and_edit_foundation.md
-
-Implement Slice 12: Workout groups and exercise assignment foundation.
-
-Goal:
-Implement user-defined workout groups such as Push Day, Pull Day, Leg Day, and allow assigning ordered official/custom exercises to each group.
-
-Non-goals:
-- Do not implement recommendation ordering yet.
-- Do not implement advanced analytics yet.
-- Do not rename existing domain concepts outside this slice unless required.
-
-Architecture and quality rules:
-- Follow AGENTS.md strictly.
-- Keep domain pure Dart and presentation thin.
-- Use constructor injection and the documented composition-root approach.
-- Do not add unrelated packages or features.
-- Do not use a cloud database for the official exercise catalog.
-- Keep the repository fresh-context safe by updating docs when assumptions change.
-
-TDD requirements:
-Write domain/use-case/BLoC tests for create group, rename group, reorder group, add exercise, remove exercise, and archive group before implementation.
-
-Implementation requirements:
-- Use the product term Workout Group for user-facing grouping.
-- Allow exercises from official catalog and custom exercises.
-- Preserve historical sets if an exercise is removed from a group.
-- Support basic ordering.
-- Prepare UI for later recommended order without implementing recommendation logic.
-
-Validation commands:
-```bash
-dart format --set-exit-if-changed .
-flutter analyze
-flutter test
-```
-Run stronger commands if applicable:
-```bash
-flutter test integration_test
-flutter build apk --debug
-```
-
-Documentation:
-- Update docs/05-codex/slice_status.md.
-- Update any affected docs if implementation reveals a stale or wrong assumption.
-
-Commit:
-Create one git commit with this exact message:
-`feat(training-log): add workout groups and exercise assignment`
-
-When finished, report summary, tests, validation results, changed files, commit hash, and follow-ups.
+feat(groups): add workout group assignment foundation
 ```

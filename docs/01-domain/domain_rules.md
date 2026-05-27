@@ -14,9 +14,20 @@
 ## Workout group rules
 
 - Workout group names must be non-empty.
+- Workout group names are trimmed and bounded to keep list rows readable.
+- Workout group sort order is user-controlled and non-negative.
+- A workout group may be archived with a nullable UTC `archivedAt` timestamp.
 - A group can contain official and custom exercises.
 - An exercise can belong to multiple groups.
 - Group order is user-controlled.
+- Group exercise assignments store stable exercise source, stable exercise ID,
+  display-name snapshot, and optional official catalog-version snapshot.
+- Official group exercise assignments may carry a catalog-version snapshot.
+- Custom group exercise assignments must not carry a catalog-version snapshot.
+- Invalid persisted custom assignment rows with catalog-version snapshots must
+  fail deterministically instead of silently dropping the snapshot.
+- Removing an exercise assignment from a group must not mutate historical
+  workout sets.
 - Archived exercises should not be recommended by default.
 
 ## Catalog rules
