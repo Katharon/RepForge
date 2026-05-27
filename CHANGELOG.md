@@ -4,6 +4,9 @@
 
 ### Added
 
+- Added Slice 16 rest timer foundation with pure-Dart duration validation,
+  injectable time provider, running/finished/cancelled snapshots, deterministic
+  controller state, and countdown display state without local notifications.
 - Added Slice 15 set-label foundation for workout sets, including the compact
   `none`/`warmup`/`failure`/`personalRecord`/`dropSet`/`pain` marker set,
   form/application handoff, Drift schema v4 persistence, and mapper validation

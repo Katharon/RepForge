@@ -10,7 +10,7 @@ Implement rest timer domain/application logic and visible countdown state withou
 2. `docs/02-architecture/notifications.md`
 3. `docs/01-domain/domain_rules.md`
 4. `docs/02-architecture/state_management_bloc.md`
-5. `docs/06-slices/slice_16_rest_timer_domain_state.md`
+5. `docs/06-slices/slice_16_rest_timer_domain_and_state.md`
 
 ## Current assumptions
 
@@ -79,6 +79,26 @@ Update these if changed by implementation:
 feat(timer): add rest timer domain and state
 ```
 
+## Implementation note
+
+Slice 16 implemented a volatile, in-memory rest timer foundation:
+
+- Added `lib/src/features/rest_timer/` with pure-Dart domain, application, and
+  countdown presentation-state boundaries.
+- Added `RestTimerDuration`, `RestTimerStatus`, and `RestTimerSnapshot` for
+  validated durations, idle/running/finished/cancelled state, UTC
+  `startedAt`/`targetAt` timestamps, and non-negative remaining time.
+- Added injectable `TimeProvider`/`SystemTimeProvider` and a deterministic
+  `RestTimerController` with start, tick, cancel, and reset commands.
+- Added `RestTimerCountdownState` to format visible countdown state as `mm:ss`
+  without wiring a full workout screen.
+- Added fake-clock tests for duration validation, remaining-time calculation,
+  finished/cancelled/idle states, controller behavior, and countdown formatting.
+
+This slice intentionally does not persist timer state, schedule notifications,
+use `Timer.periodic`, add Firebase Cloud Messaging, or change workout logging
+flows. Slice 17 owns local notification scheduling.
+
 ## Ready-to-use Codex prompt
 
 ```text
@@ -89,7 +109,7 @@ Read first, in this order:
 2. docs/02-architecture/notifications.md
 3. docs/01-domain/domain_rules.md
 4. docs/02-architecture/state_management_bloc.md
-5. docs/06-slices/slice_16_rest_timer_domain_state.md
+5. docs/06-slices/slice_16_rest_timer_domain_and_state.md
 
 Implement Slice 16: Rest timer domain and state.
 
