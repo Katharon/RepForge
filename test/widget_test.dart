@@ -165,6 +165,13 @@ final class _FakeWorkoutSetRepository implements WorkoutSetRepository {
   }
 
   @override
+  Future<WorkoutSetTimelinePage> timelineForExercise(
+    WorkoutSetTimelineQuery query,
+  ) {
+    throw UnimplementedError('Widget smoke tests do not read workout sets.');
+  }
+
+  @override
   Future<void> save(WorkoutSet set) {
     throw UnimplementedError('Widget smoke tests do not write workout sets.');
   }

@@ -151,6 +151,71 @@ void main() {
     );
   });
 
+  group('WorkoutSetTimeline', () {
+    test('query requires a positive bounded limit', () {
+      final exerciseRef = ExerciseRef.official(
+        id: OfficialExerciseId('barbell-bench-press'),
+        displayNameSnapshot: 'Bench',
+      );
+
+      expect(
+        WorkoutSetTimelineQuery(exerciseRef: exerciseRef, limit: 1).limit,
+        1,
+      );
+      expect(
+        () => WorkoutSetTimelineQuery(exerciseRef: exerciseRef, limit: 0),
+        throwsA(isA<TrainingLogValidationException>()),
+      );
+      expect(
+        () => WorkoutSetTimelineQuery(exerciseRef: exerciseRef, limit: 101),
+        throwsA(isA<TrainingLogValidationException>()),
+      );
+    });
+
+    test('cursor uses performedAt and stable workoutSetId', () {
+      final set = WorkoutSet(
+        id: WorkoutSetId('set-cursor'),
+        exerciseRef: ExerciseRef.official(
+          id: OfficialExerciseId('deadlift'),
+          displayNameSnapshot: 'Deadlift',
+        ),
+        repetitions: Repetitions(3),
+        load: LoadKg(140),
+        performedAt: PerformedAt(DateTime.utc(2026, 5, 27, 12)),
+      );
+
+      final cursor = WorkoutSetTimelineCursor.fromSet(set);
+
+      expect(cursor.performedAt, DateTime.utc(2026, 5, 27, 12));
+      expect(cursor.workoutSetId, WorkoutSetId('set-cursor'));
+      expect(
+        WorkoutSetTimelineCursor(
+          performedAt: DateTime.utc(2026, 5, 27, 12),
+          workoutSetId: WorkoutSetId('set-cursor'),
+        ),
+        cursor,
+      );
+    });
+
+    test('page stores immutable items and cursor state', () {
+      final set = _setForTimeline('set-1');
+      final cursor = WorkoutSetTimelineCursor.fromSet(set);
+      final page = WorkoutSetTimelinePage(
+        items: <WorkoutSet>[set],
+        hasMore: true,
+        nextCursor: cursor,
+      );
+
+      expect(page.items, <WorkoutSet>[set]);
+      expect(page.hasMore, isTrue);
+      expect(page.nextCursor, cursor);
+      expect(
+        () => page.items.add(_setForTimeline('set-2')),
+        throwsUnsupportedError,
+      );
+    });
+  });
+
   test('WorkoutSetRepository contract compiles against domain types', () {
     final repository = _InMemoryWorkoutSetRepository();
     final set = WorkoutSet(
@@ -174,7 +239,26 @@ void main() {
       repository.setsForWorkoutSession(WorkoutSessionId('session-1')),
       completion(isEmpty),
     );
+    expect(
+      repository.timelineForExercise(
+        WorkoutSetTimelineQuery(exerciseRef: set.exerciseRef, limit: 10),
+      ),
+      completion(isA<WorkoutSetTimelinePage>()),
+    );
   });
+}
+
+WorkoutSet _setForTimeline(String id) {
+  return WorkoutSet(
+    id: WorkoutSetId(id),
+    exerciseRef: ExerciseRef.official(
+      id: OfficialExerciseId('barbell-bench-press'),
+      displayNameSnapshot: 'Bench',
+    ),
+    repetitions: Repetitions(5),
+    load: LoadKg(100),
+    performedAt: PerformedAt(DateTime.utc(2026, 5, 27, 12)),
+  );
 }
 
 final class _InMemoryWorkoutSetRepository implements WorkoutSetRepository {
@@ -193,6 +277,20 @@ final class _InMemoryWorkoutSetRepository implements WorkoutSetRepository {
     return _sets.values
         .where((WorkoutSet set) => set.exerciseRef == exerciseRef)
         .toList(growable: false);
+  }
+
+  @override
+  Future<WorkoutSetTimelinePage> timelineForExercise(
+    WorkoutSetTimelineQuery query,
+  ) async {
+    final items = await historyForExercise(query.exerciseRef);
+    return WorkoutSetTimelinePage(
+      items: items.take(query.limit),
+      hasMore: items.length > query.limit,
+      nextCursor: items.length > query.limit && items.isNotEmpty
+          ? WorkoutSetTimelineCursor.fromSet(items.take(query.limit).last)
+          : null,
+    );
   }
 
   @override

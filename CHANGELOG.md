@@ -4,6 +4,8 @@
 
 ### Added
 
+- Added Slice 13 exercise set timeline paging with pure-Dart cursor/page query
+  types and Drift keyset paging over `performedAt` plus stable workout-set ID.
 - Added the Slice 12 workout group assignment foundation, including pure-Dart
   group/assignment domain contracts, Drift schema v3 group tables,
   mapper/repository persistence, and pagination-ready group/assignment queries.

@@ -139,6 +139,217 @@ void main() {
     },
   );
 
+  test('timelineForExercise returns newest-first first page', () async {
+    await repository.save(
+      _set(id: 'set-1', performedAt: DateTime.utc(2026, 5, 27, 9)),
+    );
+    await repository.save(
+      _set(id: 'set-3', performedAt: DateTime.utc(2026, 5, 27, 11)),
+    );
+    await repository.save(
+      _set(id: 'set-2', performedAt: DateTime.utc(2026, 5, 27, 10)),
+    );
+
+    final page = await repository.timelineForExercise(
+      WorkoutSetTimelineQuery(
+        exerciseRef: ExerciseRef.official(
+          id: OfficialExerciseId('barbell-bench-press'),
+          displayNameSnapshot: 'Bench',
+        ),
+        limit: 2,
+      ),
+    );
+
+    expect(page.items.map((WorkoutSet set) => set.id.value), <String>[
+      'set-3',
+      'set-2',
+    ]);
+    expect(page.hasMore, isTrue);
+    expect(page.nextCursor, WorkoutSetTimelineCursor.fromSet(page.items.last));
+  });
+
+  test('timelineForExercise returns next page using cursor', () async {
+    await repository.save(
+      _set(id: 'set-1', performedAt: DateTime.utc(2026, 5, 27, 9)),
+    );
+    await repository.save(
+      _set(id: 'set-2', performedAt: DateTime.utc(2026, 5, 27, 10)),
+    );
+    await repository.save(
+      _set(id: 'set-3', performedAt: DateTime.utc(2026, 5, 27, 11)),
+    );
+    await repository.save(
+      _set(id: 'set-4', performedAt: DateTime.utc(2026, 5, 27, 12)),
+    );
+
+    final firstPage = await repository.timelineForExercise(
+      WorkoutSetTimelineQuery(
+        exerciseRef: ExerciseRef.official(
+          id: OfficialExerciseId('barbell-bench-press'),
+          displayNameSnapshot: 'Bench',
+        ),
+        limit: 2,
+      ),
+    );
+    final secondPage = await repository.timelineForExercise(
+      WorkoutSetTimelineQuery(
+        exerciseRef: ExerciseRef.official(
+          id: OfficialExerciseId('barbell-bench-press'),
+          displayNameSnapshot: 'Bench',
+        ),
+        limit: 2,
+        after: firstPage.nextCursor,
+      ),
+    );
+
+    expect(firstPage.items.map((WorkoutSet set) => set.id.value), <String>[
+      'set-4',
+      'set-3',
+    ]);
+    expect(secondPage.items.map((WorkoutSet set) => set.id.value), <String>[
+      'set-2',
+      'set-1',
+    ]);
+    expect(secondPage.hasMore, isFalse);
+    expect(secondPage.nextCursor, isNull);
+  });
+
+  test('timelineForExercise uses workoutSetId tie-breaker', () async {
+    final sameTimestamp = DateTime.utc(2026, 5, 27, 10);
+    await repository.save(_set(id: 'set-a', performedAt: sameTimestamp));
+    await repository.save(_set(id: 'set-c', performedAt: sameTimestamp));
+    await repository.save(_set(id: 'set-b', performedAt: sameTimestamp));
+
+    final firstPage = await repository.timelineForExercise(
+      WorkoutSetTimelineQuery(
+        exerciseRef: ExerciseRef.official(
+          id: OfficialExerciseId('barbell-bench-press'),
+          displayNameSnapshot: 'Bench',
+        ),
+        limit: 2,
+      ),
+    );
+    final secondPage = await repository.timelineForExercise(
+      WorkoutSetTimelineQuery(
+        exerciseRef: ExerciseRef.official(
+          id: OfficialExerciseId('barbell-bench-press'),
+          displayNameSnapshot: 'Bench',
+        ),
+        limit: 2,
+        after: firstPage.nextCursor,
+      ),
+    );
+
+    expect(firstPage.items.map((WorkoutSet set) => set.id.value), <String>[
+      'set-c',
+      'set-b',
+    ]);
+    expect(secondPage.items.map((WorkoutSet set) => set.id.value), <String>[
+      'set-a',
+    ]);
+  });
+
+  test(
+    'timelineForExercise filters by stable source and id while preserving snapshots',
+    () async {
+      await repository.save(
+        _set(
+          id: 'set-old-name',
+          exerciseDisplayNameSnapshot: 'Old Bench Name',
+          performedAt: DateTime.utc(2026, 5, 27, 9),
+        ),
+      );
+      await repository.save(
+        _set(
+          id: 'set-new-name',
+          exerciseDisplayNameSnapshot: 'New Bench Name',
+          performedAt: DateTime.utc(2026, 5, 27, 10),
+        ),
+      );
+      await repository.save(
+        _set(
+          id: 'set-other-exercise',
+          exerciseId: 'deadlift',
+          exerciseDisplayNameSnapshot: 'Deadlift',
+          performedAt: DateTime.utc(2026, 5, 27, 11),
+        ),
+      );
+
+      final page = await repository.timelineForExercise(
+        WorkoutSetTimelineQuery(
+          exerciseRef: ExerciseRef.official(
+            id: OfficialExerciseId('barbell-bench-press'),
+            displayNameSnapshot: 'Current Bench Name',
+            catalogVersionSnapshot: '2026.06.0',
+          ),
+          limit: 10,
+        ),
+      );
+
+      expect(page.items.map((WorkoutSet set) => set.id.value), <String>[
+        'set-new-name',
+        'set-old-name',
+      ]);
+      expect(
+        page.items.map((WorkoutSet set) => set.exerciseRef.displayNameSnapshot),
+        <String>['New Bench Name', 'Old Bench Name'],
+      );
+      expect(
+        page.items.map(
+          (WorkoutSet set) => set.exerciseRef.catalogVersionSnapshot,
+        ),
+        <String?>['2026.05.0', '2026.05.0'],
+      );
+    },
+  );
+
+  test('timelineForExercise supports custom exercise references', () async {
+    final customRef = ExerciseRef.custom(
+      id: CustomExerciseId('custom-row'),
+      displayNameSnapshot: 'Custom Row',
+    );
+    await repository.save(_set(id: 'custom-1', exerciseRef: customRef));
+    await repository.save(_set(id: 'official-1'));
+
+    final page = await repository.timelineForExercise(
+      WorkoutSetTimelineQuery(exerciseRef: customRef, limit: 10),
+    );
+
+    expect(page.items.map((WorkoutSet set) => set.id.value), <String>[
+      'custom-1',
+    ]);
+    expect(page.items.single.exerciseRef, customRef);
+  });
+
+  test('timelineForExercise returns empty page for missing exercise', () async {
+    final page = await repository.timelineForExercise(
+      WorkoutSetTimelineQuery(
+        exerciseRef: ExerciseRef.official(
+          id: OfficialExerciseId('missing-exercise'),
+          displayNameSnapshot: 'Missing',
+        ),
+        limit: 10,
+      ),
+    );
+
+    expect(page.items, isEmpty);
+    expect(page.hasMore, isFalse);
+    expect(page.nextCursor, isNull);
+  });
+
+  test('timelineForExercise rejects invalid limit', () {
+    expect(
+      () => WorkoutSetTimelineQuery(
+        exerciseRef: ExerciseRef.official(
+          id: OfficialExerciseId('barbell-bench-press'),
+          displayNameSnapshot: 'Bench',
+        ),
+        limit: 0,
+      ),
+      throwsA(isA<TrainingLogValidationException>()),
+    );
+  });
+
   test(
     'save upserts by workoutSetId and clears stale nullable values',
     () async {

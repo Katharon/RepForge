@@ -11,6 +11,9 @@
 - Index `workout_sets.exercise_id` and `performed_at`.
 - Query analytics by date range in SQL where practical.
 - Avoid loading all historical sets for every chart if aggregation can be done in the database.
+- Exercise set timelines page with keyset/cursor queries over
+  `performedAt` plus stable `workoutSetId`, ordered newest-first. UI-facing
+  timelines must not load all historical sets and page in memory.
 
 ## Widget performance
 

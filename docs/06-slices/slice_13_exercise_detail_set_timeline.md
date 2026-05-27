@@ -2,142 +2,60 @@
 
 ## Goal
 
-Build exercise detail screen with grouped set history, quick links, and add button.
+Add the repository/domain foundation for exercise set timeline paging. For one
+concrete exercise, RepForge can query historical `WorkoutSet` entries through
+cursor/keyset paging without loading all historical sets at once.
 
-## Read first
+## Implemented scope
 
-1. `AGENTS.md`
-2. `docs/00-project/screenshot_inventory.md`
-3. `docs/03-design-ux/screenshot_analysis.md`
-4. `docs/03-design-ux/component_catalog.md`
-5. `docs/02-architecture/state_management_bloc.md`
-6. `docs/06-slices/slice_13_exercise_detail_set_timeline.md`
-
-## Current assumptions
-
-- Work from the current repository state.
-- Keep changes limited to this slice.
-- Keep documentation synchronized with implementation.
-- Prefer the smallest production-quality increment over a broad prototype.
+- Added pure-Dart `WorkoutSetTimelineQuery`, `WorkoutSetTimelineCursor`, and
+  `WorkoutSetTimelinePage`.
+- Extended `WorkoutSetRepository` with `timelineForExercise`.
+- Implemented Drift keyset paging in `DriftWorkoutSetRepository`.
+- Timeline queries filter by stable exercise source and exercise ID, not display
+  snapshots.
+- Timeline ordering is newest-first by `performedAt`, then stable
+  `workoutSetId`.
+- Query implementation fetches `limit + 1` to derive `hasMore` and
+  `nextCursor`.
+- Existing persisted `WorkoutSet` snapshots and catalog-version snapshots are
+  preserved exactly.
 
 ## Non-goals
 
-- Do not implement later slices.
-- Do not change unrelated architecture decisions.
-- Do not add packages unless necessary for this slice.
+- No UI, BLoC/Cubit, navigation, exercise detail screen, add/edit set form, or
+  analytics charts.
+- No schema change.
+- No composition-root wiring.
+- No cloud, backend, Firebase, ads, sync, payments, notifications, or paid
+  runtime services.
 
-## TDD requirements
+## Implementation notes
 
-Write BLoC/use-case/widget tests for the main interaction first.
-
-If strict TDD is impractical because this is a repository/bootstrap slice, explain why and add the earliest possible smoke test.
-
-## Implementation requirements
-
-- Follow `AGENTS.md`.
-- Keep layer boundaries from the architecture docs.
-- Use explicit, readable names from the ubiquitous language.
-- Handle loading, empty, error, and success states where this slice touches UI.
-- Add fakes/mocks instead of using real platform services in unit tests.
-- Update affected docs if implementation decisions differ from the initial plan.
-
-## Acceptance criteria
-
-- Slice goal is implemented.
-- Tests required by this slice are added or updated.
-- Formatting passes.
-- Static analysis passes.
-- All relevant tests pass.
-- `docs/05-codex/slice_status.md` is updated.
-- No unrelated future feature is introduced.
+Cursor/keyset paging uses the last returned set's `performedAt` and stable
+`workoutSetId` as the next cursor. The Drift query applies the cursor in SQL and
+does not load all rows before paging. This is the foundation for future exercise
+detail screens and long histories.
 
 ## Validation commands
 
 ```bash
-dart format --set-exit-if-changed .
+git status --short
+git rev-parse --short HEAD
+flutter pub get
+flutter gen-l10n
+dart run build_runner build --delete-conflicting-outputs
+dart format --output=none --set-exit-if-changed .
 flutter analyze
 flutter test
+scripts/check.sh
 ```
 
-Add slice-specific commands if appropriate, such as:
-
-```bash
-flutter test integration_test
-flutter build apk --debug
-```
-
-## Documentation updates
-
-Update these if changed by implementation:
-
-- `docs/05-codex/slice_status.md`
-- Any architecture/domain/UX document made stale by this slice
-- `CHANGELOG.md` only for user-visible or release-relevant changes
+Additional Slice 13 guardrails check timeline terms, domain purity, and
+no-cloud/backend dependency bans.
 
 ## Commit message
 
 ```text
-feat(training-log): add exercise detail timeline
-```
-
-## Ready-to-use Codex prompt
-
-```text
-You are working in the `gesundheit-gym-app` Flutter repository.
-
-Read first, in this order:
-1. AGENTS.md
-2. docs/00-project/screenshot_inventory.md
-3. docs/03-design-ux/screenshot_analysis.md
-4. docs/03-design-ux/component_catalog.md
-5. docs/02-architecture/state_management_bloc.md
-6. docs/06-slices/slice_13_exercise_detail_set_timeline.md
-
-Implement Slice 13: Exercise detail set timeline.
-
-Goal:
-Build exercise detail screen with grouped set history, quick links, and add button.
-
-Non-goals:
-- Do not implement later slices.
-- Do not change unrelated architecture decisions.
-- Do not add packages unless necessary for this slice.
-
-Architecture and quality rules:
-- Follow AGENTS.md strictly.
-- Keep domain pure Dart and presentation thin.
-- Use constructor injection and the documented composition-root approach.
-- Do not add unrelated packages or features.
-- Keep the repository fresh-context safe by updating docs when assumptions change.
-
-TDD requirements:
-Write BLoC/use-case/widget tests for the main interaction first.
-
-Implementation requirements:
-- Make the smallest complete production-quality change for this slice.
-- Keep naming aligned with the ubiquitous language and docs.
-- Add loading/empty/error handling for UI touched by this slice.
-- Use fakes/mocks for platform services in tests.
-
-Validation commands:
-```bash
-dart format --set-exit-if-changed .
-flutter analyze
-flutter test
-```
-Run stronger commands if applicable:
-```bash
-flutter test integration_test
-flutter build apk --debug
-```
-
-Documentation:
-- Update docs/05-codex/slice_status.md.
-- Update any affected docs if implementation reveals a stale or wrong assumption.
-
-Commit:
-Create one git commit with this exact message:
-`feat(training-log): add exercise detail timeline`
-
-When finished, report summary, tests, validation results, changed files, commit hash, and follow-ups.
+feat(training): add exercise set timeline paging
 ```

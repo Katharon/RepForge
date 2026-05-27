@@ -4,3 +4,4 @@ export 'repositories/workout_set_repository.dart';
 export 'value_objects/exercise_ref.dart';
 export 'value_objects/logged_set_values.dart';
 export 'value_objects/stable_ids.dart';
+export 'value_objects/workout_set_timeline.dart';

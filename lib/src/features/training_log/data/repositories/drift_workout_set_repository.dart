@@ -47,6 +47,49 @@ final class DriftWorkoutSetRepository implements WorkoutSetRepository {
   }
 
   @override
+  Future<WorkoutSetTimelinePage> timelineForExercise(
+    WorkoutSetTimelineQuery query,
+  ) async {
+    final source = WorkoutSetMapper.toStorageExerciseSource(query.exerciseRef);
+    final cursor = query.after;
+    final rows =
+        await (_database.select(_database.workoutSets)
+              ..where(($WorkoutSetsTable table) {
+                final exerciseFilter =
+                    table.exerciseSource.equals(source) &
+                    table.exerciseId.equals(query.exerciseRef.id);
+
+                if (cursor == null) {
+                  return exerciseFilter;
+                }
+
+                return exerciseFilter &
+                    (table.performedAt.isSmallerThanValue(cursor.performedAt) |
+                        (table.performedAt.equals(cursor.performedAt) &
+                            table.workoutSetId.isSmallerThanValue(
+                              cursor.workoutSetId.value,
+                            )));
+              })
+              ..orderBy(_timelineOrder)
+              ..limit(query.limit + 1))
+            .get();
+    final hasMore = rows.length > query.limit;
+    final pageRows = hasMore ? rows.take(query.limit) : rows;
+    final sets = pageRows
+        .map(WorkoutSetMapper.toDomain)
+        .toList(growable: false);
+    final nextCursor = hasMore && sets.isNotEmpty
+        ? WorkoutSetTimelineCursor.fromSet(sets.last)
+        : null;
+
+    return WorkoutSetTimelinePage(
+      items: sets,
+      hasMore: hasMore,
+      nextCursor: nextCursor,
+    );
+  }
+
+  @override
   Future<List<WorkoutSet>> setsForWorkoutSession(
     WorkoutSessionId workoutSessionId,
   ) async {
@@ -66,4 +109,10 @@ final List<OrderingTerm Function($WorkoutSetsTable)> _chronologicalOrder =
     <OrderingTerm Function($WorkoutSetsTable)>[
       ($WorkoutSetsTable table) => OrderingTerm.asc(table.performedAt),
       ($WorkoutSetsTable table) => OrderingTerm.asc(table.workoutSetId),
+    ];
+
+final List<OrderingTerm Function($WorkoutSetsTable)> _timelineOrder =
+    <OrderingTerm Function($WorkoutSetsTable)>[
+      ($WorkoutSetsTable table) => OrderingTerm.desc(table.performedAt),
+      ($WorkoutSetsTable table) => OrderingTerm.desc(table.workoutSetId),
     ];
