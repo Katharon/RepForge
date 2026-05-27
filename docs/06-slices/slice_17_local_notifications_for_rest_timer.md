@@ -10,7 +10,7 @@ Add local notification scheduling/canceling for rest timer completion, with perm
 2. `docs/02-architecture/notifications.md`
 3. `docs/02-architecture/security_privacy_threat_model.md`
 4. `docs/03-design-ux/onboarding_settings.md`
-5. `docs/06-slices/slice_17_local_notifications_rest_timer.md`
+5. `docs/06-slices/slice_17_local_notifications_for_rest_timer.md`
 
 ## Current assumptions
 
@@ -78,6 +78,29 @@ Update these if changed by implementation:
 feat(notifications): schedule rest timer local notifications
 ```
 
+## Implementation note
+
+Slice 17 implemented local-only rest-timer notification scheduling:
+
+- Added a rest-timer application gateway abstraction with
+  `requestPermission`, `scheduleRestTimerFinished`, and `cancelRestTimer`.
+- Added `RestTimerNotificationCoordinator` to start the volatile Slice 16 timer,
+  request permission, schedule a completion notification for `targetAt`, and
+  cancel a scheduled notification on cancel, reset, restart, or in-app finish.
+- Added a `flutter_local_notifications` Android/iOS adapter in the rest-timer
+  data layer, using a UTC `zonedSchedule` target and inexact allow-while-idle
+  Android scheduling to avoid exact-alarm special access in this slice.
+- Wired the coordinator into the composition root behind constructor injection
+  so tests can use fake notification gateways.
+- Added Android notification permission/desugaring setup needed by the local
+  notification package.
+- Added fake-gateway tests for permission granted/denied, schedule target time,
+  cancel/reset/finish cancellation, and deterministic restart behavior.
+
+This slice does not add Firebase Cloud Messaging, remote push, backend/account
+logic, Drift persistence, background services, or a full notification settings
+UI.
+
 ## Ready-to-use Codex prompt
 
 ```text
@@ -88,7 +111,7 @@ Read first, in this order:
 2. docs/02-architecture/notifications.md
 3. docs/02-architecture/security_privacy_threat_model.md
 4. docs/03-design-ux/onboarding_settings.md
-5. docs/06-slices/slice_17_local_notifications_rest_timer.md
+5. docs/06-slices/slice_17_local_notifications_for_rest_timer.md
 
 Implement Slice 17: Local notifications for rest timer.
 

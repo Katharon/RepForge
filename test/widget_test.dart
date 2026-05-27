@@ -6,6 +6,8 @@ import 'package:repforge/src/app/navigation/app_route.dart';
 import 'package:repforge/src/app/repforge_app.dart';
 import 'package:repforge/src/core/theme/theme.dart';
 import 'package:repforge/src/core/widgets/widgets.dart';
+import 'package:repforge/src/features/rest_timer/application/rest_timer_application.dart';
+import 'package:repforge/src/features/rest_timer/domain/rest_timer_domain.dart';
 import 'package:repforge/src/features/training_log/domain/training_log_domain.dart';
 
 void main() {
@@ -149,8 +151,30 @@ AppDependencies _testAppDependencies({
 }) {
   return AppDependencies(
     configuration: configuration,
+    restTimerNotifications: RestTimerNotificationCoordinator(
+      timerController: RestTimerController(
+        timeProvider: const SystemTimeProvider(),
+      ),
+      notificationGateway: _FakeRestTimerNotificationGateway(),
+    ),
     workoutSetRepository: _FakeWorkoutSetRepository(),
   );
+}
+
+final class _FakeRestTimerNotificationGateway
+    implements RestTimerNotificationGateway {
+  @override
+  Future<void> cancelRestTimer(int notificationId) async {}
+
+  @override
+  Future<RestTimerNotificationPermissionStatus> requestPermission() async {
+    return RestTimerNotificationPermissionStatus.granted;
+  }
+
+  @override
+  Future<void> scheduleRestTimerFinished(
+    RestTimerNotificationRequest request,
+  ) async {}
 }
 
 final class _FakeWorkoutSetRepository implements WorkoutSetRepository {

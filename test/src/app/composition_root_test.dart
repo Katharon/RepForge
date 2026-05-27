@@ -1,6 +1,7 @@
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:repforge/src/app/composition_root.dart';
+import 'package:repforge/src/features/rest_timer/application/rest_timer_application.dart';
 import 'package:repforge/src/features/training_log/data/repositories/drift_workout_set_repository.dart';
 import 'package:repforge/src/features/training_log/domain/training_log_domain.dart';
 import 'package:repforge/src/shared/data/local/repforge_database_factory.dart';
@@ -14,6 +15,10 @@ void main() {
     expect(dependencies.configuration.locale, isNull);
     expect(dependencies.workoutSetRepository, isA<WorkoutSetRepository>());
     expect(dependencies.workoutSetRepository, isA<DriftWorkoutSetRepository>());
+    expect(
+      dependencies.restTimerNotifications,
+      isA<RestTimerNotificationCoordinator>(),
+    );
   });
 
   test('composed repository saves and finds a workout set', () async {

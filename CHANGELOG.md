@@ -4,6 +4,9 @@
 
 ### Added
 
+- Added Slice 17 local rest-timer notification scheduling with a fakeable
+  notification gateway, coordinator-driven schedule/cancel behavior,
+  `flutter_local_notifications` Android/iOS adapter, and no remote push.
 - Added Slice 16 rest timer foundation with pure-Dart duration validation,
   injectable time provider, running/finished/cancelled snapshots, deterministic
   controller state, and countdown display state without local notifications.
