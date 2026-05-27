@@ -1,3 +1,4 @@
+export 'exceptions/analytics_validation_exception.dart';
 export 'formulas/epley_one_rep_max_formula.dart';
 export 'services/workout_set_analytics_formula_service.dart';
 export 'value_objects/estimated_one_rep_max.dart';

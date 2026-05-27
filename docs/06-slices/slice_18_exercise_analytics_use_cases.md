@@ -43,6 +43,17 @@ Write formula and use-case tests first, including empty histories, zero baseline
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
 
+## Implementation note
+
+Slice 18 adds a pure-Dart exercise analytics application use case and read
+models for one exercise over an explicit date range. The use case reads bounded
+WorkoutSet timeline pages, summarizes current-period sets, compares the latest
+comparable session against the previous session/day group in the scanned
+history, and compares the current period with the previous equal-length period.
+Missing current/previous data and zero baselines produce unavailable delta
+state instead of exceptions. No chart UI, Drift schema change, remote analytics,
+coach logic, or muscle-load/stimulus calculation is introduced.
+
 ## Validation commands
 
 ```bash

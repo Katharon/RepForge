@@ -1,7 +1,9 @@
+import '../exceptions/analytics_validation_exception.dart';
+
 final class FormulaIdentity {
-  const FormulaIdentity({required this.name, required this.version})
-    : assert(name.length > 0, 'Formula name must not be empty.'),
-      assert(version > 0, 'Formula version must be positive.');
+  FormulaIdentity({required String name, required int version})
+    : name = _requireNonBlank('formulaIdentity.name', name),
+      version = _requirePositive('formulaIdentity.version', version);
 
   final String name;
   final int version;
@@ -18,4 +20,21 @@ final class FormulaIdentity {
 
   @override
   String toString() => '$name/v$version';
+}
+
+String _requireNonBlank(String field, String value) {
+  final trimmedValue = value.trim();
+  if (trimmedValue.isEmpty) {
+    throw AnalyticsValidationException(field, 'Must not be blank.');
+  }
+
+  return trimmedValue;
+}
+
+int _requirePositive(String field, int value) {
+  if (value <= 0) {
+    throw AnalyticsValidationException(field, 'Must be greater than zero.');
+  }
+
+  return value;
 }

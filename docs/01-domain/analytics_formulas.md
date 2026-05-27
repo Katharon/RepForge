@@ -62,6 +62,18 @@ MVP period comparisons expose:
 
 Percent change is unavailable when the previous value is absent or `0`.
 
+Slice 18 exercise-detail analytics defines the first concrete comparable-session
+rule for one exercise:
+
+- the current comparable group is the newest group inside the requested current
+  period.
+- groups use `workoutSessionId` when present.
+- sets without a session id fall back to the UTC `performedAt` day.
+- the previous comparable group is the immediately older different group within
+  the bounded scanned history.
+- if no current group, previous group, or non-zero baseline exists, delta state
+  is explicit and unavailable where needed rather than throwing.
+
 ## Time-window delta
 
 Use this when the user asks: `How is my trend over time?`
@@ -74,6 +86,11 @@ Examples:
 - Last 3 months trend.
 
 Prefer previous comparable session for immediate workout feedback and time-window deltas for long-term analytics.
+
+Slice 18 exercise-detail analytics uses `[start, end)` as the current period and
+compares it with the previous equal-length period `[start - duration, start)`.
+The UI-facing use case reads WorkoutSet timeline pages with an explicit
+`maxHistorySets` bound; it does not call unbounded exercise history APIs.
 
 ## Estimated 1RM
 
@@ -98,6 +115,8 @@ MVP implementation:
 - zero-load sets return an estimate of `0 kg`.
 - derived estimates carry their formula identity so future formula changes can be
   additive and explainable.
+- `FormulaIdentity` and `EstimatedOneRepMax` reject invalid values with
+  deterministic analytics validation exceptions instead of assert-only checks.
 
 ## Muscle load estimate
 

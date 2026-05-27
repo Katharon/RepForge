@@ -20,7 +20,7 @@ Each slice is an incremental Codex task. Codex should implement exactly one slic
 - [15 — Set labels and comments](slice_15_set_labels_and_comments.md) — done
 - [16 — Rest timer domain and state](slice_16_rest_timer_domain_and_state.md) — done
 - [17 — Local notifications for rest timer](slice_17_local_notifications_for_rest_timer.md) — done
-- [18 — Exercise analytics use cases](slice_18_exercise_analytics_use_cases.md)
+- [18 — Exercise analytics use cases](slice_18_exercise_analytics_use_cases.md) — done
 - [19 — Analytics charts and range selector UI](slice_19_analytics_charts_and_range_selector_ui.md)
 - [20 — Estimated 1RM feature](slice_20_estimated_1rm_feature.md)
 - [21 — Today dashboard](slice_21_today_dashboard.md)

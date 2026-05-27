@@ -6,7 +6,7 @@ import '../value_objects/formula_identity.dart';
 final class EpleyOneRepMaxFormula {
   const EpleyOneRepMaxFormula();
 
-  static const FormulaIdentity epleyV1 = FormulaIdentity(
+  static final FormulaIdentity epleyV1 = FormulaIdentity(
     name: 'epley_one_rep_max',
     version: 1,
   );

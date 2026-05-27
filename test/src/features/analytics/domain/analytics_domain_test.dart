@@ -6,12 +6,35 @@ void main() {
   group('FormulaIdentity', () {
     test('compares by name and version', () {
       expect(
-        const FormulaIdentity(name: 'epley_one_rep_max', version: 1),
-        const FormulaIdentity(name: 'epley_one_rep_max', version: 1),
+        FormulaIdentity(name: 'epley_one_rep_max', version: 1),
+        FormulaIdentity(name: 'epley_one_rep_max', version: 1),
       );
       expect(
-        const FormulaIdentity(name: 'epley_one_rep_max', version: 1),
-        isNot(const FormulaIdentity(name: 'epley_one_rep_max', version: 2)),
+        FormulaIdentity(name: 'epley_one_rep_max', version: 1),
+        isNot(FormulaIdentity(name: 'epley_one_rep_max', version: 2)),
+      );
+    });
+
+    test('rejects invalid identity values deterministically', () {
+      expect(
+        () => FormulaIdentity(name: ' ', version: 1),
+        throwsA(
+          isA<AnalyticsValidationException>().having(
+            (AnalyticsValidationException error) => error.field,
+            'field',
+            'formulaIdentity.name',
+          ),
+        ),
+      );
+      expect(
+        () => FormulaIdentity(name: 'epley_one_rep_max', version: 0),
+        throwsA(
+          isA<AnalyticsValidationException>().having(
+            (AnalyticsValidationException error) => error.field,
+            'field',
+            'formulaIdentity.version',
+          ),
+        ),
       );
     });
   });
@@ -22,7 +45,7 @@ void main() {
 
       expect(
         formula.identity,
-        const FormulaIdentity(name: 'epley_one_rep_max', version: 1),
+        FormulaIdentity(name: 'epley_one_rep_max', version: 1),
       );
     });
 
@@ -70,7 +93,7 @@ void main() {
       expect(summary.bestEstimatedOneRepMax, isNull);
       expect(
         summary.oneRepMaxFormulaIdentity,
-        const FormulaIdentity(name: 'epley_one_rep_max', version: 1),
+        FormulaIdentity(name: 'epley_one_rep_max', version: 1),
       );
     });
 
@@ -171,6 +194,27 @@ void main() {
       expect(positive.percentChange, 0.25);
       expect(negative.absoluteDelta, -25);
       expect(negative.percentChange, -0.25);
+    });
+  });
+
+  group('EstimatedOneRepMax', () {
+    test('rejects invalid estimates deterministically', () {
+      expect(
+        () => EstimatedOneRepMax(
+          valueKg: -1,
+          formulaIdentity: FormulaIdentity(
+            name: 'epley_one_rep_max',
+            version: 1,
+          ),
+        ),
+        throwsA(
+          isA<AnalyticsValidationException>().having(
+            (AnalyticsValidationException error) => error.field,
+            'field',
+            'estimatedOneRepMax.valueKg',
+          ),
+        ),
+      );
     });
   });
 }

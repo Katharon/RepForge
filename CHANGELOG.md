@@ -4,6 +4,10 @@
 
 ### Added
 
+- Added Slice 18 exercise analytics use cases with bounded WorkoutSet timeline
+  reads, per-exercise overview metrics, estimated 1RM read models, previous
+  comparable session deltas, time-window deltas, and deterministic analytics
+  validation hardening without charts or remote analytics.
 - Added Slice 17 local rest-timer notification scheduling with a fakeable
   notification gateway, coordinator-driven schedule/cancel behavior,
   `flutter_local_notifications` Android/iOS adapter, and no remote push.
