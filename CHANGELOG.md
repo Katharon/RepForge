@@ -4,6 +4,9 @@
 
 ### Added
 
+- Added the training-log Drift repository and mapper layer for Slice 09,
+  including stable-ID upserts, deterministic history/session queries, and
+  persisted-data validation for custom exercise catalog snapshots.
 - Added the Drift/SQLite local database foundation for Slice 08, including
   schema version 1, a historical workout-set table, generated Drift code, and
   in-memory schema tests.

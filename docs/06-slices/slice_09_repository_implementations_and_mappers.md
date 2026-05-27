@@ -4,6 +4,29 @@
 
 Implement data-layer repositories and mappers between Drift rows and domain objects.
 
+## Slice 09 implementation note
+
+Slice 09 implements only the training-log data boundary for `WorkoutSet`.
+`WorkoutSetMapper` converts between pure-Dart domain objects and Slice 08 Drift
+rows/companions, preserving stable exercise IDs, display-name snapshots,
+optional official catalog-version snapshots, session IDs, comments, raw
+repetitions/load, and UTC performed timestamps.
+
+`DriftWorkoutSetRepository` implements the existing domain
+`WorkoutSetRepository` contract against `RepForgeDatabase`. Saves are stable-ID
+upserts so later edit flows can replace a set by `workoutSetId`. History and
+session query results are ordered by `performedAt` ascending and then
+`workoutSetId` ascending. Exercise history filters by stable source and ID, not
+by display-name snapshot.
+
+Custom persisted rows with non-null `catalogVersionSnapshot` are treated as
+invalid persisted data and mapped with a `TrainingLogValidationException`.
+Official rows may keep catalog-version snapshots.
+
+Composition-root wiring, UI, BLoC/Cubit flows, catalog import, analytics
+persistence, sync, Firebase, backend services, ads, and payment runtime services
+remain out of scope for this slice.
+
 ## Read first
 
 1. `AGENTS.md`

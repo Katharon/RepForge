@@ -82,6 +82,12 @@ references, display-name snapshots, optional catalog-version snapshots,
 optional session/comment fields, raw repetitions/load, and performed
 timestamps. Raw logged sets are source-of-truth training data.
 
+Training-log repository history queries match exercises by stable source and ID,
+not by display-name snapshot. Mapper code must preserve each persisted snapshot
+as logged. Custom exercise rows with catalog-version snapshots are invalid
+persisted data because custom exercises do not belong to an official catalog
+version.
+
 Drift schema changes must be backward-compatible where possible:
 
 - prefer additive columns with defaults,
