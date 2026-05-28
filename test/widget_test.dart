@@ -7,6 +7,8 @@ import 'package:repforge/src/app/repforge_app.dart';
 import 'package:repforge/src/core/theme/theme.dart';
 import 'package:repforge/src/core/widgets/widgets.dart';
 import 'package:repforge/src/features/analytics/application/analytics_application.dart';
+import 'package:repforge/src/features/backup/application/backup_application.dart';
+import 'package:repforge/src/features/backup/domain/backup_domain.dart';
 import 'package:repforge/src/features/onboarding/application/onboarding_application.dart';
 import 'package:repforge/src/features/onboarding/domain/onboarding_domain.dart';
 import 'package:repforge/src/features/rest_timer/application/rest_timer_application.dart';
@@ -155,6 +157,7 @@ AppDependencies _testAppDependencies({
   final settingsProfileRepository = _FakeSettingsProfileRepository();
   final onboardingStatusRepository = _FakeOnboardingStatusRepository();
   final workoutGroupRepository = _FakeWorkoutGroupRepository();
+  final backupRepository = _FakeBackupRepository();
   final loadSettingsProfile = LoadSettingsProfile(settingsProfileRepository);
   final saveSettingsProfile = SaveSettingsProfile(settingsProfileRepository);
 
@@ -183,6 +186,10 @@ AppDependencies _testAppDependencies({
       createStarterGroups: CreateStarterGroups(workoutGroupRepository),
       starterTemplateLoader: _FakeStarterTemplateLoader(),
     ),
+    localBackupRepository: backupRepository,
+    exportLocalBackup: ExportLocalBackup(backupRepository),
+    validateLocalBackup: const ValidateLocalBackup(),
+    importLocalBackup: ImportLocalBackup(backupRepository),
   );
 }
 
@@ -320,4 +327,18 @@ final class _FakeWorkoutGroupRepository implements WorkoutGroupRepository {
 
   @override
   Future<void> saveGroup(WorkoutGroup group) async {}
+}
+
+final class _FakeBackupRepository implements LocalBackupRepository {
+  RepForgeBackup backup = RepForgeBackup.create(
+    exportedAt: DateTime.utc(2026, 5, 28),
+  );
+
+  @override
+  Future<RepForgeBackup> exportBackup() async => backup;
+
+  @override
+  Future<void> importBackup(RepForgeBackup backup) async {
+    this.backup = backup;
+  }
 }

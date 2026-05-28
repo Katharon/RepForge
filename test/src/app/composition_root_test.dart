@@ -1,6 +1,8 @@
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:repforge/src/app/composition_root.dart';
+import 'package:repforge/src/features/backup/data/backup_data.dart';
+import 'package:repforge/src/features/backup/domain/backup_domain.dart';
 import 'package:repforge/src/features/onboarding/data/onboarding_data.dart';
 import 'package:repforge/src/features/onboarding/domain/onboarding_domain.dart';
 import 'package:repforge/src/features/rest_timer/application/rest_timer_application.dart';
@@ -34,6 +36,11 @@ void main() {
     expect(
       dependencies.onboardingStatusRepository,
       isA<DriftOnboardingStatusRepository>(),
+    );
+    expect(dependencies.localBackupRepository, isA<LocalBackupRepository>());
+    expect(
+      dependencies.localBackupRepository,
+      isA<DriftLocalBackupRepository>(),
     );
     expect(
       dependencies.restTimerNotifications,
@@ -83,6 +90,17 @@ void main() {
       (await dependencies.loadOnboardingStatus()).completion,
       OnboardingCompletion.skipped,
     );
+  });
+
+  test('composed backup repository exports local JSON', () async {
+    final dependencies = _composeInMemoryDependencies();
+
+    addTearDown(dependencies.close);
+
+    final json = await dependencies.exportLocalBackup();
+
+    expect(json, contains('"exportVersion":1'));
+    expect(json, contains('"appId":"repforge"'));
   });
 
   test('close is idempotent for owned dependencies', () async {

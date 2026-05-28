@@ -50,6 +50,20 @@ If strict TDD is impractical because this is a repository/bootstrap slice, expla
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
 
+## Implementation note
+
+Slice 24 implements a JSON-only backup foundation. `exportVersion` and
+`schemaVersion` are both v1, with `appId: repforge` and deterministic JSON
+content for workout sets, workout groups, assignments, settings/profile
+equipment, onboarding status, and catalog import metadata. Official catalog
+rows/assets are not exported; workout data keeps stable exercise references and
+display-name/catalog snapshots.
+
+Import is validation-first and additive/upsert by stable ID. It does not wipe
+existing workout sets, groups, assignments, or official catalog rows. The local
+settings/onboarding singleton rows are upserted when present in a backup.
+Platform file picker/share UI and CSV are left as follow-ups.
+
 ## Validation commands
 
 ```bash

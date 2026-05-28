@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:ui';
 
 import '../features/analytics/application/analytics_application.dart';
+import '../features/backup/application/backup_application.dart';
+import '../features/backup/data/backup_data.dart';
+import '../features/backup/domain/backup_domain.dart';
 import '../features/onboarding/application/onboarding_application.dart';
 import '../features/onboarding/data/onboarding_data.dart';
 import '../features/onboarding/domain/onboarding_domain.dart';
@@ -39,6 +42,10 @@ final class AppDependencies {
     required this.loadOnboardingStatus,
     required this.skipOnboarding,
     required this.completeOnboarding,
+    required this.localBackupRepository,
+    required this.exportLocalBackup,
+    required this.validateLocalBackup,
+    required this.importLocalBackup,
   }) : _closeOwnedResources = null;
 
   AppDependencies._withOwnedResources({
@@ -55,6 +62,10 @@ final class AppDependencies {
     required this.loadOnboardingStatus,
     required this.skipOnboarding,
     required this.completeOnboarding,
+    required this.localBackupRepository,
+    required this.exportLocalBackup,
+    required this.validateLocalBackup,
+    required this.importLocalBackup,
     required this._closeOwnedResources,
   });
 
@@ -71,6 +82,10 @@ final class AppDependencies {
   final LoadOnboardingStatus loadOnboardingStatus;
   final SkipOnboarding skipOnboarding;
   final CompleteOnboarding completeOnboarding;
+  final LocalBackupRepository localBackupRepository;
+  final ExportLocalBackup exportLocalBackup;
+  final ValidateLocalBackup validateLocalBackup;
+  final ImportLocalBackup importLocalBackup;
 
   final Future<void> Function()? _closeOwnedResources;
   Future<void>? _closeOperation;
@@ -133,6 +148,7 @@ final class CompositionRoot {
     final onboardingStatusRepository = DriftOnboardingStatusRepository(
       composedDatabase,
     );
+    final localBackupRepository = DriftLocalBackupRepository(composedDatabase);
     final getExerciseAnalytics = GetExerciseAnalytics(workoutSetRepository);
     final restTimerNotifications = RestTimerNotificationCoordinator(
       timerController: RestTimerController(
@@ -159,6 +175,9 @@ final class CompositionRoot {
       createStarterGroups: createStarterGroups,
       starterTemplateLoader: AssetStarterTemplateLoader(),
     );
+    final exportLocalBackup = ExportLocalBackup(localBackupRepository);
+    const validateLocalBackup = ValidateLocalBackup();
+    final importLocalBackup = ImportLocalBackup(localBackupRepository);
     final shouldOwnDatabase = ownsDatabase ?? (database == null);
 
     if (!shouldOwnDatabase) {
@@ -176,6 +195,10 @@ final class CompositionRoot {
         loadOnboardingStatus: loadOnboardingStatus,
         skipOnboarding: skipOnboarding,
         completeOnboarding: completeOnboarding,
+        localBackupRepository: localBackupRepository,
+        exportLocalBackup: exportLocalBackup,
+        validateLocalBackup: validateLocalBackup,
+        importLocalBackup: importLocalBackup,
       );
     }
 
@@ -193,6 +216,10 @@ final class CompositionRoot {
       loadOnboardingStatus: loadOnboardingStatus,
       skipOnboarding: skipOnboarding,
       completeOnboarding: completeOnboarding,
+      localBackupRepository: localBackupRepository,
+      exportLocalBackup: exportLocalBackup,
+      validateLocalBackup: validateLocalBackup,
+      importLocalBackup: importLocalBackup,
       closeOwnedResources: composedDatabase.close,
     );
   }

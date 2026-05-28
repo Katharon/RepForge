@@ -49,6 +49,10 @@ Mitigations:
 - keep migration tests,
 - reject unknown destructive states.
 
+Slice 24 implements this as JSON v1 validation plus additive/upsert import.
+Backup services do not add cloud backup, remote storage, platform file pickers,
+or sharing UI; future UI must warn users before exporting sensitive local data.
+
 ### Catalog patch corruption
 
 Risk: bundled or downloaded catalog data is malformed.

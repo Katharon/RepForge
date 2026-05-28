@@ -4,6 +4,9 @@
 
 ### Added
 
+- Added Slice 24 local backup foundation with versioned JSON export,
+  deterministic validation, additive/upsert import, composition-root wiring,
+  catalog-import metadata preservation, and no cloud or platform file picker.
 - Added Slice 23 onboarding foundation with a skippable local setup flow,
   onboarding status persistence, profile/focus/time/equipment settings save,
   bundled starter group templates, and optional starter workout group creation.
