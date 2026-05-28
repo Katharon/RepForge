@@ -121,6 +121,13 @@ void main() {
       repository.listGroups(WorkoutGroupQuery(limit: 10, offset: 0)),
       completion(isA<WorkoutGroupPage>()),
     );
+    expect(
+      repository.archiveGroup(
+        WorkoutGroupId('push-day'),
+        DateTime.utc(2026, 5, 28),
+      ),
+      completes,
+    );
   });
 }
 
@@ -136,12 +143,29 @@ final class _InMemoryWorkoutGroupRepository implements WorkoutGroupRepository {
 
   @override
   Future<WorkoutGroupPage> listGroups(WorkoutGroupQuery query) async {
-    final items = _groups.values.toList(growable: false);
+    final items = _groups.values
+        .where((group) => query.includeArchived || group.archivedAt == null)
+        .toList(growable: false);
     return WorkoutGroupPage(
       items: items,
       totalCount: items.length,
       limit: query.limit,
       offset: query.offset,
+    );
+  }
+
+  @override
+  Future<void> archiveGroup(WorkoutGroupId id, DateTime archivedAt) async {
+    final group = _groups[id];
+    if (group == null) {
+      return;
+    }
+
+    _groups[id] = WorkoutGroup(
+      id: group.id,
+      name: group.name,
+      sortOrder: group.sortOrder,
+      archivedAt: archivedAt,
     );
   }
 

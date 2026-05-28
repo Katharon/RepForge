@@ -5,4 +5,5 @@ export 'value_objects/exercise_ref.dart';
 export 'value_objects/logged_set_values.dart';
 export 'value_objects/set_label.dart';
 export 'value_objects/stable_ids.dart';
+export 'value_objects/workout_set_history_query.dart';
 export 'value_objects/workout_set_timeline.dart';

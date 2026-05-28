@@ -11,6 +11,8 @@ abstract interface class WorkoutGroupRepository {
 
   Future<WorkoutGroupPage> listGroups(WorkoutGroupQuery query);
 
+  Future<void> archiveGroup(WorkoutGroupId id, DateTime archivedAt);
+
   Future<void> saveAssignment(WorkoutGroupExerciseAssignment assignment);
 
   Future<void> removeAssignment(WorkoutGroupExerciseAssignmentId id);

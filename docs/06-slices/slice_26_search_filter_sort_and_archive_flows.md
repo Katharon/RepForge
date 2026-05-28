@@ -11,6 +11,10 @@ Add search/filter/sort UX for exercises, sets, programs, and archived items.
 3. `docs/01-domain/domain_rules.md`
 4. `docs/06-slices/slice_26_search_filter_sort_archive_flows.md`
 
+Note: the canonical slice file is
+`docs/06-slices/slice_26_search_filter_sort_and_archive_flows.md`.
+The path above is a stale planning reference.
+
 ## Current assumptions
 
 - Work from the current repository state.
@@ -48,6 +52,24 @@ If strict TDD is impractical because this is a repository/bootstrap slice, expla
 - All relevant tests pass.
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
+
+## Implementation note
+
+Slice 26 kept the scope to existing local data surfaces:
+
+- added bounded `WorkoutSetHistoryQuery`/`WorkoutSetHistoryPage` support for
+  training-log history search, set-label filtering, deterministic newest/oldest
+  sorting, and limit/offset pagination;
+- added workout-group listing search, explicit sort modes, archived-group
+  exclusion by default, opt-in archived inclusion, and repository-level
+  `archiveGroup` behavior;
+- preserved existing exercise catalog search/filter/pagination behavior without
+  new schema or UI surface changes;
+- added repository tests for training-log search/filter/sort/pagination and
+  workout-group search/sort/archive behavior.
+
+No Programs model, recommendation logic, remote catalog fetching, custom
+exercise creation, or broad UI was introduced.
 
 ## Validation commands
 

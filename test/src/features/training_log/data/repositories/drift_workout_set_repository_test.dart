@@ -568,6 +568,95 @@ void main() {
     },
   );
 
+  test('searchHistory filters by search text and label', () async {
+    await repository.save(
+      _set(
+        id: 'set-bench-pr',
+        comment: 'Top set',
+        label: WorkoutSetLabel.personalRecord,
+      ),
+    );
+    await repository.save(
+      _set(
+        id: 'set-bench-warmup',
+        comment: 'Warmup',
+        label: WorkoutSetLabel.warmup,
+      ),
+    );
+    await repository.save(
+      _set(
+        id: 'set-squat-pr',
+        exerciseId: 'barbell-back-squat',
+        exerciseDisplayNameSnapshot: 'Barbell Back Squat',
+        label: WorkoutSetLabel.personalRecord,
+      ),
+    );
+
+    final page = await repository.searchHistory(
+      WorkoutSetHistoryQuery(
+        limit: 10,
+        offset: 0,
+        searchText: 'bench',
+        labels: <WorkoutSetLabel>[WorkoutSetLabel.personalRecord],
+      ),
+    );
+
+    expect(page.totalCount, 1);
+    expect(page.hasMore, isFalse);
+    expect(page.items.single.id.value, 'set-bench-pr');
+  });
+
+  test(
+    'searchHistory sorts deterministically and keeps offset pagination bounded',
+    () async {
+      final sameTimestamp = DateTime.utc(2026, 5, 27, 10);
+      await repository.save(_set(id: 'set-a', performedAt: sameTimestamp));
+      await repository.save(_set(id: 'set-c', performedAt: sameTimestamp));
+      await repository.save(
+        _set(id: 'set-b', performedAt: DateTime.utc(2026, 5, 27, 9)),
+      );
+
+      final firstPage = await repository.searchHistory(
+        WorkoutSetHistoryQuery(limit: 2, offset: 0),
+      );
+      final secondPage = await repository.searchHistory(
+        WorkoutSetHistoryQuery(limit: 2, offset: 2),
+      );
+      final oldestFirst = await repository.searchHistory(
+        WorkoutSetHistoryQuery(
+          limit: 10,
+          offset: 0,
+          sort: WorkoutSetHistorySort.oldestFirst,
+        ),
+      );
+
+      expect(firstPage.totalCount, 3);
+      expect(firstPage.hasMore, isTrue);
+      expect(firstPage.items.map((set) => set.id.value), <String>[
+        'set-c',
+        'set-a',
+      ]);
+      expect(secondPage.items.map((set) => set.id.value), <String>['set-b']);
+      expect(oldestFirst.items.map((set) => set.id.value), <String>[
+        'set-b',
+        'set-a',
+        'set-c',
+      ]);
+    },
+  );
+
+  test('searchHistory returns empty page for no matches', () async {
+    await repository.save(_set(id: 'set-1'));
+
+    final page = await repository.searchHistory(
+      WorkoutSetHistoryQuery(limit: 10, offset: 0, searchText: 'deadlift'),
+    );
+
+    expect(page.items, isEmpty);
+    expect(page.totalCount, 0);
+    expect(page.hasMore, isFalse);
+  });
+
   test('deleteById removes only the target set', () async {
     await repository.save(_set(id: 'set-delete'));
     await repository.save(_set(id: 'set-keep'));

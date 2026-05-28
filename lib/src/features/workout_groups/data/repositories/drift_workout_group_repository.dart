@@ -29,10 +29,14 @@ final class DriftWorkoutGroupRepository implements WorkoutGroupRepository {
 
   @override
   Future<WorkoutGroupPage> listGroups(WorkoutGroupQuery query) async {
-    final count = await _countGroups();
+    final filter = _WorkoutGroupSqlFilter.fromQuery(query);
+    final count = await _countGroups(filter);
     final rows =
         await (_database.select(_database.workoutGroups)
-              ..orderBy(_groupOrder)
+              ..where(($WorkoutGroupsTable table) {
+                return filter.expression(table);
+              })
+              ..orderBy(_groupOrder(query.sort))
               ..limit(query.limit, offset: query.offset))
             .get();
 
@@ -42,6 +46,19 @@ final class DriftWorkoutGroupRepository implements WorkoutGroupRepository {
       limit: query.limit,
       offset: query.offset,
     );
+  }
+
+  @override
+  Future<void> archiveGroup(WorkoutGroupId id, DateTime archivedAt) async {
+    await (_database.update(_database.workoutGroups)
+          ..where(($WorkoutGroupsTable table) {
+            return table.workoutGroupId.equals(id.value);
+          }))
+        .write(
+          WorkoutGroupsCompanion(
+            archivedAt: Value<DateTime?>(archivedAt.toUtc()),
+          ),
+        );
   }
 
   @override
@@ -87,10 +104,15 @@ final class DriftWorkoutGroupRepository implements WorkoutGroupRepository {
     );
   }
 
-  Future<int> _countGroups() async {
+  Future<int> _countGroups(_WorkoutGroupSqlFilter filter) async {
     final row = await _database
         .customSelect(
-          'SELECT COUNT(*) AS total_count FROM workout_groups',
+          '''
+SELECT COUNT(*) AS total_count
+FROM workout_groups
+${filter.whereSql}
+''',
+          variables: filter.variables,
           readsFrom: <ResultSetImplementation<Table, Object?>>{
             _database.workoutGroups,
           },
@@ -119,12 +141,23 @@ WHERE workout_group_id = ?
   }
 }
 
-final List<OrderingTerm Function($WorkoutGroupsTable)> _groupOrder =
-    <OrderingTerm Function($WorkoutGroupsTable)>[
-      ($WorkoutGroupsTable table) => OrderingTerm.asc(table.sortOrder),
+List<OrderingTerm Function($WorkoutGroupsTable)> _groupOrder(
+  WorkoutGroupListSort sort,
+) {
+  return switch (sort) {
+    WorkoutGroupListSort.sortOrder =>
+      <OrderingTerm Function($WorkoutGroupsTable)>[
+        ($WorkoutGroupsTable table) => OrderingTerm.asc(table.sortOrder),
+        ($WorkoutGroupsTable table) => OrderingTerm.asc(table.name),
+        ($WorkoutGroupsTable table) => OrderingTerm.asc(table.workoutGroupId),
+      ],
+    WorkoutGroupListSort.name => <OrderingTerm Function($WorkoutGroupsTable)>[
       ($WorkoutGroupsTable table) => OrderingTerm.asc(table.name),
+      ($WorkoutGroupsTable table) => OrderingTerm.asc(table.sortOrder),
       ($WorkoutGroupsTable table) => OrderingTerm.asc(table.workoutGroupId),
-    ];
+    ],
+  };
+}
 
 final List<OrderingTerm Function($WorkoutGroupExerciseAssignmentsTable)>
 _assignmentOrder =
@@ -136,3 +169,66 @@ _assignmentOrder =
         return OrderingTerm.asc(table.assignmentId);
       },
     ];
+
+final class _WorkoutGroupSqlFilter {
+  const _WorkoutGroupSqlFilter({
+    required this.includeArchived,
+    required this.searchText,
+  });
+
+  factory _WorkoutGroupSqlFilter.fromQuery(WorkoutGroupQuery query) {
+    return _WorkoutGroupSqlFilter(
+      includeArchived: query.includeArchived,
+      searchText: query.searchText,
+    );
+  }
+
+  final bool includeArchived;
+  final String? searchText;
+
+  Expression<bool> expression($WorkoutGroupsTable table) {
+    Expression<bool>? expression;
+
+    if (!includeArchived) {
+      expression = table.archivedAt.isNull();
+    }
+
+    final searchText = this.searchText;
+    if (searchText != null) {
+      final searchExpression =
+          table.workoutGroupId.lower().contains(searchText.toLowerCase()) |
+          table.name.lower().contains(searchText.toLowerCase());
+      expression = expression == null
+          ? searchExpression
+          : expression & searchExpression;
+    }
+
+    return expression ?? const Constant<bool>(true);
+  }
+
+  String get whereSql {
+    final clauses = <String>[];
+
+    if (!includeArchived) {
+      clauses.add('archived_at IS NULL');
+    }
+    if (searchText != null) {
+      clauses.add('(lower(workout_group_id) LIKE ? OR lower(name) LIKE ?)');
+    }
+
+    return clauses.isEmpty ? '' : 'WHERE ${clauses.join(' AND ')}';
+  }
+
+  List<Variable<Object>> get variables {
+    final searchText = this.searchText;
+    if (searchText == null) {
+      return const <Variable<Object>>[];
+    }
+
+    final pattern = '%${searchText.toLowerCase()}%';
+    return <Variable<Object>>[
+      Variable<String>(pattern),
+      Variable<String>(pattern),
+    ];
+  }
+}

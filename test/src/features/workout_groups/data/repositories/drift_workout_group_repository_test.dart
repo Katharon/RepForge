@@ -75,6 +75,113 @@ void main() {
     },
   );
 
+  test('lists groups by search text and name sort', () async {
+    await repository.saveGroup(
+      _group(id: 'lower-a', name: 'Lower Strength', sortOrder: 2),
+    );
+    await repository.saveGroup(
+      _group(id: 'push-a', name: 'Push Strength', sortOrder: 1),
+    );
+    await repository.saveGroup(_group(id: 'pull-a', name: 'Pull Hypertrophy'));
+
+    final page = await repository.listGroups(
+      WorkoutGroupQuery(
+        limit: 10,
+        offset: 0,
+        searchText: 'strength',
+        sort: WorkoutGroupListSort.name,
+      ),
+    );
+
+    expect(page.totalCount, 2);
+    expect(page.items.map((group) => group.id.value), <String>[
+      'lower-a',
+      'push-a',
+    ]);
+  });
+
+  test(
+    'excludes archived groups by default and includes them when requested',
+    () async {
+      await repository.saveGroup(_group(id: 'active', name: 'Active'));
+      await repository.saveGroup(
+        _group(
+          id: 'archived',
+          name: 'Archived',
+          archivedAt: DateTime.utc(2026, 5, 28, 12),
+        ),
+      );
+
+      final defaultPage = await repository.listGroups(
+        WorkoutGroupQuery(limit: 10, offset: 0),
+      );
+      final includeArchivedPage = await repository.listGroups(
+        WorkoutGroupQuery(limit: 10, offset: 0, includeArchived: true),
+      );
+
+      expect(defaultPage.items.map((group) => group.id.value), <String>[
+        'active',
+      ]);
+      expect(defaultPage.totalCount, 1);
+      expect(
+        includeArchivedPage.items.map((group) => group.id.value),
+        containsAll(<String>['active', 'archived']),
+      );
+      expect(includeArchivedPage.totalCount, 2);
+    },
+  );
+
+  test(
+    'archiveGroup does not mutate workout sets or official catalog',
+    () async {
+      await OfficialExerciseCatalogImporter(
+        database,
+      ).importCatalog(_bundledCatalog());
+      await repository.saveGroup(_group(id: 'push-day', name: 'Push Day'));
+      await repository.saveAssignment(
+        _officialAssignment(id: 'assignment-1', position: 0),
+      );
+      await database
+          .into(database.workoutSets)
+          .insert(
+            WorkoutSetsCompanion.insert(
+              workoutSetId: 'set-1',
+              exerciseSource: 'official',
+              exerciseId: 'barbell_bench_press',
+              exerciseDisplayNameSnapshot: 'Bench Press',
+              catalogVersionSnapshot: const Value<String?>('2026.05.0'),
+              repetitions: 5,
+              loadKg: 100,
+              performedAt: DateTime.utc(2026, 5, 27, 12),
+            ),
+          );
+
+      await repository.archiveGroup(
+        WorkoutGroupId('push-day'),
+        DateTime.utc(2026, 5, 28, 12),
+      );
+
+      final archivedGroup = await repository.findGroupById(
+        WorkoutGroupId('push-day'),
+      );
+      final defaultPage = await repository.listGroups(
+        WorkoutGroupQuery(limit: 10, offset: 0),
+      );
+
+      expect(archivedGroup?.archivedAt, DateTime.utc(2026, 5, 28, 12));
+      expect(defaultPage.items, isEmpty);
+      expect(await database.select(database.workoutSets).get(), hasLength(1));
+      expect(
+        await database.select(database.officialExercises).get(),
+        hasLength(6),
+      );
+      expect(
+        await database.select(database.workoutGroupExerciseAssignments).get(),
+        hasLength(1),
+      );
+    },
+  );
+
   test(
     'saves official assignment and preserves stable snapshot data',
     () async {

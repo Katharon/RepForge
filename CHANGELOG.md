@@ -4,6 +4,11 @@
 
 ### Added
 
+- Added Slice 26 local search/filter/sort/archive foundations with bounded
+  workout-set history search, set-label filtering, deterministic history sort,
+  workout-group search/sort, archived-group exclusion by default, explicit
+  archived inclusion, and safe group archive behavior without schema or remote
+  features.
 - Added Slice 25 persistence hardening with current Drift schema validation,
   a non-empty schema v1 migration-test fixture, broader database constraint
   coverage, deterministic integrity findings, report-only safe repair for

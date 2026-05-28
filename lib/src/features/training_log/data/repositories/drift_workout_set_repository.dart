@@ -56,6 +56,22 @@ final class DriftWorkoutSetRepository implements WorkoutSetRepository {
   }
 
   @override
+  Future<WorkoutSetHistoryPage> searchHistory(
+    WorkoutSetHistoryQuery query,
+  ) async {
+    final filter = _WorkoutSetHistorySqlFilter.fromQuery(query);
+    final totalCount = await _countMatchingHistory(filter);
+    final rows = await _queryMatchingHistoryRows(filter, query);
+
+    return WorkoutSetHistoryPage(
+      items: rows.map(WorkoutSetMapper.toDomain),
+      totalCount: totalCount,
+      limit: query.limit,
+      offset: query.offset,
+    );
+  }
+
+  @override
   Future<WorkoutSetTimelinePage> timelineForExercise(
     WorkoutSetTimelineQuery query,
   ) async {
@@ -112,6 +128,85 @@ final class DriftWorkoutSetRepository implements WorkoutSetRepository {
 
     return rows.map(WorkoutSetMapper.toDomain).toList(growable: false);
   }
+
+  Future<int> _countMatchingHistory(_WorkoutSetHistorySqlFilter filter) async {
+    final row = await _database
+        .customSelect(
+          '''
+SELECT COUNT(*) AS total_count
+FROM workout_sets ws
+${filter.whereSql}
+''',
+          variables: filter.variables,
+          readsFrom: <ResultSetImplementation<Table, Object?>>{
+            _database.workoutSets,
+          },
+        )
+        .getSingle();
+
+    return row.read<int>('total_count');
+  }
+
+  Future<List<WorkoutSetRow>> _queryMatchingHistoryRows(
+    _WorkoutSetHistorySqlFilter filter,
+    WorkoutSetHistoryQuery query,
+  ) async {
+    final rows = await _database
+        .customSelect(
+          '''
+SELECT
+  ws.workout_set_id,
+  ws.exercise_source,
+  ws.exercise_id,
+  ws.exercise_display_name_snapshot,
+  ws.catalog_version_snapshot,
+  ws.workout_session_id,
+  ws.repetitions,
+  ws.load_kg,
+  ws.performed_at,
+  ws.comment,
+  ws.set_label
+FROM workout_sets ws
+${filter.whereSql}
+ORDER BY ${_historyOrderSql(query.sort)}
+LIMIT ? OFFSET ?
+''',
+          variables: <Variable<Object>>[
+            ...filter.variables,
+            Variable<int>(query.limit),
+            Variable<int>(query.offset),
+          ],
+          readsFrom: <ResultSetImplementation<Table, Object?>>{
+            _database.workoutSets,
+          },
+        )
+        .get();
+
+    return rows.map(_workoutSetRowFromQuery).toList(growable: false);
+  }
+
+  WorkoutSetRow _workoutSetRowFromQuery(QueryRow row) {
+    return WorkoutSetRow(
+      workoutSetId: row.read<String>('workout_set_id'),
+      exerciseSource: row.read<String>('exercise_source'),
+      exerciseId: row.read<String>('exercise_id'),
+      exerciseDisplayNameSnapshot: row.read<String>(
+        'exercise_display_name_snapshot',
+      ),
+      catalogVersionSnapshot: row.readNullable<String>(
+        'catalog_version_snapshot',
+      ),
+      workoutSessionId: row.readNullable<String>('workout_session_id'),
+      repetitions: row.read<int>('repetitions'),
+      loadKg: row.read<double>('load_kg'),
+      performedAt: DateTime.fromMillisecondsSinceEpoch(
+        row.read<int>('performed_at'),
+        isUtc: true,
+      ),
+      comment: row.readNullable<String>('comment'),
+      setLabel: row.readNullable<String>('set_label'),
+    );
+  }
 }
 
 final List<OrderingTerm Function($WorkoutSetsTable)> _chronologicalOrder =
@@ -125,3 +220,67 @@ final List<OrderingTerm Function($WorkoutSetsTable)> _timelineOrder =
       ($WorkoutSetsTable table) => OrderingTerm.desc(table.performedAt),
       ($WorkoutSetsTable table) => OrderingTerm.desc(table.workoutSetId),
     ];
+
+String _historyOrderSql(WorkoutSetHistorySort sort) {
+  return switch (sort) {
+    WorkoutSetHistorySort.newestFirst =>
+      'ws.performed_at DESC, ws.workout_set_id DESC',
+    WorkoutSetHistorySort.oldestFirst =>
+      'ws.performed_at ASC, ws.workout_set_id ASC',
+  };
+}
+
+final class _WorkoutSetHistorySqlFilter {
+  const _WorkoutSetHistorySqlFilter({
+    required this.whereSql,
+    required this.variables,
+  });
+
+  factory _WorkoutSetHistorySqlFilter.fromQuery(WorkoutSetHistoryQuery query) {
+    final clauses = <String>[];
+    final variables = <Variable<Object>>[];
+    final searchText = query.searchText;
+
+    if (searchText != null) {
+      final pattern = '%${searchText.toLowerCase()}%';
+      clauses.add(
+        '('
+        'lower(ws.workout_set_id) LIKE ? OR '
+        'lower(ws.exercise_id) LIKE ? OR '
+        'lower(ws.exercise_display_name_snapshot) LIKE ? OR '
+        'lower(COALESCE(ws.workout_session_id, \'\')) LIKE ? OR '
+        'lower(COALESCE(ws.comment, \'\')) LIKE ?'
+        ')',
+      );
+      variables
+        ..add(Variable<String>(pattern))
+        ..add(Variable<String>(pattern))
+        ..add(Variable<String>(pattern))
+        ..add(Variable<String>(pattern))
+        ..add(Variable<String>(pattern));
+    }
+
+    if (query.labels.isNotEmpty) {
+      final labelClauses = <String>[];
+      for (final label in query.labels) {
+        if (label == WorkoutSetLabel.none) {
+          labelClauses.add(
+            '(ws.set_label IS NULL OR ws.set_label = \'\' OR ws.set_label = ?)',
+          );
+        } else {
+          labelClauses.add('ws.set_label = ?');
+        }
+        variables.add(Variable<String>(label.storageValue));
+      }
+      clauses.add('(${labelClauses.join(' OR ')})');
+    }
+
+    return _WorkoutSetHistorySqlFilter(
+      whereSql: clauses.isEmpty ? '' : 'WHERE ${clauses.join(' AND ')}',
+      variables: List<Variable<Object>>.unmodifiable(variables),
+    );
+  }
+
+  final String whereSql;
+  final List<Variable<Object>> variables;
+}

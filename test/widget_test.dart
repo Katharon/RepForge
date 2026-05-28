@@ -226,6 +226,18 @@ final class _FakeWorkoutSetRepository implements WorkoutSetRepository {
   }
 
   @override
+  Future<WorkoutSetHistoryPage> searchHistory(WorkoutSetHistoryQuery query) {
+    return Future.value(
+      WorkoutSetHistoryPage(
+        items: const [],
+        totalCount: 0,
+        limit: query.limit,
+        offset: query.offset,
+      ),
+    );
+  }
+
+  @override
   Future<WorkoutSetTimelinePage> timelineForExercise(
     WorkoutSetTimelineQuery query,
   ) {
@@ -312,6 +324,11 @@ final class _FakeWorkoutGroupRepository implements WorkoutGroupRepository {
 
   @override
   Future<WorkoutGroupPage> listGroups(WorkoutGroupQuery query) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> archiveGroup(WorkoutGroupId id, DateTime archivedAt) {
     throw UnimplementedError();
   }
 

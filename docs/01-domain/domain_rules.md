@@ -17,6 +17,8 @@
 - Workout group names are trimmed and bounded to keep list rows readable.
 - Workout group sort order is user-controlled and non-negative.
 - A workout group may be archived with a nullable UTC `archivedAt` timestamp.
+- Workout group list queries exclude archived groups by default and include
+  them only when explicitly requested.
 - A group can contain official and custom exercises.
 - An exercise can belong to multiple groups.
 - Group order is user-controlled.

@@ -331,6 +331,19 @@ final class _InMemoryWorkoutSetRepository implements WorkoutSetRepository {
   }
 
   @override
+  Future<WorkoutSetHistoryPage> searchHistory(
+    WorkoutSetHistoryQuery query,
+  ) async {
+    final items = _sets.values.toList(growable: false);
+    return WorkoutSetHistoryPage(
+      items: items.skip(query.offset).take(query.limit),
+      totalCount: items.length,
+      limit: query.limit,
+      offset: query.offset,
+    );
+  }
+
+  @override
   Future<WorkoutSetTimelinePage> timelineForExercise(
     WorkoutSetTimelineQuery query,
   ) async {

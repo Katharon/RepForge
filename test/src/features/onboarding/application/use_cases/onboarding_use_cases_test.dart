@@ -162,6 +162,11 @@ final class _WorkoutGroupRepositoryFake implements WorkoutGroupRepository {
   }
 
   @override
+  Future<void> archiveGroup(WorkoutGroupId id, DateTime archivedAt) {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<void> removeAssignment(WorkoutGroupExerciseAssignmentId id) {
     throw UnimplementedError();
   }
