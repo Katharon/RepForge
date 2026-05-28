@@ -65,6 +65,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get analyticsMetricEstimatedOneRepMax => 'Est. 1RM';
 
   @override
+  String get analyticsEstimatedOneRepMaxTitle => 'Estimated 1RM';
+
+  @override
+  String get analyticsEstimatedOneRepMaxCurrentLabel => 'Best estimate';
+
+  @override
+  String get analyticsEstimatedOneRepMaxPreviousLabel => 'Previous window';
+
+  @override
+  String get analyticsEstimatedOneRepMaxUnavailableTitle =>
+      'No estimated 1RM yet';
+
+  @override
+  String get analyticsEstimatedOneRepMaxUnavailableMessage =>
+      'Log a set in this range to calculate the Epley estimate.';
+
+  @override
+  String get analyticsFormulaLabel => 'Formula';
+
+  @override
+  String analyticsFormulaEpley(int version) {
+    return 'Epley v$version';
+  }
+
+  @override
   String get analyticsUnitKilograms => 'kg';
 
   @override

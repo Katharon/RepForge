@@ -366,6 +366,8 @@ class _AnalyticsSuccessState extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        _EstimatedOneRepMaxCard(viewModel: viewModel.estimatedOneRepMax),
+        const SizedBox(height: RepForgeSpacing.lg),
         Text(
           localizations.analyticsSummaryTitle,
           style: Theme.of(context).textTheme.titleMedium,
@@ -374,6 +376,129 @@ class _AnalyticsSuccessState extends StatelessWidget {
         _SummaryMetricCards(viewModel: viewModel),
         const SizedBox(height: RepForgeSpacing.lg),
         _AnalyticsChartCard(card: viewModel.cardFor(state.selectedMetric)),
+      ],
+    );
+  }
+}
+
+class _EstimatedOneRepMaxCard extends StatelessWidget {
+  const _EstimatedOneRepMaxCard({required this.viewModel});
+
+  final EstimatedOneRepMaxViewModel viewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+    final metricColor = _metricColor(
+      context,
+      AnalyticsMetric.estimatedOneRepMaxKg,
+    );
+
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Text(
+                  localizations.analyticsEstimatedOneRepMaxTitle,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+              _FormulaIdentityPill(viewModel: viewModel),
+            ],
+          ),
+          const SizedBox(height: RepForgeSpacing.lg),
+          if (viewModel.isAvailable) ...[
+            Text(
+              localizations.analyticsEstimatedOneRepMaxCurrentLabel,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                color: RepForgeColorTokens.textSecondary,
+              ),
+            ),
+            const SizedBox(height: RepForgeSpacing.xs),
+            Text(
+              _formatKilograms(context, viewModel.currentValueKg),
+              style: Theme.of(
+                context,
+              ).textTheme.metricValue.copyWith(color: metricColor),
+            ),
+            const SizedBox(height: RepForgeSpacing.md),
+            _PreviousOneRepMaxValue(viewModel: viewModel),
+          ] else ...[
+            Text(
+              localizations.analyticsEstimatedOneRepMaxUnavailableTitle,
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+            const SizedBox(height: RepForgeSpacing.xs),
+            Text(
+              localizations.analyticsEstimatedOneRepMaxUnavailableMessage,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: RepForgeColorTokens.textSecondary,
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _FormulaIdentityPill extends StatelessWidget {
+  const _FormulaIdentityPill({required this.viewModel});
+
+  final EstimatedOneRepMaxViewModel viewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: RepForgeColorTokens.surfaceCardElevated,
+        borderRadius: BorderRadius.circular(RepForgeRadius.sm),
+        border: Border.all(color: RepForgeColorTokens.borderSubtle),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: RepForgeSpacing.sm,
+          vertical: RepForgeSpacing.xs,
+        ),
+        child: Text(
+          '${localizations.analyticsFormulaLabel}: '
+          '${_formulaDisplayName(context, viewModel)}',
+          style: Theme.of(context).textTheme.labelMedium,
+        ),
+      ),
+    );
+  }
+}
+
+class _PreviousOneRepMaxValue extends StatelessWidget {
+  const _PreviousOneRepMaxValue({required this.viewModel});
+
+  final EstimatedOneRepMaxViewModel viewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            localizations.analyticsEstimatedOneRepMaxPreviousLabel,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: RepForgeColorTokens.textSecondary,
+            ),
+          ),
+        ),
+        Text(
+          _formatKilograms(context, viewModel.previousValueKg),
+          style: Theme.of(context).textTheme.metricUnit,
+        ),
       ],
     );
   }
@@ -617,13 +742,36 @@ String _formatMetricValue(
   return switch (metric) {
     AnalyticsMetric.sets ||
     AnalyticsMetric.repetitions => _formatNumber(value, fractionDigits: 0),
-    AnalyticsMetric.volumeKg || AnalyticsMetric.estimatedOneRepMaxKg =>
-      '${_formatNumber(value, fractionDigits: 1)} '
-          '${localizations.analyticsUnitKilograms}',
+    AnalyticsMetric.volumeKg ||
+    AnalyticsMetric.estimatedOneRepMaxKg => _formatKilograms(context, value),
     AnalyticsMetric.kgPerRep =>
       '${_formatNumber(value, fractionDigits: 1)} '
           '${localizations.analyticsUnitKilogramsPerRep}',
   };
+}
+
+String _formatKilograms(BuildContext context, double? value) {
+  if (value == null) {
+    return '--';
+  }
+
+  final localizations = AppLocalizations.of(context);
+
+  return '${_formatNumber(value, fractionDigits: 1)} '
+      '${localizations.analyticsUnitKilograms}';
+}
+
+String _formulaDisplayName(
+  BuildContext context,
+  EstimatedOneRepMaxViewModel viewModel,
+) {
+  final localizations = AppLocalizations.of(context);
+
+  if (viewModel.formulaName == 'epley_one_rep_max') {
+    return localizations.analyticsFormulaEpley(viewModel.formulaVersion);
+  }
+
+  return '${viewModel.formulaName}/v${viewModel.formulaVersion}';
 }
 
 String _formatNumber(double value, {required int fractionDigits}) {

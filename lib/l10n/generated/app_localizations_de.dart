@@ -65,6 +65,31 @@ class AppLocalizationsDe extends AppLocalizations {
   String get analyticsMetricEstimatedOneRepMax => 'Geschaetztes 1RM';
 
   @override
+  String get analyticsEstimatedOneRepMaxTitle => 'Geschaetztes 1RM';
+
+  @override
+  String get analyticsEstimatedOneRepMaxCurrentLabel => 'Bester Schaetzwert';
+
+  @override
+  String get analyticsEstimatedOneRepMaxPreviousLabel => 'Vorheriger Zeitraum';
+
+  @override
+  String get analyticsEstimatedOneRepMaxUnavailableTitle =>
+      'Noch kein geschaetztes 1RM';
+
+  @override
+  String get analyticsEstimatedOneRepMaxUnavailableMessage =>
+      'Protokolliere einen Satz in diesem Zeitraum, um die Epley-Schaetzung zu berechnen.';
+
+  @override
+  String get analyticsFormulaLabel => 'Formel';
+
+  @override
+  String analyticsFormulaEpley(int version) {
+    return 'Epley v$version';
+  }
+
+  @override
   String get analyticsUnitKilograms => 'kg';
 
   @override

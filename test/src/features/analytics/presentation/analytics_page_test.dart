@@ -62,7 +62,79 @@ void main() {
     expect(find.text('Volume'), findsWidgets);
     expect(find.text('1300 kg'), findsWidgets);
     expect(find.text('86.7 kg/rep'), findsOneWidget);
-    expect(find.text('116.7 kg'), findsOneWidget);
+    expect(find.text('116.7 kg'), findsWidgets);
+  });
+
+  testWidgets('estimated 1RM value card renders available state and formula', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _testApp(
+        AnalyticsPage(loader: _StaticAnalyticsLoader(_readModelWithData())),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Estimated 1RM'), findsOneWidget);
+    expect(find.text('Best estimate'), findsOneWidget);
+    expect(find.text('Formula: Epley v1'), findsOneWidget);
+    expect(find.text('Previous window'), findsOneWidget);
+    expect(find.text('116.7 kg'), findsWidgets);
+    expect(find.text('80 kg'), findsOneWidget);
+  });
+
+  testWidgets('estimated 1RM value card renders unavailable state', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _testApp(
+        AnalyticsPage(
+          loader: _StaticAnalyticsLoader(
+            _readModel(
+              current: _overview(
+                setCount: 1,
+                totalRepetitions: 5,
+                totalVolumeKg: 500,
+                averageKgPerRep: 100,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('No estimated 1RM yet'), findsOneWidget);
+    expect(
+      find.text('Log a set in this range to calculate the Epley estimate.'),
+      findsOneWidget,
+    );
+    expect(find.text('Formula: Epley v1'), findsOneWidget);
+  });
+
+  testWidgets('estimated 1RM value card renders zero-load estimates', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _testApp(
+        AnalyticsPage(
+          loader: _StaticAnalyticsLoader(
+            _readModel(
+              current: _overview(
+                setCount: 1,
+                totalRepetitions: 10,
+                averageKgPerRep: 0,
+                bestEstimatedOneRepMaxKg: 0,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Best estimate'), findsOneWidget);
+    expect(find.text('0 kg'), findsWidgets);
   });
 
   testWidgets('metric selector changes selected metric', (tester) async {
@@ -82,6 +154,7 @@ void main() {
 
     expect(find.text('Est. 1RM trend'), findsOneWidget);
     expect(find.text('116.7 kg'), findsWidgets);
+    expect(find.text('80 kg'), findsWidgets);
   });
 
   testWidgets('range selector triggers reload', (tester) async {

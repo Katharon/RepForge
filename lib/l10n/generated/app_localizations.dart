@@ -200,6 +200,48 @@ abstract class AppLocalizations {
   /// **'Est. 1RM'**
   String get analyticsMetricEstimatedOneRepMax;
 
+  /// Title for the estimated one-rep max analytics card.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated 1RM'**
+  String get analyticsEstimatedOneRepMaxTitle;
+
+  /// Label for the current estimated one-rep max value.
+  ///
+  /// In en, this message translates to:
+  /// **'Best estimate'**
+  String get analyticsEstimatedOneRepMaxCurrentLabel;
+
+  /// Label for the previous estimated one-rep max value.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous window'**
+  String get analyticsEstimatedOneRepMaxPreviousLabel;
+
+  /// Title when estimated one-rep max is unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No estimated 1RM yet'**
+  String get analyticsEstimatedOneRepMaxUnavailableTitle;
+
+  /// Message when estimated one-rep max is unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Log a set in this range to calculate the Epley estimate.'**
+  String get analyticsEstimatedOneRepMaxUnavailableMessage;
+
+  /// Label for an analytics formula identity.
+  ///
+  /// In en, this message translates to:
+  /// **'Formula'**
+  String get analyticsFormulaLabel;
+
+  /// Display label for the Epley estimated one-rep max formula.
+  ///
+  /// In en, this message translates to:
+  /// **'Epley v{version}'**
+  String analyticsFormulaEpley(int version);
+
   /// Unit label for kilograms in analytics values.
   ///
   /// In en, this message translates to:

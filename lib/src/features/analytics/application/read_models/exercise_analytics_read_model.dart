@@ -120,13 +120,17 @@ final class ExerciseAnalyticsOverview {
           ? const ExerciseMetricValue.unavailable()
           : ExerciseMetricValue.available(
               summary.bestEstimatedOneRepMax!.valueKg,
-            );
+            ),
+      bestEstimatedOneRepMaxFormulaIdentity =
+          summary.bestEstimatedOneRepMax?.formulaIdentity ??
+          summary.oneRepMaxFormulaIdentity;
 
   final int setCount;
   final int totalRepetitions;
   final double totalVolumeKg;
   final ExerciseMetricValue averageKgPerRep;
   final ExerciseMetricValue bestEstimatedOneRepMaxKg;
+  final FormulaIdentity bestEstimatedOneRepMaxFormulaIdentity;
 
   bool get isEmpty => setCount == 0;
 
@@ -137,7 +141,9 @@ final class ExerciseAnalyticsOverview {
         other.totalRepetitions == totalRepetitions &&
         other.totalVolumeKg == totalVolumeKg &&
         other.averageKgPerRep == averageKgPerRep &&
-        other.bestEstimatedOneRepMaxKg == bestEstimatedOneRepMaxKg;
+        other.bestEstimatedOneRepMaxKg == bestEstimatedOneRepMaxKg &&
+        other.bestEstimatedOneRepMaxFormulaIdentity ==
+            bestEstimatedOneRepMaxFormulaIdentity;
   }
 
   @override
@@ -148,6 +154,7 @@ final class ExerciseAnalyticsOverview {
       totalVolumeKg,
       averageKgPerRep,
       bestEstimatedOneRepMaxKg,
+      bestEstimatedOneRepMaxFormulaIdentity,
     );
   }
 }

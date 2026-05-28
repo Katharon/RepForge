@@ -68,6 +68,40 @@
   "@analyticsMetricEstimatedOneRepMax": {
     "description": "Analyse-Metrik fuer das geschaetzte Ein-Wiederholungs-Maximum."
   },
+  "analyticsEstimatedOneRepMaxTitle": "Geschaetztes 1RM",
+  "@analyticsEstimatedOneRepMaxTitle": {
+    "description": "Titel fuer die Karte zum geschaetzten Ein-Wiederholungs-Maximum."
+  },
+  "analyticsEstimatedOneRepMaxCurrentLabel": "Bester Schaetzwert",
+  "@analyticsEstimatedOneRepMaxCurrentLabel": {
+    "description": "Label fuer den aktuellen geschaetzten 1RM-Wert."
+  },
+  "analyticsEstimatedOneRepMaxPreviousLabel": "Vorheriger Zeitraum",
+  "@analyticsEstimatedOneRepMaxPreviousLabel": {
+    "description": "Label fuer den vorherigen geschaetzten 1RM-Wert."
+  },
+  "analyticsEstimatedOneRepMaxUnavailableTitle": "Noch kein geschaetztes 1RM",
+  "@analyticsEstimatedOneRepMaxUnavailableTitle": {
+    "description": "Titel, wenn kein geschaetztes 1RM verfuegbar ist."
+  },
+  "analyticsEstimatedOneRepMaxUnavailableMessage": "Protokolliere einen Satz in diesem Zeitraum, um die Epley-Schaetzung zu berechnen.",
+  "@analyticsEstimatedOneRepMaxUnavailableMessage": {
+    "description": "Text, wenn kein geschaetztes 1RM verfuegbar ist."
+  },
+  "analyticsFormulaLabel": "Formel",
+  "@analyticsFormulaLabel": {
+    "description": "Label fuer eine Analyse-Formelidentitaet."
+  },
+  "analyticsFormulaEpley": "Epley v{version}",
+  "@analyticsFormulaEpley": {
+    "description": "Anzeigetext fuer die Epley-Formel zum geschaetzten 1RM.",
+    "placeholders": {
+      "version": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
   "analyticsUnitKilograms": "kg",
   "@analyticsUnitKilograms": {
     "description": "Einheit fuer Kilogramm in Analysewerten."

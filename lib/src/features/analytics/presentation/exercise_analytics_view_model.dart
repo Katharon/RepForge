@@ -5,6 +5,7 @@ final class ExerciseAnalyticsViewModel {
   const ExerciseAnalyticsViewModel({
     required this.exerciseName,
     required this.metricCards,
+    required this.estimatedOneRepMax,
   });
 
   factory ExerciseAnalyticsViewModel.fromReadModel(
@@ -15,6 +16,13 @@ final class ExerciseAnalyticsViewModel {
 
     return ExerciseAnalyticsViewModel(
       exerciseName: model.exerciseRef.displayNameSnapshot,
+      estimatedOneRepMax: EstimatedOneRepMaxViewModel(
+        currentValueKg: current.bestEstimatedOneRepMaxKg.value,
+        previousValueKg: previous?.bestEstimatedOneRepMaxKg.value,
+        formulaName: current.bestEstimatedOneRepMaxFormulaIdentity.name,
+        formulaVersion: current.bestEstimatedOneRepMaxFormulaIdentity.version,
+        isAvailable: current.bestEstimatedOneRepMaxKg.isAvailable,
+      ),
       metricCards: [
         AnalyticsMetricCardViewModel(
           metric: AnalyticsMetric.sets,
@@ -52,10 +60,27 @@ final class ExerciseAnalyticsViewModel {
 
   final String exerciseName;
   final List<AnalyticsMetricCardViewModel> metricCards;
+  final EstimatedOneRepMaxViewModel estimatedOneRepMax;
 
   AnalyticsMetricCardViewModel cardFor(AnalyticsMetric metric) {
     return metricCards.singleWhere((card) => card.metric == metric);
   }
+}
+
+final class EstimatedOneRepMaxViewModel {
+  const EstimatedOneRepMaxViewModel({
+    required this.currentValueKg,
+    required this.previousValueKg,
+    required this.formulaName,
+    required this.formulaVersion,
+    required this.isAvailable,
+  });
+
+  final double? currentValueKg;
+  final double? previousValueKg;
+  final String formulaName;
+  final int formulaVersion;
+  final bool isAvailable;
 }
 
 final class AnalyticsMetricCardViewModel {

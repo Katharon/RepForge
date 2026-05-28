@@ -50,6 +50,17 @@ If strict TDD is impractical because this is a repository/bootstrap slice, expla
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
 
+## Implementation note
+
+Slice 20 keeps Epley as the only estimated 1RM formula and does not add formula
+settings or persistence. The existing exercise analytics read model now carries
+the estimated 1RM formula identity, and the Analytics UI renders a focused
+estimated 1RM card with the current estimate, previous-window value, formula
+label, unavailable state, and zero-load behavior. The existing Slice 19 metric
+selector and chart card continue to provide the compact 1RM trend display. No
+new chart package, formula engine, coach logic, remote analytics, persistence,
+or navigation refactor was added.
+
 ## Validation commands
 
 ```bash

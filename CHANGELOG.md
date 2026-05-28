@@ -4,6 +4,10 @@
 
 ### Added
 
+- Added Slice 20 estimated 1RM feature with a focused Analytics value card,
+  Epley formula identity display, unavailable handling, zero-load estimate
+  coverage, and deterministic 1RM chart/selection tests without new chart
+  packages or formula persistence.
 - Added Slice 19 analytics UI foundation with a fakeable exercise analytics
   loader, metric and range selectors, localized loading/empty/error/success
   states, compact summary metric cards, and simple local chart-card

@@ -68,6 +68,40 @@
   "@analyticsMetricEstimatedOneRepMax": {
     "description": "Analytics metric label for estimated one repetition maximum."
   },
+  "analyticsEstimatedOneRepMaxTitle": "Estimated 1RM",
+  "@analyticsEstimatedOneRepMaxTitle": {
+    "description": "Title for the estimated one-rep max analytics card."
+  },
+  "analyticsEstimatedOneRepMaxCurrentLabel": "Best estimate",
+  "@analyticsEstimatedOneRepMaxCurrentLabel": {
+    "description": "Label for the current estimated one-rep max value."
+  },
+  "analyticsEstimatedOneRepMaxPreviousLabel": "Previous window",
+  "@analyticsEstimatedOneRepMaxPreviousLabel": {
+    "description": "Label for the previous estimated one-rep max value."
+  },
+  "analyticsEstimatedOneRepMaxUnavailableTitle": "No estimated 1RM yet",
+  "@analyticsEstimatedOneRepMaxUnavailableTitle": {
+    "description": "Title when estimated one-rep max is unavailable."
+  },
+  "analyticsEstimatedOneRepMaxUnavailableMessage": "Log a set in this range to calculate the Epley estimate.",
+  "@analyticsEstimatedOneRepMaxUnavailableMessage": {
+    "description": "Message when estimated one-rep max is unavailable."
+  },
+  "analyticsFormulaLabel": "Formula",
+  "@analyticsFormulaLabel": {
+    "description": "Label for an analytics formula identity."
+  },
+  "analyticsFormulaEpley": "Epley v{version}",
+  "@analyticsFormulaEpley": {
+    "description": "Display label for the Epley estimated one-rep max formula.",
+    "placeholders": {
+      "version": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
   "analyticsUnitKilograms": "kg",
   "@analyticsUnitKilograms": {
     "description": "Unit label for kilograms in analytics values."
