@@ -79,3 +79,21 @@ On first app start, collect:
 - maximum load/increment for relevant home-gym equipment.
 
 Keep every field editable later. The tracker must remain usable even if the user skips optional fields.
+
+## Slice 22 settings foundation
+
+The current local settings foundation persists a compact editable subset:
+
+- language override: system, English, or German,
+- units: metric or imperial placeholder,
+- theme preference: system, dark, or light,
+- default rest time,
+- optional profile display name,
+- focus profile,
+- training days per week,
+- typical session duration,
+- structured equipment inventory.
+
+The broader onboarding/body-metric fields remain planned for the onboarding and
+recommendation slices. Settings saves must not reinterpret existing logged sets,
+workout groups, or official catalog data.

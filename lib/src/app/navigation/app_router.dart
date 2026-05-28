@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/analytics/presentation/analytics_presentation.dart';
+import '../../features/settings/presentation/settings_presentation.dart';
 import '../../features/today/presentation/today_presentation.dart';
 import '../../features/training_log/domain/training_log_domain.dart';
 import '../composition_root.dart';
@@ -64,10 +65,10 @@ GoRouter createAppRouter({required AppDependencies dependencies}) {
           _branch(
             route: AppRoute.settings,
             builder: (context, state) {
-              final localizations = AppLocalizations.of(context);
-              return PlaceholderDestinationPage(
-                title: localizations.navSettings,
-                message: localizations.settingsPlaceholderMessage,
+              return SettingsPage(
+                loadSettings: dependencies.loadSettingsProfile,
+                saveSettings: dependencies.saveSettingsProfile,
+                resetSettings: dependencies.resetSettingsProfile,
               );
             },
           ),

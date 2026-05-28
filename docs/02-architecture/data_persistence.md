@@ -33,8 +33,8 @@ A relational local database is a strong fit. Drift offers type-safe queries, mig
 - `training_sessions`
 - `workout_sets`
 - `set_labels`
-- `user_profile`
-- `preferences`
+- `settings_profiles`
+- `equipment_inventory_items`
 
 Later tables:
 
@@ -85,13 +85,25 @@ If encrypted local DB is added, keep the encryption key in platform secure stora
 
 ## v5 persistence additions
 
-Persist user profile and equipment inventory locally. Suggested tables/entities:
+Persist user profile and equipment inventory locally. Slice 22 implemented:
+
+- `settings_profiles`
+- `equipment_inventory_items`
+
+Suggested future tables/entities:
 
 - `user_profile`
 - `user_preferences`
-- `equipment_inventory_items`
 - `exercise_equipment_requirements`
 - `exercise_catalog_versions`
 - `user_exercise_overrides`
 
 Official catalog assets are imported into local Drift tables. App patches may add official records, but user overrides and custom exercises remain separate.
+
+## Slice 22 settings persistence
+
+Drift schema v5 adds `settings_profiles` and `equipment_inventory_items`
+additively. Existing users load deterministic defaults when no settings row is
+present. Saving settings upserts the single local profile row and replaces only
+that profile's structured equipment inventory; workout sets, workout groups, and
+official catalog rows are not modified.

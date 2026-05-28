@@ -197,6 +197,82 @@ class WorkoutGroupExerciseAssignments extends Table {
   Set<Column<Object>> get primaryKey => <Column<Object>>{assignmentId};
 }
 
+@DataClassName('SettingsProfileRow')
+class SettingsProfiles extends Table {
+  TextColumn get profileId =>
+      text().customConstraint('NOT NULL CHECK (length(profile_id) > 0)')();
+
+  TextColumn get languageOverride => text().customConstraint(
+    "NOT NULL CHECK (language_override IN ('system', 'en', 'de'))",
+  )();
+
+  TextColumn get unitPreference => text().customConstraint(
+    "NOT NULL CHECK (unit_preference IN ('metric', 'imperial'))",
+  )();
+
+  TextColumn get themePreference => text().customConstraint(
+    "NOT NULL CHECK (theme_preference IN ('system', 'dark', 'light'))",
+  )();
+
+  IntColumn get defaultRestSeconds => integer().customConstraint(
+    'NOT NULL CHECK (default_rest_seconds > 0 AND default_rest_seconds <= 1800)',
+  )();
+
+  TextColumn get displayName => text().nullable().customConstraint(
+    'NULL CHECK ('
+    'display_name IS NULL OR '
+    '(length(display_name) > 0 AND length(display_name) <= 80)'
+    ')',
+  )();
+
+  TextColumn get focusProfile => text().customConstraint(
+    'NOT NULL CHECK (focus_profile IN ('
+    "'balanced', "
+    "'upperBodyFocus', "
+    "'lowerBodyGluteFocus', "
+    "'armsChestFocus', "
+    "'strengthBasics', "
+    "'timeEfficient', "
+    "'beginnerFoundation', "
+    "'custom'"
+    '))',
+  )();
+
+  IntColumn get trainingDaysPerWeek => integer().customConstraint(
+    'NOT NULL CHECK (training_days_per_week BETWEEN 1 AND 7)',
+  )();
+
+  IntColumn get sessionDurationMinutes => integer().customConstraint(
+    'NOT NULL CHECK (session_duration_minutes IN (15, 25, 35, 45, 60, 75))',
+  )();
+
+  @override
+  Set<Column<Object>> get primaryKey => <Column<Object>>{profileId};
+}
+
+@DataClassName('EquipmentInventoryItemRow')
+class EquipmentInventoryItems extends Table {
+  TextColumn get profileId =>
+      text().customConstraint('NOT NULL CHECK (length(profile_id) > 0)')();
+
+  TextColumn get equipment => text().customConstraint(
+    'NOT NULL CHECK (equipment IN ('
+    "'bodyweight', "
+    "'barbell', "
+    "'dumbbell', "
+    "'cable', "
+    "'machine', "
+    "'smithMachine', "
+    "'pullUpBar', "
+    "'bench', "
+    "'legPress'"
+    '))',
+  )();
+
+  @override
+  Set<Column<Object>> get primaryKey => <Column<Object>>{profileId, equipment};
+}
+
 @DriftDatabase(
   tables: <Type>[
     WorkoutSets,
@@ -207,13 +283,15 @@ class WorkoutGroupExerciseAssignments extends Table {
     CatalogImports,
     WorkoutGroups,
     WorkoutGroupExerciseAssignments,
+    SettingsProfiles,
+    EquipmentInventoryItems,
   ],
 )
 class RepForgeDatabase extends _$RepForgeDatabase {
   RepForgeDatabase(super.executor);
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -232,6 +310,10 @@ class RepForgeDatabase extends _$RepForgeDatabase {
       }
       if (from < 4) {
         await migrator.addColumn(workoutSets, workoutSets.setLabel);
+      }
+      if (from < 5) {
+        await migrator.createTable(settingsProfiles);
+        await migrator.createTable(equipmentInventoryItems);
       }
     },
     // Future migrations must preserve logged set history and prefer additive

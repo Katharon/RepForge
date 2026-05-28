@@ -266,6 +266,220 @@
   "@analyticsPreviousPeriod": {
     "description": "Label fuer vorherigen Analysewert."
   },
+  "settingsLoading": "Einstellungen werden geladen",
+  "@settingsLoading": {
+    "description": "Ladezustand fuer Einstellungen."
+  },
+  "settingsErrorTitle": "Einstellungen konnten nicht geladen werden",
+  "@settingsErrorTitle": {
+    "description": "Titel fuer Ladefehler in Einstellungen."
+  },
+  "settingsErrorMessage": "Versuche es erneut, ohne lokale Daten zu aendern.",
+  "@settingsErrorMessage": {
+    "description": "Text fuer Ladefehler in Einstellungen."
+  },
+  "settingsRetry": "Erneut versuchen",
+  "@settingsRetry": {
+    "description": "Button fuer erneutes Laden der Einstellungen."
+  },
+  "settingsUsingDefaults": "Lokale Standardwerte aktiv",
+  "@settingsUsingDefaults": {
+    "description": "Status, wenn Einstellungen noch nicht angepasst wurden."
+  },
+  "settingsSaved": "Lokal gespeichert",
+  "@settingsSaved": {
+    "description": "Status nach dem Speichern der Einstellungen."
+  },
+  "settingsSave": "Einstellungen speichern",
+  "@settingsSave": {
+    "description": "Speichern-Button fuer Einstellungen."
+  },
+  "settingsSaving": "Speichert",
+  "@settingsSaving": {
+    "description": "Buttontext waehrend des Speicherns."
+  },
+  "settingsReset": "Auf Standardwerte zuruecksetzen",
+  "@settingsReset": {
+    "description": "Tooltip zum Zuruecksetzen der Einstellungen."
+  },
+  "settingsAppPreferencesTitle": "App-Einstellungen",
+  "@settingsAppPreferencesTitle": {
+    "description": "Abschnittstitel fuer App-Einstellungen."
+  },
+  "settingsProfileTitle": "Profilbasis",
+  "@settingsProfileTitle": {
+    "description": "Abschnittstitel fuer einfache Profilfelder."
+  },
+  "settingsTrainingTitle": "Trainingseinstellungen",
+  "@settingsTrainingTitle": {
+    "description": "Abschnittstitel fuer Trainingseinstellungen."
+  },
+  "settingsEquipmentTitle": "Verfuegbare Ausruestung",
+  "@settingsEquipmentTitle": {
+    "description": "Abschnittstitel fuer Ausruestungsinventar."
+  },
+  "settingsLanguageLabel": "Sprache",
+  "@settingsLanguageLabel": {
+    "description": "Label fuer Sprachauswahl."
+  },
+  "settingsLanguageSystem": "System",
+  "@settingsLanguageSystem": {
+    "description": "Systemsprache."
+  },
+  "settingsLanguageEnglish": "Englisch",
+  "@settingsLanguageEnglish": {
+    "description": "Englische Sprache."
+  },
+  "settingsLanguageGerman": "Deutsch",
+  "@settingsLanguageGerman": {
+    "description": "Deutsche Sprache."
+  },
+  "settingsUnitsLabel": "Einheiten",
+  "@settingsUnitsLabel": {
+    "description": "Label fuer Einheitenauswahl."
+  },
+  "settingsUnitsMetric": "Metrisch",
+  "@settingsUnitsMetric": {
+    "description": "Metrische Einheiten."
+  },
+  "settingsUnitsImperial": "Imperial",
+  "@settingsUnitsImperial": {
+    "description": "Imperiale Einheiten."
+  },
+  "settingsThemeLabel": "Theme",
+  "@settingsThemeLabel": {
+    "description": "Label fuer Theme-Auswahl."
+  },
+  "settingsThemeSystem": "System",
+  "@settingsThemeSystem": {
+    "description": "Systemtheme."
+  },
+  "settingsThemeDark": "Dunkel",
+  "@settingsThemeDark": {
+    "description": "Dunkles Theme."
+  },
+  "settingsThemeLight": "Hell",
+  "@settingsThemeLight": {
+    "description": "Helles Theme."
+  },
+  "settingsDisplayNameLabel": "Profilname",
+  "@settingsDisplayNameLabel": {
+    "description": "Label fuer optionalen Profilnamen."
+  },
+  "settingsDefaultRestLabel": "Standardpause",
+  "@settingsDefaultRestLabel": {
+    "description": "Label fuer Standardpausenzeit."
+  },
+  "settingsSeconds": "{seconds} Sek.",
+  "@settingsSeconds": {
+    "description": "Kurzes Sekundenlabel.",
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "example": "90"
+      }
+    }
+  },
+  "settingsFocusLabel": "Fokusprofil",
+  "@settingsFocusLabel": {
+    "description": "Label fuer Fokusprofil."
+  },
+  "settingsFocusBalanced": "Ausgewogen",
+  "@settingsFocusBalanced": {
+    "description": "Ausgewogenes Fokusprofil."
+  },
+  "settingsFocusUpperBody": "Oberkoerperfokus",
+  "@settingsFocusUpperBody": {
+    "description": "Oberkoerperfokus."
+  },
+  "settingsFocusLowerBody": "Unterkoerper-/Glutefokus",
+  "@settingsFocusLowerBody": {
+    "description": "Unterkoerperfokus."
+  },
+  "settingsFocusArmsChest": "Arm-/Brustfokus",
+  "@settingsFocusArmsChest": {
+    "description": "Arm- und Brustfokus."
+  },
+  "settingsFocusStrengthBasics": "Kraft-Basics",
+  "@settingsFocusStrengthBasics": {
+    "description": "Kraft-Basics-Fokusprofil."
+  },
+  "settingsFocusTimeEfficient": "Zeiteffizient",
+  "@settingsFocusTimeEfficient": {
+    "description": "Zeiteffizientes Fokusprofil."
+  },
+  "settingsFocusBeginnerFoundation": "Einsteigerbasis",
+  "@settingsFocusBeginnerFoundation": {
+    "description": "Einsteiger-Fokusprofil."
+  },
+  "settingsFocusCustom": "Eigener Fokus",
+  "@settingsFocusCustom": {
+    "description": "Eigenes Fokusprofil."
+  },
+  "settingsTrainingFrequencyLabel": "Trainingshaeufigkeit",
+  "@settingsTrainingFrequencyLabel": {
+    "description": "Label fuer Trainingstage pro Woche."
+  },
+  "settingsDaysPerWeek": "{days} Tage/Woche",
+  "@settingsDaysPerWeek": {
+    "description": "Tage pro Woche.",
+    "placeholders": {
+      "days": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "settingsSessionDurationLabel": "Sitzungsdauer",
+  "@settingsSessionDurationLabel": {
+    "description": "Label fuer Sitzungsdauer."
+  },
+  "settingsMinutes": "{minutes} Min.",
+  "@settingsMinutes": {
+    "description": "Minutenlabel.",
+    "placeholders": {
+      "minutes": {
+        "type": "int",
+        "example": "45"
+      }
+    }
+  },
+  "settingsEquipmentBodyweight": "Koerpergewicht",
+  "@settingsEquipmentBodyweight": {
+    "description": "Koerpergewicht-Ausruestung."
+  },
+  "settingsEquipmentBarbell": "Langhantel",
+  "@settingsEquipmentBarbell": {
+    "description": "Langhantel-Ausruestung."
+  },
+  "settingsEquipmentDumbbell": "Kurzhantel",
+  "@settingsEquipmentDumbbell": {
+    "description": "Kurzhantel-Ausruestung."
+  },
+  "settingsEquipmentCable": "Kabelzug",
+  "@settingsEquipmentCable": {
+    "description": "Kabelzug-Ausruestung."
+  },
+  "settingsEquipmentMachine": "Maschine",
+  "@settingsEquipmentMachine": {
+    "description": "Maschinen-Ausruestung."
+  },
+  "settingsEquipmentSmithMachine": "Smith Machine",
+  "@settingsEquipmentSmithMachine": {
+    "description": "Smith-Machine-Ausruestung."
+  },
+  "settingsEquipmentPullUpBar": "Klimmzugstange",
+  "@settingsEquipmentPullUpBar": {
+    "description": "Klimmzugstangen-Ausruestung."
+  },
+  "settingsEquipmentBench": "Bank",
+  "@settingsEquipmentBench": {
+    "description": "Bank-Ausruestung."
+  },
+  "settingsEquipmentLegPress": "Beinpresse",
+  "@settingsEquipmentLegPress": {
+    "description": "Beinpresse-Ausruestung."
+  },
   "settingsPlaceholderMessage": "Einstellungen bleiben bei der Umsetzung lokal-first.",
   "@settingsPlaceholderMessage": {
     "description": "Platzhaltertext fuer Einstellungen."

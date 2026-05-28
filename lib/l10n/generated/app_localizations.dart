@@ -462,6 +462,300 @@ abstract class AppLocalizations {
   /// **'Previous'**
   String get analyticsPreviousPeriod;
 
+  /// Loading state text for settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading settings'**
+  String get settingsLoading;
+
+  /// Title for settings loading errors.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings could not load'**
+  String get settingsErrorTitle;
+
+  /// Message for settings loading errors.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again without changing local data.'**
+  String get settingsErrorMessage;
+
+  /// Retry button label for settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get settingsRetry;
+
+  /// Status text when settings have never been customized.
+  ///
+  /// In en, this message translates to:
+  /// **'Using local defaults'**
+  String get settingsUsingDefaults;
+
+  /// Status text after saving settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved locally'**
+  String get settingsSaved;
+
+  /// Save button label for settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Save settings'**
+  String get settingsSave;
+
+  /// Saving button label for settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving'**
+  String get settingsSaving;
+
+  /// Tooltip for resetting settings to defaults.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset to defaults'**
+  String get settingsReset;
+
+  /// Section title for app settings.
+  ///
+  /// In en, this message translates to:
+  /// **'App preferences'**
+  String get settingsAppPreferencesTitle;
+
+  /// Section title for basic user profile fields.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile basics'**
+  String get settingsProfileTitle;
+
+  /// Section title for training preference settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Training preferences'**
+  String get settingsTrainingTitle;
+
+  /// Section title for equipment inventory settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Available equipment'**
+  String get settingsEquipmentTitle;
+
+  /// Label for language override selector.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsLanguageLabel;
+
+  /// System language option.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get settingsLanguageSystem;
+
+  /// English language option.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get settingsLanguageEnglish;
+
+  /// German language option.
+  ///
+  /// In en, this message translates to:
+  /// **'German'**
+  String get settingsLanguageGerman;
+
+  /// Label for units selector.
+  ///
+  /// In en, this message translates to:
+  /// **'Units'**
+  String get settingsUnitsLabel;
+
+  /// Metric units option.
+  ///
+  /// In en, this message translates to:
+  /// **'Metric'**
+  String get settingsUnitsMetric;
+
+  /// Imperial units option.
+  ///
+  /// In en, this message translates to:
+  /// **'Imperial'**
+  String get settingsUnitsImperial;
+
+  /// Label for theme selector.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get settingsThemeLabel;
+
+  /// System theme option.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get settingsThemeSystem;
+
+  /// Dark theme option.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get settingsThemeDark;
+
+  /// Light theme option.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get settingsThemeLight;
+
+  /// Label for optional profile display name.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile name'**
+  String get settingsDisplayNameLabel;
+
+  /// Label for default rest time selector.
+  ///
+  /// In en, this message translates to:
+  /// **'Default rest'**
+  String get settingsDefaultRestLabel;
+
+  /// Short seconds label.
+  ///
+  /// In en, this message translates to:
+  /// **'{seconds} sec'**
+  String settingsSeconds(int seconds);
+
+  /// Label for focus profile selector.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus profile'**
+  String get settingsFocusLabel;
+
+  /// Balanced focus profile option.
+  ///
+  /// In en, this message translates to:
+  /// **'Balanced'**
+  String get settingsFocusBalanced;
+
+  /// Upper-body focus profile option.
+  ///
+  /// In en, this message translates to:
+  /// **'Upper-body focus'**
+  String get settingsFocusUpperBody;
+
+  /// Lower-body focus profile option.
+  ///
+  /// In en, this message translates to:
+  /// **'Lower-body/glute focus'**
+  String get settingsFocusLowerBody;
+
+  /// Arms and chest focus profile option.
+  ///
+  /// In en, this message translates to:
+  /// **'Arms/chest focus'**
+  String get settingsFocusArmsChest;
+
+  /// Strength basics focus profile option.
+  ///
+  /// In en, this message translates to:
+  /// **'Strength basics'**
+  String get settingsFocusStrengthBasics;
+
+  /// Time-efficient focus profile option.
+  ///
+  /// In en, this message translates to:
+  /// **'Time-efficient'**
+  String get settingsFocusTimeEfficient;
+
+  /// Beginner foundation focus profile option.
+  ///
+  /// In en, this message translates to:
+  /// **'Beginner foundation'**
+  String get settingsFocusBeginnerFoundation;
+
+  /// Custom focus profile option.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get settingsFocusCustom;
+
+  /// Label for training days per week selector.
+  ///
+  /// In en, this message translates to:
+  /// **'Training frequency'**
+  String get settingsTrainingFrequencyLabel;
+
+  /// Days per week label.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days/week'**
+  String settingsDaysPerWeek(int days);
+
+  /// Label for session duration selector.
+  ///
+  /// In en, this message translates to:
+  /// **'Session duration'**
+  String get settingsSessionDurationLabel;
+
+  /// Minutes label.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String settingsMinutes(int minutes);
+
+  /// Bodyweight equipment option.
+  ///
+  /// In en, this message translates to:
+  /// **'Bodyweight'**
+  String get settingsEquipmentBodyweight;
+
+  /// Barbell equipment option.
+  ///
+  /// In en, this message translates to:
+  /// **'Barbell'**
+  String get settingsEquipmentBarbell;
+
+  /// Dumbbell equipment option.
+  ///
+  /// In en, this message translates to:
+  /// **'Dumbbell'**
+  String get settingsEquipmentDumbbell;
+
+  /// Cable equipment option.
+  ///
+  /// In en, this message translates to:
+  /// **'Cable'**
+  String get settingsEquipmentCable;
+
+  /// Machine equipment option.
+  ///
+  /// In en, this message translates to:
+  /// **'Machine'**
+  String get settingsEquipmentMachine;
+
+  /// Smith machine equipment option.
+  ///
+  /// In en, this message translates to:
+  /// **'Smith machine'**
+  String get settingsEquipmentSmithMachine;
+
+  /// Pull-up bar equipment option.
+  ///
+  /// In en, this message translates to:
+  /// **'Pull-up bar'**
+  String get settingsEquipmentPullUpBar;
+
+  /// Bench equipment option.
+  ///
+  /// In en, this message translates to:
+  /// **'Bench'**
+  String get settingsEquipmentBench;
+
+  /// Leg press equipment option.
+  ///
+  /// In en, this message translates to:
+  /// **'Leg press'**
+  String get settingsEquipmentLegPress;
+
   /// Placeholder message for the settings destination.
   ///
   /// In en, this message translates to:

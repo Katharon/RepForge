@@ -43,6 +43,17 @@ Write use-case/BLoC/widget tests for loading, editing, validating, and saving pr
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
 
+## Implementation note
+
+Slice 22 added a local-first settings/profile feature boundary with pure-Dart
+settings domain types, load/save/reset use cases, Drift schema v5 persistence,
+repository mappers, composition-root wiring, and a compact localized Settings
+tab. The implemented MVP fields are language override, units, theme preference,
+default rest time, optional profile display name, focus profile, training
+frequency, session duration, and structured equipment inventory. Existing
+workout sets, workout groups, and official catalog rows are not modified by
+settings saves.
+
 ## Validation commands
 
 ```bash

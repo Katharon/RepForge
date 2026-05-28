@@ -3071,6 +3071,869 @@ class WorkoutGroupExerciseAssignmentsCompanion
   }
 }
 
+class $SettingsProfilesTable extends SettingsProfiles
+    with TableInfo<$SettingsProfilesTable, SettingsProfileRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SettingsProfilesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _profileIdMeta = const VerificationMeta(
+    'profileId',
+  );
+  @override
+  late final GeneratedColumn<String> profileId = GeneratedColumn<String>(
+    'profile_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL CHECK (length(profile_id) > 0)',
+  );
+  static const VerificationMeta _languageOverrideMeta = const VerificationMeta(
+    'languageOverride',
+  );
+  @override
+  late final GeneratedColumn<String> languageOverride = GeneratedColumn<String>(
+    'language_override',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints:
+        'NOT NULL CHECK (language_override IN (\'system\', \'en\', \'de\'))',
+  );
+  static const VerificationMeta _unitPreferenceMeta = const VerificationMeta(
+    'unitPreference',
+  );
+  @override
+  late final GeneratedColumn<String> unitPreference = GeneratedColumn<String>(
+    'unit_preference',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints:
+        'NOT NULL CHECK (unit_preference IN (\'metric\', \'imperial\'))',
+  );
+  static const VerificationMeta _themePreferenceMeta = const VerificationMeta(
+    'themePreference',
+  );
+  @override
+  late final GeneratedColumn<String> themePreference = GeneratedColumn<String>(
+    'theme_preference',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints:
+        'NOT NULL CHECK (theme_preference IN (\'system\', \'dark\', \'light\'))',
+  );
+  static const VerificationMeta _defaultRestSecondsMeta =
+      const VerificationMeta('defaultRestSeconds');
+  @override
+  late final GeneratedColumn<int> defaultRestSeconds = GeneratedColumn<int>(
+    'default_rest_seconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    $customConstraints:
+        'NOT NULL CHECK (default_rest_seconds > 0 AND default_rest_seconds <= 1800)',
+  );
+  static const VerificationMeta _displayNameMeta = const VerificationMeta(
+    'displayName',
+  );
+  @override
+  late final GeneratedColumn<String> displayName = GeneratedColumn<String>(
+    'display_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints:
+        'NULL CHECK (display_name IS NULL OR (length(display_name) > 0 AND length(display_name) <= 80))',
+  );
+  static const VerificationMeta _focusProfileMeta = const VerificationMeta(
+    'focusProfile',
+  );
+  @override
+  late final GeneratedColumn<String> focusProfile = GeneratedColumn<String>(
+    'focus_profile',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints:
+        'NOT NULL CHECK (focus_profile IN (\'balanced\', \'upperBodyFocus\', \'lowerBodyGluteFocus\', \'armsChestFocus\', \'strengthBasics\', \'timeEfficient\', \'beginnerFoundation\', \'custom\'))',
+  );
+  static const VerificationMeta _trainingDaysPerWeekMeta =
+      const VerificationMeta('trainingDaysPerWeek');
+  @override
+  late final GeneratedColumn<int> trainingDaysPerWeek = GeneratedColumn<int>(
+    'training_days_per_week',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    $customConstraints:
+        'NOT NULL CHECK (training_days_per_week BETWEEN 1 AND 7)',
+  );
+  static const VerificationMeta _sessionDurationMinutesMeta =
+      const VerificationMeta('sessionDurationMinutes');
+  @override
+  late final GeneratedColumn<int> sessionDurationMinutes = GeneratedColumn<int>(
+    'session_duration_minutes',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    $customConstraints:
+        'NOT NULL CHECK (session_duration_minutes IN (15, 25, 35, 45, 60, 75))',
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    profileId,
+    languageOverride,
+    unitPreference,
+    themePreference,
+    defaultRestSeconds,
+    displayName,
+    focusProfile,
+    trainingDaysPerWeek,
+    sessionDurationMinutes,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'settings_profiles';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SettingsProfileRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('profile_id')) {
+      context.handle(
+        _profileIdMeta,
+        profileId.isAcceptableOrUnknown(data['profile_id']!, _profileIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_profileIdMeta);
+    }
+    if (data.containsKey('language_override')) {
+      context.handle(
+        _languageOverrideMeta,
+        languageOverride.isAcceptableOrUnknown(
+          data['language_override']!,
+          _languageOverrideMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_languageOverrideMeta);
+    }
+    if (data.containsKey('unit_preference')) {
+      context.handle(
+        _unitPreferenceMeta,
+        unitPreference.isAcceptableOrUnknown(
+          data['unit_preference']!,
+          _unitPreferenceMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_unitPreferenceMeta);
+    }
+    if (data.containsKey('theme_preference')) {
+      context.handle(
+        _themePreferenceMeta,
+        themePreference.isAcceptableOrUnknown(
+          data['theme_preference']!,
+          _themePreferenceMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_themePreferenceMeta);
+    }
+    if (data.containsKey('default_rest_seconds')) {
+      context.handle(
+        _defaultRestSecondsMeta,
+        defaultRestSeconds.isAcceptableOrUnknown(
+          data['default_rest_seconds']!,
+          _defaultRestSecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_defaultRestSecondsMeta);
+    }
+    if (data.containsKey('display_name')) {
+      context.handle(
+        _displayNameMeta,
+        displayName.isAcceptableOrUnknown(
+          data['display_name']!,
+          _displayNameMeta,
+        ),
+      );
+    }
+    if (data.containsKey('focus_profile')) {
+      context.handle(
+        _focusProfileMeta,
+        focusProfile.isAcceptableOrUnknown(
+          data['focus_profile']!,
+          _focusProfileMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_focusProfileMeta);
+    }
+    if (data.containsKey('training_days_per_week')) {
+      context.handle(
+        _trainingDaysPerWeekMeta,
+        trainingDaysPerWeek.isAcceptableOrUnknown(
+          data['training_days_per_week']!,
+          _trainingDaysPerWeekMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_trainingDaysPerWeekMeta);
+    }
+    if (data.containsKey('session_duration_minutes')) {
+      context.handle(
+        _sessionDurationMinutesMeta,
+        sessionDurationMinutes.isAcceptableOrUnknown(
+          data['session_duration_minutes']!,
+          _sessionDurationMinutesMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_sessionDurationMinutesMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {profileId};
+  @override
+  SettingsProfileRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SettingsProfileRow(
+      profileId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}profile_id'],
+      )!,
+      languageOverride: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}language_override'],
+      )!,
+      unitPreference: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}unit_preference'],
+      )!,
+      themePreference: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}theme_preference'],
+      )!,
+      defaultRestSeconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}default_rest_seconds'],
+      )!,
+      displayName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}display_name'],
+      ),
+      focusProfile: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}focus_profile'],
+      )!,
+      trainingDaysPerWeek: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}training_days_per_week'],
+      )!,
+      sessionDurationMinutes: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}session_duration_minutes'],
+      )!,
+    );
+  }
+
+  @override
+  $SettingsProfilesTable createAlias(String alias) {
+    return $SettingsProfilesTable(attachedDatabase, alias);
+  }
+}
+
+class SettingsProfileRow extends DataClass
+    implements Insertable<SettingsProfileRow> {
+  final String profileId;
+  final String languageOverride;
+  final String unitPreference;
+  final String themePreference;
+  final int defaultRestSeconds;
+  final String? displayName;
+  final String focusProfile;
+  final int trainingDaysPerWeek;
+  final int sessionDurationMinutes;
+  const SettingsProfileRow({
+    required this.profileId,
+    required this.languageOverride,
+    required this.unitPreference,
+    required this.themePreference,
+    required this.defaultRestSeconds,
+    this.displayName,
+    required this.focusProfile,
+    required this.trainingDaysPerWeek,
+    required this.sessionDurationMinutes,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['profile_id'] = Variable<String>(profileId);
+    map['language_override'] = Variable<String>(languageOverride);
+    map['unit_preference'] = Variable<String>(unitPreference);
+    map['theme_preference'] = Variable<String>(themePreference);
+    map['default_rest_seconds'] = Variable<int>(defaultRestSeconds);
+    if (!nullToAbsent || displayName != null) {
+      map['display_name'] = Variable<String>(displayName);
+    }
+    map['focus_profile'] = Variable<String>(focusProfile);
+    map['training_days_per_week'] = Variable<int>(trainingDaysPerWeek);
+    map['session_duration_minutes'] = Variable<int>(sessionDurationMinutes);
+    return map;
+  }
+
+  SettingsProfilesCompanion toCompanion(bool nullToAbsent) {
+    return SettingsProfilesCompanion(
+      profileId: Value(profileId),
+      languageOverride: Value(languageOverride),
+      unitPreference: Value(unitPreference),
+      themePreference: Value(themePreference),
+      defaultRestSeconds: Value(defaultRestSeconds),
+      displayName: displayName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(displayName),
+      focusProfile: Value(focusProfile),
+      trainingDaysPerWeek: Value(trainingDaysPerWeek),
+      sessionDurationMinutes: Value(sessionDurationMinutes),
+    );
+  }
+
+  factory SettingsProfileRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SettingsProfileRow(
+      profileId: serializer.fromJson<String>(json['profileId']),
+      languageOverride: serializer.fromJson<String>(json['languageOverride']),
+      unitPreference: serializer.fromJson<String>(json['unitPreference']),
+      themePreference: serializer.fromJson<String>(json['themePreference']),
+      defaultRestSeconds: serializer.fromJson<int>(json['defaultRestSeconds']),
+      displayName: serializer.fromJson<String?>(json['displayName']),
+      focusProfile: serializer.fromJson<String>(json['focusProfile']),
+      trainingDaysPerWeek: serializer.fromJson<int>(
+        json['trainingDaysPerWeek'],
+      ),
+      sessionDurationMinutes: serializer.fromJson<int>(
+        json['sessionDurationMinutes'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'profileId': serializer.toJson<String>(profileId),
+      'languageOverride': serializer.toJson<String>(languageOverride),
+      'unitPreference': serializer.toJson<String>(unitPreference),
+      'themePreference': serializer.toJson<String>(themePreference),
+      'defaultRestSeconds': serializer.toJson<int>(defaultRestSeconds),
+      'displayName': serializer.toJson<String?>(displayName),
+      'focusProfile': serializer.toJson<String>(focusProfile),
+      'trainingDaysPerWeek': serializer.toJson<int>(trainingDaysPerWeek),
+      'sessionDurationMinutes': serializer.toJson<int>(sessionDurationMinutes),
+    };
+  }
+
+  SettingsProfileRow copyWith({
+    String? profileId,
+    String? languageOverride,
+    String? unitPreference,
+    String? themePreference,
+    int? defaultRestSeconds,
+    Value<String?> displayName = const Value.absent(),
+    String? focusProfile,
+    int? trainingDaysPerWeek,
+    int? sessionDurationMinutes,
+  }) => SettingsProfileRow(
+    profileId: profileId ?? this.profileId,
+    languageOverride: languageOverride ?? this.languageOverride,
+    unitPreference: unitPreference ?? this.unitPreference,
+    themePreference: themePreference ?? this.themePreference,
+    defaultRestSeconds: defaultRestSeconds ?? this.defaultRestSeconds,
+    displayName: displayName.present ? displayName.value : this.displayName,
+    focusProfile: focusProfile ?? this.focusProfile,
+    trainingDaysPerWeek: trainingDaysPerWeek ?? this.trainingDaysPerWeek,
+    sessionDurationMinutes:
+        sessionDurationMinutes ?? this.sessionDurationMinutes,
+  );
+  SettingsProfileRow copyWithCompanion(SettingsProfilesCompanion data) {
+    return SettingsProfileRow(
+      profileId: data.profileId.present ? data.profileId.value : this.profileId,
+      languageOverride: data.languageOverride.present
+          ? data.languageOverride.value
+          : this.languageOverride,
+      unitPreference: data.unitPreference.present
+          ? data.unitPreference.value
+          : this.unitPreference,
+      themePreference: data.themePreference.present
+          ? data.themePreference.value
+          : this.themePreference,
+      defaultRestSeconds: data.defaultRestSeconds.present
+          ? data.defaultRestSeconds.value
+          : this.defaultRestSeconds,
+      displayName: data.displayName.present
+          ? data.displayName.value
+          : this.displayName,
+      focusProfile: data.focusProfile.present
+          ? data.focusProfile.value
+          : this.focusProfile,
+      trainingDaysPerWeek: data.trainingDaysPerWeek.present
+          ? data.trainingDaysPerWeek.value
+          : this.trainingDaysPerWeek,
+      sessionDurationMinutes: data.sessionDurationMinutes.present
+          ? data.sessionDurationMinutes.value
+          : this.sessionDurationMinutes,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SettingsProfileRow(')
+          ..write('profileId: $profileId, ')
+          ..write('languageOverride: $languageOverride, ')
+          ..write('unitPreference: $unitPreference, ')
+          ..write('themePreference: $themePreference, ')
+          ..write('defaultRestSeconds: $defaultRestSeconds, ')
+          ..write('displayName: $displayName, ')
+          ..write('focusProfile: $focusProfile, ')
+          ..write('trainingDaysPerWeek: $trainingDaysPerWeek, ')
+          ..write('sessionDurationMinutes: $sessionDurationMinutes')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    profileId,
+    languageOverride,
+    unitPreference,
+    themePreference,
+    defaultRestSeconds,
+    displayName,
+    focusProfile,
+    trainingDaysPerWeek,
+    sessionDurationMinutes,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SettingsProfileRow &&
+          other.profileId == this.profileId &&
+          other.languageOverride == this.languageOverride &&
+          other.unitPreference == this.unitPreference &&
+          other.themePreference == this.themePreference &&
+          other.defaultRestSeconds == this.defaultRestSeconds &&
+          other.displayName == this.displayName &&
+          other.focusProfile == this.focusProfile &&
+          other.trainingDaysPerWeek == this.trainingDaysPerWeek &&
+          other.sessionDurationMinutes == this.sessionDurationMinutes);
+}
+
+class SettingsProfilesCompanion extends UpdateCompanion<SettingsProfileRow> {
+  final Value<String> profileId;
+  final Value<String> languageOverride;
+  final Value<String> unitPreference;
+  final Value<String> themePreference;
+  final Value<int> defaultRestSeconds;
+  final Value<String?> displayName;
+  final Value<String> focusProfile;
+  final Value<int> trainingDaysPerWeek;
+  final Value<int> sessionDurationMinutes;
+  final Value<int> rowid;
+  const SettingsProfilesCompanion({
+    this.profileId = const Value.absent(),
+    this.languageOverride = const Value.absent(),
+    this.unitPreference = const Value.absent(),
+    this.themePreference = const Value.absent(),
+    this.defaultRestSeconds = const Value.absent(),
+    this.displayName = const Value.absent(),
+    this.focusProfile = const Value.absent(),
+    this.trainingDaysPerWeek = const Value.absent(),
+    this.sessionDurationMinutes = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SettingsProfilesCompanion.insert({
+    required String profileId,
+    required String languageOverride,
+    required String unitPreference,
+    required String themePreference,
+    required int defaultRestSeconds,
+    this.displayName = const Value.absent(),
+    required String focusProfile,
+    required int trainingDaysPerWeek,
+    required int sessionDurationMinutes,
+    this.rowid = const Value.absent(),
+  }) : profileId = Value(profileId),
+       languageOverride = Value(languageOverride),
+       unitPreference = Value(unitPreference),
+       themePreference = Value(themePreference),
+       defaultRestSeconds = Value(defaultRestSeconds),
+       focusProfile = Value(focusProfile),
+       trainingDaysPerWeek = Value(trainingDaysPerWeek),
+       sessionDurationMinutes = Value(sessionDurationMinutes);
+  static Insertable<SettingsProfileRow> custom({
+    Expression<String>? profileId,
+    Expression<String>? languageOverride,
+    Expression<String>? unitPreference,
+    Expression<String>? themePreference,
+    Expression<int>? defaultRestSeconds,
+    Expression<String>? displayName,
+    Expression<String>? focusProfile,
+    Expression<int>? trainingDaysPerWeek,
+    Expression<int>? sessionDurationMinutes,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (profileId != null) 'profile_id': profileId,
+      if (languageOverride != null) 'language_override': languageOverride,
+      if (unitPreference != null) 'unit_preference': unitPreference,
+      if (themePreference != null) 'theme_preference': themePreference,
+      if (defaultRestSeconds != null)
+        'default_rest_seconds': defaultRestSeconds,
+      if (displayName != null) 'display_name': displayName,
+      if (focusProfile != null) 'focus_profile': focusProfile,
+      if (trainingDaysPerWeek != null)
+        'training_days_per_week': trainingDaysPerWeek,
+      if (sessionDurationMinutes != null)
+        'session_duration_minutes': sessionDurationMinutes,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SettingsProfilesCompanion copyWith({
+    Value<String>? profileId,
+    Value<String>? languageOverride,
+    Value<String>? unitPreference,
+    Value<String>? themePreference,
+    Value<int>? defaultRestSeconds,
+    Value<String?>? displayName,
+    Value<String>? focusProfile,
+    Value<int>? trainingDaysPerWeek,
+    Value<int>? sessionDurationMinutes,
+    Value<int>? rowid,
+  }) {
+    return SettingsProfilesCompanion(
+      profileId: profileId ?? this.profileId,
+      languageOverride: languageOverride ?? this.languageOverride,
+      unitPreference: unitPreference ?? this.unitPreference,
+      themePreference: themePreference ?? this.themePreference,
+      defaultRestSeconds: defaultRestSeconds ?? this.defaultRestSeconds,
+      displayName: displayName ?? this.displayName,
+      focusProfile: focusProfile ?? this.focusProfile,
+      trainingDaysPerWeek: trainingDaysPerWeek ?? this.trainingDaysPerWeek,
+      sessionDurationMinutes:
+          sessionDurationMinutes ?? this.sessionDurationMinutes,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (profileId.present) {
+      map['profile_id'] = Variable<String>(profileId.value);
+    }
+    if (languageOverride.present) {
+      map['language_override'] = Variable<String>(languageOverride.value);
+    }
+    if (unitPreference.present) {
+      map['unit_preference'] = Variable<String>(unitPreference.value);
+    }
+    if (themePreference.present) {
+      map['theme_preference'] = Variable<String>(themePreference.value);
+    }
+    if (defaultRestSeconds.present) {
+      map['default_rest_seconds'] = Variable<int>(defaultRestSeconds.value);
+    }
+    if (displayName.present) {
+      map['display_name'] = Variable<String>(displayName.value);
+    }
+    if (focusProfile.present) {
+      map['focus_profile'] = Variable<String>(focusProfile.value);
+    }
+    if (trainingDaysPerWeek.present) {
+      map['training_days_per_week'] = Variable<int>(trainingDaysPerWeek.value);
+    }
+    if (sessionDurationMinutes.present) {
+      map['session_duration_minutes'] = Variable<int>(
+        sessionDurationMinutes.value,
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SettingsProfilesCompanion(')
+          ..write('profileId: $profileId, ')
+          ..write('languageOverride: $languageOverride, ')
+          ..write('unitPreference: $unitPreference, ')
+          ..write('themePreference: $themePreference, ')
+          ..write('defaultRestSeconds: $defaultRestSeconds, ')
+          ..write('displayName: $displayName, ')
+          ..write('focusProfile: $focusProfile, ')
+          ..write('trainingDaysPerWeek: $trainingDaysPerWeek, ')
+          ..write('sessionDurationMinutes: $sessionDurationMinutes, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $EquipmentInventoryItemsTable extends EquipmentInventoryItems
+    with TableInfo<$EquipmentInventoryItemsTable, EquipmentInventoryItemRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $EquipmentInventoryItemsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _profileIdMeta = const VerificationMeta(
+    'profileId',
+  );
+  @override
+  late final GeneratedColumn<String> profileId = GeneratedColumn<String>(
+    'profile_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL CHECK (length(profile_id) > 0)',
+  );
+  static const VerificationMeta _equipmentMeta = const VerificationMeta(
+    'equipment',
+  );
+  @override
+  late final GeneratedColumn<String> equipment = GeneratedColumn<String>(
+    'equipment',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints:
+        'NOT NULL CHECK (equipment IN (\'bodyweight\', \'barbell\', \'dumbbell\', \'cable\', \'machine\', \'smithMachine\', \'pullUpBar\', \'bench\', \'legPress\'))',
+  );
+  @override
+  List<GeneratedColumn> get $columns => [profileId, equipment];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'equipment_inventory_items';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<EquipmentInventoryItemRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('profile_id')) {
+      context.handle(
+        _profileIdMeta,
+        profileId.isAcceptableOrUnknown(data['profile_id']!, _profileIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_profileIdMeta);
+    }
+    if (data.containsKey('equipment')) {
+      context.handle(
+        _equipmentMeta,
+        equipment.isAcceptableOrUnknown(data['equipment']!, _equipmentMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_equipmentMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {profileId, equipment};
+  @override
+  EquipmentInventoryItemRow map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return EquipmentInventoryItemRow(
+      profileId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}profile_id'],
+      )!,
+      equipment: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}equipment'],
+      )!,
+    );
+  }
+
+  @override
+  $EquipmentInventoryItemsTable createAlias(String alias) {
+    return $EquipmentInventoryItemsTable(attachedDatabase, alias);
+  }
+}
+
+class EquipmentInventoryItemRow extends DataClass
+    implements Insertable<EquipmentInventoryItemRow> {
+  final String profileId;
+  final String equipment;
+  const EquipmentInventoryItemRow({
+    required this.profileId,
+    required this.equipment,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['profile_id'] = Variable<String>(profileId);
+    map['equipment'] = Variable<String>(equipment);
+    return map;
+  }
+
+  EquipmentInventoryItemsCompanion toCompanion(bool nullToAbsent) {
+    return EquipmentInventoryItemsCompanion(
+      profileId: Value(profileId),
+      equipment: Value(equipment),
+    );
+  }
+
+  factory EquipmentInventoryItemRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return EquipmentInventoryItemRow(
+      profileId: serializer.fromJson<String>(json['profileId']),
+      equipment: serializer.fromJson<String>(json['equipment']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'profileId': serializer.toJson<String>(profileId),
+      'equipment': serializer.toJson<String>(equipment),
+    };
+  }
+
+  EquipmentInventoryItemRow copyWith({String? profileId, String? equipment}) =>
+      EquipmentInventoryItemRow(
+        profileId: profileId ?? this.profileId,
+        equipment: equipment ?? this.equipment,
+      );
+  EquipmentInventoryItemRow copyWithCompanion(
+    EquipmentInventoryItemsCompanion data,
+  ) {
+    return EquipmentInventoryItemRow(
+      profileId: data.profileId.present ? data.profileId.value : this.profileId,
+      equipment: data.equipment.present ? data.equipment.value : this.equipment,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('EquipmentInventoryItemRow(')
+          ..write('profileId: $profileId, ')
+          ..write('equipment: $equipment')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(profileId, equipment);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is EquipmentInventoryItemRow &&
+          other.profileId == this.profileId &&
+          other.equipment == this.equipment);
+}
+
+class EquipmentInventoryItemsCompanion
+    extends UpdateCompanion<EquipmentInventoryItemRow> {
+  final Value<String> profileId;
+  final Value<String> equipment;
+  final Value<int> rowid;
+  const EquipmentInventoryItemsCompanion({
+    this.profileId = const Value.absent(),
+    this.equipment = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  EquipmentInventoryItemsCompanion.insert({
+    required String profileId,
+    required String equipment,
+    this.rowid = const Value.absent(),
+  }) : profileId = Value(profileId),
+       equipment = Value(equipment);
+  static Insertable<EquipmentInventoryItemRow> custom({
+    Expression<String>? profileId,
+    Expression<String>? equipment,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (profileId != null) 'profile_id': profileId,
+      if (equipment != null) 'equipment': equipment,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  EquipmentInventoryItemsCompanion copyWith({
+    Value<String>? profileId,
+    Value<String>? equipment,
+    Value<int>? rowid,
+  }) {
+    return EquipmentInventoryItemsCompanion(
+      profileId: profileId ?? this.profileId,
+      equipment: equipment ?? this.equipment,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (profileId.present) {
+      map['profile_id'] = Variable<String>(profileId.value);
+    }
+    if (equipment.present) {
+      map['equipment'] = Variable<String>(equipment.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('EquipmentInventoryItemsCompanion(')
+          ..write('profileId: $profileId, ')
+          ..write('equipment: $equipment, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$RepForgeDatabase extends GeneratedDatabase {
   _$RepForgeDatabase(QueryExecutor e) : super(e);
   $RepForgeDatabaseManager get managers => $RepForgeDatabaseManager(this);
@@ -3089,6 +3952,11 @@ abstract class _$RepForgeDatabase extends GeneratedDatabase {
   late final $WorkoutGroupsTable workoutGroups = $WorkoutGroupsTable(this);
   late final $WorkoutGroupExerciseAssignmentsTable
   workoutGroupExerciseAssignments = $WorkoutGroupExerciseAssignmentsTable(this);
+  late final $SettingsProfilesTable settingsProfiles = $SettingsProfilesTable(
+    this,
+  );
+  late final $EquipmentInventoryItemsTable equipmentInventoryItems =
+      $EquipmentInventoryItemsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -3102,6 +3970,8 @@ abstract class _$RepForgeDatabase extends GeneratedDatabase {
     catalogImports,
     workoutGroups,
     workoutGroupExerciseAssignments,
+    settingsProfiles,
+    equipmentInventoryItems,
   ];
 }
 
@@ -4821,6 +5691,470 @@ typedef $$WorkoutGroupExerciseAssignmentsTableProcessedTableManager =
       WorkoutGroupExerciseAssignmentRow,
       PrefetchHooks Function()
     >;
+typedef $$SettingsProfilesTableCreateCompanionBuilder =
+    SettingsProfilesCompanion Function({
+      required String profileId,
+      required String languageOverride,
+      required String unitPreference,
+      required String themePreference,
+      required int defaultRestSeconds,
+      Value<String?> displayName,
+      required String focusProfile,
+      required int trainingDaysPerWeek,
+      required int sessionDurationMinutes,
+      Value<int> rowid,
+    });
+typedef $$SettingsProfilesTableUpdateCompanionBuilder =
+    SettingsProfilesCompanion Function({
+      Value<String> profileId,
+      Value<String> languageOverride,
+      Value<String> unitPreference,
+      Value<String> themePreference,
+      Value<int> defaultRestSeconds,
+      Value<String?> displayName,
+      Value<String> focusProfile,
+      Value<int> trainingDaysPerWeek,
+      Value<int> sessionDurationMinutes,
+      Value<int> rowid,
+    });
+
+class $$SettingsProfilesTableFilterComposer
+    extends Composer<_$RepForgeDatabase, $SettingsProfilesTable> {
+  $$SettingsProfilesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get profileId => $composableBuilder(
+    column: $table.profileId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get languageOverride => $composableBuilder(
+    column: $table.languageOverride,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get unitPreference => $composableBuilder(
+    column: $table.unitPreference,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get themePreference => $composableBuilder(
+    column: $table.themePreference,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get defaultRestSeconds => $composableBuilder(
+    column: $table.defaultRestSeconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get focusProfile => $composableBuilder(
+    column: $table.focusProfile,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get trainingDaysPerWeek => $composableBuilder(
+    column: $table.trainingDaysPerWeek,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get sessionDurationMinutes => $composableBuilder(
+    column: $table.sessionDurationMinutes,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$SettingsProfilesTableOrderingComposer
+    extends Composer<_$RepForgeDatabase, $SettingsProfilesTable> {
+  $$SettingsProfilesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get profileId => $composableBuilder(
+    column: $table.profileId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get languageOverride => $composableBuilder(
+    column: $table.languageOverride,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get unitPreference => $composableBuilder(
+    column: $table.unitPreference,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get themePreference => $composableBuilder(
+    column: $table.themePreference,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get defaultRestSeconds => $composableBuilder(
+    column: $table.defaultRestSeconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get focusProfile => $composableBuilder(
+    column: $table.focusProfile,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get trainingDaysPerWeek => $composableBuilder(
+    column: $table.trainingDaysPerWeek,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get sessionDurationMinutes => $composableBuilder(
+    column: $table.sessionDurationMinutes,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SettingsProfilesTableAnnotationComposer
+    extends Composer<_$RepForgeDatabase, $SettingsProfilesTable> {
+  $$SettingsProfilesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get profileId =>
+      $composableBuilder(column: $table.profileId, builder: (column) => column);
+
+  GeneratedColumn<String> get languageOverride => $composableBuilder(
+    column: $table.languageOverride,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get unitPreference => $composableBuilder(
+    column: $table.unitPreference,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get themePreference => $composableBuilder(
+    column: $table.themePreference,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get defaultRestSeconds => $composableBuilder(
+    column: $table.defaultRestSeconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get focusProfile => $composableBuilder(
+    column: $table.focusProfile,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get trainingDaysPerWeek => $composableBuilder(
+    column: $table.trainingDaysPerWeek,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get sessionDurationMinutes => $composableBuilder(
+    column: $table.sessionDurationMinutes,
+    builder: (column) => column,
+  );
+}
+
+class $$SettingsProfilesTableTableManager
+    extends
+        RootTableManager<
+          _$RepForgeDatabase,
+          $SettingsProfilesTable,
+          SettingsProfileRow,
+          $$SettingsProfilesTableFilterComposer,
+          $$SettingsProfilesTableOrderingComposer,
+          $$SettingsProfilesTableAnnotationComposer,
+          $$SettingsProfilesTableCreateCompanionBuilder,
+          $$SettingsProfilesTableUpdateCompanionBuilder,
+          (
+            SettingsProfileRow,
+            BaseReferences<
+              _$RepForgeDatabase,
+              $SettingsProfilesTable,
+              SettingsProfileRow
+            >,
+          ),
+          SettingsProfileRow,
+          PrefetchHooks Function()
+        > {
+  $$SettingsProfilesTableTableManager(
+    _$RepForgeDatabase db,
+    $SettingsProfilesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SettingsProfilesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SettingsProfilesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SettingsProfilesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> profileId = const Value.absent(),
+                Value<String> languageOverride = const Value.absent(),
+                Value<String> unitPreference = const Value.absent(),
+                Value<String> themePreference = const Value.absent(),
+                Value<int> defaultRestSeconds = const Value.absent(),
+                Value<String?> displayName = const Value.absent(),
+                Value<String> focusProfile = const Value.absent(),
+                Value<int> trainingDaysPerWeek = const Value.absent(),
+                Value<int> sessionDurationMinutes = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SettingsProfilesCompanion(
+                profileId: profileId,
+                languageOverride: languageOverride,
+                unitPreference: unitPreference,
+                themePreference: themePreference,
+                defaultRestSeconds: defaultRestSeconds,
+                displayName: displayName,
+                focusProfile: focusProfile,
+                trainingDaysPerWeek: trainingDaysPerWeek,
+                sessionDurationMinutes: sessionDurationMinutes,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String profileId,
+                required String languageOverride,
+                required String unitPreference,
+                required String themePreference,
+                required int defaultRestSeconds,
+                Value<String?> displayName = const Value.absent(),
+                required String focusProfile,
+                required int trainingDaysPerWeek,
+                required int sessionDurationMinutes,
+                Value<int> rowid = const Value.absent(),
+              }) => SettingsProfilesCompanion.insert(
+                profileId: profileId,
+                languageOverride: languageOverride,
+                unitPreference: unitPreference,
+                themePreference: themePreference,
+                defaultRestSeconds: defaultRestSeconds,
+                displayName: displayName,
+                focusProfile: focusProfile,
+                trainingDaysPerWeek: trainingDaysPerWeek,
+                sessionDurationMinutes: sessionDurationMinutes,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SettingsProfilesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$RepForgeDatabase,
+      $SettingsProfilesTable,
+      SettingsProfileRow,
+      $$SettingsProfilesTableFilterComposer,
+      $$SettingsProfilesTableOrderingComposer,
+      $$SettingsProfilesTableAnnotationComposer,
+      $$SettingsProfilesTableCreateCompanionBuilder,
+      $$SettingsProfilesTableUpdateCompanionBuilder,
+      (
+        SettingsProfileRow,
+        BaseReferences<
+          _$RepForgeDatabase,
+          $SettingsProfilesTable,
+          SettingsProfileRow
+        >,
+      ),
+      SettingsProfileRow,
+      PrefetchHooks Function()
+    >;
+typedef $$EquipmentInventoryItemsTableCreateCompanionBuilder =
+    EquipmentInventoryItemsCompanion Function({
+      required String profileId,
+      required String equipment,
+      Value<int> rowid,
+    });
+typedef $$EquipmentInventoryItemsTableUpdateCompanionBuilder =
+    EquipmentInventoryItemsCompanion Function({
+      Value<String> profileId,
+      Value<String> equipment,
+      Value<int> rowid,
+    });
+
+class $$EquipmentInventoryItemsTableFilterComposer
+    extends Composer<_$RepForgeDatabase, $EquipmentInventoryItemsTable> {
+  $$EquipmentInventoryItemsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get profileId => $composableBuilder(
+    column: $table.profileId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get equipment => $composableBuilder(
+    column: $table.equipment,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$EquipmentInventoryItemsTableOrderingComposer
+    extends Composer<_$RepForgeDatabase, $EquipmentInventoryItemsTable> {
+  $$EquipmentInventoryItemsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get profileId => $composableBuilder(
+    column: $table.profileId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get equipment => $composableBuilder(
+    column: $table.equipment,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$EquipmentInventoryItemsTableAnnotationComposer
+    extends Composer<_$RepForgeDatabase, $EquipmentInventoryItemsTable> {
+  $$EquipmentInventoryItemsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get profileId =>
+      $composableBuilder(column: $table.profileId, builder: (column) => column);
+
+  GeneratedColumn<String> get equipment =>
+      $composableBuilder(column: $table.equipment, builder: (column) => column);
+}
+
+class $$EquipmentInventoryItemsTableTableManager
+    extends
+        RootTableManager<
+          _$RepForgeDatabase,
+          $EquipmentInventoryItemsTable,
+          EquipmentInventoryItemRow,
+          $$EquipmentInventoryItemsTableFilterComposer,
+          $$EquipmentInventoryItemsTableOrderingComposer,
+          $$EquipmentInventoryItemsTableAnnotationComposer,
+          $$EquipmentInventoryItemsTableCreateCompanionBuilder,
+          $$EquipmentInventoryItemsTableUpdateCompanionBuilder,
+          (
+            EquipmentInventoryItemRow,
+            BaseReferences<
+              _$RepForgeDatabase,
+              $EquipmentInventoryItemsTable,
+              EquipmentInventoryItemRow
+            >,
+          ),
+          EquipmentInventoryItemRow,
+          PrefetchHooks Function()
+        > {
+  $$EquipmentInventoryItemsTableTableManager(
+    _$RepForgeDatabase db,
+    $EquipmentInventoryItemsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$EquipmentInventoryItemsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$EquipmentInventoryItemsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$EquipmentInventoryItemsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> profileId = const Value.absent(),
+                Value<String> equipment = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => EquipmentInventoryItemsCompanion(
+                profileId: profileId,
+                equipment: equipment,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String profileId,
+                required String equipment,
+                Value<int> rowid = const Value.absent(),
+              }) => EquipmentInventoryItemsCompanion.insert(
+                profileId: profileId,
+                equipment: equipment,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$EquipmentInventoryItemsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$RepForgeDatabase,
+      $EquipmentInventoryItemsTable,
+      EquipmentInventoryItemRow,
+      $$EquipmentInventoryItemsTableFilterComposer,
+      $$EquipmentInventoryItemsTableOrderingComposer,
+      $$EquipmentInventoryItemsTableAnnotationComposer,
+      $$EquipmentInventoryItemsTableCreateCompanionBuilder,
+      $$EquipmentInventoryItemsTableUpdateCompanionBuilder,
+      (
+        EquipmentInventoryItemRow,
+        BaseReferences<
+          _$RepForgeDatabase,
+          $EquipmentInventoryItemsTable,
+          EquipmentInventoryItemRow
+        >,
+      ),
+      EquipmentInventoryItemRow,
+      PrefetchHooks Function()
+    >;
 
 class $RepForgeDatabaseManager {
   final _$RepForgeDatabase _db;
@@ -4856,5 +6190,12 @@ class $RepForgeDatabaseManager {
       $$WorkoutGroupExerciseAssignmentsTableTableManager(
         _db,
         _db.workoutGroupExerciseAssignments,
+      );
+  $$SettingsProfilesTableTableManager get settingsProfiles =>
+      $$SettingsProfilesTableTableManager(_db, _db.settingsProfiles);
+  $$EquipmentInventoryItemsTableTableManager get equipmentInventoryItems =>
+      $$EquipmentInventoryItemsTableTableManager(
+        _db,
+        _db.equipmentInventoryItems,
       );
 }

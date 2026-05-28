@@ -44,6 +44,14 @@ Allow changing:
 - theme,
 - privacy/export settings.
 
+## Slice 22 settings surface
+
+The Settings tab now exposes the MVP-local controls for language override,
+units, theme preference, default rest time, optional profile name, focus
+profile, training frequency, session duration, and available equipment. It does
+not implement the onboarding wizard, starter groups, recommendation logic, or
+privacy/export settings.
+
 ## v5 onboarding additions
 
 Localization:

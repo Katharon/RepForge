@@ -27,15 +27,17 @@ void main() {
             'official_exercise_muscle_groups',
             'catalog_imports',
             'workout_groups',
-            'workout_group_exercise_assignments'
+            'workout_group_exercise_assignments',
+            'settings_profiles',
+            'equipment_inventory_items'
           )
           ''').get();
 
-    expect(tables, hasLength(8));
+    expect(tables, hasLength(10));
   });
 
-  test('uses schema version 4', () {
-    expect(database.schemaVersion, 4);
+  test('uses schema version 5', () {
+    expect(database.schemaVersion, 5);
   });
 
   test('accepts an official exercise workout set with snapshots', () async {

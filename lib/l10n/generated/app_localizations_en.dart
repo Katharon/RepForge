@@ -211,6 +211,159 @@ class AppLocalizationsEn extends AppLocalizations {
   String get analyticsPreviousPeriod => 'Previous';
 
   @override
+  String get settingsLoading => 'Loading settings';
+
+  @override
+  String get settingsErrorTitle => 'Settings could not load';
+
+  @override
+  String get settingsErrorMessage => 'Try again without changing local data.';
+
+  @override
+  String get settingsRetry => 'Retry';
+
+  @override
+  String get settingsUsingDefaults => 'Using local defaults';
+
+  @override
+  String get settingsSaved => 'Saved locally';
+
+  @override
+  String get settingsSave => 'Save settings';
+
+  @override
+  String get settingsSaving => 'Saving';
+
+  @override
+  String get settingsReset => 'Reset to defaults';
+
+  @override
+  String get settingsAppPreferencesTitle => 'App preferences';
+
+  @override
+  String get settingsProfileTitle => 'Profile basics';
+
+  @override
+  String get settingsTrainingTitle => 'Training preferences';
+
+  @override
+  String get settingsEquipmentTitle => 'Available equipment';
+
+  @override
+  String get settingsLanguageLabel => 'Language';
+
+  @override
+  String get settingsLanguageSystem => 'System';
+
+  @override
+  String get settingsLanguageEnglish => 'English';
+
+  @override
+  String get settingsLanguageGerman => 'German';
+
+  @override
+  String get settingsUnitsLabel => 'Units';
+
+  @override
+  String get settingsUnitsMetric => 'Metric';
+
+  @override
+  String get settingsUnitsImperial => 'Imperial';
+
+  @override
+  String get settingsThemeLabel => 'Theme';
+
+  @override
+  String get settingsThemeSystem => 'System';
+
+  @override
+  String get settingsThemeDark => 'Dark';
+
+  @override
+  String get settingsThemeLight => 'Light';
+
+  @override
+  String get settingsDisplayNameLabel => 'Profile name';
+
+  @override
+  String get settingsDefaultRestLabel => 'Default rest';
+
+  @override
+  String settingsSeconds(int seconds) {
+    return '$seconds sec';
+  }
+
+  @override
+  String get settingsFocusLabel => 'Focus profile';
+
+  @override
+  String get settingsFocusBalanced => 'Balanced';
+
+  @override
+  String get settingsFocusUpperBody => 'Upper-body focus';
+
+  @override
+  String get settingsFocusLowerBody => 'Lower-body/glute focus';
+
+  @override
+  String get settingsFocusArmsChest => 'Arms/chest focus';
+
+  @override
+  String get settingsFocusStrengthBasics => 'Strength basics';
+
+  @override
+  String get settingsFocusTimeEfficient => 'Time-efficient';
+
+  @override
+  String get settingsFocusBeginnerFoundation => 'Beginner foundation';
+
+  @override
+  String get settingsFocusCustom => 'Custom';
+
+  @override
+  String get settingsTrainingFrequencyLabel => 'Training frequency';
+
+  @override
+  String settingsDaysPerWeek(int days) {
+    return '$days days/week';
+  }
+
+  @override
+  String get settingsSessionDurationLabel => 'Session duration';
+
+  @override
+  String settingsMinutes(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String get settingsEquipmentBodyweight => 'Bodyweight';
+
+  @override
+  String get settingsEquipmentBarbell => 'Barbell';
+
+  @override
+  String get settingsEquipmentDumbbell => 'Dumbbell';
+
+  @override
+  String get settingsEquipmentCable => 'Cable';
+
+  @override
+  String get settingsEquipmentMachine => 'Machine';
+
+  @override
+  String get settingsEquipmentSmithMachine => 'Smith machine';
+
+  @override
+  String get settingsEquipmentPullUpBar => 'Pull-up bar';
+
+  @override
+  String get settingsEquipmentBench => 'Bench';
+
+  @override
+  String get settingsEquipmentLegPress => 'Leg press';
+
+  @override
   String get settingsPlaceholderMessage =>
       'Settings will stay local-first when implemented.';
 }

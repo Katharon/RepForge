@@ -48,7 +48,7 @@ Avoid packages that:
 | Persistence | `drift`, `drift_dev`, `sqlite3_flutter_libs` | Use | Main local relational database. |
 | JSON DTOs | `json_serializable`, `build_runner` | Use | Official catalog import DTOs and app metadata. |
 | Immutable data | `freezed` | Optional | Useful for Bloc states and DTOs. Domain entities should remain readable and explicit. |
-| Settings | `shared_preferences` | Use | Theme, locale override, onboarding-complete flag. Not for training logs. |
+| Settings | Drift/SQLite | Use | Local settings/profile values and equipment inventory share the app database so export/import and migrations stay consistent. |
 | Secure values | `flutter_secure_storage` | Later | Store-sensitive values only if sync/accounts/payments require it. |
 | Package info | `package_info_plus` | Use | App version, build number, catalog version display. |
 | Charts | `fl_chart` | Likely use | Keep behind local chart widgets/read models. Do not leak package types into domain/application. |

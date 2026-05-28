@@ -5,6 +5,9 @@ import '../features/analytics/application/analytics_application.dart';
 import '../features/rest_timer/application/rest_timer_application.dart';
 import '../features/rest_timer/data/rest_timer_data.dart';
 import '../features/rest_timer/domain/rest_timer_domain.dart';
+import '../features/settings/application/settings_application.dart';
+import '../features/settings/data/settings_data.dart';
+import '../features/settings/domain/settings_domain.dart';
 import '../features/training_log/data/repositories/drift_workout_set_repository.dart';
 import '../features/training_log/domain/training_log_domain.dart';
 import '../shared/data/local/repforge_database.dart';
@@ -22,6 +25,10 @@ final class AppDependencies {
     required this.workoutSetRepository,
     required this.getExerciseAnalytics,
     required this.restTimerNotifications,
+    required this.settingsProfileRepository,
+    required this.loadSettingsProfile,
+    required this.saveSettingsProfile,
+    required this.resetSettingsProfile,
   }) : _closeOwnedResources = null;
 
   AppDependencies._withOwnedResources({
@@ -29,6 +36,10 @@ final class AppDependencies {
     required this.workoutSetRepository,
     required this.getExerciseAnalytics,
     required this.restTimerNotifications,
+    required this.settingsProfileRepository,
+    required this.loadSettingsProfile,
+    required this.saveSettingsProfile,
+    required this.resetSettingsProfile,
     required this._closeOwnedResources,
   });
 
@@ -36,6 +47,10 @@ final class AppDependencies {
   final WorkoutSetRepository workoutSetRepository;
   final GetExerciseAnalytics getExerciseAnalytics;
   final RestTimerNotificationCoordinator restTimerNotifications;
+  final SettingsProfileRepository settingsProfileRepository;
+  final LoadSettingsProfile loadSettingsProfile;
+  final SaveSettingsProfile saveSettingsProfile;
+  final ResetSettingsProfile resetSettingsProfile;
 
   final Future<void> Function()? _closeOwnedResources;
   Future<void>? _closeOperation;
@@ -89,6 +104,9 @@ final class CompositionRoot {
   AppDependencies compose() {
     final composedDatabase = database ?? databaseFactory.createDatabase();
     final workoutSetRepository = DriftWorkoutSetRepository(composedDatabase);
+    final settingsProfileRepository = DriftSettingsProfileRepository(
+      composedDatabase,
+    );
     final getExerciseAnalytics = GetExerciseAnalytics(workoutSetRepository);
     final restTimerNotifications = RestTimerNotificationCoordinator(
       timerController: RestTimerController(
@@ -98,6 +116,11 @@ final class CompositionRoot {
           restTimerNotificationGateway ??
           FlutterLocalRestTimerNotificationGateway(),
     );
+    final loadSettingsProfile = LoadSettingsProfile(settingsProfileRepository);
+    final saveSettingsProfile = SaveSettingsProfile(settingsProfileRepository);
+    final resetSettingsProfile = ResetSettingsProfile(
+      settingsProfileRepository,
+    );
     final shouldOwnDatabase = ownsDatabase ?? (database == null);
 
     if (!shouldOwnDatabase) {
@@ -106,6 +129,10 @@ final class CompositionRoot {
         workoutSetRepository: workoutSetRepository,
         getExerciseAnalytics: getExerciseAnalytics,
         restTimerNotifications: restTimerNotifications,
+        settingsProfileRepository: settingsProfileRepository,
+        loadSettingsProfile: loadSettingsProfile,
+        saveSettingsProfile: saveSettingsProfile,
+        resetSettingsProfile: resetSettingsProfile,
       );
     }
 
@@ -114,6 +141,10 @@ final class CompositionRoot {
       workoutSetRepository: workoutSetRepository,
       getExerciseAnalytics: getExerciseAnalytics,
       restTimerNotifications: restTimerNotifications,
+      settingsProfileRepository: settingsProfileRepository,
+      loadSettingsProfile: loadSettingsProfile,
+      saveSettingsProfile: saveSettingsProfile,
+      resetSettingsProfile: resetSettingsProfile,
       closeOwnedResources: composedDatabase.close,
     );
   }

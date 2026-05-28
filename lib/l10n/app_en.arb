@@ -266,6 +266,220 @@
   "@analyticsPreviousPeriod": {
     "description": "Label for the previous analytics chart value."
   },
+  "settingsLoading": "Loading settings",
+  "@settingsLoading": {
+    "description": "Loading state text for settings."
+  },
+  "settingsErrorTitle": "Settings could not load",
+  "@settingsErrorTitle": {
+    "description": "Title for settings loading errors."
+  },
+  "settingsErrorMessage": "Try again without changing local data.",
+  "@settingsErrorMessage": {
+    "description": "Message for settings loading errors."
+  },
+  "settingsRetry": "Retry",
+  "@settingsRetry": {
+    "description": "Retry button label for settings."
+  },
+  "settingsUsingDefaults": "Using local defaults",
+  "@settingsUsingDefaults": {
+    "description": "Status text when settings have never been customized."
+  },
+  "settingsSaved": "Saved locally",
+  "@settingsSaved": {
+    "description": "Status text after saving settings."
+  },
+  "settingsSave": "Save settings",
+  "@settingsSave": {
+    "description": "Save button label for settings."
+  },
+  "settingsSaving": "Saving",
+  "@settingsSaving": {
+    "description": "Saving button label for settings."
+  },
+  "settingsReset": "Reset to defaults",
+  "@settingsReset": {
+    "description": "Tooltip for resetting settings to defaults."
+  },
+  "settingsAppPreferencesTitle": "App preferences",
+  "@settingsAppPreferencesTitle": {
+    "description": "Section title for app settings."
+  },
+  "settingsProfileTitle": "Profile basics",
+  "@settingsProfileTitle": {
+    "description": "Section title for basic user profile fields."
+  },
+  "settingsTrainingTitle": "Training preferences",
+  "@settingsTrainingTitle": {
+    "description": "Section title for training preference settings."
+  },
+  "settingsEquipmentTitle": "Available equipment",
+  "@settingsEquipmentTitle": {
+    "description": "Section title for equipment inventory settings."
+  },
+  "settingsLanguageLabel": "Language",
+  "@settingsLanguageLabel": {
+    "description": "Label for language override selector."
+  },
+  "settingsLanguageSystem": "System",
+  "@settingsLanguageSystem": {
+    "description": "System language option."
+  },
+  "settingsLanguageEnglish": "English",
+  "@settingsLanguageEnglish": {
+    "description": "English language option."
+  },
+  "settingsLanguageGerman": "German",
+  "@settingsLanguageGerman": {
+    "description": "German language option."
+  },
+  "settingsUnitsLabel": "Units",
+  "@settingsUnitsLabel": {
+    "description": "Label for units selector."
+  },
+  "settingsUnitsMetric": "Metric",
+  "@settingsUnitsMetric": {
+    "description": "Metric units option."
+  },
+  "settingsUnitsImperial": "Imperial",
+  "@settingsUnitsImperial": {
+    "description": "Imperial units option."
+  },
+  "settingsThemeLabel": "Theme",
+  "@settingsThemeLabel": {
+    "description": "Label for theme selector."
+  },
+  "settingsThemeSystem": "System",
+  "@settingsThemeSystem": {
+    "description": "System theme option."
+  },
+  "settingsThemeDark": "Dark",
+  "@settingsThemeDark": {
+    "description": "Dark theme option."
+  },
+  "settingsThemeLight": "Light",
+  "@settingsThemeLight": {
+    "description": "Light theme option."
+  },
+  "settingsDisplayNameLabel": "Profile name",
+  "@settingsDisplayNameLabel": {
+    "description": "Label for optional profile display name."
+  },
+  "settingsDefaultRestLabel": "Default rest",
+  "@settingsDefaultRestLabel": {
+    "description": "Label for default rest time selector."
+  },
+  "settingsSeconds": "{seconds} sec",
+  "@settingsSeconds": {
+    "description": "Short seconds label.",
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "example": "90"
+      }
+    }
+  },
+  "settingsFocusLabel": "Focus profile",
+  "@settingsFocusLabel": {
+    "description": "Label for focus profile selector."
+  },
+  "settingsFocusBalanced": "Balanced",
+  "@settingsFocusBalanced": {
+    "description": "Balanced focus profile option."
+  },
+  "settingsFocusUpperBody": "Upper-body focus",
+  "@settingsFocusUpperBody": {
+    "description": "Upper-body focus profile option."
+  },
+  "settingsFocusLowerBody": "Lower-body/glute focus",
+  "@settingsFocusLowerBody": {
+    "description": "Lower-body focus profile option."
+  },
+  "settingsFocusArmsChest": "Arms/chest focus",
+  "@settingsFocusArmsChest": {
+    "description": "Arms and chest focus profile option."
+  },
+  "settingsFocusStrengthBasics": "Strength basics",
+  "@settingsFocusStrengthBasics": {
+    "description": "Strength basics focus profile option."
+  },
+  "settingsFocusTimeEfficient": "Time-efficient",
+  "@settingsFocusTimeEfficient": {
+    "description": "Time-efficient focus profile option."
+  },
+  "settingsFocusBeginnerFoundation": "Beginner foundation",
+  "@settingsFocusBeginnerFoundation": {
+    "description": "Beginner foundation focus profile option."
+  },
+  "settingsFocusCustom": "Custom",
+  "@settingsFocusCustom": {
+    "description": "Custom focus profile option."
+  },
+  "settingsTrainingFrequencyLabel": "Training frequency",
+  "@settingsTrainingFrequencyLabel": {
+    "description": "Label for training days per week selector."
+  },
+  "settingsDaysPerWeek": "{days} days/week",
+  "@settingsDaysPerWeek": {
+    "description": "Days per week label.",
+    "placeholders": {
+      "days": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "settingsSessionDurationLabel": "Session duration",
+  "@settingsSessionDurationLabel": {
+    "description": "Label for session duration selector."
+  },
+  "settingsMinutes": "{minutes} min",
+  "@settingsMinutes": {
+    "description": "Minutes label.",
+    "placeholders": {
+      "minutes": {
+        "type": "int",
+        "example": "45"
+      }
+    }
+  },
+  "settingsEquipmentBodyweight": "Bodyweight",
+  "@settingsEquipmentBodyweight": {
+    "description": "Bodyweight equipment option."
+  },
+  "settingsEquipmentBarbell": "Barbell",
+  "@settingsEquipmentBarbell": {
+    "description": "Barbell equipment option."
+  },
+  "settingsEquipmentDumbbell": "Dumbbell",
+  "@settingsEquipmentDumbbell": {
+    "description": "Dumbbell equipment option."
+  },
+  "settingsEquipmentCable": "Cable",
+  "@settingsEquipmentCable": {
+    "description": "Cable equipment option."
+  },
+  "settingsEquipmentMachine": "Machine",
+  "@settingsEquipmentMachine": {
+    "description": "Machine equipment option."
+  },
+  "settingsEquipmentSmithMachine": "Smith machine",
+  "@settingsEquipmentSmithMachine": {
+    "description": "Smith machine equipment option."
+  },
+  "settingsEquipmentPullUpBar": "Pull-up bar",
+  "@settingsEquipmentPullUpBar": {
+    "description": "Pull-up bar equipment option."
+  },
+  "settingsEquipmentBench": "Bench",
+  "@settingsEquipmentBench": {
+    "description": "Bench equipment option."
+  },
+  "settingsEquipmentLegPress": "Leg press",
+  "@settingsEquipmentLegPress": {
+    "description": "Leg press equipment option."
+  },
   "settingsPlaceholderMessage": "Settings will stay local-first when implemented.",
   "@settingsPlaceholderMessage": {
     "description": "Placeholder message for the settings destination."

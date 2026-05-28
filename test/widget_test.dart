@@ -9,6 +9,8 @@ import 'package:repforge/src/core/widgets/widgets.dart';
 import 'package:repforge/src/features/analytics/application/analytics_application.dart';
 import 'package:repforge/src/features/rest_timer/application/rest_timer_application.dart';
 import 'package:repforge/src/features/rest_timer/domain/rest_timer_domain.dart';
+import 'package:repforge/src/features/settings/application/settings_application.dart';
+import 'package:repforge/src/features/settings/domain/settings_domain.dart';
 import 'package:repforge/src/features/training_log/domain/training_log_domain.dart';
 
 void main() {
@@ -78,7 +80,7 @@ void main() {
       'Groups': 'Workout groups will be connected in a later slice.',
       'Exercises': 'Exercises will use the bundled catalog and custom entries.',
       'Analytics': 'No sets in this range',
-      'Settings': 'Settings will stay local-first when implemented.',
+      'Settings': 'Using local defaults',
       'Today': 'No sets logged today',
     };
 
@@ -147,6 +149,7 @@ AppDependencies _testAppDependencies({
   AppConfiguration configuration = const AppConfiguration(),
 }) {
   final workoutSetRepository = _FakeWorkoutSetRepository();
+  final settingsProfileRepository = _FakeSettingsProfileRepository();
 
   return AppDependencies(
     configuration: configuration,
@@ -158,6 +161,10 @@ AppDependencies _testAppDependencies({
     ),
     workoutSetRepository: workoutSetRepository,
     getExerciseAnalytics: GetExerciseAnalytics(workoutSetRepository),
+    settingsProfileRepository: settingsProfileRepository,
+    loadSettingsProfile: LoadSettingsProfile(settingsProfileRepository),
+    saveSettingsProfile: SaveSettingsProfile(settingsProfileRepository),
+    resetSettingsProfile: ResetSettingsProfile(settingsProfileRepository),
   );
 }
 
@@ -212,5 +219,18 @@ final class _FakeWorkoutSetRepository implements WorkoutSetRepository {
     WorkoutSessionId workoutSessionId,
   ) {
     throw UnimplementedError('Widget smoke tests do not read workout sets.');
+  }
+}
+
+final class _FakeSettingsProfileRepository
+    implements SettingsProfileRepository {
+  SettingsProfile profile = SettingsProfile.defaults();
+
+  @override
+  Future<SettingsProfile> load() async => profile;
+
+  @override
+  Future<void> save(SettingsProfile profile) async {
+    this.profile = profile;
   }
 }

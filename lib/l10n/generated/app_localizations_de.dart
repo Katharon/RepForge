@@ -212,6 +212,160 @@ class AppLocalizationsDe extends AppLocalizations {
   String get analyticsPreviousPeriod => 'Vorher';
 
   @override
+  String get settingsLoading => 'Einstellungen werden geladen';
+
+  @override
+  String get settingsErrorTitle => 'Einstellungen konnten nicht geladen werden';
+
+  @override
+  String get settingsErrorMessage =>
+      'Versuche es erneut, ohne lokale Daten zu aendern.';
+
+  @override
+  String get settingsRetry => 'Erneut versuchen';
+
+  @override
+  String get settingsUsingDefaults => 'Lokale Standardwerte aktiv';
+
+  @override
+  String get settingsSaved => 'Lokal gespeichert';
+
+  @override
+  String get settingsSave => 'Einstellungen speichern';
+
+  @override
+  String get settingsSaving => 'Speichert';
+
+  @override
+  String get settingsReset => 'Auf Standardwerte zuruecksetzen';
+
+  @override
+  String get settingsAppPreferencesTitle => 'App-Einstellungen';
+
+  @override
+  String get settingsProfileTitle => 'Profilbasis';
+
+  @override
+  String get settingsTrainingTitle => 'Trainingseinstellungen';
+
+  @override
+  String get settingsEquipmentTitle => 'Verfuegbare Ausruestung';
+
+  @override
+  String get settingsLanguageLabel => 'Sprache';
+
+  @override
+  String get settingsLanguageSystem => 'System';
+
+  @override
+  String get settingsLanguageEnglish => 'Englisch';
+
+  @override
+  String get settingsLanguageGerman => 'Deutsch';
+
+  @override
+  String get settingsUnitsLabel => 'Einheiten';
+
+  @override
+  String get settingsUnitsMetric => 'Metrisch';
+
+  @override
+  String get settingsUnitsImperial => 'Imperial';
+
+  @override
+  String get settingsThemeLabel => 'Theme';
+
+  @override
+  String get settingsThemeSystem => 'System';
+
+  @override
+  String get settingsThemeDark => 'Dunkel';
+
+  @override
+  String get settingsThemeLight => 'Hell';
+
+  @override
+  String get settingsDisplayNameLabel => 'Profilname';
+
+  @override
+  String get settingsDefaultRestLabel => 'Standardpause';
+
+  @override
+  String settingsSeconds(int seconds) {
+    return '$seconds Sek.';
+  }
+
+  @override
+  String get settingsFocusLabel => 'Fokusprofil';
+
+  @override
+  String get settingsFocusBalanced => 'Ausgewogen';
+
+  @override
+  String get settingsFocusUpperBody => 'Oberkoerperfokus';
+
+  @override
+  String get settingsFocusLowerBody => 'Unterkoerper-/Glutefokus';
+
+  @override
+  String get settingsFocusArmsChest => 'Arm-/Brustfokus';
+
+  @override
+  String get settingsFocusStrengthBasics => 'Kraft-Basics';
+
+  @override
+  String get settingsFocusTimeEfficient => 'Zeiteffizient';
+
+  @override
+  String get settingsFocusBeginnerFoundation => 'Einsteigerbasis';
+
+  @override
+  String get settingsFocusCustom => 'Eigener Fokus';
+
+  @override
+  String get settingsTrainingFrequencyLabel => 'Trainingshaeufigkeit';
+
+  @override
+  String settingsDaysPerWeek(int days) {
+    return '$days Tage/Woche';
+  }
+
+  @override
+  String get settingsSessionDurationLabel => 'Sitzungsdauer';
+
+  @override
+  String settingsMinutes(int minutes) {
+    return '$minutes Min.';
+  }
+
+  @override
+  String get settingsEquipmentBodyweight => 'Koerpergewicht';
+
+  @override
+  String get settingsEquipmentBarbell => 'Langhantel';
+
+  @override
+  String get settingsEquipmentDumbbell => 'Kurzhantel';
+
+  @override
+  String get settingsEquipmentCable => 'Kabelzug';
+
+  @override
+  String get settingsEquipmentMachine => 'Maschine';
+
+  @override
+  String get settingsEquipmentSmithMachine => 'Smith Machine';
+
+  @override
+  String get settingsEquipmentPullUpBar => 'Klimmzugstange';
+
+  @override
+  String get settingsEquipmentBench => 'Bank';
+
+  @override
+  String get settingsEquipmentLegPress => 'Beinpresse';
+
+  @override
   String get settingsPlaceholderMessage =>
       'Einstellungen bleiben bei der Umsetzung lokal-first.';
 }

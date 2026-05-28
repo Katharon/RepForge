@@ -48,10 +48,11 @@
 
 ## Settings components
 
-- `SettingsSection`
+- `SettingsSection` — implemented inside the Settings feature for the compact
+  local settings foundation.
 - `SettingsRow`
-- `UnitSystemSelector`
-- `ThemeModeSelector`
+- `UnitSystemSelector` — represented by the Slice 22 settings dropdown.
+- `ThemeModeSelector` — represented by the Slice 22 settings dropdown.
 - `NotificationPrivacySelector`
 
 ## Component rules

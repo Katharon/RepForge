@@ -4,6 +4,10 @@
 
 ### Added
 
+- Added Slice 22 Settings and user profile foundation with pure-Dart settings
+  domain values, load/save/reset use cases, Drift schema v5 persistence,
+  structured equipment inventory, localized Settings tab controls, and focused
+  domain/repository/use-case/widget tests.
 - Added Slice 21 Today dashboard with a fakeable local loader, loading/empty/
   error/success UI states, daily set and volume cards, last logged set summary,
   rest timer status, quick-action placeholder, and a small analytics hint.
