@@ -42,6 +42,20 @@ Write BLoC/widget tests for dashboard loading, empty state, active rest timer di
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
 
+## Implementation note
+
+Slice 21 replaces the Today placeholder with a compact localized dashboard and a
+fakeable `TodayDashboardLoader` seam. The UI covers loading, empty, error, and
+success states; daily set count and volume cards; last logged set summary; rest
+timer status/countdown; a quick-action placeholder; and a small analytics hint.
+The production loader currently exposes the existing volatile rest timer state
+and an empty local set summary because the current `WorkoutSetRepository`
+contract only supports exercise/session-scoped reads, not an all-sets-for-day
+query. A later logging/dashboard slice should add a focused local daily-summary
+query and wire it into this loader. No workout execution screen, add/edit set
+flow, recommendations, notifications changes, cloud service, or broad
+navigation refactor was added.
+
 ## Validation commands
 
 ```bash

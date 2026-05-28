@@ -152,6 +152,136 @@ abstract class AppLocalizations {
   /// **'Today is ready for the next tracking slice.'**
   String get todayPlaceholderMessage;
 
+  /// Title for the Today dashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get todayDashboardTitle;
+
+  /// Loading state text for the Today dashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading today'**
+  String get todayLoading;
+
+  /// Title for an empty Today dashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'No sets logged today'**
+  String get todayEmptyTitle;
+
+  /// Message for an empty Today dashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Your daily summary will fill in as soon as sets are logged.'**
+  String get todayEmptyMessage;
+
+  /// Title for a Today dashboard error state.
+  ///
+  /// In en, this message translates to:
+  /// **'Today could not load'**
+  String get todayErrorTitle;
+
+  /// Message for a Today dashboard error state.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again without changing local data.'**
+  String get todayErrorMessage;
+
+  /// Retry button label for the Today dashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get todayRetry;
+
+  /// Metric label for sets logged today.
+  ///
+  /// In en, this message translates to:
+  /// **'Sets today'**
+  String get todaySetCount;
+
+  /// Metric label for volume logged today.
+  ///
+  /// In en, this message translates to:
+  /// **'Volume today'**
+  String get todayVolume;
+
+  /// Title for the last logged set card.
+  ///
+  /// In en, this message translates to:
+  /// **'Last logged'**
+  String get todayLastLoggedTitle;
+
+  /// Text when there is no last logged set today.
+  ///
+  /// In en, this message translates to:
+  /// **'No set yet'**
+  String get todayNoLastLoggedSet;
+
+  /// Summary for the last logged set.
+  ///
+  /// In en, this message translates to:
+  /// **'{exercise}: {repetitions} reps at {load}'**
+  String todayLastLoggedSetSummary(
+    String exercise,
+    int repetitions,
+    String load,
+  );
+
+  /// Title for the rest timer card on Today.
+  ///
+  /// In en, this message translates to:
+  /// **'Rest timer'**
+  String get todayRestTimerTitle;
+
+  /// Rest timer idle state on Today.
+  ///
+  /// In en, this message translates to:
+  /// **'No active rest timer'**
+  String get todayRestTimerIdle;
+
+  /// Rest timer running state on Today.
+  ///
+  /// In en, this message translates to:
+  /// **'Resting'**
+  String get todayRestTimerRunning;
+
+  /// Rest timer finished state on Today.
+  ///
+  /// In en, this message translates to:
+  /// **'Rest complete'**
+  String get todayRestTimerFinished;
+
+  /// Title for Today quick action placeholder card.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick action'**
+  String get todayQuickActionTitle;
+
+  /// Future quick action label for logging a set.
+  ///
+  /// In en, this message translates to:
+  /// **'Log set'**
+  String get todayQuickActionLogSet;
+
+  /// Placeholder text for future quick logging entry point.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick logging will connect here in a later tracking slice.'**
+  String get todayQuickActionPlaceholder;
+
+  /// Title for a small Today analytics hint card.
+  ///
+  /// In en, this message translates to:
+  /// **'Training signal'**
+  String get todayAnalyticsHintTitle;
+
+  /// Message for a small Today analytics hint card.
+  ///
+  /// In en, this message translates to:
+  /// **'Local trends stay in Analytics while today\'s work stays here.'**
+  String get todayAnalyticsHintMessage;
+
   /// Placeholder message for the workout groups destination.
   ///
   /// In en, this message translates to:

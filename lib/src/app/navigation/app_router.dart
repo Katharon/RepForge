@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/analytics/presentation/analytics_presentation.dart';
+import '../../features/today/presentation/today_presentation.dart';
 import '../../features/training_log/domain/training_log_domain.dart';
 import '../composition_root.dart';
 import '../localization/app_localizations.dart';
@@ -22,10 +23,10 @@ GoRouter createAppRouter({required AppDependencies dependencies}) {
           _branch(
             route: AppRoute.today,
             builder: (context, state) {
-              final localizations = AppLocalizations.of(context);
-              return PlaceholderDestinationPage(
-                title: localizations.navToday,
-                message: localizations.todayPlaceholderMessage,
+              return TodayPage(
+                loader: RestTimerTodayDashboardLoader(
+                  restTimerNotifications: dependencies.restTimerNotifications,
+                ),
               );
             },
           ),

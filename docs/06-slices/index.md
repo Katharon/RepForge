@@ -23,7 +23,7 @@ Each slice is an incremental Codex task. Codex should implement exactly one slic
 - [18 — Exercise analytics use cases](slice_18_exercise_analytics_use_cases.md) — done
 - [19 — Analytics charts and range selector UI](slice_19_analytics_charts_and_range_selector_ui.md) — done
 - [20 — Estimated 1RM feature](slice_20_estimated_1rm_feature.md) — done
-- [21 — Today dashboard](slice_21_today_dashboard.md)
+- [21 — Today dashboard](slice_21_today_dashboard.md) — done
 - [22 — Settings and user profile foundation](slice_22_settings_foundation.md)
 - [23 — Onboarding, initial groups, and bundled sample data](slice_23_onboarding_and_sample_data.md)
 - [24 — Import/export local backup](slice_24_import_export_local_backup.md)

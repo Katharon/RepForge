@@ -38,17 +38,15 @@ void main() {
     final dependencies = _testAppDependencies();
 
     await tester.pumpWidget(RepForgeApp(dependencies: dependencies));
+    await tester.pumpAndSettle();
 
     expect(find.text('Today'), findsWidgets);
     expect(find.text('Groups'), findsWidgets);
     expect(find.text('Exercises'), findsWidgets);
     expect(find.text('Analytics'), findsWidgets);
     expect(find.text('Settings'), findsWidgets);
-    expect(
-      find.text('Today is ready for the next tracking slice.'),
-      findsOneWidget,
-    );
-    expect(find.byType(AppCard), findsOneWidget);
+    expect(find.text('No sets logged today'), findsOneWidget);
+    expect(find.byType(AppCard), findsWidgets);
   });
 
   testWidgets('renders German navigation labels with forced German locale', (
@@ -59,16 +57,14 @@ void main() {
     );
 
     await tester.pumpWidget(RepForgeApp(dependencies: dependencies));
+    await tester.pumpAndSettle();
 
     expect(find.text('Heute'), findsWidgets);
     expect(find.text('Gruppen'), findsWidgets);
     expect(find.text('Uebungen'), findsWidgets);
     expect(find.text('Analyse'), findsWidgets);
     expect(find.text('Einstellungen'), findsWidgets);
-    expect(
-      find.text('Heute wartet auf den naechsten Tracking-Slice.'),
-      findsOneWidget,
-    );
+    expect(find.text('Heute noch keine Saetze'), findsOneWidget);
   });
 
   testWidgets('tapping each destination shows the matching placeholder', (
@@ -83,7 +79,7 @@ void main() {
       'Exercises': 'Exercises will use the bundled catalog and custom entries.',
       'Analytics': 'No sets in this range',
       'Settings': 'Settings will stay local-first when implemented.',
-      'Today': 'Today is ready for the next tracking slice.',
+      'Today': 'No sets logged today',
     };
 
     for (final entry in destinations.entries) {

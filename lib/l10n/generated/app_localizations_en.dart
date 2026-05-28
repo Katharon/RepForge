@@ -38,6 +38,78 @@ class AppLocalizationsEn extends AppLocalizations {
       'Today is ready for the next tracking slice.';
 
   @override
+  String get todayDashboardTitle => 'Today';
+
+  @override
+  String get todayLoading => 'Loading today';
+
+  @override
+  String get todayEmptyTitle => 'No sets logged today';
+
+  @override
+  String get todayEmptyMessage =>
+      'Your daily summary will fill in as soon as sets are logged.';
+
+  @override
+  String get todayErrorTitle => 'Today could not load';
+
+  @override
+  String get todayErrorMessage => 'Try again without changing local data.';
+
+  @override
+  String get todayRetry => 'Retry';
+
+  @override
+  String get todaySetCount => 'Sets today';
+
+  @override
+  String get todayVolume => 'Volume today';
+
+  @override
+  String get todayLastLoggedTitle => 'Last logged';
+
+  @override
+  String get todayNoLastLoggedSet => 'No set yet';
+
+  @override
+  String todayLastLoggedSetSummary(
+    String exercise,
+    int repetitions,
+    String load,
+  ) {
+    return '$exercise: $repetitions reps at $load';
+  }
+
+  @override
+  String get todayRestTimerTitle => 'Rest timer';
+
+  @override
+  String get todayRestTimerIdle => 'No active rest timer';
+
+  @override
+  String get todayRestTimerRunning => 'Resting';
+
+  @override
+  String get todayRestTimerFinished => 'Rest complete';
+
+  @override
+  String get todayQuickActionTitle => 'Quick action';
+
+  @override
+  String get todayQuickActionLogSet => 'Log set';
+
+  @override
+  String get todayQuickActionPlaceholder =>
+      'Quick logging will connect here in a later tracking slice.';
+
+  @override
+  String get todayAnalyticsHintTitle => 'Training signal';
+
+  @override
+  String get todayAnalyticsHintMessage =>
+      'Local trends stay in Analytics while today\'s work stays here.';
+
+  @override
   String get groupsPlaceholderMessage =>
       'Workout groups will be connected in a later slice.';
 

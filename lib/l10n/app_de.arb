@@ -36,6 +36,104 @@
   "@todayPlaceholderMessage": {
     "description": "Platzhaltertext fuer Heute."
   },
+  "todayDashboardTitle": "Heute",
+  "@todayDashboardTitle": {
+    "description": "Titel fuer das Heute-Dashboard."
+  },
+  "todayLoading": "Heute wird geladen",
+  "@todayLoading": {
+    "description": "Ladezustand fuer das Heute-Dashboard."
+  },
+  "todayEmptyTitle": "Heute noch keine Saetze",
+  "@todayEmptyTitle": {
+    "description": "Titel fuer ein leeres Heute-Dashboard."
+  },
+  "todayEmptyMessage": "Deine Tagesuebersicht fuellt sich, sobald Saetze protokolliert sind.",
+  "@todayEmptyMessage": {
+    "description": "Text fuer ein leeres Heute-Dashboard."
+  },
+  "todayErrorTitle": "Heute konnte nicht geladen werden",
+  "@todayErrorTitle": {
+    "description": "Titel fuer einen Fehler im Heute-Dashboard."
+  },
+  "todayErrorMessage": "Versuche es erneut, ohne lokale Daten zu aendern.",
+  "@todayErrorMessage": {
+    "description": "Text fuer einen Fehler im Heute-Dashboard."
+  },
+  "todayRetry": "Erneut versuchen",
+  "@todayRetry": {
+    "description": "Button fuer erneutes Laden im Heute-Dashboard."
+  },
+  "todaySetCount": "Saetze heute",
+  "@todaySetCount": {
+    "description": "Metriklabel fuer heute protokollierte Saetze."
+  },
+  "todayVolume": "Volumen heute",
+  "@todayVolume": {
+    "description": "Metriklabel fuer heute protokolliertes Volumen."
+  },
+  "todayLastLoggedTitle": "Zuletzt protokolliert",
+  "@todayLastLoggedTitle": {
+    "description": "Titel fuer die Karte zum letzten protokollierten Satz."
+  },
+  "todayNoLastLoggedSet": "Noch kein Satz",
+  "@todayNoLastLoggedSet": {
+    "description": "Text, wenn heute noch kein letzter Satz vorhanden ist."
+  },
+  "todayLastLoggedSetSummary": "{exercise}: {repetitions} Wdh. mit {load}",
+  "@todayLastLoggedSetSummary": {
+    "description": "Zusammenfassung fuer den letzten protokollierten Satz.",
+    "placeholders": {
+      "exercise": {
+        "type": "String",
+        "example": "Bankdruecken"
+      },
+      "repetitions": {
+        "type": "int",
+        "example": "5"
+      },
+      "load": {
+        "type": "String",
+        "example": "100 kg"
+      }
+    }
+  },
+  "todayRestTimerTitle": "Pausentimer",
+  "@todayRestTimerTitle": {
+    "description": "Titel fuer die Pausentimer-Karte in Heute."
+  },
+  "todayRestTimerIdle": "Kein aktiver Pausentimer",
+  "@todayRestTimerIdle": {
+    "description": "Pausentimer-Leerlaufzustand in Heute."
+  },
+  "todayRestTimerRunning": "Pause laeuft",
+  "@todayRestTimerRunning": {
+    "description": "Pausentimer laeuft in Heute."
+  },
+  "todayRestTimerFinished": "Pause beendet",
+  "@todayRestTimerFinished": {
+    "description": "Pausentimer ist in Heute beendet."
+  },
+  "todayQuickActionTitle": "Schnellaktion",
+  "@todayQuickActionTitle": {
+    "description": "Titel fuer die Schnellaktions-Platzhalterkarte."
+  },
+  "todayQuickActionLogSet": "Satz protokollieren",
+  "@todayQuickActionLogSet": {
+    "description": "Kuenftiges Schnellaktionslabel zum Protokollieren eines Satzes."
+  },
+  "todayQuickActionPlaceholder": "Schnelles Protokollieren wird in einem spaeteren Tracking-Slice hier verbunden.",
+  "@todayQuickActionPlaceholder": {
+    "description": "Platzhaltertext fuer den kuenftigen Schnellzugriff zum Protokollieren."
+  },
+  "todayAnalyticsHintTitle": "Trainingssignal",
+  "@todayAnalyticsHintTitle": {
+    "description": "Titel fuer eine kleine Analyse-Hinweiskarte in Heute."
+  },
+  "todayAnalyticsHintMessage": "Lokale Trends bleiben in Analyse, waehrend die heutige Arbeit hier sichtbar ist.",
+  "@todayAnalyticsHintMessage": {
+    "description": "Text fuer eine kleine Analyse-Hinweiskarte in Heute."
+  },
   "groupsPlaceholderMessage": "Workout-Gruppen werden in einem spaeteren Slice verbunden.",
   "@groupsPlaceholderMessage": {
     "description": "Platzhaltertext fuer Workout-Gruppen."

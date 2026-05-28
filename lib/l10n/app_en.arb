@@ -36,6 +36,104 @@
   "@todayPlaceholderMessage": {
     "description": "Placeholder message for the Today destination."
   },
+  "todayDashboardTitle": "Today",
+  "@todayDashboardTitle": {
+    "description": "Title for the Today dashboard."
+  },
+  "todayLoading": "Loading today",
+  "@todayLoading": {
+    "description": "Loading state text for the Today dashboard."
+  },
+  "todayEmptyTitle": "No sets logged today",
+  "@todayEmptyTitle": {
+    "description": "Title for an empty Today dashboard."
+  },
+  "todayEmptyMessage": "Your daily summary will fill in as soon as sets are logged.",
+  "@todayEmptyMessage": {
+    "description": "Message for an empty Today dashboard."
+  },
+  "todayErrorTitle": "Today could not load",
+  "@todayErrorTitle": {
+    "description": "Title for a Today dashboard error state."
+  },
+  "todayErrorMessage": "Try again without changing local data.",
+  "@todayErrorMessage": {
+    "description": "Message for a Today dashboard error state."
+  },
+  "todayRetry": "Retry",
+  "@todayRetry": {
+    "description": "Retry button label for the Today dashboard."
+  },
+  "todaySetCount": "Sets today",
+  "@todaySetCount": {
+    "description": "Metric label for sets logged today."
+  },
+  "todayVolume": "Volume today",
+  "@todayVolume": {
+    "description": "Metric label for volume logged today."
+  },
+  "todayLastLoggedTitle": "Last logged",
+  "@todayLastLoggedTitle": {
+    "description": "Title for the last logged set card."
+  },
+  "todayNoLastLoggedSet": "No set yet",
+  "@todayNoLastLoggedSet": {
+    "description": "Text when there is no last logged set today."
+  },
+  "todayLastLoggedSetSummary": "{exercise}: {repetitions} reps at {load}",
+  "@todayLastLoggedSetSummary": {
+    "description": "Summary for the last logged set.",
+    "placeholders": {
+      "exercise": {
+        "type": "String",
+        "example": "Barbell Bench Press"
+      },
+      "repetitions": {
+        "type": "int",
+        "example": "5"
+      },
+      "load": {
+        "type": "String",
+        "example": "100 kg"
+      }
+    }
+  },
+  "todayRestTimerTitle": "Rest timer",
+  "@todayRestTimerTitle": {
+    "description": "Title for the rest timer card on Today."
+  },
+  "todayRestTimerIdle": "No active rest timer",
+  "@todayRestTimerIdle": {
+    "description": "Rest timer idle state on Today."
+  },
+  "todayRestTimerRunning": "Resting",
+  "@todayRestTimerRunning": {
+    "description": "Rest timer running state on Today."
+  },
+  "todayRestTimerFinished": "Rest complete",
+  "@todayRestTimerFinished": {
+    "description": "Rest timer finished state on Today."
+  },
+  "todayQuickActionTitle": "Quick action",
+  "@todayQuickActionTitle": {
+    "description": "Title for Today quick action placeholder card."
+  },
+  "todayQuickActionLogSet": "Log set",
+  "@todayQuickActionLogSet": {
+    "description": "Future quick action label for logging a set."
+  },
+  "todayQuickActionPlaceholder": "Quick logging will connect here in a later tracking slice.",
+  "@todayQuickActionPlaceholder": {
+    "description": "Placeholder text for future quick logging entry point."
+  },
+  "todayAnalyticsHintTitle": "Training signal",
+  "@todayAnalyticsHintTitle": {
+    "description": "Title for a small Today analytics hint card."
+  },
+  "todayAnalyticsHintMessage": "Local trends stay in Analytics while today's work stays here.",
+  "@todayAnalyticsHintMessage": {
+    "description": "Message for a small Today analytics hint card."
+  },
   "groupsPlaceholderMessage": "Workout groups will be connected in a later slice.",
   "@groupsPlaceholderMessage": {
     "description": "Placeholder message for the workout groups destination."

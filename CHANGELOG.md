@@ -4,6 +4,9 @@
 
 ### Added
 
+- Added Slice 21 Today dashboard with a fakeable local loader, loading/empty/
+  error/success UI states, daily set and volume cards, last logged set summary,
+  rest timer status, quick-action placeholder, and a small analytics hint.
 - Added Slice 20 estimated 1RM feature with a focused Analytics value card,
   Epley formula identity display, unavailable handling, zero-load estimate
   coverage, and deterministic 1RM chart/selection tests without new chart

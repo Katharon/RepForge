@@ -30,6 +30,14 @@
 - `CircularCountdownIndicator`
 - `TimerActionButton`
 
+## Today components
+
+- `TodayMetricCard`
+- `TodayLastLoggedSetCard`
+- `TodayRestTimerCard`
+- `TodayQuickActionCard`
+- `TodayAnalyticsHintCard`
+
 ## Analytics components
 
 - `AnalyticsRangeSelector`

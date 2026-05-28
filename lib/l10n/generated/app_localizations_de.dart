@@ -38,6 +38,79 @@ class AppLocalizationsDe extends AppLocalizations {
       'Heute wartet auf den naechsten Tracking-Slice.';
 
   @override
+  String get todayDashboardTitle => 'Heute';
+
+  @override
+  String get todayLoading => 'Heute wird geladen';
+
+  @override
+  String get todayEmptyTitle => 'Heute noch keine Saetze';
+
+  @override
+  String get todayEmptyMessage =>
+      'Deine Tagesuebersicht fuellt sich, sobald Saetze protokolliert sind.';
+
+  @override
+  String get todayErrorTitle => 'Heute konnte nicht geladen werden';
+
+  @override
+  String get todayErrorMessage =>
+      'Versuche es erneut, ohne lokale Daten zu aendern.';
+
+  @override
+  String get todayRetry => 'Erneut versuchen';
+
+  @override
+  String get todaySetCount => 'Saetze heute';
+
+  @override
+  String get todayVolume => 'Volumen heute';
+
+  @override
+  String get todayLastLoggedTitle => 'Zuletzt protokolliert';
+
+  @override
+  String get todayNoLastLoggedSet => 'Noch kein Satz';
+
+  @override
+  String todayLastLoggedSetSummary(
+    String exercise,
+    int repetitions,
+    String load,
+  ) {
+    return '$exercise: $repetitions Wdh. mit $load';
+  }
+
+  @override
+  String get todayRestTimerTitle => 'Pausentimer';
+
+  @override
+  String get todayRestTimerIdle => 'Kein aktiver Pausentimer';
+
+  @override
+  String get todayRestTimerRunning => 'Pause laeuft';
+
+  @override
+  String get todayRestTimerFinished => 'Pause beendet';
+
+  @override
+  String get todayQuickActionTitle => 'Schnellaktion';
+
+  @override
+  String get todayQuickActionLogSet => 'Satz protokollieren';
+
+  @override
+  String get todayQuickActionPlaceholder =>
+      'Schnelles Protokollieren wird in einem spaeteren Tracking-Slice hier verbunden.';
+
+  @override
+  String get todayAnalyticsHintTitle => 'Trainingssignal';
+
+  @override
+  String get todayAnalyticsHintMessage =>
+      'Lokale Trends bleiben in Analyse, waehrend die heutige Arbeit hier sichtbar ist.';
+
+  @override
   String get groupsPlaceholderMessage =>
       'Workout-Gruppen werden in einem spaeteren Slice verbunden.';
 
