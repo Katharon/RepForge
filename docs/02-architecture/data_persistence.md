@@ -107,3 +107,17 @@ additively. Existing users load deterministic defaults when no settings row is
 present. Saving settings upserts the single local profile row and replaces only
 that profile's structured equipment inventory; workout sets, workout groups, and
 official catalog rows are not modified.
+
+## Slice 25 persistence hardening
+
+Drift schema remains v6. Slice 25 adds tests that pin the current table list,
+validate the current Drift schema, and exercise a non-empty schema v1 migration
+fixture to confirm additive upgrades preserve logged workout-set history.
+
+The shared local data layer now includes deterministic integrity checks for
+workout sets, workout group assignments, settings/equipment, onboarding status,
+and catalog import metadata. Findings include severity, stable code, message,
+affected table/entity id, and whether a safe repair exists. Repairs are
+report-only by default; the only implemented safe repair normalizes legacy blank
+workout-set labels to `NULL`. No repair silently deletes rows or mutates
+official catalog records.

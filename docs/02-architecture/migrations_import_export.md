@@ -4,6 +4,18 @@
 
 Every schema migration must have a test. Migration code must preserve user data.
 
+### Implemented migration-test foundation
+
+Slice 25 pins the current Drift schema version and table list, validates the
+current schema against Drift metadata in tests, and adds a non-empty schema v1
+migration fixture that verifies additive creation of later tables and the
+`workout_sets.set_label` column while preserving existing workout-set history.
+
+Historical generated schema snapshots were not present before Slice 25. This
+fixture is the migration-test foundation for future changes; every future schema
+bump should add its own historical snapshot or fixture before changing
+production migration code.
+
 ## Export formats
 
 Initial recommended formats:
@@ -50,6 +62,29 @@ does not wipe existing workout data and does not mutate official catalog rows.
 Settings and onboarding are single local records, so when a backup contains
 those sections they are applied by upsert. Platform file selection and CSV are
 not part of this slice.
+
+Slice 25 adds archive/delete policy tests confirming that backup import upserts
+do not wipe unrelated workout sets, workout groups, assignments, or official
+catalog rows.
+
+## Integrity checks and repair policy
+
+The local persistence layer exposes deterministic integrity findings for:
+
+- orphaned workout group assignments;
+- invalid exercise source values;
+- missing or blank exercise snapshot data;
+- invalid or legacy blank set labels;
+- invalid repetitions or load values;
+- invalid settings/profile/equipment values;
+- invalid onboarding status values;
+- broken catalog import metadata.
+
+Repair is explicit and report-only by default. The first safe repair normalizes
+legacy blank workout-set labels to `NULL`; it does not delete rows, alter
+training history snapshots, or mutate official catalog rows. Orphaned rows and
+other ambiguous findings remain report-only until a later slice defines a
+user-visible archive/delete decision.
 
 ## Backup privacy
 

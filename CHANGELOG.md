@@ -4,6 +4,10 @@
 
 ### Added
 
+- Added Slice 25 persistence hardening with current Drift schema validation,
+  a non-empty schema v1 migration-test fixture, broader database constraint
+  coverage, deterministic integrity findings, report-only safe repair for
+  legacy blank set labels, and archive/delete/import policy tests.
 - Added Slice 24 local backup foundation with versioned JSON export,
   deterministic validation, additive/upsert import, composition-root wiring,
   catalog-import metadata preservation, and no cloud or platform file picker.

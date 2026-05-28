@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart' hide isNull;
 import 'package:drift/native.dart';
+import 'package:drift_dev/api/migrations_native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:repforge/src/shared/data/local/repforge_database.dart';
 
@@ -19,26 +20,45 @@ void main() {
           SELECT name
           FROM sqlite_master
           WHERE type = 'table'
-          AND name IN (
-            'workout_sets',
-            'official_exercises',
-            'official_exercise_equipment_tags',
-            'official_exercise_movement_patterns',
-            'official_exercise_muscle_groups',
-            'catalog_imports',
-            'workout_groups',
-            'workout_group_exercise_assignments',
-            'settings_profiles',
-            'equipment_inventory_items',
-            'onboarding_statuses'
-          )
+          AND name NOT LIKE 'sqlite_%'
+          ORDER BY name
           ''').get();
 
-    expect(tables, hasLength(11));
+    expect(tables.map((row) => row.read<String>('name')), _expectedTableNames);
   });
 
   test('uses schema version 6', () {
     expect(database.schemaVersion, 6);
+  });
+
+  test('current schema validates against Drift metadata', () async {
+    await expectLater(database.validateDatabaseSchema(), completes);
+  });
+
+  test('migrates a non-empty schema version 1 database additively', () async {
+    await database.close();
+    database = RepForgeDatabase(
+      NativeDatabase.memory(setup: _createLegacyVersionOneDatabase),
+    );
+
+    final migratedSet = await database.select(database.workoutSets).getSingle();
+    final tables = await database.customSelect('''
+            SELECT name
+            FROM sqlite_master
+            WHERE type = 'table'
+            AND name NOT LIKE 'sqlite_%'
+            ORDER BY name
+            ''').get();
+    final userVersion = await database
+        .customSelect('PRAGMA user_version')
+        .getSingle();
+
+    expect(migratedSet.workoutSetId, 'legacy-set-1');
+    expect(migratedSet.exerciseDisplayNameSnapshot, 'Legacy Bench');
+    expect(migratedSet.setLabel, isNull);
+    expect(tables.map((row) => row.read<String>('name')), _expectedTableNames);
+    expect(userVersion.read<int>('user_version'), 6);
+    await expectLater(database.validateDatabaseSchema(), completes);
   });
 
   test('accepts an official exercise workout set with snapshots', () async {
@@ -171,7 +191,160 @@ void main() {
 
       await expectLater(_insertSet(database), throwsA(isA<Exception>()));
     });
+
+    test('reject invalid catalog metadata', () async {
+      await expectLater(
+        database
+            .into(database.catalogImports)
+            .insert(
+              CatalogImportsCompanion.insert(
+                catalogVersion: '',
+                schemaVersion: 0,
+                importedAt: DateTime.utc(2026, 5, 28),
+              ),
+            ),
+        throwsA(isA<Exception>()),
+      );
+    });
+
+    test('reject invalid workout group rows', () async {
+      await expectLater(
+        database
+            .into(database.workoutGroups)
+            .insert(
+              WorkoutGroupsCompanion.insert(
+                workoutGroupId: '',
+                name: '',
+                sortOrder: -1,
+              ),
+            ),
+        throwsA(isA<Exception>()),
+      );
+    });
+
+    test('reject invalid workout group assignments', () async {
+      await expectLater(
+        database
+            .into(database.workoutGroupExerciseAssignments)
+            .insert(
+              WorkoutGroupExerciseAssignmentsCompanion.insert(
+                assignmentId: '',
+                workoutGroupId: '',
+                exerciseSource: 'remote',
+                exerciseId: '',
+                exerciseDisplayNameSnapshot: '',
+                position: -1,
+              ),
+            ),
+        throwsA(isA<Exception>()),
+      );
+    });
+
+    test('reject invalid settings values', () async {
+      await expectLater(
+        database
+            .into(database.settingsProfiles)
+            .insert(
+              SettingsProfilesCompanion.insert(
+                profileId: '',
+                languageOverride: 'fr',
+                unitPreference: 'metric',
+                themePreference: 'system',
+                defaultRestSeconds: 0,
+                focusProfile: 'balanced',
+                trainingDaysPerWeek: 8,
+                sessionDurationMinutes: 10,
+              ),
+            ),
+        throwsA(isA<Exception>()),
+      );
+    });
+
+    test('reject invalid onboarding status', () async {
+      await expectLater(
+        database
+            .into(database.onboardingStatuses)
+            .insert(
+              OnboardingStatusesCompanion.insert(
+                statusId: '',
+                completion: 'maybe',
+                updatedAt: DateTime.utc(2026, 5, 28),
+              ),
+            ),
+        throwsA(isA<Exception>()),
+      );
+    });
   });
+}
+
+const List<String> _expectedTableNames = <String>[
+  'catalog_imports',
+  'equipment_inventory_items',
+  'official_exercise_equipment_tags',
+  'official_exercise_movement_patterns',
+  'official_exercise_muscle_groups',
+  'official_exercises',
+  'onboarding_statuses',
+  'settings_profiles',
+  'workout_group_exercise_assignments',
+  'workout_groups',
+  'workout_sets',
+];
+
+void _createLegacyVersionOneDatabase(Object rawDatabase) {
+  final database = rawDatabase as dynamic;
+  // ignore: avoid_dynamic_calls
+  database
+    ..execute('''
+CREATE TABLE workout_sets (
+  workout_set_id TEXT NOT NULL CHECK (length(workout_set_id) > 0),
+  exercise_source TEXT NOT NULL CHECK (
+    exercise_source IN ('official', 'custom')
+  ),
+  exercise_id TEXT NOT NULL CHECK (length(exercise_id) > 0),
+  exercise_display_name_snapshot TEXT NOT NULL CHECK (
+    length(exercise_display_name_snapshot) > 0
+  ),
+  catalog_version_snapshot TEXT NULL CHECK (
+    catalog_version_snapshot IS NULL OR length(catalog_version_snapshot) > 0
+  ),
+  workout_session_id TEXT NULL CHECK (
+    workout_session_id IS NULL OR length(workout_session_id) > 0
+  ),
+  repetitions INTEGER NOT NULL CHECK (repetitions > 0),
+  load_kg REAL NOT NULL CHECK (load_kg >= 0),
+  performed_at INTEGER NOT NULL,
+  comment TEXT NULL CHECK (comment IS NULL OR length(comment) > 0),
+  PRIMARY KEY (workout_set_id)
+)
+''')
+    ..execute('''
+INSERT INTO workout_sets (
+  workout_set_id,
+  exercise_source,
+  exercise_id,
+  exercise_display_name_snapshot,
+  catalog_version_snapshot,
+  workout_session_id,
+  repetitions,
+  load_kg,
+  performed_at,
+  comment
+)
+VALUES (
+  'legacy-set-1',
+  'official',
+  'barbell-bench-press',
+  'Legacy Bench',
+  '2026.05.0',
+  'legacy-session',
+  5,
+  80,
+  1780056000000,
+  'Preserve me'
+)
+''')
+    ..execute('PRAGMA user_version = 1');
 }
 
 Future<int> _insertSet(
