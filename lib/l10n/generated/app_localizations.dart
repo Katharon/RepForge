@@ -756,6 +756,114 @@ abstract class AppLocalizations {
   /// **'Leg press'**
   String get settingsEquipmentLegPress;
 
+  /// Title for the onboarding flow.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup'**
+  String get onboardingTitle;
+
+  /// Loading text for onboarding status.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing setup'**
+  String get onboardingLoading;
+
+  /// Welcome title for onboarding.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up RepForge'**
+  String get onboardingWelcomeTitle;
+
+  /// Welcome message for onboarding.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a few local preferences now or skip and start tracking.'**
+  String get onboardingWelcomeMessage;
+
+  /// Button to start onboarding.
+  ///
+  /// In en, this message translates to:
+  /// **'Start setup'**
+  String get onboardingStart;
+
+  /// Button to skip onboarding.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get onboardingSkip;
+
+  /// Onboarding profile step title.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile and focus'**
+  String get onboardingProfileTitle;
+
+  /// Onboarding training step title.
+  ///
+  /// In en, this message translates to:
+  /// **'Training rhythm'**
+  String get onboardingTrainingTitle;
+
+  /// Onboarding equipment step title.
+  ///
+  /// In en, this message translates to:
+  /// **'Equipment'**
+  String get onboardingEquipmentTitle;
+
+  /// Checkbox title for creating starter workout groups.
+  ///
+  /// In en, this message translates to:
+  /// **'Create starter groups'**
+  String get onboardingStarterGroupsTitle;
+
+  /// Back button in onboarding.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get onboardingBack;
+
+  /// Next button in onboarding.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get onboardingNext;
+
+  /// Complete onboarding button.
+  ///
+  /// In en, this message translates to:
+  /// **'Save setup'**
+  String get onboardingComplete;
+
+  /// Saved state title for onboarding.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup saved'**
+  String get onboardingSavedTitle;
+
+  /// Saved state message for onboarding.
+  ///
+  /// In en, this message translates to:
+  /// **'Your choices are stored locally and can be changed in Settings.'**
+  String get onboardingSavedMessage;
+
+  /// Continue button after onboarding is saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get onboardingContinue;
+
+  /// Onboarding error title.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup could not save'**
+  String get onboardingErrorTitle;
+
+  /// Onboarding error message.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again without changing local data.'**
+  String get onboardingErrorMessage;
+
   /// Placeholder message for the settings destination.
   ///
   /// In en, this message translates to:

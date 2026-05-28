@@ -480,6 +480,78 @@
   "@settingsEquipmentLegPress": {
     "description": "Leg press equipment option."
   },
+  "onboardingTitle": "Setup",
+  "@onboardingTitle": {
+    "description": "Title for the onboarding flow."
+  },
+  "onboardingLoading": "Preparing setup",
+  "@onboardingLoading": {
+    "description": "Loading text for onboarding status."
+  },
+  "onboardingWelcomeTitle": "Set up RepForge",
+  "@onboardingWelcomeTitle": {
+    "description": "Welcome title for onboarding."
+  },
+  "onboardingWelcomeMessage": "Choose a few local preferences now or skip and start tracking.",
+  "@onboardingWelcomeMessage": {
+    "description": "Welcome message for onboarding."
+  },
+  "onboardingStart": "Start setup",
+  "@onboardingStart": {
+    "description": "Button to start onboarding."
+  },
+  "onboardingSkip": "Skip",
+  "@onboardingSkip": {
+    "description": "Button to skip onboarding."
+  },
+  "onboardingProfileTitle": "Profile and focus",
+  "@onboardingProfileTitle": {
+    "description": "Onboarding profile step title."
+  },
+  "onboardingTrainingTitle": "Training rhythm",
+  "@onboardingTrainingTitle": {
+    "description": "Onboarding training step title."
+  },
+  "onboardingEquipmentTitle": "Equipment",
+  "@onboardingEquipmentTitle": {
+    "description": "Onboarding equipment step title."
+  },
+  "onboardingStarterGroupsTitle": "Create starter groups",
+  "@onboardingStarterGroupsTitle": {
+    "description": "Checkbox title for creating starter workout groups."
+  },
+  "onboardingBack": "Back",
+  "@onboardingBack": {
+    "description": "Back button in onboarding."
+  },
+  "onboardingNext": "Next",
+  "@onboardingNext": {
+    "description": "Next button in onboarding."
+  },
+  "onboardingComplete": "Save setup",
+  "@onboardingComplete": {
+    "description": "Complete onboarding button."
+  },
+  "onboardingSavedTitle": "Setup saved",
+  "@onboardingSavedTitle": {
+    "description": "Saved state title for onboarding."
+  },
+  "onboardingSavedMessage": "Your choices are stored locally and can be changed in Settings.",
+  "@onboardingSavedMessage": {
+    "description": "Saved state message for onboarding."
+  },
+  "onboardingContinue": "Continue",
+  "@onboardingContinue": {
+    "description": "Continue button after onboarding is saved."
+  },
+  "onboardingErrorTitle": "Setup could not save",
+  "@onboardingErrorTitle": {
+    "description": "Onboarding error title."
+  },
+  "onboardingErrorMessage": "Try again without changing local data.",
+  "@onboardingErrorMessage": {
+    "description": "Onboarding error message."
+  },
   "settingsPlaceholderMessage": "Settings will stay local-first when implemented.",
   "@settingsPlaceholderMessage": {
     "description": "Placeholder message for the settings destination."

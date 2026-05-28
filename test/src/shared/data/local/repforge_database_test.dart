@@ -29,15 +29,16 @@ void main() {
             'workout_groups',
             'workout_group_exercise_assignments',
             'settings_profiles',
-            'equipment_inventory_items'
+            'equipment_inventory_items',
+            'onboarding_statuses'
           )
           ''').get();
 
-    expect(tables, hasLength(10));
+    expect(tables, hasLength(11));
   });
 
-  test('uses schema version 5', () {
-    expect(database.schemaVersion, 5);
+  test('uses schema version 6', () {
+    expect(database.schemaVersion, 6);
   });
 
   test('accepts an official exercise workout set with snapshots', () async {

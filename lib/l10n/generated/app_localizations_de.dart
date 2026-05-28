@@ -366,6 +366,64 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsEquipmentLegPress => 'Beinpresse';
 
   @override
+  String get onboardingTitle => 'Einrichtung';
+
+  @override
+  String get onboardingLoading => 'Einrichtung wird vorbereitet';
+
+  @override
+  String get onboardingWelcomeTitle => 'RepForge einrichten';
+
+  @override
+  String get onboardingWelcomeMessage =>
+      'Waehle jetzt ein paar lokale Einstellungen oder ueberspringe und starte direkt.';
+
+  @override
+  String get onboardingStart => 'Einrichtung starten';
+
+  @override
+  String get onboardingSkip => 'Ueberspringen';
+
+  @override
+  String get onboardingProfileTitle => 'Profil und Fokus';
+
+  @override
+  String get onboardingTrainingTitle => 'Trainingsrhythmus';
+
+  @override
+  String get onboardingEquipmentTitle => 'Ausruestung';
+
+  @override
+  String get onboardingStarterGroupsTitle => 'Startergruppen erstellen';
+
+  @override
+  String get onboardingBack => 'Zurueck';
+
+  @override
+  String get onboardingNext => 'Weiter';
+
+  @override
+  String get onboardingComplete => 'Einrichtung speichern';
+
+  @override
+  String get onboardingSavedTitle => 'Einrichtung gespeichert';
+
+  @override
+  String get onboardingSavedMessage =>
+      'Deine Auswahl bleibt lokal gespeichert und kann in den Einstellungen geaendert werden.';
+
+  @override
+  String get onboardingContinue => 'Weiter';
+
+  @override
+  String get onboardingErrorTitle =>
+      'Einrichtung konnte nicht gespeichert werden';
+
+  @override
+  String get onboardingErrorMessage =>
+      'Versuche es erneut, ohne lokale Daten zu aendern.';
+
+  @override
   String get settingsPlaceholderMessage =>
       'Einstellungen bleiben bei der Umsetzung lokal-first.';
 }

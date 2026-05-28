@@ -107,6 +107,15 @@ On first launch:
 6. Store imported catalog version in a local `catalog_imports` table.
 7. Continue onboarding.
 
+## Bundled starter templates
+
+Slice 23 adds a tiny `assets/templates/starter_groups_v1.json` asset for
+optional starter workout groups. These templates reference stable official
+catalog IDs and display-name/catalog-version snapshots from the bundled catalog.
+Creating starter groups writes user-local workout group and assignment rows only;
+it does not mutate official catalog rows, create custom exercises, or fetch
+remote content.
+
 On later launches after an app update:
 
 1. Compare bundled catalog manifest with `catalog_imports`.

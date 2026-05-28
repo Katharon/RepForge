@@ -97,3 +97,11 @@ The current local settings foundation persists a compact editable subset:
 The broader onboarding/body-metric fields remain planned for the onboarding and
 recommendation slices. Settings saves must not reinterpret existing logged sets,
 workout groups, or official catalog data.
+
+## Slice 23 onboarding foundation
+
+Onboarding currently writes the Slice 22 settings subset plus onboarding
+completion status: optional profile display name, focus profile, training days
+per week, typical session duration, and equipment inventory. Broader body
+metrics and home-gym max-load values remain planned because they do not yet have
+persisted settings fields.

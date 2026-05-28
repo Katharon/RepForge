@@ -3934,6 +3934,282 @@ class EquipmentInventoryItemsCompanion
   }
 }
 
+class $OnboardingStatusesTable extends OnboardingStatuses
+    with TableInfo<$OnboardingStatusesTable, OnboardingStatusRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $OnboardingStatusesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _statusIdMeta = const VerificationMeta(
+    'statusId',
+  );
+  @override
+  late final GeneratedColumn<String> statusId = GeneratedColumn<String>(
+    'status_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL CHECK (length(status_id) > 0)',
+  );
+  static const VerificationMeta _completionMeta = const VerificationMeta(
+    'completion',
+  );
+  @override
+  late final GeneratedColumn<String> completion = GeneratedColumn<String>(
+    'completion',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints:
+        'NOT NULL CHECK (completion IN (\'notStarted\', \'skipped\', \'completed\'))',
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  @override
+  List<GeneratedColumn> get $columns => [statusId, completion, updatedAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'onboarding_statuses';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<OnboardingStatusRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('status_id')) {
+      context.handle(
+        _statusIdMeta,
+        statusId.isAcceptableOrUnknown(data['status_id']!, _statusIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusIdMeta);
+    }
+    if (data.containsKey('completion')) {
+      context.handle(
+        _completionMeta,
+        completion.isAcceptableOrUnknown(data['completion']!, _completionMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_completionMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {statusId};
+  @override
+  OnboardingStatusRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return OnboardingStatusRow(
+      statusId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status_id'],
+      )!,
+      completion: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}completion'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+    );
+  }
+
+  @override
+  $OnboardingStatusesTable createAlias(String alias) {
+    return $OnboardingStatusesTable(attachedDatabase, alias);
+  }
+}
+
+class OnboardingStatusRow extends DataClass
+    implements Insertable<OnboardingStatusRow> {
+  final String statusId;
+  final String completion;
+  final DateTime updatedAt;
+  const OnboardingStatusRow({
+    required this.statusId,
+    required this.completion,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['status_id'] = Variable<String>(statusId);
+    map['completion'] = Variable<String>(completion);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  OnboardingStatusesCompanion toCompanion(bool nullToAbsent) {
+    return OnboardingStatusesCompanion(
+      statusId: Value(statusId),
+      completion: Value(completion),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory OnboardingStatusRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return OnboardingStatusRow(
+      statusId: serializer.fromJson<String>(json['statusId']),
+      completion: serializer.fromJson<String>(json['completion']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'statusId': serializer.toJson<String>(statusId),
+      'completion': serializer.toJson<String>(completion),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  OnboardingStatusRow copyWith({
+    String? statusId,
+    String? completion,
+    DateTime? updatedAt,
+  }) => OnboardingStatusRow(
+    statusId: statusId ?? this.statusId,
+    completion: completion ?? this.completion,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  OnboardingStatusRow copyWithCompanion(OnboardingStatusesCompanion data) {
+    return OnboardingStatusRow(
+      statusId: data.statusId.present ? data.statusId.value : this.statusId,
+      completion: data.completion.present
+          ? data.completion.value
+          : this.completion,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('OnboardingStatusRow(')
+          ..write('statusId: $statusId, ')
+          ..write('completion: $completion, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(statusId, completion, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is OnboardingStatusRow &&
+          other.statusId == this.statusId &&
+          other.completion == this.completion &&
+          other.updatedAt == this.updatedAt);
+}
+
+class OnboardingStatusesCompanion extends UpdateCompanion<OnboardingStatusRow> {
+  final Value<String> statusId;
+  final Value<String> completion;
+  final Value<DateTime> updatedAt;
+  final Value<int> rowid;
+  const OnboardingStatusesCompanion({
+    this.statusId = const Value.absent(),
+    this.completion = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  OnboardingStatusesCompanion.insert({
+    required String statusId,
+    required String completion,
+    required DateTime updatedAt,
+    this.rowid = const Value.absent(),
+  }) : statusId = Value(statusId),
+       completion = Value(completion),
+       updatedAt = Value(updatedAt);
+  static Insertable<OnboardingStatusRow> custom({
+    Expression<String>? statusId,
+    Expression<String>? completion,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (statusId != null) 'status_id': statusId,
+      if (completion != null) 'completion': completion,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  OnboardingStatusesCompanion copyWith({
+    Value<String>? statusId,
+    Value<String>? completion,
+    Value<DateTime>? updatedAt,
+    Value<int>? rowid,
+  }) {
+    return OnboardingStatusesCompanion(
+      statusId: statusId ?? this.statusId,
+      completion: completion ?? this.completion,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (statusId.present) {
+      map['status_id'] = Variable<String>(statusId.value);
+    }
+    if (completion.present) {
+      map['completion'] = Variable<String>(completion.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('OnboardingStatusesCompanion(')
+          ..write('statusId: $statusId, ')
+          ..write('completion: $completion, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$RepForgeDatabase extends GeneratedDatabase {
   _$RepForgeDatabase(QueryExecutor e) : super(e);
   $RepForgeDatabaseManager get managers => $RepForgeDatabaseManager(this);
@@ -3957,6 +4233,8 @@ abstract class _$RepForgeDatabase extends GeneratedDatabase {
   );
   late final $EquipmentInventoryItemsTable equipmentInventoryItems =
       $EquipmentInventoryItemsTable(this);
+  late final $OnboardingStatusesTable onboardingStatuses =
+      $OnboardingStatusesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -3972,6 +4250,7 @@ abstract class _$RepForgeDatabase extends GeneratedDatabase {
     workoutGroupExerciseAssignments,
     settingsProfiles,
     equipmentInventoryItems,
+    onboardingStatuses,
   ];
 }
 
@@ -6155,6 +6434,183 @@ typedef $$EquipmentInventoryItemsTableProcessedTableManager =
       EquipmentInventoryItemRow,
       PrefetchHooks Function()
     >;
+typedef $$OnboardingStatusesTableCreateCompanionBuilder =
+    OnboardingStatusesCompanion Function({
+      required String statusId,
+      required String completion,
+      required DateTime updatedAt,
+      Value<int> rowid,
+    });
+typedef $$OnboardingStatusesTableUpdateCompanionBuilder =
+    OnboardingStatusesCompanion Function({
+      Value<String> statusId,
+      Value<String> completion,
+      Value<DateTime> updatedAt,
+      Value<int> rowid,
+    });
+
+class $$OnboardingStatusesTableFilterComposer
+    extends Composer<_$RepForgeDatabase, $OnboardingStatusesTable> {
+  $$OnboardingStatusesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get statusId => $composableBuilder(
+    column: $table.statusId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get completion => $composableBuilder(
+    column: $table.completion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$OnboardingStatusesTableOrderingComposer
+    extends Composer<_$RepForgeDatabase, $OnboardingStatusesTable> {
+  $$OnboardingStatusesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get statusId => $composableBuilder(
+    column: $table.statusId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get completion => $composableBuilder(
+    column: $table.completion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$OnboardingStatusesTableAnnotationComposer
+    extends Composer<_$RepForgeDatabase, $OnboardingStatusesTable> {
+  $$OnboardingStatusesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get statusId =>
+      $composableBuilder(column: $table.statusId, builder: (column) => column);
+
+  GeneratedColumn<String> get completion => $composableBuilder(
+    column: $table.completion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$OnboardingStatusesTableTableManager
+    extends
+        RootTableManager<
+          _$RepForgeDatabase,
+          $OnboardingStatusesTable,
+          OnboardingStatusRow,
+          $$OnboardingStatusesTableFilterComposer,
+          $$OnboardingStatusesTableOrderingComposer,
+          $$OnboardingStatusesTableAnnotationComposer,
+          $$OnboardingStatusesTableCreateCompanionBuilder,
+          $$OnboardingStatusesTableUpdateCompanionBuilder,
+          (
+            OnboardingStatusRow,
+            BaseReferences<
+              _$RepForgeDatabase,
+              $OnboardingStatusesTable,
+              OnboardingStatusRow
+            >,
+          ),
+          OnboardingStatusRow,
+          PrefetchHooks Function()
+        > {
+  $$OnboardingStatusesTableTableManager(
+    _$RepForgeDatabase db,
+    $OnboardingStatusesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$OnboardingStatusesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$OnboardingStatusesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$OnboardingStatusesTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> statusId = const Value.absent(),
+                Value<String> completion = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => OnboardingStatusesCompanion(
+                statusId: statusId,
+                completion: completion,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String statusId,
+                required String completion,
+                required DateTime updatedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => OnboardingStatusesCompanion.insert(
+                statusId: statusId,
+                completion: completion,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$OnboardingStatusesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$RepForgeDatabase,
+      $OnboardingStatusesTable,
+      OnboardingStatusRow,
+      $$OnboardingStatusesTableFilterComposer,
+      $$OnboardingStatusesTableOrderingComposer,
+      $$OnboardingStatusesTableAnnotationComposer,
+      $$OnboardingStatusesTableCreateCompanionBuilder,
+      $$OnboardingStatusesTableUpdateCompanionBuilder,
+      (
+        OnboardingStatusRow,
+        BaseReferences<
+          _$RepForgeDatabase,
+          $OnboardingStatusesTable,
+          OnboardingStatusRow
+        >,
+      ),
+      OnboardingStatusRow,
+      PrefetchHooks Function()
+    >;
 
 class $RepForgeDatabaseManager {
   final _$RepForgeDatabase _db;
@@ -6198,4 +6654,6 @@ class $RepForgeDatabaseManager {
         _db,
         _db.equipmentInventoryItems,
       );
+  $$OnboardingStatusesTableTableManager get onboardingStatuses =>
+      $$OnboardingStatusesTableTableManager(_db, _db.onboardingStatuses);
 }

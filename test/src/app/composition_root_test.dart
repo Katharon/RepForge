@@ -1,6 +1,8 @@
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:repforge/src/app/composition_root.dart';
+import 'package:repforge/src/features/onboarding/data/onboarding_data.dart';
+import 'package:repforge/src/features/onboarding/domain/onboarding_domain.dart';
 import 'package:repforge/src/features/rest_timer/application/rest_timer_application.dart';
 import 'package:repforge/src/features/settings/data/settings_data.dart';
 import 'package:repforge/src/features/settings/domain/settings_domain.dart';
@@ -24,6 +26,14 @@ void main() {
     expect(
       dependencies.settingsProfileRepository,
       isA<DriftSettingsProfileRepository>(),
+    );
+    expect(
+      dependencies.onboardingStatusRepository,
+      isA<OnboardingStatusRepository>(),
+    );
+    expect(
+      dependencies.onboardingStatusRepository,
+      isA<DriftOnboardingStatusRepository>(),
     );
     expect(
       dependencies.restTimerNotifications,
@@ -60,6 +70,19 @@ void main() {
     await dependencies.saveSettingsProfile(profile);
 
     expect(await dependencies.loadSettingsProfile(), profile);
+  });
+
+  test('composed onboarding status repository saves skipped state', () async {
+    final dependencies = _composeInMemoryDependencies();
+
+    addTearDown(dependencies.close);
+
+    await dependencies.skipOnboarding();
+
+    expect(
+      (await dependencies.loadOnboardingStatus()).completion,
+      OnboardingCompletion.skipped,
+    );
   });
 
   test('close is idempotent for owned dependencies', () async {

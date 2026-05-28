@@ -7,11 +7,14 @@ import 'package:repforge/src/app/repforge_app.dart';
 import 'package:repforge/src/core/theme/theme.dart';
 import 'package:repforge/src/core/widgets/widgets.dart';
 import 'package:repforge/src/features/analytics/application/analytics_application.dart';
+import 'package:repforge/src/features/onboarding/application/onboarding_application.dart';
+import 'package:repforge/src/features/onboarding/domain/onboarding_domain.dart';
 import 'package:repforge/src/features/rest_timer/application/rest_timer_application.dart';
 import 'package:repforge/src/features/rest_timer/domain/rest_timer_domain.dart';
 import 'package:repforge/src/features/settings/application/settings_application.dart';
 import 'package:repforge/src/features/settings/domain/settings_domain.dart';
 import 'package:repforge/src/features/training_log/domain/training_log_domain.dart';
+import 'package:repforge/src/features/workout_groups/domain/workout_groups_domain.dart';
 
 void main() {
   test('test app dependencies expose configuration and repository', () {
@@ -150,6 +153,10 @@ AppDependencies _testAppDependencies({
 }) {
   final workoutSetRepository = _FakeWorkoutSetRepository();
   final settingsProfileRepository = _FakeSettingsProfileRepository();
+  final onboardingStatusRepository = _FakeOnboardingStatusRepository();
+  final workoutGroupRepository = _FakeWorkoutGroupRepository();
+  final loadSettingsProfile = LoadSettingsProfile(settingsProfileRepository);
+  final saveSettingsProfile = SaveSettingsProfile(settingsProfileRepository);
 
   return AppDependencies(
     configuration: configuration,
@@ -162,9 +169,20 @@ AppDependencies _testAppDependencies({
     workoutSetRepository: workoutSetRepository,
     getExerciseAnalytics: GetExerciseAnalytics(workoutSetRepository),
     settingsProfileRepository: settingsProfileRepository,
-    loadSettingsProfile: LoadSettingsProfile(settingsProfileRepository),
-    saveSettingsProfile: SaveSettingsProfile(settingsProfileRepository),
+    loadSettingsProfile: loadSettingsProfile,
+    saveSettingsProfile: saveSettingsProfile,
     resetSettingsProfile: ResetSettingsProfile(settingsProfileRepository),
+    workoutGroupRepository: workoutGroupRepository,
+    onboardingStatusRepository: onboardingStatusRepository,
+    loadOnboardingStatus: LoadOnboardingStatus(onboardingStatusRepository),
+    skipOnboarding: SkipOnboarding(onboardingStatusRepository),
+    completeOnboarding: CompleteOnboarding(
+      loadSettingsProfile: loadSettingsProfile,
+      saveSettingsProfile: saveSettingsProfile,
+      onboardingStatusRepository: onboardingStatusRepository,
+      createStarterGroups: CreateStarterGroups(workoutGroupRepository),
+      starterTemplateLoader: _FakeStarterTemplateLoader(),
+    ),
   );
 }
 
@@ -233,4 +251,73 @@ final class _FakeSettingsProfileRepository
   Future<void> save(SettingsProfile profile) async {
     this.profile = profile;
   }
+}
+
+final class _FakeOnboardingStatusRepository
+    implements OnboardingStatusRepository {
+  OnboardingStatus status = OnboardingStatus(
+    completion: OnboardingCompletion.completed,
+    updatedAt: DateTime.utc(2026, 5, 28),
+  );
+
+  @override
+  Future<OnboardingStatus> load() async => status;
+
+  @override
+  Future<void> save(OnboardingStatus status) async {
+    this.status = status;
+  }
+}
+
+final class _FakeStarterTemplateLoader implements StarterTemplateLoader {
+  @override
+  Future<StarterTemplateCatalog> load() async {
+    return StarterTemplateCatalog(
+      templateVersion: '2026.05.0',
+      groups: [
+        StarterGroupTemplate(
+          id: 'full_body_a',
+          name: 'Full Body A',
+          exercises: const [
+            StarterExerciseTemplate(
+              catalogId: 'barbell_back_squat',
+              displayNameSnapshot: 'Barbell Back Squat',
+              catalogVersionSnapshot: '2026.05.0',
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+final class _FakeWorkoutGroupRepository implements WorkoutGroupRepository {
+  @override
+  Future<WorkoutGroup?> findGroupById(WorkoutGroupId id) async => null;
+
+  @override
+  Future<WorkoutGroupAssignmentPage> listAssignments(
+    WorkoutGroupId groupId,
+    WorkoutGroupAssignmentQuery query,
+  ) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<WorkoutGroupPage> listGroups(WorkoutGroupQuery query) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> removeAssignment(WorkoutGroupExerciseAssignmentId id) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> saveAssignment(
+    WorkoutGroupExerciseAssignment assignment,
+  ) async {}
+
+  @override
+  Future<void> saveGroup(WorkoutGroup group) async {}
 }

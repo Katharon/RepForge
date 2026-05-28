@@ -480,6 +480,78 @@
   "@settingsEquipmentLegPress": {
     "description": "Beinpresse-Ausruestung."
   },
+  "onboardingTitle": "Einrichtung",
+  "@onboardingTitle": {
+    "description": "Titel fuer Onboarding."
+  },
+  "onboardingLoading": "Einrichtung wird vorbereitet",
+  "@onboardingLoading": {
+    "description": "Ladetext fuer Onboarding-Status."
+  },
+  "onboardingWelcomeTitle": "RepForge einrichten",
+  "@onboardingWelcomeTitle": {
+    "description": "Willkommenstitel fuer Onboarding."
+  },
+  "onboardingWelcomeMessage": "Waehle jetzt ein paar lokale Einstellungen oder ueberspringe und starte direkt.",
+  "@onboardingWelcomeMessage": {
+    "description": "Willkommenstext fuer Onboarding."
+  },
+  "onboardingStart": "Einrichtung starten",
+  "@onboardingStart": {
+    "description": "Button zum Starten des Onboardings."
+  },
+  "onboardingSkip": "Ueberspringen",
+  "@onboardingSkip": {
+    "description": "Button zum Ueberspringen des Onboardings."
+  },
+  "onboardingProfileTitle": "Profil und Fokus",
+  "@onboardingProfileTitle": {
+    "description": "Titel fuer Profil-Schritt."
+  },
+  "onboardingTrainingTitle": "Trainingsrhythmus",
+  "@onboardingTrainingTitle": {
+    "description": "Titel fuer Trainings-Schritt."
+  },
+  "onboardingEquipmentTitle": "Ausruestung",
+  "@onboardingEquipmentTitle": {
+    "description": "Titel fuer Ausruestungs-Schritt."
+  },
+  "onboardingStarterGroupsTitle": "Startergruppen erstellen",
+  "@onboardingStarterGroupsTitle": {
+    "description": "Checkbox fuer Startergruppen."
+  },
+  "onboardingBack": "Zurueck",
+  "@onboardingBack": {
+    "description": "Zurueck-Button im Onboarding."
+  },
+  "onboardingNext": "Weiter",
+  "@onboardingNext": {
+    "description": "Weiter-Button im Onboarding."
+  },
+  "onboardingComplete": "Einrichtung speichern",
+  "@onboardingComplete": {
+    "description": "Button zum Abschliessen des Onboardings."
+  },
+  "onboardingSavedTitle": "Einrichtung gespeichert",
+  "@onboardingSavedTitle": {
+    "description": "Titel nach gespeichertem Onboarding."
+  },
+  "onboardingSavedMessage": "Deine Auswahl bleibt lokal gespeichert und kann in den Einstellungen geaendert werden.",
+  "@onboardingSavedMessage": {
+    "description": "Text nach gespeichertem Onboarding."
+  },
+  "onboardingContinue": "Weiter",
+  "@onboardingContinue": {
+    "description": "Weiter-Button nach gespeichertem Onboarding."
+  },
+  "onboardingErrorTitle": "Einrichtung konnte nicht gespeichert werden",
+  "@onboardingErrorTitle": {
+    "description": "Fehlertitel fuer Onboarding."
+  },
+  "onboardingErrorMessage": "Versuche es erneut, ohne lokale Daten zu aendern.",
+  "@onboardingErrorMessage": {
+    "description": "Fehlertext fuer Onboarding."
+  },
   "settingsPlaceholderMessage": "Einstellungen bleiben bei der Umsetzung lokal-first.",
   "@settingsPlaceholderMessage": {
     "description": "Platzhaltertext fuer Einstellungen."

@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/analytics/presentation/analytics_presentation.dart';
+import '../../features/onboarding/presentation/onboarding_presentation.dart';
 import '../../features/settings/presentation/settings_presentation.dart';
 import '../../features/today/presentation/today_presentation.dart';
 import '../../features/training_log/domain/training_log_domain.dart';
@@ -24,9 +25,14 @@ GoRouter createAppRouter({required AppDependencies dependencies}) {
           _branch(
             route: AppRoute.today,
             builder: (context, state) {
-              return TodayPage(
-                loader: RestTimerTodayDashboardLoader(
-                  restTimerNotifications: dependencies.restTimerNotifications,
+              return OnboardingGate(
+                loadOnboardingStatus: dependencies.loadOnboardingStatus,
+                skipOnboarding: dependencies.skipOnboarding,
+                completeOnboarding: dependencies.completeOnboarding,
+                child: TodayPage(
+                  loader: RestTimerTodayDashboardLoader(
+                    restTimerNotifications: dependencies.restTimerNotifications,
+                  ),
                 ),
               );
             },

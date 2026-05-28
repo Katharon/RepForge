@@ -4,6 +4,9 @@
 
 ### Added
 
+- Added Slice 23 onboarding foundation with a skippable local setup flow,
+  onboarding status persistence, profile/focus/time/equipment settings save,
+  bundled starter group templates, and optional starter workout group creation.
 - Added Slice 22 Settings and user profile foundation with pure-Dart settings
   domain values, load/save/reset use cases, Drift schema v5 persistence,
   structured equipment inventory, localized Settings tab controls, and focused

@@ -42,6 +42,22 @@ Write onboarding flow widget/BLoC tests and use-case tests for starter group cre
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
 
+## Implementation note
+
+Slice 23 added a compact local onboarding boundary with pure-Dart onboarding
+status/draft types, skip/complete use cases, Drift schema v6 onboarding status
+persistence, and a minimal localized setup flow shown before Today until skipped
+or completed. Completion saves the Slice 22 settings subset: optional profile
+name, focus profile, training frequency, session duration, and structured
+equipment inventory.
+
+Starter groups are created only when the user leaves the starter-groups option
+enabled. The templates live in `assets/templates/starter_groups_v1.json` and
+reference stable official catalog IDs/snapshots from the bundled catalog. The
+starter use case writes local workout groups and assignments only; it does not
+mutate official catalog rows or create custom exercises. Home-gym max-load
+values remain a follow-up because Slice 22 does not yet persist max-load fields.
+
 ## Validation commands
 
 ```bash

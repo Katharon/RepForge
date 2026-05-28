@@ -52,6 +52,18 @@ profile, training frequency, session duration, and available equipment. It does
 not implement the onboarding wizard, starter groups, recommendation logic, or
 privacy/export settings.
 
+## Slice 23 onboarding surface
+
+The app now shows a skippable local setup flow before the Today dashboard until
+the user skips or completes onboarding. The flow captures optional profile name,
+focus profile, training days per week, typical session duration, equipment
+inventory, and whether to create starter workout groups from bundled local
+templates. Starter groups are user-local workout groups and can be edited or
+deleted by later group-management flows.
+
+Home-gym max-load values are not collected yet because the current settings
+model does not persist max-load fields.
+
 ## v5 onboarding additions
 
 Localization:

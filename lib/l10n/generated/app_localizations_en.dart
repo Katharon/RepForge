@@ -364,6 +364,62 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsEquipmentLegPress => 'Leg press';
 
   @override
+  String get onboardingTitle => 'Setup';
+
+  @override
+  String get onboardingLoading => 'Preparing setup';
+
+  @override
+  String get onboardingWelcomeTitle => 'Set up RepForge';
+
+  @override
+  String get onboardingWelcomeMessage =>
+      'Choose a few local preferences now or skip and start tracking.';
+
+  @override
+  String get onboardingStart => 'Start setup';
+
+  @override
+  String get onboardingSkip => 'Skip';
+
+  @override
+  String get onboardingProfileTitle => 'Profile and focus';
+
+  @override
+  String get onboardingTrainingTitle => 'Training rhythm';
+
+  @override
+  String get onboardingEquipmentTitle => 'Equipment';
+
+  @override
+  String get onboardingStarterGroupsTitle => 'Create starter groups';
+
+  @override
+  String get onboardingBack => 'Back';
+
+  @override
+  String get onboardingNext => 'Next';
+
+  @override
+  String get onboardingComplete => 'Save setup';
+
+  @override
+  String get onboardingSavedTitle => 'Setup saved';
+
+  @override
+  String get onboardingSavedMessage =>
+      'Your choices are stored locally and can be changed in Settings.';
+
+  @override
+  String get onboardingContinue => 'Continue';
+
+  @override
+  String get onboardingErrorTitle => 'Setup could not save';
+
+  @override
+  String get onboardingErrorMessage => 'Try again without changing local data.';
+
+  @override
   String get settingsPlaceholderMessage =>
       'Settings will stay local-first when implemented.';
 }

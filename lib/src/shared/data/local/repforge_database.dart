@@ -273,6 +273,21 @@ class EquipmentInventoryItems extends Table {
   Set<Column<Object>> get primaryKey => <Column<Object>>{profileId, equipment};
 }
 
+@DataClassName('OnboardingStatusRow')
+class OnboardingStatuses extends Table {
+  TextColumn get statusId =>
+      text().customConstraint('NOT NULL CHECK (length(status_id) > 0)')();
+
+  TextColumn get completion => text().customConstraint(
+    "NOT NULL CHECK (completion IN ('notStarted', 'skipped', 'completed'))",
+  )();
+
+  DateTimeColumn get updatedAt => dateTime().customConstraint('NOT NULL')();
+
+  @override
+  Set<Column<Object>> get primaryKey => <Column<Object>>{statusId};
+}
+
 @DriftDatabase(
   tables: <Type>[
     WorkoutSets,
@@ -285,13 +300,14 @@ class EquipmentInventoryItems extends Table {
     WorkoutGroupExerciseAssignments,
     SettingsProfiles,
     EquipmentInventoryItems,
+    OnboardingStatuses,
   ],
 )
 class RepForgeDatabase extends _$RepForgeDatabase {
   RepForgeDatabase(super.executor);
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -314,6 +330,9 @@ class RepForgeDatabase extends _$RepForgeDatabase {
       if (from < 5) {
         await migrator.createTable(settingsProfiles);
         await migrator.createTable(equipmentInventoryItems);
+      }
+      if (from < 6) {
+        await migrator.createTable(onboardingStatuses);
       }
     },
     // Future migrations must preserve logged set history and prefer additive
