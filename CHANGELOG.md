@@ -4,6 +4,10 @@
 
 ### Added
 
+- Added Slice 19 analytics UI foundation with a fakeable exercise analytics
+  loader, metric and range selectors, localized loading/empty/error/success
+  states, compact summary metric cards, and simple local chart-card
+  visualization without adding a chart package or remote analytics.
 - Added Slice 18 exercise analytics use cases with bounded WorkoutSet timeline
   reads, per-exercise overview metrics, estimated 1RM read models, previous
   comparable session deltas, time-window deltas, and deterministic analytics

@@ -170,6 +170,126 @@ abstract class AppLocalizations {
   /// **'Analytics will show local training trends later.'**
   String get analyticsPlaceholderMessage;
 
+  /// Analytics metric label for set count.
+  ///
+  /// In en, this message translates to:
+  /// **'Sets'**
+  String get analyticsMetricSets;
+
+  /// Analytics metric label for repetition count.
+  ///
+  /// In en, this message translates to:
+  /// **'Reps'**
+  String get analyticsMetricRepetitions;
+
+  /// Analytics metric label for training volume.
+  ///
+  /// In en, this message translates to:
+  /// **'Volume'**
+  String get analyticsMetricVolume;
+
+  /// Analytics metric label for average kilograms per repetition.
+  ///
+  /// In en, this message translates to:
+  /// **'kg/rep'**
+  String get analyticsMetricKgPerRep;
+
+  /// Analytics metric label for estimated one repetition maximum.
+  ///
+  /// In en, this message translates to:
+  /// **'Est. 1RM'**
+  String get analyticsMetricEstimatedOneRepMax;
+
+  /// Unit label for kilograms in analytics values.
+  ///
+  /// In en, this message translates to:
+  /// **'kg'**
+  String get analyticsUnitKilograms;
+
+  /// Unit label for kilograms per repetition in analytics values.
+  ///
+  /// In en, this message translates to:
+  /// **'kg/rep'**
+  String get analyticsUnitKilogramsPerRep;
+
+  /// Analytics range selector label for seven days.
+  ///
+  /// In en, this message translates to:
+  /// **'7D'**
+  String get analyticsRangeSevenDays;
+
+  /// Analytics range selector label for thirty days.
+  ///
+  /// In en, this message translates to:
+  /// **'30D'**
+  String get analyticsRangeThirtyDays;
+
+  /// Analytics range selector label for ninety days.
+  ///
+  /// In en, this message translates to:
+  /// **'90D'**
+  String get analyticsRangeNinetyDays;
+
+  /// Loading state text for analytics.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading analytics'**
+  String get analyticsLoading;
+
+  /// Title for empty analytics state.
+  ///
+  /// In en, this message translates to:
+  /// **'No sets in this range'**
+  String get analyticsEmptyTitle;
+
+  /// Message for empty analytics state.
+  ///
+  /// In en, this message translates to:
+  /// **'Log sets for this exercise to see local trends.'**
+  String get analyticsEmptyMessage;
+
+  /// Title for analytics error state.
+  ///
+  /// In en, this message translates to:
+  /// **'Analytics could not load'**
+  String get analyticsErrorTitle;
+
+  /// Message for analytics error state.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again without changing your local data.'**
+  String get analyticsErrorMessage;
+
+  /// Retry button label for analytics loading errors.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get analyticsRetry;
+
+  /// Heading for analytics summary cards.
+  ///
+  /// In en, this message translates to:
+  /// **'Summary'**
+  String get analyticsSummaryTitle;
+
+  /// Title for the selected analytics chart.
+  ///
+  /// In en, this message translates to:
+  /// **'{metric} trend'**
+  String analyticsChartTitle(String metric);
+
+  /// Label for the current analytics chart value.
+  ///
+  /// In en, this message translates to:
+  /// **'Current'**
+  String get analyticsCurrentPeriod;
+
+  /// Label for the previous analytics chart value.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get analyticsPreviousPeriod;
+
   /// Placeholder message for the settings destination.
   ///
   /// In en, this message translates to:

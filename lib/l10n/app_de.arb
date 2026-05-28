@@ -48,6 +48,92 @@
   "@analyticsPlaceholderMessage": {
     "description": "Platzhaltertext fuer Analyse."
   },
+  "analyticsMetricSets": "Saetze",
+  "@analyticsMetricSets": {
+    "description": "Analyse-Metrik fuer Satzanzahl."
+  },
+  "analyticsMetricRepetitions": "Wdh.",
+  "@analyticsMetricRepetitions": {
+    "description": "Analyse-Metrik fuer Wiederholungen."
+  },
+  "analyticsMetricVolume": "Volumen",
+  "@analyticsMetricVolume": {
+    "description": "Analyse-Metrik fuer Trainingsvolumen."
+  },
+  "analyticsMetricKgPerRep": "kg/Wdh.",
+  "@analyticsMetricKgPerRep": {
+    "description": "Analyse-Metrik fuer durchschnittliche Kilogramm pro Wiederholung."
+  },
+  "analyticsMetricEstimatedOneRepMax": "Geschaetztes 1RM",
+  "@analyticsMetricEstimatedOneRepMax": {
+    "description": "Analyse-Metrik fuer das geschaetzte Ein-Wiederholungs-Maximum."
+  },
+  "analyticsUnitKilograms": "kg",
+  "@analyticsUnitKilograms": {
+    "description": "Einheit fuer Kilogramm in Analysewerten."
+  },
+  "analyticsUnitKilogramsPerRep": "kg/Wdh.",
+  "@analyticsUnitKilogramsPerRep": {
+    "description": "Einheit fuer Kilogramm pro Wiederholung in Analysewerten."
+  },
+  "analyticsRangeSevenDays": "7T",
+  "@analyticsRangeSevenDays": {
+    "description": "Analyse-Zeitraum fuer sieben Tage."
+  },
+  "analyticsRangeThirtyDays": "30T",
+  "@analyticsRangeThirtyDays": {
+    "description": "Analyse-Zeitraum fuer dreissig Tage."
+  },
+  "analyticsRangeNinetyDays": "90T",
+  "@analyticsRangeNinetyDays": {
+    "description": "Analyse-Zeitraum fuer neunzig Tage."
+  },
+  "analyticsLoading": "Analysen werden geladen",
+  "@analyticsLoading": {
+    "description": "Ladezustand fuer Analyse."
+  },
+  "analyticsEmptyTitle": "Keine Saetze in diesem Zeitraum",
+  "@analyticsEmptyTitle": {
+    "description": "Titel fuer leere Analyse."
+  },
+  "analyticsEmptyMessage": "Protokolliere Saetze fuer diese Uebung, um lokale Trends zu sehen.",
+  "@analyticsEmptyMessage": {
+    "description": "Text fuer leere Analyse."
+  },
+  "analyticsErrorTitle": "Analyse konnte nicht geladen werden",
+  "@analyticsErrorTitle": {
+    "description": "Titel fuer Analyse-Fehler."
+  },
+  "analyticsErrorMessage": "Versuche es erneut, ohne lokale Daten zu aendern.",
+  "@analyticsErrorMessage": {
+    "description": "Text fuer Analyse-Fehler."
+  },
+  "analyticsRetry": "Erneut versuchen",
+  "@analyticsRetry": {
+    "description": "Button fuer erneutes Laden der Analyse."
+  },
+  "analyticsSummaryTitle": "Zusammenfassung",
+  "@analyticsSummaryTitle": {
+    "description": "Ueberschrift fuer Analyse-Kennzahlen."
+  },
+  "analyticsChartTitle": "{metric}-Trend",
+  "@analyticsChartTitle": {
+    "description": "Titel fuer die ausgewaehlte Analyse-Grafik.",
+    "placeholders": {
+      "metric": {
+        "type": "String",
+        "example": "Volumen"
+      }
+    }
+  },
+  "analyticsCurrentPeriod": "Aktuell",
+  "@analyticsCurrentPeriod": {
+    "description": "Label fuer aktuellen Analysewert."
+  },
+  "analyticsPreviousPeriod": "Vorher",
+  "@analyticsPreviousPeriod": {
+    "description": "Label fuer vorherigen Analysewert."
+  },
   "settingsPlaceholderMessage": "Einstellungen bleiben bei der Umsetzung lokal-first.",
   "@settingsPlaceholderMessage": {
     "description": "Platzhaltertext fuer Einstellungen."

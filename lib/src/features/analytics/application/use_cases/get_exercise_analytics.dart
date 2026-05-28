@@ -18,9 +18,8 @@ final class ExerciseAnalyticsQuery {
 final class GetExerciseAnalytics {
   const GetExerciseAnalytics(
     this._workoutSetRepository, {
-    WorkoutSetAnalyticsFormulaService formulaService =
-        const WorkoutSetAnalyticsFormulaService(),
-  }) : _formulaService = formulaService;
+    this._formulaService = const WorkoutSetAnalyticsFormulaService(),
+  });
 
   final WorkoutSetRepository _workoutSetRepository;
   final WorkoutSetAnalyticsFormulaService _formulaService;

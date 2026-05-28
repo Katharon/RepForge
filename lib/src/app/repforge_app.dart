@@ -18,7 +18,9 @@ class RepForgeApp extends StatefulWidget {
 }
 
 class _RepForgeAppState extends State<RepForgeApp> {
-  late final GoRouter _router = createAppRouter();
+  late final GoRouter _router = createAppRouter(
+    dependencies: widget.dependencies,
+  );
 
   @override
   Widget build(BuildContext context) {

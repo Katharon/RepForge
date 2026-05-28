@@ -1,12 +1,15 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/analytics/presentation/analytics_presentation.dart';
+import '../../features/training_log/domain/training_log_domain.dart';
+import '../composition_root.dart';
 import '../localization/app_localizations.dart';
 import 'app_route.dart';
 import 'navigation_shell.dart';
 import 'placeholder_destination_page.dart';
 
-GoRouter createAppRouter() {
+GoRouter createAppRouter({required AppDependencies dependencies}) {
   return GoRouter(
     initialLocation: AppRoute.initial.path,
     routes: [
@@ -49,10 +52,11 @@ GoRouter createAppRouter() {
           _branch(
             route: AppRoute.analytics,
             builder: (context, state) {
-              final localizations = AppLocalizations.of(context);
-              return PlaceholderDestinationPage(
-                title: localizations.navAnalytics,
-                message: localizations.analyticsPlaceholderMessage,
+              return AnalyticsPage(
+                loader: UseCaseExerciseAnalyticsLoader(
+                  getExerciseAnalytics: dependencies.getExerciseAnalytics,
+                  exerciseRef: _defaultAnalyticsExerciseRef(),
+                ),
               );
             },
           ),
@@ -69,6 +73,14 @@ GoRouter createAppRouter() {
         ],
       ),
     ],
+  );
+}
+
+ExerciseRef _defaultAnalyticsExerciseRef() {
+  return ExerciseRef.official(
+    id: OfficialExerciseId('barbell_bench_press'),
+    displayNameSnapshot: 'Barbell Bench Press',
+    catalogVersionSnapshot: '1.0.0',
   );
 }
 

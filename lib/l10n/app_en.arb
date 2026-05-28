@@ -48,6 +48,92 @@
   "@analyticsPlaceholderMessage": {
     "description": "Placeholder message for the analytics destination."
   },
+  "analyticsMetricSets": "Sets",
+  "@analyticsMetricSets": {
+    "description": "Analytics metric label for set count."
+  },
+  "analyticsMetricRepetitions": "Reps",
+  "@analyticsMetricRepetitions": {
+    "description": "Analytics metric label for repetition count."
+  },
+  "analyticsMetricVolume": "Volume",
+  "@analyticsMetricVolume": {
+    "description": "Analytics metric label for training volume."
+  },
+  "analyticsMetricKgPerRep": "kg/rep",
+  "@analyticsMetricKgPerRep": {
+    "description": "Analytics metric label for average kilograms per repetition."
+  },
+  "analyticsMetricEstimatedOneRepMax": "Est. 1RM",
+  "@analyticsMetricEstimatedOneRepMax": {
+    "description": "Analytics metric label for estimated one repetition maximum."
+  },
+  "analyticsUnitKilograms": "kg",
+  "@analyticsUnitKilograms": {
+    "description": "Unit label for kilograms in analytics values."
+  },
+  "analyticsUnitKilogramsPerRep": "kg/rep",
+  "@analyticsUnitKilogramsPerRep": {
+    "description": "Unit label for kilograms per repetition in analytics values."
+  },
+  "analyticsRangeSevenDays": "7D",
+  "@analyticsRangeSevenDays": {
+    "description": "Analytics range selector label for seven days."
+  },
+  "analyticsRangeThirtyDays": "30D",
+  "@analyticsRangeThirtyDays": {
+    "description": "Analytics range selector label for thirty days."
+  },
+  "analyticsRangeNinetyDays": "90D",
+  "@analyticsRangeNinetyDays": {
+    "description": "Analytics range selector label for ninety days."
+  },
+  "analyticsLoading": "Loading analytics",
+  "@analyticsLoading": {
+    "description": "Loading state text for analytics."
+  },
+  "analyticsEmptyTitle": "No sets in this range",
+  "@analyticsEmptyTitle": {
+    "description": "Title for empty analytics state."
+  },
+  "analyticsEmptyMessage": "Log sets for this exercise to see local trends.",
+  "@analyticsEmptyMessage": {
+    "description": "Message for empty analytics state."
+  },
+  "analyticsErrorTitle": "Analytics could not load",
+  "@analyticsErrorTitle": {
+    "description": "Title for analytics error state."
+  },
+  "analyticsErrorMessage": "Try again without changing your local data.",
+  "@analyticsErrorMessage": {
+    "description": "Message for analytics error state."
+  },
+  "analyticsRetry": "Retry",
+  "@analyticsRetry": {
+    "description": "Retry button label for analytics loading errors."
+  },
+  "analyticsSummaryTitle": "Summary",
+  "@analyticsSummaryTitle": {
+    "description": "Heading for analytics summary cards."
+  },
+  "analyticsChartTitle": "{metric} trend",
+  "@analyticsChartTitle": {
+    "description": "Title for the selected analytics chart.",
+    "placeholders": {
+      "metric": {
+        "type": "String",
+        "example": "Volume"
+      }
+    }
+  },
+  "analyticsCurrentPeriod": "Current",
+  "@analyticsCurrentPeriod": {
+    "description": "Label for the current analytics chart value."
+  },
+  "analyticsPreviousPeriod": "Previous",
+  "@analyticsPreviousPeriod": {
+    "description": "Label for the previous analytics chart value."
+  },
   "settingsPlaceholderMessage": "Settings will stay local-first when implemented.",
   "@settingsPlaceholderMessage": {
     "description": "Placeholder message for the settings destination."

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import '../features/analytics/application/analytics_application.dart';
 import '../features/rest_timer/application/rest_timer_application.dart';
 import '../features/rest_timer/data/rest_timer_data.dart';
 import '../features/rest_timer/domain/rest_timer_domain.dart';
@@ -19,18 +20,21 @@ final class AppDependencies {
   AppDependencies({
     required this.configuration,
     required this.workoutSetRepository,
+    required this.getExerciseAnalytics,
     required this.restTimerNotifications,
   }) : _closeOwnedResources = null;
 
   AppDependencies._withOwnedResources({
     required this.configuration,
     required this.workoutSetRepository,
+    required this.getExerciseAnalytics,
     required this.restTimerNotifications,
     required this._closeOwnedResources,
   });
 
   final AppConfiguration configuration;
   final WorkoutSetRepository workoutSetRepository;
+  final GetExerciseAnalytics getExerciseAnalytics;
   final RestTimerNotificationCoordinator restTimerNotifications;
 
   final Future<void> Function()? _closeOwnedResources;
@@ -85,6 +89,7 @@ final class CompositionRoot {
   AppDependencies compose() {
     final composedDatabase = database ?? databaseFactory.createDatabase();
     final workoutSetRepository = DriftWorkoutSetRepository(composedDatabase);
+    final getExerciseAnalytics = GetExerciseAnalytics(workoutSetRepository);
     final restTimerNotifications = RestTimerNotificationCoordinator(
       timerController: RestTimerController(
         timeProvider: const SystemTimeProvider(),
@@ -99,6 +104,7 @@ final class CompositionRoot {
       return AppDependencies(
         configuration: configuration,
         workoutSetRepository: workoutSetRepository,
+        getExerciseAnalytics: getExerciseAnalytics,
         restTimerNotifications: restTimerNotifications,
       );
     }
@@ -106,6 +112,7 @@ final class CompositionRoot {
     return AppDependencies._withOwnedResources(
       configuration: configuration,
       workoutSetRepository: workoutSetRepository,
+      getExerciseAnalytics: getExerciseAnalytics,
       restTimerNotifications: restTimerNotifications,
       closeOwnedResources: composedDatabase.close,
     );

@@ -50,6 +50,17 @@ If strict TDD is impractical because this is a repository/bootstrap slice, expla
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
 
+## Implementation note
+
+Slice 19 adds a compact analytics presentation foundation rather than new
+analytics formulas. The Analytics tab now uses a fakeable presentation loader
+backed by the Slice 18 `GetExerciseAnalytics` use case for a single default
+exercise, exposes metric and time-range selectors, renders localized loading,
+empty, error, and success states, and displays summary cards plus a simple
+two-bar chart card built with Flutter widgets. No chart package, remote
+analytics SDK, cloud service, coach logic, muscle activation view, heatmap, or
+recommendation behavior was added.
+
 ## Validation commands
 
 ```bash

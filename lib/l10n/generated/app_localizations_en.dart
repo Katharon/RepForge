@@ -50,6 +50,70 @@ class AppLocalizationsEn extends AppLocalizations {
       'Analytics will show local training trends later.';
 
   @override
+  String get analyticsMetricSets => 'Sets';
+
+  @override
+  String get analyticsMetricRepetitions => 'Reps';
+
+  @override
+  String get analyticsMetricVolume => 'Volume';
+
+  @override
+  String get analyticsMetricKgPerRep => 'kg/rep';
+
+  @override
+  String get analyticsMetricEstimatedOneRepMax => 'Est. 1RM';
+
+  @override
+  String get analyticsUnitKilograms => 'kg';
+
+  @override
+  String get analyticsUnitKilogramsPerRep => 'kg/rep';
+
+  @override
+  String get analyticsRangeSevenDays => '7D';
+
+  @override
+  String get analyticsRangeThirtyDays => '30D';
+
+  @override
+  String get analyticsRangeNinetyDays => '90D';
+
+  @override
+  String get analyticsLoading => 'Loading analytics';
+
+  @override
+  String get analyticsEmptyTitle => 'No sets in this range';
+
+  @override
+  String get analyticsEmptyMessage =>
+      'Log sets for this exercise to see local trends.';
+
+  @override
+  String get analyticsErrorTitle => 'Analytics could not load';
+
+  @override
+  String get analyticsErrorMessage =>
+      'Try again without changing your local data.';
+
+  @override
+  String get analyticsRetry => 'Retry';
+
+  @override
+  String get analyticsSummaryTitle => 'Summary';
+
+  @override
+  String analyticsChartTitle(String metric) {
+    return '$metric trend';
+  }
+
+  @override
+  String get analyticsCurrentPeriod => 'Current';
+
+  @override
+  String get analyticsPreviousPeriod => 'Previous';
+
+  @override
   String get settingsPlaceholderMessage =>
       'Settings will stay local-first when implemented.';
 }

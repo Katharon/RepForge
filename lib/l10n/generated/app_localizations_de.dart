@@ -50,6 +50,70 @@ class AppLocalizationsDe extends AppLocalizations {
       'Analysen zeigen spaeter lokale Trainingstrends.';
 
   @override
+  String get analyticsMetricSets => 'Saetze';
+
+  @override
+  String get analyticsMetricRepetitions => 'Wdh.';
+
+  @override
+  String get analyticsMetricVolume => 'Volumen';
+
+  @override
+  String get analyticsMetricKgPerRep => 'kg/Wdh.';
+
+  @override
+  String get analyticsMetricEstimatedOneRepMax => 'Geschaetztes 1RM';
+
+  @override
+  String get analyticsUnitKilograms => 'kg';
+
+  @override
+  String get analyticsUnitKilogramsPerRep => 'kg/Wdh.';
+
+  @override
+  String get analyticsRangeSevenDays => '7T';
+
+  @override
+  String get analyticsRangeThirtyDays => '30T';
+
+  @override
+  String get analyticsRangeNinetyDays => '90T';
+
+  @override
+  String get analyticsLoading => 'Analysen werden geladen';
+
+  @override
+  String get analyticsEmptyTitle => 'Keine Saetze in diesem Zeitraum';
+
+  @override
+  String get analyticsEmptyMessage =>
+      'Protokolliere Saetze fuer diese Uebung, um lokale Trends zu sehen.';
+
+  @override
+  String get analyticsErrorTitle => 'Analyse konnte nicht geladen werden';
+
+  @override
+  String get analyticsErrorMessage =>
+      'Versuche es erneut, ohne lokale Daten zu aendern.';
+
+  @override
+  String get analyticsRetry => 'Erneut versuchen';
+
+  @override
+  String get analyticsSummaryTitle => 'Zusammenfassung';
+
+  @override
+  String analyticsChartTitle(String metric) {
+    return '$metric-Trend';
+  }
+
+  @override
+  String get analyticsCurrentPeriod => 'Aktuell';
+
+  @override
+  String get analyticsPreviousPeriod => 'Vorher';
+
+  @override
   String get settingsPlaceholderMessage =>
       'Einstellungen bleiben bei der Umsetzung lokal-first.';
 }

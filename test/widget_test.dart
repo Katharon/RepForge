@@ -6,6 +6,7 @@ import 'package:repforge/src/app/navigation/app_route.dart';
 import 'package:repforge/src/app/repforge_app.dart';
 import 'package:repforge/src/core/theme/theme.dart';
 import 'package:repforge/src/core/widgets/widgets.dart';
+import 'package:repforge/src/features/analytics/application/analytics_application.dart';
 import 'package:repforge/src/features/rest_timer/application/rest_timer_application.dart';
 import 'package:repforge/src/features/rest_timer/domain/rest_timer_domain.dart';
 import 'package:repforge/src/features/training_log/domain/training_log_domain.dart';
@@ -80,7 +81,7 @@ void main() {
     const destinations = <String, String>{
       'Groups': 'Workout groups will be connected in a later slice.',
       'Exercises': 'Exercises will use the bundled catalog and custom entries.',
-      'Analytics': 'Analytics will show local training trends later.',
+      'Analytics': 'No sets in this range',
       'Settings': 'Settings will stay local-first when implemented.',
       'Today': 'Today is ready for the next tracking slice.',
     };
@@ -149,6 +150,8 @@ void main() {
 AppDependencies _testAppDependencies({
   AppConfiguration configuration = const AppConfiguration(),
 }) {
+  final workoutSetRepository = _FakeWorkoutSetRepository();
+
   return AppDependencies(
     configuration: configuration,
     restTimerNotifications: RestTimerNotificationCoordinator(
@@ -157,7 +160,8 @@ AppDependencies _testAppDependencies({
       ),
       notificationGateway: _FakeRestTimerNotificationGateway(),
     ),
-    workoutSetRepository: _FakeWorkoutSetRepository(),
+    workoutSetRepository: workoutSetRepository,
+    getExerciseAnalytics: GetExerciseAnalytics(workoutSetRepository),
   );
 }
 
@@ -197,7 +201,9 @@ final class _FakeWorkoutSetRepository implements WorkoutSetRepository {
   Future<WorkoutSetTimelinePage> timelineForExercise(
     WorkoutSetTimelineQuery query,
   ) {
-    throw UnimplementedError('Widget smoke tests do not read workout sets.');
+    return Future.value(
+      WorkoutSetTimelinePage(items: const [], hasMore: false, nextCursor: null),
+    );
   }
 
   @override
