@@ -18,32 +18,29 @@ class PlaceholderDestinationPage extends StatelessWidget {
     return CustomScrollView(
       slivers: [
         SliverAppBar.large(title: Text(title)),
-        SliverFillRemaining(
-          hasScrollBody: false,
-          child: Center(
-            child: Padding(
+        AppResponsiveSliverList(
+          padding: const EdgeInsets.all(RepForgeSpacing.xl),
+          children: [
+            AppCard(
               padding: const EdgeInsets.all(RepForgeSpacing.xl),
-              child: AppCard(
-                padding: const EdgeInsets.all(RepForgeSpacing.xl),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.metricValue,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: RepForgeSpacing.md),
-                    Text(
-                      message,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.metricValue,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: RepForgeSpacing.md),
+                  Text(
+                    message,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
             ),
-          ),
+          ],
         ),
       ],
     );

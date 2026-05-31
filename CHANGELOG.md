@@ -4,6 +4,10 @@
 
 ### Added
 
+- Added Slice 27 accessibility and responsive layout hardening with semantic
+  labels for navigation, metrics, charts, settings, onboarding controls, and
+  rest-timer summaries; increased text-scale widget coverage; minimum touch
+  target checks; and a small responsive sliver-list helper for current screens.
 - Added Slice 26 local search/filter/sort/archive foundations with bounded
   workout-set history search, set-label filtering, deterministic history sort,
   workout-group search/sort, archived-group exclusion by default, explicit

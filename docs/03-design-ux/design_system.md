@@ -85,6 +85,11 @@ typed color, spacing, radius, metric-color, typography, and Material 3 theme
 helpers. The app currently forces the dark RepForge theme until a later settings
 slice introduces user-selectable theme behavior.
 
+Slice 27 adds `AppResponsiveSliverList` as the default small helper for current
+scrolling screens that need mobile padding plus a tablet/wide max content
+width. It also standardizes 48px minimum touch targets for filled, text, and
+icon buttons through the shared theme.
+
 ## v5 visual direction
 
 The visual direction is **Setgraph-inspired, not Setgraph-copied**.

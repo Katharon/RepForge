@@ -19,6 +19,22 @@ void main() {
     expect(find.text('Skip'), findsOneWidget);
   });
 
+  testWidgets('skip control exposes semantics and touch target', (
+    tester,
+  ) async {
+    await tester.pumpWidget(_testApp(_page(_Harness())));
+    await tester.pumpAndSettle();
+
+    expect(_semanticsLabel('Start setup'), findsOneWidget);
+    expect(_semanticsLabel('Skip'), findsOneWidget);
+
+    final skipSize = tester.getSize(
+      find.byKey(const Key('onboarding_skip_button')),
+    );
+    expect(skipSize.width, greaterThanOrEqualTo(48));
+    expect(skipSize.height, greaterThanOrEqualTo(48));
+  });
+
   testWidgets('skip path works and stores skipped status', (tester) async {
     final harness = _Harness();
     var finished = false;
@@ -99,6 +115,44 @@ void main() {
     expect(harness.groupRepository.groups, isNotEmpty);
   });
 
+  testWidgets('continue control exposes semantics after setup is saved', (
+    tester,
+  ) async {
+    _useTallTestSurface(tester);
+    final harness = _Harness();
+
+    await tester.pumpWidget(_testApp(_page(harness)));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('onboarding_start_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('onboarding_next_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('onboarding_next_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('onboarding_complete_button')));
+    await tester.pumpAndSettle();
+
+    expect(_semanticsLabel('Continue'), findsOneWidget);
+    final continueSize = tester.getSize(
+      find.byKey(const Key('onboarding_continue_button')),
+    );
+    expect(continueSize.height, greaterThanOrEqualTo(48));
+  });
+
+  testWidgets('onboarding welcome remains readable at increased text scale', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _testApp(_page(_Harness()), textScaler: const TextScaler.linear(2)),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Set up RepForge'), findsOneWidget);
+    expect(find.text('Start setup'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('error state renders when completion fails', (tester) async {
     _useTallTestSurface(tester);
     final harness = _Harness(failStarterTemplates: true);
@@ -130,12 +184,15 @@ Widget _page(_Harness harness, {VoidCallback? onFinished}) {
   );
 }
 
-Widget _testApp(Widget child) {
+Widget _testApp(Widget child, {TextScaler textScaler = TextScaler.noScaling}) {
   return MaterialApp(
     localizationsDelegates: AppLocalizations.localizationsDelegates,
     supportedLocales: AppLocalizations.supportedLocales,
     theme: RepForgeTheme.dark(),
-    home: Scaffold(body: child),
+    home: MediaQuery(
+      data: MediaQueryData(textScaler: textScaler),
+      child: Scaffold(body: child),
+    ),
   );
 }
 
@@ -159,6 +216,12 @@ Finder _dropdown(Key key) {
 Finder _filterChip(Key key) {
   return find.byWidgetPredicate((widget) {
     return widget is FilterChip && widget.key == key;
+  });
+}
+
+Finder _semanticsLabel(String label) {
+  return find.byWidgetPredicate((widget) {
+    return widget is Semantics && widget.properties.label == label;
   });
 }
 

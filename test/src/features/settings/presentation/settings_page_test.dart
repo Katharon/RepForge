@@ -30,6 +30,40 @@ void main() {
     expect(find.text('Bodyweight'), findsOneWidget);
   });
 
+  testWidgets('settings controls expose semantics and touch targets', (
+    tester,
+  ) async {
+    await tester.pumpWidget(_testApp(_page(_SettingsRepositoryFake())));
+    await tester.pumpAndSettle();
+
+    expect(_semanticsLabel('Save settings'), findsOneWidget);
+    expect(_semanticsLabel('Reset to defaults'), findsWidgets);
+
+    final resetSize = tester.getSize(
+      find.byKey(const Key('settings_reset_button')),
+    );
+    expect(resetSize.width, greaterThanOrEqualTo(48));
+    expect(resetSize.height, greaterThanOrEqualTo(48));
+  });
+
+  testWidgets('settings form remains readable at increased text scale', (
+    tester,
+  ) async {
+    _useTallTestSurface(tester);
+
+    await tester.pumpWidget(
+      _testApp(
+        _page(_SettingsRepositoryFake()),
+        textScaler: const TextScaler.linear(2),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('App preferences'), findsOneWidget);
+    expect(find.text('Save settings'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('error state renders retry copy', (tester) async {
     await tester.pumpWidget(_testApp(_page(_FailingSettingsRepository())));
     await tester.pumpAndSettle();
@@ -161,12 +195,15 @@ Widget _page(SettingsProfileRepository repository) {
   );
 }
 
-Widget _testApp(Widget child) {
+Widget _testApp(Widget child, {TextScaler textScaler = TextScaler.noScaling}) {
   return MaterialApp(
     localizationsDelegates: AppLocalizations.localizationsDelegates,
     supportedLocales: AppLocalizations.supportedLocales,
     theme: RepForgeTheme.dark(),
-    home: Scaffold(body: child),
+    home: MediaQuery(
+      data: MediaQueryData(textScaler: textScaler),
+      child: Scaffold(body: child),
+    ),
   );
 }
 
@@ -195,6 +232,12 @@ Finder _dropdown(Key key) {
 Finder _byKeyWidget<T extends Widget>(Key key) {
   return find.byWidgetPredicate((widget) {
     return widget is T && widget.key == key;
+  });
+}
+
+Finder _semanticsLabel(String label) {
+  return find.byWidgetPredicate((widget) {
+    return widget is Semantics && widget.properties.label == label;
   });
 }
 

@@ -70,30 +70,23 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
     return CustomScrollView(
       slivers: [
         SliverAppBar.large(title: Text(localizations.navAnalytics)),
-        SliverPadding(
-          padding: const EdgeInsets.fromLTRB(
-            RepForgeSpacing.lg,
-            0,
-            RepForgeSpacing.lg,
-            RepForgeSpacing.xl,
-          ),
-          sliver: SliverList.list(
-            children: [
-              _AnalyticsHeader(state: _state),
-              const SizedBox(height: RepForgeSpacing.lg),
-              _MetricSelector(
-                selectedMetric: _selectedMetric,
-                onSelected: _selectMetric,
-              ),
-              const SizedBox(height: RepForgeSpacing.md),
-              _RangeSelector(
-                selectedRange: _selectedRange,
-                onSelected: _selectRange,
-              ),
-              const SizedBox(height: RepForgeSpacing.lg),
-              _AnalyticsStateBody(state: _state, onRetry: _load),
-            ],
-          ),
+        AppResponsiveSliverList(
+          maxWidth: 840,
+          children: [
+            _AnalyticsHeader(state: _state),
+            const SizedBox(height: RepForgeSpacing.lg),
+            _MetricSelector(
+              selectedMetric: _selectedMetric,
+              onSelected: _selectMetric,
+            ),
+            const SizedBox(height: RepForgeSpacing.md),
+            _RangeSelector(
+              selectedRange: _selectedRange,
+              onSelected: _selectRange,
+            ),
+            const SizedBox(height: RepForgeSpacing.lg),
+            _AnalyticsStateBody(state: _state, onRetry: _load),
+          ],
         ),
       ],
     );
@@ -230,14 +223,20 @@ class _RangeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SegmentedButton<ExerciseAnalyticsRange>(
-      key: const Key('analytics_range_selector'),
-      segments: [
-        for (final range in ExerciseAnalyticsRange.values)
-          ButtonSegment(value: range, label: Text(_rangeLabel(context, range))),
-      ],
-      selected: {selectedRange},
-      onSelectionChanged: (selection) => onSelected(selection.single),
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: SegmentedButton<ExerciseAnalyticsRange>(
+        key: const Key('analytics_range_selector'),
+        segments: [
+          for (final range in ExerciseAnalyticsRange.values)
+            ButtonSegment(
+              value: range,
+              label: Text(_rangeLabel(context, range)),
+            ),
+        ],
+        selected: {selectedRange},
+        onSelectionChanged: (selection) => onSelected(selection.single),
+      ),
     );
   }
 }
@@ -278,7 +277,7 @@ class _AnalyticsLoadingState extends StatelessWidget {
             child: CircularProgressIndicator(strokeWidth: 3),
           ),
           const SizedBox(width: RepForgeSpacing.md),
-          Text(localizations.analyticsLoading),
+          Expanded(child: Text(localizations.analyticsLoading)),
         ],
       ),
     );
@@ -398,10 +397,13 @@ class _EstimatedOneRepMaxCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Wrap(
+            spacing: RepForgeSpacing.sm,
+            runSpacing: RepForgeSpacing.sm,
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: [
-              Expanded(
+              ConstrainedBox(
+                constraints: const BoxConstraints(minWidth: 180, maxWidth: 460),
                 child: Text(
                   localizations.analyticsEstimatedOneRepMaxTitle,
                   style: Theme.of(context).textTheme.titleMedium,
@@ -485,9 +487,13 @@ class _PreviousOneRepMaxValue extends StatelessWidget {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context);
 
-    return Row(
+    return Wrap(
+      spacing: RepForgeSpacing.md,
+      runSpacing: RepForgeSpacing.xs,
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: [
-        Expanded(
+        ConstrainedBox(
+          constraints: const BoxConstraints(minWidth: 180, maxWidth: 420),
           child: Text(
             localizations.analyticsEstimatedOneRepMaxPreviousLabel,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -542,22 +548,34 @@ class _MetricCardContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = _metricColor(context, card.metric);
+    final label = _metricLabel(context, card.metric);
+    final value = _formatMetricValue(
+      context,
+      card.metric,
+      card.currentValue,
+      card,
+    );
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          _metricLabel(context, card.metric),
-          style: Theme.of(context).textTheme.labelLarge?.copyWith(
-            color: RepForgeColorTokens.textSecondary,
+    return Semantics(
+      label: '$label, $value',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(
+              color: RepForgeColorTokens.textSecondary,
+            ),
           ),
-        ),
-        const SizedBox(height: RepForgeSpacing.sm),
-        Text(
-          _formatMetricValue(context, card.metric, card.currentValue, card),
-          style: Theme.of(context).textTheme.metricValue.copyWith(color: color),
-        ),
-      ],
+          const SizedBox(height: RepForgeSpacing.sm),
+          Text(
+            value,
+            style: Theme.of(
+              context,
+            ).textTheme.metricValue.copyWith(color: color),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -572,64 +590,66 @@ class _AnalyticsChartCard extends StatelessWidget {
     final localizations = AppLocalizations.of(context);
     final metricColor = _metricColor(context, card.metric);
     final previousValue = card.previousValue;
+    final metricLabel = _metricLabel(context, card.metric);
+    final currentLabel = _formatMetricValue(
+      context,
+      card.metric,
+      card.currentValue,
+      card,
+    );
+    final previousLabel = previousValue == null
+        ? '--'
+        : _formatMetricValue(context, card.metric, previousValue, card);
 
-    return AppCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            localizations.analyticsChartTitle(
-              _metricLabel(context, card.metric),
+    return Semantics(
+      label:
+          '${localizations.analyticsChartTitle(metricLabel)}, '
+          '${localizations.analyticsCurrentPeriod} $currentLabel, '
+          '${localizations.analyticsPreviousPeriod} $previousLabel',
+      child: AppCard(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              localizations.analyticsChartTitle(metricLabel),
+              style: Theme.of(context).textTheme.titleMedium,
             ),
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          const SizedBox(height: RepForgeSpacing.lg),
-          SizedBox(
-            height: 160,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Expanded(
-                  child: _AnalyticsChartBar(
-                    key: const Key('analytics_chart_current_bar'),
-                    label: localizations.analyticsCurrentPeriod,
-                    valueLabel: _formatMetricValue(
-                      context,
-                      card.metric,
-                      card.currentValue,
-                      card,
+            const SizedBox(height: RepForgeSpacing.lg),
+            SizedBox(
+              height: 160,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: _AnalyticsChartBar(
+                      key: const Key('analytics_chart_current_bar'),
+                      label: localizations.analyticsCurrentPeriod,
+                      valueLabel: currentLabel,
+                      fraction: _chartFraction(
+                        value: card.currentValue,
+                        maximum: card.chartMaximum,
+                      ),
+                      color: metricColor,
                     ),
-                    fraction: _chartFraction(
-                      value: card.currentValue,
-                      maximum: card.chartMaximum,
-                    ),
-                    color: metricColor,
                   ),
-                ),
-                const SizedBox(width: RepForgeSpacing.md),
-                Expanded(
-                  child: _AnalyticsChartBar(
-                    key: const Key('analytics_chart_previous_bar'),
-                    label: localizations.analyticsPreviousPeriod,
-                    valueLabel: previousValue == null
-                        ? '--'
-                        : _formatMetricValue(
-                            context,
-                            card.metric,
-                            previousValue,
-                            card,
-                          ),
-                    fraction: _chartFraction(
-                      value: previousValue,
-                      maximum: card.chartMaximum,
+                  const SizedBox(width: RepForgeSpacing.md),
+                  Expanded(
+                    child: _AnalyticsChartBar(
+                      key: const Key('analytics_chart_previous_bar'),
+                      label: localizations.analyticsPreviousPeriod,
+                      valueLabel: previousLabel,
+                      fraction: _chartFraction(
+                        value: previousValue,
+                        maximum: card.chartMaximum,
+                      ),
+                      color: RepForgeColorTokens.surfaceCardElevated,
                     ),
-                    color: RepForgeColorTokens.surfaceCardElevated,
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

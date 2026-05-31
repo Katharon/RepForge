@@ -24,28 +24,58 @@ class NavigationShell extends StatelessWidget {
         },
         destinations: [
           NavigationDestination(
-            icon: const Icon(Icons.today_outlined),
-            selectedIcon: const Icon(Icons.today),
+            icon: Icon(
+              Icons.today_outlined,
+              semanticLabel: localizations.navToday,
+            ),
+            selectedIcon: Icon(
+              Icons.today,
+              semanticLabel: localizations.navToday,
+            ),
             label: localizations.navToday,
           ),
           NavigationDestination(
-            icon: const Icon(Icons.view_list_outlined),
-            selectedIcon: const Icon(Icons.view_list),
+            icon: Icon(
+              Icons.view_list_outlined,
+              semanticLabel: localizations.navGroups,
+            ),
+            selectedIcon: Icon(
+              Icons.view_list,
+              semanticLabel: localizations.navGroups,
+            ),
             label: localizations.navGroups,
           ),
           NavigationDestination(
-            icon: const Icon(Icons.fitness_center_outlined),
-            selectedIcon: const Icon(Icons.fitness_center),
+            icon: Icon(
+              Icons.fitness_center_outlined,
+              semanticLabel: localizations.navExercises,
+            ),
+            selectedIcon: Icon(
+              Icons.fitness_center,
+              semanticLabel: localizations.navExercises,
+            ),
             label: localizations.navExercises,
           ),
           NavigationDestination(
-            icon: const Icon(Icons.insights_outlined),
-            selectedIcon: const Icon(Icons.insights),
+            icon: Icon(
+              Icons.insights_outlined,
+              semanticLabel: localizations.navAnalytics,
+            ),
+            selectedIcon: Icon(
+              Icons.insights,
+              semanticLabel: localizations.navAnalytics,
+            ),
             label: localizations.navAnalytics,
           ),
           NavigationDestination(
-            icon: const Icon(Icons.settings_outlined),
-            selectedIcon: const Icon(Icons.settings),
+            icon: Icon(
+              Icons.settings_outlined,
+              semanticLabel: localizations.navSettings,
+            ),
+            selectedIcon: Icon(
+              Icons.settings,
+              semanticLabel: localizations.navSettings,
+            ),
             label: localizations.navSettings,
           ),
         ],

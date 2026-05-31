@@ -58,6 +58,35 @@ void main() {
     expect(find.text('Training signal'), findsOneWidget);
   });
 
+  testWidgets('success state remains readable at increased text scale', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _testApp(
+        TodayPage(loader: _StaticTodayDashboardLoader(_successModel())),
+        textScaler: const TextScaler.linear(2),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Sets today'), findsOneWidget);
+    expect(find.text('01:30'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('metrics and visible rest timer expose semantic summaries', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _testApp(TodayPage(loader: _StaticTodayDashboardLoader(_successModel()))),
+    );
+    await tester.pumpAndSettle();
+
+    expect(_semanticsLabel('Sets today, 4'), findsOneWidget);
+    expect(_semanticsLabel('Volume today, 1250 kg'), findsOneWidget);
+    expect(_semanticsLabel('Rest timer, Resting, 01:30'), findsOneWidget);
+  });
+
   testWidgets('today set count and volume are displayed', (tester) async {
     await tester.pumpWidget(
       _testApp(TodayPage(loader: _StaticTodayDashboardLoader(_successModel()))),
@@ -105,13 +134,22 @@ void main() {
   });
 }
 
-Widget _testApp(Widget child) {
+Widget _testApp(Widget child, {TextScaler textScaler = TextScaler.noScaling}) {
   return MaterialApp(
     localizationsDelegates: AppLocalizations.localizationsDelegates,
     supportedLocales: AppLocalizations.supportedLocales,
     theme: RepForgeTheme.dark(),
-    home: Scaffold(body: child),
+    home: MediaQuery(
+      data: MediaQueryData(textScaler: textScaler),
+      child: Scaffold(body: child),
+    ),
   );
+}
+
+Finder _semanticsLabel(String label) {
+  return find.byWidgetPredicate((widget) {
+    return widget is Semantics && widget.properties.label == label;
+  });
 }
 
 final class _PendingTodayDashboardLoader implements TodayDashboardLoader {

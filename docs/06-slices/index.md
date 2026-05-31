@@ -28,8 +28,8 @@ Each slice is an incremental Codex task. Codex should implement exactly one slic
 - [23 — Onboarding, initial groups, and bundled sample data](slice_23_onboarding_and_sample_data.md) — done
 - [24 — Import/export local backup](slice_24_import_export_local_backup.md) — done
 - [25 — Database migrations and data integrity hardening](slice_25_database_migrations_and_data_integrity_hardening.md) — done
-- [26 — Search, filter, sort, and archive flows](slice_26_search_filter_sort_and_archive_flows.md) — ready-to-commit
-- [27 — Accessibility and responsive layout pass](slice_27_accessibility_and_responsive_layout_pass.md)
+- [26 — Search, filter, sort, and archive flows](slice_26_search_filter_sort_and_archive_flows.md) — done
+- [27 — Accessibility and responsive layout pass](slice_27_accessibility_and_responsive_layout_pass.md) — done
 - [28 — Golden tests and visual regression baseline](slice_28_golden_tests_and_visual_regression_baseline.md)
 - [29 — Integration/E2E workout logging flow](slice_29_integration_e2e_workout_logging_flow.md)
 - [30 — Security and privacy hardening](slice_30_security_and_privacy_hardening.md)

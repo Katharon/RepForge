@@ -39,29 +39,21 @@ class _OnboardingPageState extends State<OnboardingPage> {
     return CustomScrollView(
       slivers: [
         SliverAppBar.large(title: Text(localizations.onboardingTitle)),
-        SliverPadding(
-          padding: const EdgeInsets.fromLTRB(
-            RepForgeSpacing.lg,
-            0,
-            RepForgeSpacing.lg,
-            RepForgeSpacing.xl,
-          ),
-          sliver: SliverList.list(
-            children: [
-              if (_status == OnboardingPageStatus.error) ...[
-                _StatusCard(
-                  icon: Icons.error_outline,
-                  title: localizations.onboardingErrorTitle,
-                  message: localizations.onboardingErrorMessage,
-                ),
-                const SizedBox(height: RepForgeSpacing.md),
-              ],
-              if (_status == OnboardingPageStatus.saved)
-                _SavedStep(onFinished: widget.onFinished)
-              else
-                _stepBody(localizations),
+        AppResponsiveSliverList(
+          children: [
+            if (_status == OnboardingPageStatus.error) ...[
+              _StatusCard(
+                icon: Icons.error_outline,
+                title: localizations.onboardingErrorTitle,
+                message: localizations.onboardingErrorMessage,
+              ),
+              const SizedBox(height: RepForgeSpacing.md),
             ],
-          ),
+            if (_status == OnboardingPageStatus.saved)
+              _SavedStep(onFinished: widget.onFinished)
+            else
+              _stepBody(localizations),
+          ],
         ),
       ],
     );
@@ -203,20 +195,31 @@ class _WelcomeStep extends StatelessWidget {
           const SizedBox(height: RepForgeSpacing.xs),
           Text(localizations.onboardingWelcomeMessage),
           const SizedBox(height: RepForgeSpacing.lg),
-          Row(
+          Wrap(
+            spacing: RepForgeSpacing.sm,
+            runSpacing: RepForgeSpacing.sm,
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: [
-              Expanded(
-                child: FilledButton(
-                  key: const Key('onboarding_start_button'),
-                  onPressed: onStart,
-                  child: Text(localizations.onboardingStart),
+              ConstrainedBox(
+                constraints: const BoxConstraints(minWidth: 180, minHeight: 48),
+                child: Semantics(
+                  button: true,
+                  label: localizations.onboardingStart,
+                  child: FilledButton(
+                    key: const Key('onboarding_start_button'),
+                    onPressed: onStart,
+                    child: Text(localizations.onboardingStart),
+                  ),
                 ),
               ),
-              const SizedBox(width: RepForgeSpacing.sm),
-              TextButton(
-                key: const Key('onboarding_skip_button'),
-                onPressed: onSkip,
-                child: Text(localizations.onboardingSkip),
+              Semantics(
+                button: true,
+                label: localizations.onboardingSkip,
+                child: TextButton(
+                  key: const Key('onboarding_skip_button'),
+                  onPressed: onSkip,
+                  child: Text(localizations.onboardingSkip),
+                ),
               ),
             ],
           ),
@@ -358,49 +361,74 @@ class _EquipmentStep extends StatelessWidget {
           ],
         ),
         const SizedBox(height: RepForgeSpacing.md),
-        InkWell(
-          key: const Key('onboarding_starter_groups_checkbox'),
-          onTap: () {
-            onDraftChanged(
-              draft.copyWith(createStarterGroups: !draft.createStarterGroups),
-            );
-          },
-          child: Row(
-            children: [
-              Checkbox(
-                value: draft.createStarterGroups,
-                onChanged: (value) {
-                  onDraftChanged(
-                    draft.copyWith(createStarterGroups: value ?? false),
-                  );
-                },
+        Semantics(
+          button: true,
+          checked: draft.createStarterGroups,
+          label: localizations.onboardingStarterGroupsTitle,
+          child: InkWell(
+            key: const Key('onboarding_starter_groups_checkbox'),
+            onTap: () {
+              onDraftChanged(
+                draft.copyWith(createStarterGroups: !draft.createStarterGroups),
+              );
+            },
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 48),
+              child: Row(
+                children: [
+                  Checkbox(
+                    value: draft.createStarterGroups,
+                    onChanged: (value) {
+                      onDraftChanged(
+                        draft.copyWith(createStarterGroups: value ?? false),
+                      );
+                    },
+                  ),
+                  Expanded(
+                    child: Text(localizations.onboardingStarterGroupsTitle),
+                  ),
+                ],
               ),
-              Expanded(child: Text(localizations.onboardingStarterGroupsTitle)),
-            ],
+            ),
           ),
         ),
         const SizedBox(height: RepForgeSpacing.md),
-        Row(
+        Wrap(
+          spacing: RepForgeSpacing.sm,
+          runSpacing: RepForgeSpacing.sm,
+          crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            TextButton(
-              key: const Key('onboarding_back_button'),
-              onPressed: isSaving ? null : onBack,
-              child: Text(localizations.onboardingBack),
+            Semantics(
+              button: true,
+              enabled: !isSaving,
+              label: localizations.onboardingBack,
+              child: TextButton(
+                key: const Key('onboarding_back_button'),
+                onPressed: isSaving ? null : onBack,
+                child: Text(localizations.onboardingBack),
+              ),
             ),
-            const Spacer(),
-            FilledButton.icon(
-              key: const Key('onboarding_complete_button'),
-              onPressed: isSaving ? null : onComplete,
-              icon: isSaving
-                  ? const SizedBox.square(
-                      dimension: 18,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : const Icon(Icons.check),
-              label: Text(
-                isSaving
-                    ? localizations.settingsSaving
-                    : localizations.onboardingComplete,
+            ConstrainedBox(
+              constraints: const BoxConstraints(minWidth: 180, minHeight: 48),
+              child: Semantics(
+                button: true,
+                enabled: !isSaving,
+                label: localizations.onboardingComplete,
+                child: FilledButton.icon(
+                  key: const Key('onboarding_complete_button'),
+                  onPressed: isSaving ? null : onComplete,
+                  icon: isSaving
+                      ? const SizedBox.square(
+                          dimension: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.check),
+                  label: Text(
+                    isSaving
+                        ? localizations.settingsSaving
+                        : localizations.onboardingComplete,
+                  ),
+                ),
               ),
             ),
           ],
@@ -431,10 +459,17 @@ class _SavedStep extends StatelessWidget {
           const SizedBox(height: RepForgeSpacing.xs),
           Text(localizations.onboardingSavedMessage),
           const SizedBox(height: RepForgeSpacing.lg),
-          FilledButton(
-            key: const Key('onboarding_continue_button'),
-            onPressed: onFinished,
-            child: Text(localizations.onboardingContinue),
+          ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 48),
+            child: Semantics(
+              button: true,
+              label: localizations.onboardingContinue,
+              child: FilledButton(
+                key: const Key('onboarding_continue_button'),
+                onPressed: onFinished,
+                child: Text(localizations.onboardingContinue),
+              ),
+            ),
           ),
         ],
       ),
@@ -497,18 +532,31 @@ class _StepActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context);
-    return Row(
+    return Wrap(
+      spacing: RepForgeSpacing.sm,
+      runSpacing: RepForgeSpacing.sm,
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: [
-        TextButton(
-          key: const Key('onboarding_back_button'),
-          onPressed: onBack,
-          child: Text(localizations.onboardingBack),
+        Semantics(
+          button: true,
+          label: localizations.onboardingBack,
+          child: TextButton(
+            key: const Key('onboarding_back_button'),
+            onPressed: onBack,
+            child: Text(localizations.onboardingBack),
+          ),
         ),
-        const Spacer(),
-        FilledButton(
-          key: const Key('onboarding_next_button'),
-          onPressed: onNext,
-          child: Text(localizations.onboardingNext),
+        ConstrainedBox(
+          constraints: const BoxConstraints(minWidth: 120, minHeight: 48),
+          child: Semantics(
+            button: true,
+            label: localizations.onboardingNext,
+            child: FilledButton(
+              key: const Key('onboarding_next_button'),
+              onPressed: onNext,
+              child: Text(localizations.onboardingNext),
+            ),
+          ),
         ),
       ],
     );
@@ -542,8 +590,12 @@ class _DropdownRow<T extends Object> extends StatelessWidget {
         decoration: InputDecoration(labelText: label),
         items: [
           for (final item in values)
-            DropdownMenuItem<T>(value: item, child: Text(labelFor(item))),
+            DropdownMenuItem<T>(
+              value: item,
+              child: Text(labelFor(item), overflow: TextOverflow.ellipsis),
+            ),
         ],
+        isExpanded: true,
         onChanged: (value) {
           if (value != null) {
             onChanged(value);

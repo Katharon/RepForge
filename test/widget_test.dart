@@ -56,6 +56,43 @@ void main() {
     expect(find.byType(AppCard), findsWidgets);
   });
 
+  testWidgets('main navigation exposes semantic destination labels', (
+    tester,
+  ) async {
+    final dependencies = _testAppDependencies();
+
+    await tester.pumpWidget(RepForgeApp(dependencies: dependencies));
+    await tester.pumpAndSettle();
+
+    final iconLabels = tester
+        .widgetList<Icon>(find.byType(Icon))
+        .map((icon) => icon.semanticLabel)
+        .whereType<String>()
+        .toSet();
+
+    expect(
+      iconLabels,
+      containsAll(['Today', 'Groups', 'Exercises', 'Analytics', 'Settings']),
+    );
+  });
+
+  testWidgets('Today surface stays constrained on a wide layout', (
+    tester,
+  ) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(1200, 900);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    addTearDown(tester.view.resetPhysicalSize);
+    final dependencies = _testAppDependencies();
+
+    await tester.pumpWidget(RepForgeApp(dependencies: dependencies));
+    await tester.pumpAndSettle();
+
+    final cardSize = tester.getSize(find.byType(AppCard).first);
+    expect(cardSize.width, lessThanOrEqualTo(720));
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('renders German navigation labels with forced German locale', (
     tester,
   ) async {

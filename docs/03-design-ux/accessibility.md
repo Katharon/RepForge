@@ -26,3 +26,13 @@ Add accessibility-oriented widget tests where possible:
 - Semantics labels for add/edit/delete buttons.
 - Text scaling smoke tests.
 - Empty/error state readability.
+
+## Slice 27 implementation notes
+
+- Current MVP surfaces should expose explicit semantics for icon-only or
+  summary-only controls, including app navigation icons, chart summaries,
+  metric cards, settings actions, onboarding actions, and visible rest timers.
+- Text-scale hardening favors wrapping controls, expanded loading copy, and
+  horizontal scrolling for compact selectors over shrinking text.
+- Touch targets should use at least 48 logical pixels for primary actions,
+  text buttons, and icon-only controls where practical.

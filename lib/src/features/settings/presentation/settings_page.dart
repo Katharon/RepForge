@@ -68,26 +68,18 @@ class _SettingsPageState extends State<SettingsPage> {
     return CustomScrollView(
       slivers: [
         SliverAppBar.large(title: Text(localizations.navSettings)),
-        SliverPadding(
-          padding: const EdgeInsets.fromLTRB(
-            RepForgeSpacing.lg,
-            0,
-            RepForgeSpacing.lg,
-            RepForgeSpacing.xl,
-          ),
-          sliver: SliverList.list(
-            children: [
-              _SettingsStateBody(
-                state: _state,
-                displayNameController: _displayNameController,
-                onChanged: _updateProfile,
-                onEquipmentToggled: _toggleEquipment,
-                onSave: _save,
-                onReset: _reset,
-                onRetry: _load,
-              ),
-            ],
-          ),
+        AppResponsiveSliverList(
+          children: [
+            _SettingsStateBody(
+              state: _state,
+              displayNameController: _displayNameController,
+              onChanged: _updateProfile,
+              onEquipmentToggled: _toggleEquipment,
+              onSave: _save,
+              onReset: _reset,
+              onRetry: _load,
+            ),
+          ],
         ),
       ],
     );
@@ -303,7 +295,7 @@ class _SettingsLoadingState extends StatelessWidget {
             child: CircularProgressIndicator(strokeWidth: 3),
           ),
           const SizedBox(width: RepForgeSpacing.md),
-          Text(localizations.settingsLoading),
+          Expanded(child: Text(localizations.settingsLoading)),
         ],
       ),
     );
@@ -507,31 +499,47 @@ class _SettingsForm extends StatelessWidget {
           ],
         ),
         const SizedBox(height: RepForgeSpacing.lg),
-        Row(
+        Wrap(
+          spacing: RepForgeSpacing.sm,
+          runSpacing: RepForgeSpacing.sm,
+          crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            Expanded(
-              child: FilledButton.icon(
-                key: const Key('settings_save_button'),
-                onPressed: isSaving ? null : onSave,
-                icon: isSaving
-                    ? const SizedBox.square(
-                        dimension: 18,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Icon(Icons.save_outlined),
-                label: Text(
-                  isSaving
-                      ? localizations.settingsSaving
-                      : localizations.settingsSave,
+            ConstrainedBox(
+              constraints: const BoxConstraints(minWidth: 180, minHeight: 48),
+              child: Semantics(
+                button: true,
+                enabled: !isSaving,
+                label: localizations.settingsSave,
+                child: FilledButton.icon(
+                  key: const Key('settings_save_button'),
+                  onPressed: isSaving ? null : onSave,
+                  icon: isSaving
+                      ? const SizedBox.square(
+                          dimension: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.save_outlined),
+                  label: Text(
+                    isSaving
+                        ? localizations.settingsSaving
+                        : localizations.settingsSave,
+                  ),
                 ),
               ),
             ),
-            const SizedBox(width: RepForgeSpacing.sm),
-            IconButton(
-              key: const Key('settings_reset_button'),
-              tooltip: localizations.settingsReset,
-              onPressed: isSaving ? null : onReset,
-              icon: const Icon(Icons.restart_alt),
+            Semantics(
+              button: true,
+              enabled: !isSaving,
+              label: localizations.settingsReset,
+              child: IconButton(
+                key: const Key('settings_reset_button'),
+                tooltip: localizations.settingsReset,
+                onPressed: isSaving ? null : onReset,
+                icon: Icon(
+                  Icons.restart_alt,
+                  semanticLabel: localizations.settingsReset,
+                ),
+              ),
             ),
           ],
         ),
@@ -588,8 +596,12 @@ class _DropdownRow<T extends Object> extends StatelessWidget {
         decoration: InputDecoration(labelText: label),
         items: [
           for (final item in values)
-            DropdownMenuItem<T>(value: item, child: Text(labelFor(item))),
+            DropdownMenuItem<T>(
+              value: item,
+              child: Text(labelFor(item), overflow: TextOverflow.ellipsis),
+            ),
         ],
+        isExpanded: true,
         onChanged: (value) {
           if (value != null) {
             onChanged(value);

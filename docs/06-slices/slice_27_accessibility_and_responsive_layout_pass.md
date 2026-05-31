@@ -10,7 +10,7 @@ Audit and fix semantics, text scaling, touch targets, and tablet-friendly layout
 2. `docs/03-design-ux/accessibility.md`
 3. `docs/03-design-ux/design_system.md`
 4. `docs/04-quality/test_strategy.md`
-5. `docs/06-slices/slice_27_accessibility_responsive_layout_pass.md`
+5. `docs/06-slices/slice_27_accessibility_and_responsive_layout_pass.md`
 
 ## Current assumptions
 
@@ -49,6 +49,16 @@ If strict TDD is impractical because this is a repository/bootstrap slice, expla
 - All relevant tests pass.
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
+
+## Implementation note
+
+Implemented a focused presentation-only pass across the current app shell,
+Today, Analytics, Settings, Onboarding, and placeholder surfaces. The pass adds
+localized semantic labels/summaries for navigation icons, metrics, analytics
+chart summaries, settings/onboarding actions, and visible rest timers; improves
+loading rows, action rows, dropdown expansion, selector scrolling, and 48px
+minimum control sizing; and introduces `AppResponsiveSliverList` to keep active
+screens readable on tablet/wide layouts without a navigation refactor.
 
 ## Validation commands
 
@@ -89,7 +99,7 @@ Read first, in this order:
 2. docs/03-design-ux/accessibility.md
 3. docs/03-design-ux/design_system.md
 4. docs/04-quality/test_strategy.md
-5. docs/06-slices/slice_27_accessibility_responsive_layout_pass.md
+5. docs/06-slices/slice_27_accessibility_and_responsive_layout_pass.md
 
 Implement Slice 27: Accessibility and responsive layout pass.
 

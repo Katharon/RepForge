@@ -65,6 +65,39 @@ void main() {
     expect(find.text('116.7 kg'), findsWidgets);
   });
 
+  testWidgets('metric cards and chart expose readable semantic labels', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _testApp(
+        AnalyticsPage(loader: _StaticAnalyticsLoader(_readModelWithData())),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(_semanticsLabel('Volume, 1300 kg'), findsOneWidget);
+    expect(
+      _semanticsLabel('Volume trend, Current 1300 kg, Previous 600 kg'),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('success state remains readable at increased text scale', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _testApp(
+        AnalyticsPage(loader: _StaticAnalyticsLoader(_readModelWithData())),
+        textScaler: const TextScaler.linear(2),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Summary'), findsOneWidget);
+    expect(find.text('Volume trend'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('estimated 1RM value card renders available state and formula', (
     tester,
   ) async {
@@ -197,13 +230,22 @@ void main() {
   });
 }
 
-Widget _testApp(Widget child) {
+Widget _testApp(Widget child, {TextScaler textScaler = TextScaler.noScaling}) {
   return MaterialApp(
     localizationsDelegates: AppLocalizations.localizationsDelegates,
     supportedLocales: AppLocalizations.supportedLocales,
     theme: RepForgeTheme.dark(),
-    home: Scaffold(body: child),
+    home: MediaQuery(
+      data: MediaQueryData(textScaler: textScaler),
+      child: Scaffold(body: child),
+    ),
   );
+}
+
+Finder _semanticsLabel(String label) {
+  return find.byWidgetPredicate((widget) {
+    return widget is Semantics && widget.properties.label == label;
+  });
 }
 
 final class _PendingAnalyticsLoader implements ExerciseAnalyticsLoader {

@@ -55,16 +55,8 @@ class _TodayPageState extends State<TodayPage> {
     return CustomScrollView(
       slivers: [
         SliverAppBar.large(title: Text(localizations.todayDashboardTitle)),
-        SliverPadding(
-          padding: const EdgeInsets.fromLTRB(
-            RepForgeSpacing.lg,
-            0,
-            RepForgeSpacing.lg,
-            RepForgeSpacing.xl,
-          ),
-          sliver: SliverList.list(
-            children: [_TodayStateBody(state: _state, onRetry: _load)],
-          ),
+        AppResponsiveSliverList(
+          children: [_TodayStateBody(state: _state, onRetry: _load)],
         ),
       ],
     );
@@ -141,7 +133,7 @@ class _TodayLoadingState extends StatelessWidget {
             child: CircularProgressIndicator(strokeWidth: 3),
           ),
           const SizedBox(width: RepForgeSpacing.md),
-          Text(localizations.todayLoading),
+          Expanded(child: Text(localizations.todayLoading)),
         ],
       ),
     );
@@ -311,24 +303,27 @@ class _MetricCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: RepForgeColorTokens.textSecondary,
+    return Semantics(
+      label: '$label, $value',
+      child: AppCard(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                color: RepForgeColorTokens.textSecondary,
+              ),
             ),
-          ),
-          const SizedBox(height: RepForgeSpacing.sm),
-          Text(
-            value,
-            style: Theme.of(
-              context,
-            ).textTheme.metricValue.copyWith(color: color),
-          ),
-        ],
+            const SizedBox(height: RepForgeSpacing.sm),
+            Text(
+              value,
+              style: Theme.of(
+                context,
+              ).textTheme.metricValue.copyWith(color: color),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -379,39 +374,46 @@ class _RestTimerCard extends StatelessWidget {
     final localizations = AppLocalizations.of(context);
     final timer = dashboard.restTimer;
 
-    return AppCard(
-      child: Row(
-        children: [
-          Icon(
-            timer.isVisible ? Icons.timer : Icons.timer_outlined,
-            color: timer.isVisible
-                ? RepForgeColorTokens.accentPrimaryGreen
-                : RepForgeColorTokens.textSecondary,
-          ),
-          const SizedBox(width: RepForgeSpacing.md),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  localizations.todayRestTimerTitle,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: RepForgeSpacing.xs),
-                Text(
-                  _restTimerStatusText(context, timer.status),
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: RepForgeColorTokens.textSecondary,
-                  ),
-                ),
-              ],
+    final statusText = _restTimerStatusText(context, timer.status);
+    final displayText = timer.isVisible ? timer.displayText : '--:--';
+
+    return Semantics(
+      label: '${localizations.todayRestTimerTitle}, $statusText, $displayText',
+      child: AppCard(
+        child: Wrap(
+          spacing: RepForgeSpacing.md,
+          runSpacing: RepForgeSpacing.sm,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            Icon(
+              timer.isVisible ? Icons.timer : Icons.timer_outlined,
+              color: timer.isVisible
+                  ? RepForgeColorTokens.accentPrimaryGreen
+                  : RepForgeColorTokens.textSecondary,
+              semanticLabel: localizations.todayRestTimerTitle,
             ),
-          ),
-          Text(
-            timer.isVisible ? timer.displayText : '--:--',
-            style: Theme.of(context).textTheme.metricUnit,
-          ),
-        ],
+            ConstrainedBox(
+              constraints: const BoxConstraints(minWidth: 180, maxWidth: 420),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    localizations.todayRestTimerTitle,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: RepForgeSpacing.xs),
+                  Text(
+                    statusText,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: RepForgeColorTokens.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Text(displayText, style: Theme.of(context).textTheme.metricUnit),
+          ],
+        ),
       ),
     );
   }
@@ -433,10 +435,13 @@ class _QuickActionCard extends StatelessWidget {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: RepForgeSpacing.sm),
-          FilledButton.icon(
-            onPressed: null,
-            icon: const Icon(Icons.add),
-            label: Text(localizations.todayQuickActionLogSet),
+          ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 48),
+            child: FilledButton.icon(
+              onPressed: null,
+              icon: const Icon(Icons.add),
+              label: Text(localizations.todayQuickActionLogSet),
+            ),
           ),
           const SizedBox(height: RepForgeSpacing.sm),
           Text(
