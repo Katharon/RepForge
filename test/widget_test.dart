@@ -12,12 +12,16 @@ import 'package:repforge/src/features/backup/domain/backup_domain.dart';
 import 'package:repforge/src/features/entitlements/application/entitlements_application.dart';
 import 'package:repforge/src/features/onboarding/application/onboarding_application.dart';
 import 'package:repforge/src/features/onboarding/domain/onboarding_domain.dart';
+import 'package:repforge/src/features/purchases/application/purchases_application.dart';
+import 'package:repforge/src/features/purchases/domain/purchases_domain.dart';
 import 'package:repforge/src/features/rest_timer/application/rest_timer_application.dart';
 import 'package:repforge/src/features/rest_timer/domain/rest_timer_domain.dart';
 import 'package:repforge/src/features/settings/application/settings_application.dart';
 import 'package:repforge/src/features/settings/domain/settings_domain.dart';
 import 'package:repforge/src/features/training_log/domain/training_log_domain.dart';
 import 'package:repforge/src/features/workout_groups/domain/workout_groups_domain.dart';
+
+import 'src/features/purchases/fakes/fake_purchase_gateway.dart';
 
 void main() {
   test('test app dependencies expose configuration and repository', () {
@@ -197,6 +201,10 @@ AppDependencies _testAppDependencies({
   final workoutGroupRepository = _FakeWorkoutGroupRepository();
   final backupRepository = _FakeBackupRepository();
   final entitlementSnapshotSource = LocalFreeEntitlementSnapshotSource();
+  final purchaseGateway = FakePurchaseGateway(
+    products: const <PurchaseProduct>[],
+    now: DateTime.now,
+  );
   final loadSettingsProfile = LoadSettingsProfile(settingsProfileRepository);
   final saveSettingsProfile = SaveSettingsProfile(settingsProfileRepository);
 
@@ -231,6 +239,11 @@ AppDependencies _testAppDependencies({
     importLocalBackup: ImportLocalBackup(backupRepository),
     entitlementSnapshotSource: entitlementSnapshotSource,
     getFeatureGateDecision: GetFeatureGateDecision(entitlementSnapshotSource),
+    purchaseGateway: purchaseGateway,
+    loadPurchaseProducts: LoadPurchaseProducts(purchaseGateway),
+    startPurchase: StartPurchase(purchaseGateway),
+    restorePurchases: RestorePurchases(purchaseGateway),
+    purchaseEntitlementMapper: const PurchaseEntitlementMapper(),
   );
 }
 

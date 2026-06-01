@@ -4,6 +4,11 @@
 
 ### Added
 
+- Added Slice 33 app-store purchase gateway integration with pure-Dart purchase
+  models and ports, fake purchase-gateway tests, provisional mapping from store
+  events into the entitlement snapshot model, and a thin official
+  `in_app_purchase` adapter without backend, account, paywall UI, Firebase,
+  RevenueCat, ads, sync, or trusted receipt verification.
 - Added Slice 32 entitlement domain and premium gates with pure-Dart entitlement
   snapshots, source-separated states, explicit gate decisions, default local/free
   policy wiring, and focused tests proving existing local MVP features remain

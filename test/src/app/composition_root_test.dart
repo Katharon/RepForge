@@ -5,12 +5,15 @@ import 'package:repforge/src/features/backup/data/backup_data.dart';
 import 'package:repforge/src/features/backup/domain/backup_domain.dart';
 import 'package:repforge/src/features/onboarding/data/onboarding_data.dart';
 import 'package:repforge/src/features/onboarding/domain/onboarding_domain.dart';
+import 'package:repforge/src/features/purchases/domain/purchases_domain.dart';
 import 'package:repforge/src/features/rest_timer/application/rest_timer_application.dart';
 import 'package:repforge/src/features/settings/data/settings_data.dart';
 import 'package:repforge/src/features/settings/domain/settings_domain.dart';
 import 'package:repforge/src/features/training_log/data/repositories/drift_workout_set_repository.dart';
 import 'package:repforge/src/features/training_log/domain/training_log_domain.dart';
 import 'package:repforge/src/shared/data/local/repforge_database_factory.dart';
+
+import '../features/purchases/fakes/fake_purchase_gateway.dart';
 
 void main() {
   test('builds current app dependencies from an injected database factory', () {
@@ -46,6 +49,7 @@ void main() {
       dependencies.restTimerNotifications,
       isA<RestTimerNotificationCoordinator>(),
     );
+    expect(dependencies.purchaseGateway, isA<PurchaseGateway>());
   });
 
   test('composed repository saves and finds a workout set', () async {
@@ -116,6 +120,10 @@ AppDependencies _composeInMemoryDependencies() {
   return CompositionRoot(
     databaseFactory: RepForgeDatabaseFactory(
       createExecutor: () => NativeDatabase.memory(),
+    ),
+    purchaseGateway: FakePurchaseGateway(
+      products: const <PurchaseProduct>[],
+      now: DateTime.now,
     ),
   ).compose();
 }

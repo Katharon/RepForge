@@ -115,6 +115,13 @@ Slice 32 implements only pure-Dart gate decisions and a local/free entitlement
 source. It does not persist purchase data, add payment SDKs, contact a backend,
 or gate existing local MVP functionality.
 
+Slice 33 adds app-store purchase plumbing through a gateway and official
+`in_app_purchase` data adapter. Purchase events stay local to the app boundary
+and are mapped to provisional/unverified entitlement state only. The slice does
+not add accounts, backend calls, receipt/server verification, remote entitlement
+storage, paywall UI, RevenueCat, Firebase, ads, sync, or trusted local purchase
+flags.
+
 ### Health claim risk
 
 Risk: recommendations are interpreted as medical advice.

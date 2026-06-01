@@ -35,7 +35,7 @@ Each slice is an incremental Codex task. Codex should implement exactly one slic
 - [30 — Security and privacy hardening](slice_30_security_and_privacy_hardening.md) — done
 - [31 — Performance and large-history optimization](slice_31_performance_and_large_history_optimization.md) — done
 - [32 — Entitlement domain and premium gates](slice_32_entitlement_domain_and_premium_gates.md) — done
-- [33 — App-store purchase integration](slice_33_app_store_purchase_integration.md)
+- [33 — App-store purchase integration](slice_33_app_store_purchase_integration.md) — done
 - [34 — Purchase verification strategy](slice_34_purchase_verification_strategy.md)
 - [35 — Authentication abstraction](slice_35_authentication_abstraction.md)
 - [36 — Firebase optional integration boundary](slice_36_firebase_optional_integration_boundary.md)

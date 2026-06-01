@@ -103,9 +103,32 @@ cloud/sync remains unavailable until a later explicit slice.
 
 Use app-store purchase APIs through data-layer adapters. Domain/application sees only entitlement ports.
 
+Slice 33 adds the purchase boundary under `lib/src/features/purchases/`:
+
+- domain-facing purchase models: `PurchaseProductId`, `PurchaseProduct`,
+  `PurchaseProductType`, `PurchaseStatus`, `PurchaseEvent`, `PurchaseError`,
+  and `PurchaseGateway`;
+- application use cases for loading products, starting purchases, restoring
+  purchases, and mapping purchase events into entitlement snapshots;
+- a data-layer `InAppPurchaseGateway` adapter backed by the official
+  `in_app_purchase` package for Android/iOS store plumbing;
+- fake gateway tests for purchase flows without real store, platform, network,
+  account, backend, or file calls.
+
+Purchase events are not trusted entitlement proof. Purchased/restored app-store
+events map to active but unverified app-store entitlement snapshots, pending
+events map to unknown entitlement state, and cancelled/failed/unknown events map
+to no entitlement. The Slice 32 policy therefore keeps Premium locked or
+unknown/unverified until Slice 34 introduces trusted verification.
+
 ## Verification strategy
 
 For development/testing, local store restore mechanisms may be enough. For production subscriptions, consider trusted receipt validation or a managed entitlement provider. This may require a minimal backend/provider, but it does **not** imply a cloud exercise database.
+
+Slice 34 owns receipt/server verification strategy, trusted entitlement
+validation, and any cache-hardening needed for production subscriptions. Slice
+33 deliberately does not read receipt bodies, store purchase tokens, transaction
+IDs, or remote entitlement payloads.
 
 ## Non-goals
 

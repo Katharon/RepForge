@@ -10,6 +10,9 @@ import '../features/entitlements/domain/entitlements_domain.dart';
 import '../features/onboarding/application/onboarding_application.dart';
 import '../features/onboarding/data/onboarding_data.dart';
 import '../features/onboarding/domain/onboarding_domain.dart';
+import '../features/purchases/application/purchases_application.dart';
+import '../features/purchases/data/purchases_data.dart';
+import '../features/purchases/domain/purchases_domain.dart';
 import '../features/rest_timer/application/rest_timer_application.dart';
 import '../features/rest_timer/data/rest_timer_data.dart';
 import '../features/rest_timer/domain/rest_timer_domain.dart';
@@ -50,6 +53,11 @@ final class AppDependencies {
     required this.importLocalBackup,
     required this.entitlementSnapshotSource,
     required this.getFeatureGateDecision,
+    required this.purchaseGateway,
+    required this.loadPurchaseProducts,
+    required this.startPurchase,
+    required this.restorePurchases,
+    required this.purchaseEntitlementMapper,
   }) : _closeOwnedResources = null;
 
   AppDependencies._withOwnedResources({
@@ -72,6 +80,11 @@ final class AppDependencies {
     required this.importLocalBackup,
     required this.entitlementSnapshotSource,
     required this.getFeatureGateDecision,
+    required this.purchaseGateway,
+    required this.loadPurchaseProducts,
+    required this.startPurchase,
+    required this.restorePurchases,
+    required this.purchaseEntitlementMapper,
     required this._closeOwnedResources,
   });
 
@@ -94,6 +107,11 @@ final class AppDependencies {
   final ImportLocalBackup importLocalBackup;
   final EntitlementSnapshotSource entitlementSnapshotSource;
   final GetFeatureGateDecision getFeatureGateDecision;
+  final PurchaseGateway purchaseGateway;
+  final LoadPurchaseProducts loadPurchaseProducts;
+  final StartPurchase startPurchase;
+  final RestorePurchases restorePurchases;
+  final PurchaseEntitlementMapper purchaseEntitlementMapper;
 
   final Future<void> Function()? _closeOwnedResources;
   Future<void>? _closeOperation;
@@ -137,6 +155,7 @@ final class CompositionRoot {
     this.ownsDatabase,
     this.restTimerNotificationGateway,
     this.entitlementSnapshotSource,
+    this.purchaseGateway,
   });
 
   final AppConfiguration configuration;
@@ -145,6 +164,7 @@ final class CompositionRoot {
   final bool? ownsDatabase;
   final RestTimerNotificationGateway? restTimerNotificationGateway;
   final EntitlementSnapshotSource? entitlementSnapshotSource;
+  final PurchaseGateway? purchaseGateway;
 
   AppDependencies compose() {
     final composedDatabase = database ?? databaseFactory.createDatabase();
@@ -193,6 +213,11 @@ final class CompositionRoot {
     final getFeatureGateDecision = GetFeatureGateDecision(
       composedEntitlementSnapshotSource,
     );
+    final composedPurchaseGateway = purchaseGateway ?? InAppPurchaseGateway();
+    final loadPurchaseProducts = LoadPurchaseProducts(composedPurchaseGateway);
+    final startPurchase = StartPurchase(composedPurchaseGateway);
+    final restorePurchases = RestorePurchases(composedPurchaseGateway);
+    const purchaseEntitlementMapper = PurchaseEntitlementMapper();
     final shouldOwnDatabase = ownsDatabase ?? (database == null);
 
     if (!shouldOwnDatabase) {
@@ -216,6 +241,11 @@ final class CompositionRoot {
         importLocalBackup: importLocalBackup,
         entitlementSnapshotSource: composedEntitlementSnapshotSource,
         getFeatureGateDecision: getFeatureGateDecision,
+        purchaseGateway: composedPurchaseGateway,
+        loadPurchaseProducts: loadPurchaseProducts,
+        startPurchase: startPurchase,
+        restorePurchases: restorePurchases,
+        purchaseEntitlementMapper: purchaseEntitlementMapper,
       );
     }
 
@@ -239,6 +269,11 @@ final class CompositionRoot {
       importLocalBackup: importLocalBackup,
       entitlementSnapshotSource: composedEntitlementSnapshotSource,
       getFeatureGateDecision: getFeatureGateDecision,
+      purchaseGateway: composedPurchaseGateway,
+      loadPurchaseProducts: loadPurchaseProducts,
+      startPurchase: startPurchase,
+      restorePurchases: restorePurchases,
+      purchaseEntitlementMapper: purchaseEntitlementMapper,
       closeOwnedResources: composedDatabase.close,
     );
   }

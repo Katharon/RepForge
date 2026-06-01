@@ -72,6 +72,15 @@ microbenchmarks. Performance-oriented tests should assert bounded page sizes,
 stable ordering under timestamp ties, date/range limits, additive index
 migrations, and aggregate results without depending on wall-clock timing.
 
+## Purchase gateway tests
+
+Slice 33 purchase tests must use fake `PurchaseGateway` implementations. They
+should assert product loading, deterministic purchase events, cancellation,
+failure, pending state, restore calls, and entitlement mapping without invoking
+real app-store APIs, platform services, accounts, network, backend, receipts, or
+files. Store/plugin code is covered indirectly through static analysis and kept
+thin behind the gateway adapter.
+
 ## Golden/visual tests
 
 Use for stable components after design tokens mature:

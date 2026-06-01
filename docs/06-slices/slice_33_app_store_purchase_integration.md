@@ -77,6 +77,23 @@ Update these if changed by implementation:
 feat(payments): integrate app store purchase gateway
 ```
 
+## Implementation note
+
+Slice 33 adds `lib/src/features/purchases/` with pure-Dart purchase models,
+a fakeable `PurchaseGateway` port, small purchase use cases, and a
+`PurchaseEntitlementMapper` that turns app-store purchase events into
+provisional entitlement snapshots. Purchased/restored store events are modeled
+as active but unverified app-store entitlements, so the Slice 32 policy does not
+unlock Premium until Slice 34 adds trusted verification. Pending events map to
+unknown entitlement state; cancelled, failed, and unknown events map to no
+entitlement.
+
+The platform adapter is isolated in data as `InAppPurchaseGateway` using the
+official `in_app_purchase` package. Tests use a deterministic fake gateway and
+make no real store, platform, network, backend, account, or file calls. No
+paywall UI, receipt/server verification, remote entitlement source, Firebase,
+RevenueCat, ads, sync, or paid runtime service was added.
+
 ## Ready-to-use Codex prompt
 
 ```text
