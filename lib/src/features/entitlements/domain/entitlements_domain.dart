@@ -1,0 +1,9 @@
+export 'entities/entitlement_snapshot.dart';
+export 'exceptions/entitlement_validation_exception.dart';
+export 'repositories/entitlement_snapshot_source.dart';
+export 'value_objects/entitlement_id.dart';
+export 'value_objects/entitlement_source.dart';
+export 'value_objects/entitlement_state.dart';
+export 'value_objects/feature_gate.dart';
+export 'value_objects/feature_gate_decision.dart';
+export 'value_objects/premium_feature.dart';

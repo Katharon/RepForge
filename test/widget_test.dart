@@ -9,6 +9,7 @@ import 'package:repforge/src/core/widgets/widgets.dart';
 import 'package:repforge/src/features/analytics/application/analytics_application.dart';
 import 'package:repforge/src/features/backup/application/backup_application.dart';
 import 'package:repforge/src/features/backup/domain/backup_domain.dart';
+import 'package:repforge/src/features/entitlements/application/entitlements_application.dart';
 import 'package:repforge/src/features/onboarding/application/onboarding_application.dart';
 import 'package:repforge/src/features/onboarding/domain/onboarding_domain.dart';
 import 'package:repforge/src/features/rest_timer/application/rest_timer_application.dart';
@@ -195,6 +196,7 @@ AppDependencies _testAppDependencies({
   final onboardingStatusRepository = _FakeOnboardingStatusRepository();
   final workoutGroupRepository = _FakeWorkoutGroupRepository();
   final backupRepository = _FakeBackupRepository();
+  final entitlementSnapshotSource = LocalFreeEntitlementSnapshotSource();
   final loadSettingsProfile = LoadSettingsProfile(settingsProfileRepository);
   final saveSettingsProfile = SaveSettingsProfile(settingsProfileRepository);
 
@@ -227,6 +229,8 @@ AppDependencies _testAppDependencies({
     exportLocalBackup: ExportLocalBackup(backupRepository),
     validateLocalBackup: const ValidateLocalBackup(),
     importLocalBackup: ImportLocalBackup(backupRepository),
+    entitlementSnapshotSource: entitlementSnapshotSource,
+    getFeatureGateDecision: GetFeatureGateDecision(entitlementSnapshotSource),
   );
 }
 

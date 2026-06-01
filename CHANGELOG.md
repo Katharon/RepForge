@@ -4,6 +4,11 @@
 
 ### Added
 
+- Added Slice 32 entitlement domain and premium gates with pure-Dart entitlement
+  snapshots, source-separated states, explicit gate decisions, default local/free
+  policy wiring, and focused tests proving existing local MVP features remain
+  free while optional future Premium gates stay locked or unavailable without
+  trusted entitlement evidence.
 - Added Slice 31 performance and large-history hardening with additive
   workout-set query indexes, deterministic large-seed pagination tests, bounded
   Today daily aggregation, and capped exercise analytics history scans.

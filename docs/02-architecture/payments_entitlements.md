@@ -65,6 +65,40 @@ Use an entitlement domain model:
 - `ExpiresAt`
 - `LastVerifiedAt`
 
+Slice 32 implements the first version under
+`lib/src/features/entitlements/`:
+
+- `EntitlementId`, `EntitlementKind`, `EntitlementSource`,
+  `EntitlementState`, and `EntitlementSnapshot` describe source-separated
+  entitlement evidence.
+- `FeatureGate` enumerates both non-gated local MVP features and optional
+  future Premium gates.
+- `PremiumFeature` names optional post-MVP capabilities without implying that
+  they exist in the current UI.
+- `FeatureGateDecision` and `EntitlementPolicy` return explicit outcomes:
+  allowed, locked, unavailable, or unknown/unverified with deterministic reason
+  codes.
+- `EntitlementSnapshotSource` is the source port. The current composed source is
+  a local/free source that returns an empty snapshot and is not purchase proof.
+
+The default policy always allows the local MVP gates:
+
+- local workout tracking,
+- Workout Groups,
+- Custom Exercises,
+- official base catalog,
+- local backup/export,
+- base analytics,
+- privacy/security functionality,
+- settings/profile,
+- onboarding,
+- local import/export validation.
+
+Future Premium gates are prepared for optional capabilities only, such as
+advanced analytics, coach/recommendation features, muscle balance/heatmap,
+advanced templates, optional cloud/sync, and advanced export formats. Optional
+cloud/sync remains unavailable until a later explicit slice.
+
 ## Store integration
 
 Use app-store purchase APIs through data-layer adapters. Domain/application sees only entitlement ports.

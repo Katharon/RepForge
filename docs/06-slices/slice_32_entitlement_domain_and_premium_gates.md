@@ -9,7 +9,7 @@ Introduce premium entitlement model and feature-gate abstractions without store 
 1. `AGENTS.md`
 2. `docs/02-architecture/payments_entitlements.md`
 3. `docs/02-architecture/security_privacy_threat_model.md`
-4. `docs/06-slices/slice_32_entitlement_domain_premium_gates.md`
+4. `docs/06-slices/slice_32_entitlement_domain_and_premium_gates.md`
 
 ## Current assumptions
 
@@ -77,6 +77,17 @@ Update these if changed by implementation:
 feat(entitlements): add premium entitlement domain
 ```
 
+## Implementation note
+
+Slice 32 adds `lib/src/features/entitlements/` as a pure-Dart domain and
+application boundary. It models entitlement IDs, sources, states, snapshots,
+feature gates, Premium feature candidates, and deterministic gate decisions.
+The default composed source is local/free and returns an empty snapshot, so all
+existing local MVP gates remain allowed while future Premium gates stay locked
+or unavailable until later store/verification slices provide trusted snapshots.
+No purchase SDK, receipt validation, backend, account, cloud sync, paywall UI,
+Drift table, or existing MVP gate was added.
+
 ## Ready-to-use Codex prompt
 
 ```text
@@ -86,7 +97,7 @@ Read first, in this order:
 1. AGENTS.md
 2. docs/02-architecture/payments_entitlements.md
 3. docs/02-architecture/security_privacy_threat_model.md
-4. docs/06-slices/slice_32_entitlement_domain_premium_gates.md
+4. docs/06-slices/slice_32_entitlement_domain_and_premium_gates.md
 
 Implement Slice 32: Entitlement domain and premium gates.
 

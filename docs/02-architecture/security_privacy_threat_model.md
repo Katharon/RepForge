@@ -98,6 +98,23 @@ Mitigations:
 - require threat-model update before implementation,
 - never mix sync logic into local domain rules.
 
+### Entitlement privacy
+
+Risk: future purchase metadata could be confused with local training identity or
+used to require an account for the free tracker.
+
+Mitigations:
+
+- keep entitlement decisions local and source-separated at the domain boundary,
+- do not unlock Premium from an unverified local flag,
+- do not require accounts, backend calls, or cloud services for local MVP
+  features,
+- keep purchase/store adapters out of domain until their explicit slices.
+
+Slice 32 implements only pure-Dart gate decisions and a local/free entitlement
+source. It does not persist purchase data, add payment SDKs, contact a backend,
+or gate existing local MVP functionality.
+
 ### Health claim risk
 
 Risk: recommendations are interpreted as medical advice.

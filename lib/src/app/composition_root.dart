@@ -5,6 +5,8 @@ import '../features/analytics/application/analytics_application.dart';
 import '../features/backup/application/backup_application.dart';
 import '../features/backup/data/backup_data.dart';
 import '../features/backup/domain/backup_domain.dart';
+import '../features/entitlements/application/entitlements_application.dart';
+import '../features/entitlements/domain/entitlements_domain.dart';
 import '../features/onboarding/application/onboarding_application.dart';
 import '../features/onboarding/data/onboarding_data.dart';
 import '../features/onboarding/domain/onboarding_domain.dart';
@@ -46,6 +48,8 @@ final class AppDependencies {
     required this.exportLocalBackup,
     required this.validateLocalBackup,
     required this.importLocalBackup,
+    required this.entitlementSnapshotSource,
+    required this.getFeatureGateDecision,
   }) : _closeOwnedResources = null;
 
   AppDependencies._withOwnedResources({
@@ -66,6 +70,8 @@ final class AppDependencies {
     required this.exportLocalBackup,
     required this.validateLocalBackup,
     required this.importLocalBackup,
+    required this.entitlementSnapshotSource,
+    required this.getFeatureGateDecision,
     required this._closeOwnedResources,
   });
 
@@ -86,6 +92,8 @@ final class AppDependencies {
   final ExportLocalBackup exportLocalBackup;
   final ValidateLocalBackup validateLocalBackup;
   final ImportLocalBackup importLocalBackup;
+  final EntitlementSnapshotSource entitlementSnapshotSource;
+  final GetFeatureGateDecision getFeatureGateDecision;
 
   final Future<void> Function()? _closeOwnedResources;
   Future<void>? _closeOperation;
@@ -128,6 +136,7 @@ final class CompositionRoot {
     this.database,
     this.ownsDatabase,
     this.restTimerNotificationGateway,
+    this.entitlementSnapshotSource,
   });
 
   final AppConfiguration configuration;
@@ -135,6 +144,7 @@ final class CompositionRoot {
   final RepForgeDatabase? database;
   final bool? ownsDatabase;
   final RestTimerNotificationGateway? restTimerNotificationGateway;
+  final EntitlementSnapshotSource? entitlementSnapshotSource;
 
   AppDependencies compose() {
     final composedDatabase = database ?? databaseFactory.createDatabase();
@@ -178,6 +188,11 @@ final class CompositionRoot {
     final exportLocalBackup = ExportLocalBackup(localBackupRepository);
     const validateLocalBackup = ValidateLocalBackup();
     final importLocalBackup = ImportLocalBackup(localBackupRepository);
+    final composedEntitlementSnapshotSource =
+        entitlementSnapshotSource ?? LocalFreeEntitlementSnapshotSource();
+    final getFeatureGateDecision = GetFeatureGateDecision(
+      composedEntitlementSnapshotSource,
+    );
     final shouldOwnDatabase = ownsDatabase ?? (database == null);
 
     if (!shouldOwnDatabase) {
@@ -199,6 +214,8 @@ final class CompositionRoot {
         exportLocalBackup: exportLocalBackup,
         validateLocalBackup: validateLocalBackup,
         importLocalBackup: importLocalBackup,
+        entitlementSnapshotSource: composedEntitlementSnapshotSource,
+        getFeatureGateDecision: getFeatureGateDecision,
       );
     }
 
@@ -220,6 +237,8 @@ final class CompositionRoot {
       exportLocalBackup: exportLocalBackup,
       validateLocalBackup: validateLocalBackup,
       importLocalBackup: importLocalBackup,
+      entitlementSnapshotSource: composedEntitlementSnapshotSource,
+      getFeatureGateDecision: getFeatureGateDecision,
       closeOwnedResources: composedDatabase.close,
     );
   }
