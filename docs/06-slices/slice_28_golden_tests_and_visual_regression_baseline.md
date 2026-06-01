@@ -10,7 +10,7 @@ Add golden tests for stable core components and key screens.
 2. `docs/04-quality/test_strategy.md`
 3. `docs/03-design-ux/design_system.md`
 4. `docs/03-design-ux/component_catalog.md`
-5. `docs/06-slices/slice_28_golden_tests_visual_regression_baseline.md`
+5. `docs/06-slices/slice_28_golden_tests_and_visual_regression_baseline.md`
 
 ## Current assumptions
 
@@ -49,6 +49,18 @@ If strict TDD is impractical because this is a repository/bootstrap slice, expla
 - All relevant tests pass.
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
+
+## Implementation note
+
+Implemented a focused Flutter built-in golden baseline under `test/goldens/`.
+The harness fixes the surface size, locale, dark RepForge theme, pixel ratio,
+and fake data. Baselines cover the core `AppCard`, Today success dashboard,
+Analytics success dashboard, Settings defaults screen, and Onboarding welcome
+screen. Approved baseline updates use:
+
+```bash
+flutter test --update-goldens
+```
 
 ## Validation commands
 
@@ -89,7 +101,7 @@ Read first, in this order:
 2. docs/04-quality/test_strategy.md
 3. docs/03-design-ux/design_system.md
 4. docs/03-design-ux/component_catalog.md
-5. docs/06-slices/slice_28_golden_tests_visual_regression_baseline.md
+5. docs/06-slices/slice_28_golden_tests_and_visual_regression_baseline.md
 
 Implement Slice 28: Golden tests and visual regression baseline.
 

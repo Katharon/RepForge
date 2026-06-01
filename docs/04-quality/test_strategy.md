@@ -63,6 +63,16 @@ Use for stable components after design tokens mature:
 - set timeline row,
 - rest timer banner.
 
+Slice 28 establishes the initial small baseline with Flutter's built-in
+`matchesGoldenFile` support under `test/goldens/`. Golden tests must use fixed
+surface sizes, fixed locale/theme wrappers, deterministic fake data, and no
+real database, platform services, timers, network, or cloud state. Keep the
+suite intentionally small; update approved baselines with:
+
+```bash
+flutter test --update-goldens
+```
+
 ## Catalog tests
 
 Official exercise catalog must have:

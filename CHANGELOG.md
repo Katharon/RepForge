@@ -4,6 +4,10 @@
 
 ### Added
 
+- Added Slice 28 golden-test baseline with deterministic snapshots for the
+  core app card, Today success dashboard, Analytics success dashboard, Settings
+  defaults screen, and Onboarding welcome screen using Flutter's built-in
+  golden support.
 - Added Slice 27 accessibility and responsive layout hardening with semantic
   labels for navigation, metrics, charts, settings, onboarding controls, and
   rest-timer summaries; increased text-scale widget coverage; minimum touch

@@ -60,3 +60,6 @@
 - Components should accept view models, not domain entities directly, when presentation formatting is non-trivial.
 - Components must be widget-testable.
 - Reusable visual components belong in `core/widgets` only when feature-neutral.
+- Stable visual components or screens may have focused golden baselines in
+  `test/goldens/` when they can be rendered with fixed locale, theme, surface
+  size, and deterministic fake content.
