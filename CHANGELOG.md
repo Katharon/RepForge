@@ -4,6 +4,11 @@
 
 ### Added
 
+- Added Slice 29 integration-style workout logging flow coverage with a
+  deterministic widget harness for catalog search/selection, set logging,
+  editing, persisted history read-back, Today dashboard reaction, Analytics
+  reaction, and fake rest-timer scheduling without devices, notifications, or
+  remote services.
 - Added Slice 28 golden-test baseline with deterministic snapshots for the
   core app card, Today success dashboard, Analytics success dashboard, Settings
   defaults screen, and Onboarding welcome screen using Flutter's built-in

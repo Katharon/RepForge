@@ -50,6 +50,26 @@ If strict TDD is impractical because this is a repository/bootstrap slice, expla
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
 
+## Implementation note
+
+Slice 29 was implemented as a deterministic integration-style widget harness in
+`test/src/integration/workout_logging_flow_test.dart`. The harness imports the
+bundled official catalog into an in-memory Drift database, searches and selects
+Barbell Bench Press, logs and edits one set through the existing training-log
+use cases, verifies persisted history/read-back, renders Today and Analytics
+through their existing UI seams, and starts a fake rest timer without real local
+notifications or a connected device.
+
+The repository does not yet have a production workout execution screen, so no
+large UI surface was added. The test-only logging surface is intentionally small
+and exists only to exercise the current architectural seams end to end.
+
+Run the slice-specific harness with:
+
+```bash
+flutter test test/src/integration
+```
+
 ## Validation commands
 
 ```bash

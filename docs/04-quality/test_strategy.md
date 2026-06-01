@@ -53,6 +53,18 @@ Critical flow:
 7. See set in timeline.
 8. See analytics update.
 
+Slice 29 adds the first compact integration-style logging harness under
+`test/src/integration/`. It runs as a normal Flutter widget test so local and CI
+validation do not require a connected device. The harness uses in-memory Drift,
+the bundled official catalog asset, real logging/analytics use cases, fake rest
+timer notifications, and existing Today/Analytics UI seams.
+
+Run it directly with:
+
+```bash
+flutter test test/src/integration
+```
+
 ## Golden/visual tests
 
 Use for stable components after design tokens mature:
