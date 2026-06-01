@@ -123,12 +123,58 @@ unknown/unverified until Slice 34 introduces trusted verification.
 
 ## Verification strategy
 
-For development/testing, local store restore mechanisms may be enough. For production subscriptions, consider trusted receipt validation or a managed entitlement provider. This may require a minimal backend/provider, but it does **not** imply a cloud exercise database.
+For development/testing, local store restore mechanisms may be enough. For
+production subscriptions, use trusted receipt/server verification or a managed
+entitlement provider. This may require a minimal backend/provider, but it does
+**not** imply a cloud exercise database.
 
-Slice 34 owns receipt/server verification strategy, trusted entitlement
-validation, and any cache-hardening needed for production subscriptions. Slice
-33 deliberately does not read receipt bodies, store purchase tokens, transaction
-IDs, or remote entitlement payloads.
+Slice 34 adds the verification boundary without implementing that backend:
+
+- `PurchaseVerificationRequest` carries only the product ID, purchase status,
+  and request timestamp needed by the boundary.
+- `PurchaseVerificationResult`, `PurchaseVerificationStatus`, and
+  `PurchaseVerificationSourceKind` model verified, unverified, expired,
+  revoked, stale, unavailable, and failed states.
+- `PurchaseVerificationSource` is the fakeable port for a future trusted
+  provider.
+- `VerifyPurchaseEntitlement` accepts Slice 33 purchase events, asks the source
+  only for purchased/restored events, and creates trusted entitlement snapshots
+  only for the RepForge Premium product when verification succeeds.
+- `UnavailablePurchaseVerificationSource` is the default composition-root
+  implementation, so the app remains conservative until a real trusted
+  provider is added.
+
+Purchased/restored store events remain provisional until this verification
+boundary returns a trusted result. Pending, cancelled, failed, unknown,
+unverified, stale, unavailable, expired, or revoked states must not unlock
+Premium. Expired and revoked verified results may be represented as trusted
+negative entitlement states so the policy can return deterministic locked
+decisions.
+
+Slice 33 and Slice 34 deliberately do not read receipt bodies, store purchase
+tokens, transaction IDs, or remote entitlement payloads. A later provider slice
+must decide whether raw store payloads are handled on-device, sent to a minimal
+verification backend, or delegated to a vetted entitlement provider. That future
+slice must update this document and the threat model before implementation.
+
+## Entitlement cache policy
+
+The entitlement cache is an optimization, not purchase proof.
+
+Slice 34 adds a pure-Dart `EntitlementCachePolicy` and `EntitlementCacheEntry`
+without persistence. The policy:
+
+- creates cache entries only from verified snapshots with `lastVerifiedAt`,
+- returns a cached snapshot only while the entry is fresh,
+- marks entries stale after the configured fresh window,
+- marks entries expired after the configured usable window,
+- refuses unverified/provisional snapshots, and
+- treats stale/expired cache entries conservatively instead of silently
+  unlocking Premium.
+
+If persistence is added later, it must store only verified entitlement-cache
+data, never raw receipt bodies or purchase tokens, and it must preserve the same
+fresh/stale/expired behavior.
 
 ## Non-goals
 

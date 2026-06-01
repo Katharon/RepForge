@@ -81,6 +81,17 @@ real app-store APIs, platform services, accounts, network, backend, receipts, or
 files. Store/plugin code is covered indirectly through static analysis and kept
 thin behind the gateway adapter.
 
+## Purchase verification and cache tests
+
+Slice 34 verification tests must use fake `PurchaseVerificationSource`
+implementations. They should assert that provisional store events do not unlock
+Premium, verified RepForge Premium results unlock only prepared future Premium
+gates, expired/revoked/unavailable/stale/unverified states stay conservative,
+local MVP gates remain free, and entitlement-cache entries are created only for
+verified snapshots with bounded fresh/stale/expired behavior. Tests must not use
+real store, server, network, account, receipt, token, Firebase, RevenueCat,
+Supabase, or cloud calls.
+
 ## Golden/visual tests
 
 Use for stable components after design tokens mature:

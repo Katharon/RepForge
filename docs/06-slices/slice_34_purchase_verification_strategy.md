@@ -78,6 +78,31 @@ Update these if changed by implementation:
 feat(payments): add purchase verification boundary
 ```
 
+## Implementation note
+
+Slice 34 adds a pure-Dart verification boundary without implementing a backend
+or managed payment service. Purchase verification is represented by
+`PurchaseVerificationRequest`, `PurchaseVerificationResult`,
+`PurchaseVerificationStatus`, `PurchaseVerificationSourceKind`, and the
+fakeable `PurchaseVerificationSource` port. The application use case
+`VerifyPurchaseEntitlement` accepts Slice 33 purchase events, calls the
+verification source only for purchased/restored events, and emits trusted
+entitlement snapshots only for the RepForge Premium product when verification
+returns a verified source result.
+
+The default composed verification source is
+`UnavailablePurchaseVerificationSource`, so production wiring remains
+conservative until a later backend/provider slice supplies real trusted
+verification. Expired, revoked, stale, unavailable, failed, unverified,
+pending, cancelled, and unknown states do not unlock Premium. Existing local
+MVP gates remain free.
+
+`EntitlementCachePolicy` and `EntitlementCacheEntry` model a bounded cache for
+already verified snapshots. The cache stores only verified snapshots with a
+`lastVerifiedAt`, returns snapshots only while they are fresh, and treats stale
+or expired entries conservatively. The cache is not persisted in this slice and
+is not proof of purchase by itself.
+
 ## Ready-to-use Codex prompt
 
 ```text

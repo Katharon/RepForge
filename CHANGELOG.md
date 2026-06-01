@@ -4,6 +4,11 @@
 
 ### Added
 
+- Added Slice 34 purchase verification boundary with pure-Dart verification
+  requests/results/source ports, conservative entitlement-cache policy, fake
+  verification tests, and default unavailable verification wiring without a
+  backend, account system, paywall UI, Firebase, RevenueCat, Supabase, ads,
+  sync, or raw receipt/token handling.
 - Added Slice 33 app-store purchase gateway integration with pure-Dart purchase
   models and ports, fake purchase-gateway tests, provisional mapping from store
   events into the entitlement snapshot model, and a thin official

@@ -122,6 +122,13 @@ not add accounts, backend calls, receipt/server verification, remote entitlement
 storage, paywall UI, RevenueCat, Firebase, ads, sync, or trusted local purchase
 flags.
 
+Slice 34 adds a verification boundary and cache policy without adding a backend
+or reading raw receipt bodies, purchase tokens, transaction IDs, or remote
+entitlement payloads. The default verification source reports verification as
+unavailable, so store events do not become trusted entitlement proof by default.
+Only verified snapshots with `lastVerifiedAt` may enter the bounded cache, and
+stale/expired cache entries do not silently unlock Premium.
+
 ### Health claim risk
 
 Risk: recommendations are interpreted as medical advice.

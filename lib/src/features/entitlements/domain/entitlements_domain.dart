@@ -1,3 +1,4 @@
+export 'entities/entitlement_cache_entry.dart';
 export 'entities/entitlement_snapshot.dart';
 export 'exceptions/entitlement_validation_exception.dart';
 export 'repositories/entitlement_snapshot_source.dart';

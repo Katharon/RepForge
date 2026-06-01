@@ -50,6 +50,10 @@ void main() {
       isA<RestTimerNotificationCoordinator>(),
     );
     expect(dependencies.purchaseGateway, isA<PurchaseGateway>());
+    expect(
+      dependencies.purchaseVerificationSource,
+      isA<PurchaseVerificationSource>(),
+    );
   });
 
   test('composed repository saves and finds a workout set', () async {

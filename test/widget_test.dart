@@ -205,6 +205,7 @@ AppDependencies _testAppDependencies({
     products: const <PurchaseProduct>[],
     now: DateTime.now,
   );
+  final purchaseVerificationSource = UnavailablePurchaseVerificationSource();
   final loadSettingsProfile = LoadSettingsProfile(settingsProfileRepository);
   final saveSettingsProfile = SaveSettingsProfile(settingsProfileRepository);
 
@@ -244,6 +245,11 @@ AppDependencies _testAppDependencies({
     startPurchase: StartPurchase(purchaseGateway),
     restorePurchases: RestorePurchases(purchaseGateway),
     purchaseEntitlementMapper: const PurchaseEntitlementMapper(),
+    purchaseVerificationSource: purchaseVerificationSource,
+    verifyPurchaseEntitlement: VerifyPurchaseEntitlement(
+      purchaseVerificationSource,
+    ),
+    entitlementCachePolicy: const EntitlementCachePolicy(),
   );
 }
 

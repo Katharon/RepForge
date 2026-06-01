@@ -58,6 +58,9 @@ final class AppDependencies {
     required this.startPurchase,
     required this.restorePurchases,
     required this.purchaseEntitlementMapper,
+    required this.purchaseVerificationSource,
+    required this.verifyPurchaseEntitlement,
+    required this.entitlementCachePolicy,
   }) : _closeOwnedResources = null;
 
   AppDependencies._withOwnedResources({
@@ -85,6 +88,9 @@ final class AppDependencies {
     required this.startPurchase,
     required this.restorePurchases,
     required this.purchaseEntitlementMapper,
+    required this.purchaseVerificationSource,
+    required this.verifyPurchaseEntitlement,
+    required this.entitlementCachePolicy,
     required this._closeOwnedResources,
   });
 
@@ -112,6 +118,9 @@ final class AppDependencies {
   final StartPurchase startPurchase;
   final RestorePurchases restorePurchases;
   final PurchaseEntitlementMapper purchaseEntitlementMapper;
+  final PurchaseVerificationSource purchaseVerificationSource;
+  final VerifyPurchaseEntitlement verifyPurchaseEntitlement;
+  final EntitlementCachePolicy entitlementCachePolicy;
 
   final Future<void> Function()? _closeOwnedResources;
   Future<void>? _closeOperation;
@@ -156,6 +165,7 @@ final class CompositionRoot {
     this.restTimerNotificationGateway,
     this.entitlementSnapshotSource,
     this.purchaseGateway,
+    this.purchaseVerificationSource,
   });
 
   final AppConfiguration configuration;
@@ -165,6 +175,7 @@ final class CompositionRoot {
   final RestTimerNotificationGateway? restTimerNotificationGateway;
   final EntitlementSnapshotSource? entitlementSnapshotSource;
   final PurchaseGateway? purchaseGateway;
+  final PurchaseVerificationSource? purchaseVerificationSource;
 
   AppDependencies compose() {
     final composedDatabase = database ?? databaseFactory.createDatabase();
@@ -218,6 +229,12 @@ final class CompositionRoot {
     final startPurchase = StartPurchase(composedPurchaseGateway);
     final restorePurchases = RestorePurchases(composedPurchaseGateway);
     const purchaseEntitlementMapper = PurchaseEntitlementMapper();
+    final composedPurchaseVerificationSource =
+        purchaseVerificationSource ?? UnavailablePurchaseVerificationSource();
+    final verifyPurchaseEntitlement = VerifyPurchaseEntitlement(
+      composedPurchaseVerificationSource,
+    );
+    const entitlementCachePolicy = EntitlementCachePolicy();
     final shouldOwnDatabase = ownsDatabase ?? (database == null);
 
     if (!shouldOwnDatabase) {
@@ -246,6 +263,9 @@ final class CompositionRoot {
         startPurchase: startPurchase,
         restorePurchases: restorePurchases,
         purchaseEntitlementMapper: purchaseEntitlementMapper,
+        purchaseVerificationSource: composedPurchaseVerificationSource,
+        verifyPurchaseEntitlement: verifyPurchaseEntitlement,
+        entitlementCachePolicy: entitlementCachePolicy,
       );
     }
 
@@ -274,6 +294,9 @@ final class CompositionRoot {
       startPurchase: startPurchase,
       restorePurchases: restorePurchases,
       purchaseEntitlementMapper: purchaseEntitlementMapper,
+      purchaseVerificationSource: composedPurchaseVerificationSource,
+      verifyPurchaseEntitlement: verifyPurchaseEntitlement,
+      entitlementCachePolicy: entitlementCachePolicy,
       closeOwnedResources: composedDatabase.close,
     );
   }
