@@ -82,6 +82,22 @@ void main() {
     ]);
     expect(backup.onboardingStatus?.completion, 'completed');
   });
+
+  test('validation messages do not echo unsupported equipment values', () {
+    final json = _validBackupJson();
+    final settings = json['settingsProfile']! as Map<String, Object?>;
+    settings['equipmentInventory'] = <String>[
+      'bodyweight',
+      'private-custom-machine',
+    ];
+
+    final result = RepForgeBackup.validateJsonString(jsonEncode(json));
+
+    expect(result.isValid, isFalse);
+    expect(result.errors.single.field, 'settingsProfile.equipmentInventory');
+    expect(result.errors.single.message, 'Unsupported equipment option.');
+    expect(result.errors.single.message, isNot(contains('private')));
+  });
 }
 
 Map<String, Object?> _validBackupJson() {

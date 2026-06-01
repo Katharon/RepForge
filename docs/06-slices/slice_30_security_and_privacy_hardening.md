@@ -10,7 +10,24 @@ Review storage, notifications, permissions, logs, exports, and privacy settings.
 2. `docs/02-architecture/security_privacy_threat_model.md`
 3. `docs/02-architecture/error_handling_observability.md`
 4. `docs/03-design-ux/onboarding_settings.md`
-5. `docs/06-slices/slice_30_security_privacy_hardening.md`
+5. `docs/06-slices/slice_30_security_and_privacy_hardening.md`
+
+## Implementation note
+
+Slice 30 keeps hardening local-first and dependency-free:
+
+- Backup export exposes a local privacy warning before future UI chooses a
+  destination.
+- Backup validation exception strings are log-safe and list fields only, while
+  detailed validation errors remain structured for UI and tests.
+- Backup diagnostics can redact sensitive top-level training, group,
+  assignment, settings, and onboarding sections before a JSON snippet is logged.
+- Rest-timer notifications replace workout-specific title/body text with a
+  generic completion message before scheduling, so lock screens do not expose
+  exercise names, loads, comments, or pain/failure notes.
+
+No database schema, native permission, UI, cloud, analytics SDK, crash
+reporting, file picker, sync, or encrypted storage change is introduced.
 
 ## Current assumptions
 
@@ -82,14 +99,14 @@ feat(security): harden privacy and local data handling
 ## Ready-to-use Codex prompt
 
 ```text
-You are working in the `gesundheit-gym-app` Flutter repository.
+You are working in the `RepForge` Flutter repository.
 
 Read first, in this order:
 1. AGENTS.md
 2. docs/02-architecture/security_privacy_threat_model.md
 3. docs/02-architecture/error_handling_observability.md
 4. docs/03-design-ux/onboarding_settings.md
-5. docs/06-slices/slice_30_security_privacy_hardening.md
+5. docs/06-slices/slice_30_security_and_privacy_hardening.md
 
 Implement Slice 30: Security and privacy hardening.
 

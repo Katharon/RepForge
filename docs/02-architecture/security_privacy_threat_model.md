@@ -53,6 +53,29 @@ Slice 24 implements this as JSON v1 validation plus additive/upsert import.
 Backup services do not add cloud backup, remote storage, platform file pickers,
 or sharing UI; future UI must warn users before exporting sensitive local data.
 
+Slice 30 adds that local backup privacy warning at the application boundary,
+keeps backup validation exception strings field-only for log safety, and
+provides a backup JSON redactor for diagnostics. Redaction removes top-level
+training history, workout groups, assignments, settings/profile, and onboarding
+sections while retaining non-sensitive version metadata.
+
+### Notification privacy
+
+Risk: rest-timer notifications displayed on a lock screen expose exercise
+names, loads, comments, pain/failure notes, or other training details.
+
+Mitigations:
+
+- schedule local notifications only,
+- avoid remote push for MVP,
+- sanitize rest-timer notification content before it reaches the platform
+  gateway.
+
+Slice 30 replaces workout-specific rest-timer notification title/body text with
+generic completion content before scheduling. Future notification UI must keep
+lock-screen previews generic unless a later explicit privacy setting changes
+that behavior.
+
 ### Catalog patch corruption
 
 Risk: bundled or downloaded catalog data is malformed.

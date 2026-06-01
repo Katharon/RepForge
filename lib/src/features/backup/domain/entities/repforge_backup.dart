@@ -687,7 +687,7 @@ final class BackupSettingsProfile {
         errors.add(
           BackupValidationError(
             field: '$field.equipmentInventory',
-            message: 'Unsupported equipment option: $item.',
+            message: 'Unsupported equipment option.',
           ),
         );
       }
@@ -1110,10 +1110,7 @@ void _rejectDuplicates({
   for (final value in values) {
     if (!seen.add(value)) {
       errors.add(
-        BackupValidationError(
-          field: field,
-          message: 'Duplicate stable id: $value.',
-        ),
+        BackupValidationError(field: field, message: 'Duplicate stable id.'),
       );
     }
   }

@@ -4,6 +4,10 @@
 
 ### Added
 
+- Added Slice 30 security and privacy hardening with local-backup privacy
+  warnings, field-only log-safe backup validation exceptions, backup JSON
+  redaction helpers for diagnostics, and lock-screen-safe rest-timer
+  notification content sanitization.
 - Added Slice 29 integration-style workout logging flow coverage with a
   deterministic widget harness for catalog search/selection, set logging,
   editing, persisted history read-back, Today dashboard reaction, Analytics

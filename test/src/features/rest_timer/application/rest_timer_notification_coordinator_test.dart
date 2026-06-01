@@ -48,6 +48,24 @@ void main() {
     expect(gateway.scheduledRequests, isEmpty);
   });
 
+  test(
+    'workout-specific notification content is replaced before scheduling',
+    () async {
+      await coordinator.start(
+        RestTimerDuration(const Duration(seconds: 90)),
+        content: const RestTimerNotificationContent(
+          title: 'Bench Press 100 kg',
+          body: 'Private top set comment',
+        ),
+      );
+
+      expect(
+        gateway.scheduledRequests.single.content,
+        RestTimerNotificationContent.genericFinished,
+      );
+    },
+  );
+
   test('cancel cancels a scheduled notification', () async {
     await coordinator.start(
       RestTimerDuration(const Duration(seconds: 90)),

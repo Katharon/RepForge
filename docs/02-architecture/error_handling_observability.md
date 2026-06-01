@@ -35,6 +35,12 @@ Production:
 - Crash reporting optional, privacy-reviewed.
 - No workout data in logs.
 - No tokens or purchase receipts in logs.
+- Backup validation exceptions must be log-safe: exception strings list invalid
+  fields only and must not echo backup payload values, comments, profile names,
+  exercise names, stable IDs, or raw JSON.
+- Use the backup JSON redactor before logging any backup-related diagnostic
+  snippet; it redacts training history, workout groups, assignments,
+  settings/profile, and onboarding data.
 
 ## User feedback
 

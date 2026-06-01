@@ -94,6 +94,12 @@ Slice 24 exposes JSON content services only; it does not add platform file
 pickers, sharing, remote storage, or cloud backup. Any future user-facing export
 UI must warn that backup JSON can contain sensitive training/profile data.
 
+Slice 30 exposes a local backup privacy warning in the export use case and adds
+a backup JSON redactor for diagnostic use. Validation exception strings list
+invalid fields only and do not echo payload values. This does not change JSON
+backup v1, database schema, import semantics, file IO, sharing, sync, or cloud
+storage.
+
 ## Future encrypted export
 
 Post-MVP option: encrypted ZIP or JSON backup with passphrase-based encryption.

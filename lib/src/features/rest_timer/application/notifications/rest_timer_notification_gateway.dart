@@ -1,8 +1,21 @@
 final class RestTimerNotificationContent {
   const RestTimerNotificationContent({required this.title, required this.body});
 
+  static const RestTimerNotificationContent genericFinished =
+      RestTimerNotificationContent(
+        title: 'Rest timer finished',
+        body: 'Your rest timer is complete.',
+      );
+
   final String title;
   final String body;
+
+  RestTimerNotificationContent get privacySafe {
+    if (_looksWorkoutSpecific(title) || _looksWorkoutSpecific(body)) {
+      return genericFinished;
+    }
+    return this;
+  }
 
   @override
   bool operator ==(Object other) {
@@ -13,6 +26,29 @@ final class RestTimerNotificationContent {
 
   @override
   int get hashCode => Object.hash(title, body);
+
+  static bool _looksWorkoutSpecific(String value) {
+    final normalized = value.toLowerCase();
+    if (RegExp(r'\b\d+(\.\d+)?\s?(kg|lb|lbs|reps?)\b').hasMatch(normalized)) {
+      return true;
+    }
+
+    const workoutTerms = <String>{
+      'bench',
+      'squat',
+      'deadlift',
+      'press',
+      'row',
+      'curl',
+      'failure',
+      'pain',
+      'soreness',
+      'comment',
+      'set note',
+      'personal record',
+    };
+    return workoutTerms.any(normalized.contains);
+  }
 }
 
 final class RestTimerNotificationRequest {

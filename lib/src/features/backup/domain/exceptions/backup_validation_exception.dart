@@ -28,6 +28,11 @@ final class BackupValidationException implements Exception {
 
   final List<BackupValidationError> errors;
 
+  String get safeMessage {
+    final fields = errors.map((error) => error.field).join(', ');
+    return 'Backup validation failed for: $fields.';
+  }
+
   @override
-  String toString() => errors.map((error) => error.toString()).join('; ');
+  String toString() => safeMessage;
 }

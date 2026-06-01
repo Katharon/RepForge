@@ -39,7 +39,7 @@ final class RestTimerNotificationCoordinator {
       RestTimerNotificationRequest(
         notificationId: notificationId,
         targetAt: targetAt,
-        content: content,
+        content: content.privacySafe,
       ),
     );
     _hasScheduledNotification = true;
