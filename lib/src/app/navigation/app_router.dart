@@ -32,6 +32,7 @@ GoRouter createAppRouter({required AppDependencies dependencies}) {
                 child: TodayPage(
                   loader: RestTimerTodayDashboardLoader(
                     restTimerNotifications: dependencies.restTimerNotifications,
+                    workoutSetRepository: dependencies.workoutSetRepository,
                   ),
                 ),
               );

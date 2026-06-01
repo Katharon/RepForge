@@ -27,12 +27,31 @@ void main() {
     expect(tables.map((row) => row.read<String>('name')), _expectedTableNames);
   });
 
-  test('uses schema version 6', () {
-    expect(database.schemaVersion, 6);
+  test('uses schema version 7', () {
+    expect(database.schemaVersion, 7);
   });
 
   test('current schema validates against Drift metadata', () async {
     await expectLater(database.validateDatabaseSchema(), completes);
+  });
+
+  test('creates workout-set performance indexes', () async {
+    final indexes = await database.customSelect('''
+          SELECT name
+          FROM sqlite_master
+          WHERE type = 'index'
+          AND tbl_name = 'workout_sets'
+          ORDER BY name
+          ''').get();
+
+    expect(
+      indexes.map((row) => row.read<String>('name')),
+      containsAll(<String>[
+        'workout_sets_exercise_timeline_idx',
+        'workout_sets_history_order_idx',
+        'workout_sets_session_order_idx',
+      ]),
+    );
   });
 
   test('migrates a non-empty schema version 1 database additively', () async {
@@ -57,7 +76,7 @@ void main() {
     expect(migratedSet.exerciseDisplayNameSnapshot, 'Legacy Bench');
     expect(migratedSet.setLabel, isNull);
     expect(tables.map((row) => row.read<String>('name')), _expectedTableNames);
-    expect(userVersion.read<int>('user_version'), 6);
+    expect(userVersion.read<int>('user_version'), 7);
     await expectLater(database.validateDatabaseSchema(), completes);
   });
 

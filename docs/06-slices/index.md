@@ -33,7 +33,7 @@ Each slice is an incremental Codex task. Codex should implement exactly one slic
 - [28 — Golden tests and visual regression baseline](slice_28_golden_tests_and_visual_regression_baseline.md) — done
 - [29 — Integration/E2E workout logging flow](slice_29_integration_e2e_workout_logging_flow.md) — done
 - [30 — Security and privacy hardening](slice_30_security_and_privacy_hardening.md) — done
-- [31 — Performance and large-history optimization](slice_31_performance_and_large_history_optimization.md)
+- [31 — Performance and large-history optimization](slice_31_performance_and_large_history_optimization.md) — done
 - [32 — Entitlement domain and premium gates](slice_32_entitlement_domain_and_premium_gates.md)
 - [33 — App-store purchase integration](slice_33_app_store_purchase_integration.md)
 - [34 — Purchase verification strategy](slice_34_purchase_verification_strategy.md)

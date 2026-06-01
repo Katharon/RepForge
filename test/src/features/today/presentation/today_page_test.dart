@@ -1,14 +1,58 @@
 import 'dart:async';
 
+import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:repforge/src/app/localization/app_localizations.dart';
 import 'package:repforge/src/core/theme/theme.dart';
+import 'package:repforge/src/features/rest_timer/application/rest_timer_application.dart';
 import 'package:repforge/src/features/rest_timer/domain/rest_timer_domain.dart';
 import 'package:repforge/src/features/rest_timer/presentation/rest_timer_presentation.dart';
 import 'package:repforge/src/features/today/presentation/today_presentation.dart';
+import 'package:repforge/src/features/training_log/data/repositories/drift_workout_set_repository.dart';
+import 'package:repforge/src/features/training_log/domain/training_log_domain.dart';
+import 'package:repforge/src/shared/data/local/repforge_database.dart';
 
 void main() {
+  test('loader aggregates today from a bounded local summary query', () async {
+    final database = RepForgeDatabase(NativeDatabase.memory());
+    addTearDown(database.close);
+    final repository = DriftWorkoutSetRepository(database);
+    await repository.save(
+      _set(id: 'yesterday', performedAt: DateTime.utc(2026, 5, 31, 20)),
+    );
+    await repository.save(
+      _set(id: 'today-a', performedAt: DateTime.utc(2026, 6, 1, 9)),
+    );
+    await repository.save(
+      _set(
+        id: 'today-b',
+        repetitions: 10,
+        loadKg: 40,
+        performedAt: DateTime.utc(2026, 6, 1, 10),
+      ),
+    );
+
+    final loader = RestTimerTodayDashboardLoader(
+      restTimerNotifications: RestTimerNotificationCoordinator(
+        timerController: RestTimerController(
+          timeProvider: const SystemTimeProvider(),
+        ),
+        notificationGateway: _FakeRestTimerNotificationGateway(),
+      ),
+      workoutSetRepository: repository,
+      nowProvider: () => DateTime.utc(2026, 6, 1, 12),
+    );
+
+    final model = await loader.load();
+
+    expect(model.setCount, 2);
+    expect(model.totalVolumeKg, 900);
+    expect(model.lastLoggedSet?.exerciseName, 'Barbell Bench Press');
+    expect(model.lastLoggedSet?.repetitions, 10);
+    expect(model.lastLoggedSet?.loadKg, 40);
+  });
+
   testWidgets('loading state renders', (tester) async {
     await tester.pumpWidget(
       _testApp(TodayPage(loader: _PendingTodayDashboardLoader())),
@@ -177,6 +221,22 @@ final class _FailingTodayDashboardLoader implements TodayDashboardLoader {
   }
 }
 
+final class _FakeRestTimerNotificationGateway
+    implements RestTimerNotificationGateway {
+  @override
+  Future<void> cancelRestTimer(int notificationId) async {}
+
+  @override
+  Future<RestTimerNotificationPermissionStatus> requestPermission() async {
+    return RestTimerNotificationPermissionStatus.granted;
+  }
+
+  @override
+  Future<void> scheduleRestTimerFinished(
+    RestTimerNotificationRequest request,
+  ) async {}
+}
+
 TodayDashboardReadModel _emptyModel() {
   return const TodayDashboardReadModel(
     setCount: 0,
@@ -205,5 +265,24 @@ TodayDashboardReadModel _successModel() {
       displayText: '01:30',
       isVisible: true,
     ),
+  );
+}
+
+WorkoutSet _set({
+  required String id,
+  required DateTime performedAt,
+  int repetitions = 5,
+  num loadKg = 100,
+}) {
+  return WorkoutSet(
+    id: WorkoutSetId(id),
+    exerciseRef: ExerciseRef.official(
+      id: OfficialExerciseId('barbell-bench-press'),
+      displayNameSnapshot: 'Barbell Bench Press',
+      catalogVersionSnapshot: '2026.05.0',
+    ),
+    repetitions: Repetitions(repetitions),
+    load: LoadKg(loadKg),
+    performedAt: PerformedAt(performedAt),
   );
 }

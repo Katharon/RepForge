@@ -10,7 +10,7 @@ Optimize queries, screen rebuilds, chart aggregation, and large set histories.
 2. `docs/02-architecture/performance.md`
 3. `docs/02-architecture/data_persistence.md`
 4. `docs/04-quality/test_strategy.md`
-5. `docs/06-slices/slice_31_performance_large_history_optimization.md`
+5. `docs/06-slices/slice_31_performance_and_large_history_optimization.md`
 
 ## Current assumptions
 
@@ -50,6 +50,16 @@ If strict TDD is impractical because this is a repository/bootstrap slice, expla
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
 
+## Implementation note
+
+Slice 31 adds Drift schema v7 performance indexes for workout-set timeline,
+history, and session-order queries; keeps timeline/history reads bounded by
+existing query limits; caps exercise analytics scans at 2,000 sets; and wires
+the Today dashboard's existing set-count, volume, and last-set cards to a
+bounded local daily summary query. Large-seed tests cover deterministic history
+pagination, cursor timeline paging, daily aggregation, analytics scan limits,
+and additive index migration behavior.
+
 ## Validation commands
 
 ```bash
@@ -82,14 +92,14 @@ perf(app): optimize large workout histories
 ## Ready-to-use Codex prompt
 
 ```text
-You are working in the `gesundheit-gym-app` Flutter repository.
+You are working in the `RepForge` Flutter repository.
 
 Read first, in this order:
 1. AGENTS.md
 2. docs/02-architecture/performance.md
 3. docs/02-architecture/data_persistence.md
 4. docs/04-quality/test_strategy.md
-5. docs/06-slices/slice_31_performance_large_history_optimization.md
+5. docs/06-slices/slice_31_performance_and_large_history_optimization.md
 
 Implement Slice 31: Performance and large-history optimization.
 

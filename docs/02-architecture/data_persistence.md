@@ -121,3 +121,18 @@ affected table/entity id, and whether a safe repair exists. Repairs are
 report-only by default; the only implemented safe repair normalizes legacy blank
 workout-set labels to `NULL`. No repair silently deletes rows or mutates
 official catalog records.
+
+## Slice 31 performance indexes
+
+Drift schema v7 adds only indexes:
+
+- `workout_sets_exercise_timeline_idx` on exercise source/id plus
+  newest-first performed time and stable set id.
+- `workout_sets_history_order_idx` on newest-first performed time and stable
+  set id.
+- `workout_sets_session_order_idx` on workout session id plus chronological
+  performed time and stable set id.
+
+The migration is additive and non-destructive. Existing workout sets, catalog
+rows, settings, onboarding status, groups, and backup-compatible data remain
+unchanged.

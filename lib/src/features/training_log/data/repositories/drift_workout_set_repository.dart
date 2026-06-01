@@ -72,6 +72,67 @@ final class DriftWorkoutSetRepository implements WorkoutSetRepository {
   }
 
   @override
+  Future<WorkoutSetDailySummary> dailySummary(
+    WorkoutSetDailySummaryQuery query,
+  ) async {
+    final aggregateRow = await _database
+        .customSelect(
+          '''
+SELECT
+  COUNT(*) AS set_count,
+  COALESCE(SUM(ws.load_kg * ws.repetitions), 0.0) AS total_volume_kg
+FROM workout_sets ws
+WHERE ws.performed_at >= ? AND ws.performed_at < ?
+''',
+          variables: <Variable<Object>>[
+            Variable<DateTime>(query.startInclusive),
+            Variable<DateTime>(query.endExclusive),
+          ],
+          readsFrom: <ResultSetImplementation<Table, Object?>>{
+            _database.workoutSets,
+          },
+        )
+        .getSingle();
+    final lastRows = await _database
+        .customSelect(
+          '''
+SELECT
+  ws.workout_set_id,
+  ws.exercise_source,
+  ws.exercise_id,
+  ws.exercise_display_name_snapshot,
+  ws.catalog_version_snapshot,
+  ws.workout_session_id,
+  ws.repetitions,
+  ws.load_kg,
+  ws.performed_at,
+  ws.comment,
+  ws.set_label
+FROM workout_sets ws
+WHERE ws.performed_at >= ? AND ws.performed_at < ?
+ORDER BY ws.performed_at DESC, ws.workout_set_id DESC
+LIMIT 1
+''',
+          variables: <Variable<Object>>[
+            Variable<DateTime>(query.startInclusive),
+            Variable<DateTime>(query.endExclusive),
+          ],
+          readsFrom: <ResultSetImplementation<Table, Object?>>{
+            _database.workoutSets,
+          },
+        )
+        .get();
+
+    return WorkoutSetDailySummary(
+      setCount: aggregateRow.read<int>('set_count'),
+      totalVolumeKg: aggregateRow.read<double>('total_volume_kg'),
+      lastLoggedSet: lastRows.isEmpty
+          ? null
+          : WorkoutSetMapper.toDomain(_workoutSetRowFromQuery(lastRows.single)),
+    );
+  }
+
+  @override
   Future<WorkoutSetTimelinePage> timelineForExercise(
     WorkoutSetTimelineQuery query,
   ) async {

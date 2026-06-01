@@ -231,10 +231,10 @@ final class GetExerciseAnalytics {
 }
 
 int _requireMaxHistorySets(int value) {
-  if (value <= 0) {
+  if (value <= 0 || value > 2000) {
     throw const AnalyticsValidationException(
       'exerciseAnalytics.maxHistorySets',
-      'Must be greater than zero.',
+      'Must be between 1 and 2000.',
     );
   }
 

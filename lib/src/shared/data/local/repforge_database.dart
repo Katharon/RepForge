@@ -3,6 +3,26 @@ import 'package:drift/drift.dart';
 part 'repforge_database.g.dart';
 
 @DataClassName('WorkoutSetRow')
+@TableIndex(
+  name: 'workout_sets_exercise_timeline_idx',
+  columns: {
+    #exerciseSource,
+    #exerciseId,
+    IndexedColumn(#performedAt, orderBy: OrderingMode.desc),
+    IndexedColumn(#workoutSetId, orderBy: OrderingMode.desc),
+  },
+)
+@TableIndex(
+  name: 'workout_sets_history_order_idx',
+  columns: {
+    IndexedColumn(#performedAt, orderBy: OrderingMode.desc),
+    IndexedColumn(#workoutSetId, orderBy: OrderingMode.desc),
+  },
+)
+@TableIndex(
+  name: 'workout_sets_session_order_idx',
+  columns: {#workoutSessionId, #performedAt, #workoutSetId},
+)
 class WorkoutSets extends Table {
   TextColumn get workoutSetId =>
       text().customConstraint('NOT NULL CHECK (length(workout_set_id) > 0)')();
@@ -307,7 +327,7 @@ class RepForgeDatabase extends _$RepForgeDatabase {
   RepForgeDatabase(super.executor);
 
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 7;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -334,8 +354,38 @@ class RepForgeDatabase extends _$RepForgeDatabase {
       if (from < 6) {
         await migrator.createTable(onboardingStatuses);
       }
+      if (from < 7) {
+        await _createPerformanceIndexes();
+      }
     },
     // Future migrations must preserve logged set history and prefer additive
     // changes over destructive rewrites.
   );
+
+  Future<void> _createPerformanceIndexes() async {
+    await customStatement('''
+CREATE INDEX IF NOT EXISTS workout_sets_exercise_timeline_idx
+ON workout_sets (
+  exercise_source,
+  exercise_id,
+  performed_at DESC,
+  workout_set_id DESC
+)
+''');
+    await customStatement('''
+CREATE INDEX IF NOT EXISTS workout_sets_history_order_idx
+ON workout_sets (
+  performed_at DESC,
+  workout_set_id DESC
+)
+''');
+    await customStatement('''
+CREATE INDEX IF NOT EXISTS workout_sets_session_order_idx
+ON workout_sets (
+  workout_session_id,
+  performed_at,
+  workout_set_id
+)
+''');
+  }
 }

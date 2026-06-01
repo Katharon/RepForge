@@ -65,6 +65,13 @@ Run it directly with:
 flutter test test/src/integration
 ```
 
+## Large-history tests
+
+Slice 31 adds deterministic large-seed coverage instead of timing
+microbenchmarks. Performance-oriented tests should assert bounded page sizes,
+stable ordering under timestamp ties, date/range limits, additive index
+migrations, and aggregate results without depending on wall-clock timing.
+
 ## Golden/visual tests
 
 Use for stable components after design tokens mature:

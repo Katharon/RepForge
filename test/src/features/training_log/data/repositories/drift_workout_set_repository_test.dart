@@ -645,6 +645,160 @@ void main() {
     },
   );
 
+  test('searchHistory stays bounded with a large seeded history', () async {
+    final seeded = <WorkoutSet>[];
+    for (var index = 0; index < 240; index += 1) {
+      final set = _set(
+        id: 'set-${index.toString().padLeft(3, '0')}',
+        performedAt: DateTime.utc(
+          2026,
+          5,
+          27,
+          12,
+        ).subtract(Duration(minutes: index ~/ 3)),
+        label: index.isEven
+            ? WorkoutSetLabel.personalRecord
+            : WorkoutSetLabel.warmup,
+      );
+      seeded.add(set);
+      await repository.save(set);
+    }
+    final expectedIds =
+        seeded
+            .where((set) => set.label == WorkoutSetLabel.personalRecord)
+            .toList()
+          ..sort((a, b) {
+            final performedAtComparison = b.performedAt.value.compareTo(
+              a.performedAt.value,
+            );
+            if (performedAtComparison != 0) {
+              return performedAtComparison;
+            }
+            return b.id.value.compareTo(a.id.value);
+          });
+
+    final page = await repository.searchHistory(
+      WorkoutSetHistoryQuery(
+        limit: 25,
+        offset: 50,
+        searchText: 'bench',
+        labels: <WorkoutSetLabel>[WorkoutSetLabel.personalRecord],
+      ),
+    );
+
+    expect(page.items, hasLength(25));
+    expect(page.totalCount, 120);
+    expect(page.hasMore, isTrue);
+    expect(
+      page.items.map((WorkoutSet set) => set.id.value),
+      expectedIds
+          .skip(50)
+          .take(25)
+          .map((WorkoutSet set) => set.id.value)
+          .toList(growable: false),
+    );
+  });
+
+  test(
+    'timelineForExercise pages a large seeded history without gaps',
+    () async {
+      final exerciseRef = ExerciseRef.official(
+        id: OfficialExerciseId('barbell-bench-press'),
+        displayNameSnapshot: 'Bench',
+      );
+      for (var index = 0; index < 215; index += 1) {
+        await repository.save(
+          _set(
+            id: 'set-${index.toString().padLeft(3, '0')}',
+            performedAt: DateTime.utc(
+              2026,
+              5,
+              27,
+              12,
+            ).subtract(Duration(minutes: index ~/ 4)),
+          ),
+        );
+      }
+      for (var index = 0; index < 25; index += 1) {
+        await repository.save(
+          _set(
+            id: 'other-${index.toString().padLeft(3, '0')}',
+            exerciseId: 'deadlift',
+            exerciseDisplayNameSnapshot: 'Deadlift',
+          ),
+        );
+      }
+
+      final collectedIds = <String>[];
+      WorkoutSetTimelineCursor? cursor;
+      var hasMore = true;
+      while (hasMore) {
+        final page = await repository.timelineForExercise(
+          WorkoutSetTimelineQuery(
+            exerciseRef: exerciseRef,
+            limit: 100,
+            after: cursor,
+          ),
+        );
+        collectedIds.addAll(page.items.map((WorkoutSet set) => set.id.value));
+        cursor = page.nextCursor;
+        hasMore = page.hasMore;
+      }
+
+      expect(collectedIds, hasLength(215));
+      expect(collectedIds.toSet(), hasLength(215));
+      expect(collectedIds.take(4), <String>[
+        'set-003',
+        'set-002',
+        'set-001',
+        'set-000',
+      ]);
+      expect(collectedIds.last, 'set-212');
+    },
+  );
+
+  test(
+    'dailySummary aggregates only the requested day and returns latest set',
+    () async {
+      await repository.save(
+        _set(id: 'yesterday', performedAt: DateTime.utc(2026, 5, 26, 23)),
+      );
+      await repository.save(
+        _set(id: 'today-a', performedAt: DateTime.utc(2026, 5, 27, 9)),
+      );
+      await repository.save(
+        _set(
+          id: 'today-c',
+          repetitions: 8,
+          loadKg: 50,
+          performedAt: DateTime.utc(2026, 5, 27, 10),
+        ),
+      );
+      await repository.save(
+        _set(
+          id: 'today-b',
+          repetitions: 10,
+          loadKg: 40,
+          performedAt: DateTime.utc(2026, 5, 27, 10),
+        ),
+      );
+      await repository.save(
+        _set(id: 'tomorrow', performedAt: DateTime.utc(2026, 5, 28)),
+      );
+
+      final summary = await repository.dailySummary(
+        WorkoutSetDailySummaryQuery(
+          startInclusive: DateTime.utc(2026, 5, 27),
+          endExclusive: DateTime.utc(2026, 5, 28),
+        ),
+      );
+
+      expect(summary.setCount, 3);
+      expect(summary.totalVolumeKg, 1300);
+      expect(summary.lastLoggedSet?.id.value, 'today-c');
+    },
+  );
+
   test('searchHistory returns empty page for no matches', () async {
     await repository.save(_set(id: 'set-1'));
 

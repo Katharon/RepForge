@@ -4235,6 +4235,18 @@ abstract class _$RepForgeDatabase extends GeneratedDatabase {
       $EquipmentInventoryItemsTable(this);
   late final $OnboardingStatusesTable onboardingStatuses =
       $OnboardingStatusesTable(this);
+  late final Index workoutSetsExerciseTimelineIdx = Index(
+    'workout_sets_exercise_timeline_idx',
+    'CREATE INDEX workout_sets_exercise_timeline_idx ON workout_sets (exercise_source, exercise_id, performed_at DESC, workout_set_id DESC)',
+  );
+  late final Index workoutSetsHistoryOrderIdx = Index(
+    'workout_sets_history_order_idx',
+    'CREATE INDEX workout_sets_history_order_idx ON workout_sets (performed_at DESC, workout_set_id DESC)',
+  );
+  late final Index workoutSetsSessionOrderIdx = Index(
+    'workout_sets_session_order_idx',
+    'CREATE INDEX workout_sets_session_order_idx ON workout_sets (workout_session_id, performed_at, workout_set_id)',
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -4251,6 +4263,9 @@ abstract class _$RepForgeDatabase extends GeneratedDatabase {
     settingsProfiles,
     equipmentInventoryItems,
     onboardingStatuses,
+    workoutSetsExerciseTimelineIdx,
+    workoutSetsHistoryOrderIdx,
+    workoutSetsSessionOrderIdx,
   ];
 }
 

@@ -1,6 +1,7 @@
 import '../entities/workout_set.dart';
 import '../value_objects/exercise_ref.dart';
 import '../value_objects/stable_ids.dart';
+import '../value_objects/workout_set_daily_summary.dart';
 import '../value_objects/workout_set_history_query.dart';
 import '../value_objects/workout_set_timeline.dart';
 
@@ -14,6 +15,10 @@ abstract interface class WorkoutSetRepository {
   Future<List<WorkoutSet>> historyForExercise(ExerciseRef exerciseRef);
 
   Future<WorkoutSetHistoryPage> searchHistory(WorkoutSetHistoryQuery query);
+
+  Future<WorkoutSetDailySummary> dailySummary(
+    WorkoutSetDailySummaryQuery query,
+  );
 
   Future<WorkoutSetTimelinePage> timelineForExercise(
     WorkoutSetTimelineQuery query,

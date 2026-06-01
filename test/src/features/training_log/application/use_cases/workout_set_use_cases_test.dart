@@ -237,6 +237,28 @@ final class _InMemoryWorkoutSetRepository implements WorkoutSetRepository {
   }
 
   @override
+  Future<WorkoutSetDailySummary> dailySummary(
+    WorkoutSetDailySummaryQuery query,
+  ) async {
+    final matching = _sets.values
+        .where((WorkoutSet set) {
+          final performedAt = set.performedAt.value.toUtc();
+          return !performedAt.isBefore(query.startInclusive) &&
+              performedAt.isBefore(query.endExclusive);
+        })
+        .toList(growable: false);
+
+    return WorkoutSetDailySummary(
+      setCount: matching.length,
+      totalVolumeKg: matching.fold<double>(
+        0,
+        (total, set) => total + set.load.value * set.repetitions.value,
+      ),
+      lastLoggedSet: matching.isEmpty ? null : matching.last,
+    );
+  }
+
+  @override
   Future<WorkoutSetTimelinePage> timelineForExercise(
     WorkoutSetTimelineQuery query,
   ) async {

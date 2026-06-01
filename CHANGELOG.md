@@ -4,6 +4,9 @@
 
 ### Added
 
+- Added Slice 31 performance and large-history hardening with additive
+  workout-set query indexes, deterministic large-seed pagination tests, bounded
+  Today daily aggregation, and capped exercise analytics history scans.
 - Added Slice 30 security and privacy hardening with local-backup privacy
   warnings, field-only log-safe backup validation exceptions, backup JSON
   redaction helpers for diagnostics, and lock-screen-safe rest-timer

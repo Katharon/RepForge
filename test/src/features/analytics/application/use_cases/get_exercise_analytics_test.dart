@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:repforge/src/features/analytics/application/analytics_application.dart';
+import 'package:repforge/src/features/analytics/domain/analytics_domain.dart';
 import 'package:repforge/src/features/training_log/domain/training_log_domain.dart';
 
 void main() {
@@ -330,6 +331,19 @@ void main() {
     },
   );
 
+  test('rejects unbounded analytics scan limits', () {
+    expect(
+      () => _query(maxHistorySets: 2001),
+      throwsA(
+        isA<AnalyticsValidationException>().having(
+          (AnalyticsValidationException error) => error.field,
+          'field',
+          'exerciseAnalytics.maxHistorySets',
+        ),
+      ),
+    );
+  });
+
   test('does not mutate input WorkoutSets', () async {
     final original = <WorkoutSet>[
       _set(
@@ -477,6 +491,28 @@ final class _InMemoryWorkoutSetRepository implements WorkoutSetRepository {
   }
 
   @override
+  Future<WorkoutSetDailySummary> dailySummary(
+    WorkoutSetDailySummaryQuery query,
+  ) async {
+    final matching = sets
+        .where((WorkoutSet set) {
+          final performedAt = set.performedAt.value.toUtc();
+          return !performedAt.isBefore(query.startInclusive) &&
+              performedAt.isBefore(query.endExclusive);
+        })
+        .toList(growable: false);
+
+    return WorkoutSetDailySummary(
+      setCount: matching.length,
+      totalVolumeKg: matching.fold<double>(
+        0,
+        (total, set) => total + set.load.value * set.repetitions.value,
+      ),
+      lastLoggedSet: matching.isEmpty ? null : matching.reduce(_newerSet),
+    );
+  }
+
+  @override
   Future<WorkoutSetTimelinePage> timelineForExercise(
     WorkoutSetTimelineQuery query,
   ) async {
@@ -532,4 +568,15 @@ final class _InMemoryWorkoutSetRepository implements WorkoutSetRepository {
   bool _sameExercise(ExerciseRef a, ExerciseRef b) {
     return a.source == b.source && a.id == b.id;
   }
+}
+
+WorkoutSet _newerSet(WorkoutSet a, WorkoutSet b) {
+  final performedAtComparison = a.performedAt.value.compareTo(
+    b.performedAt.value,
+  );
+  if (performedAtComparison != 0) {
+    return performedAtComparison > 0 ? a : b;
+  }
+
+  return a.id.value.compareTo(b.id.value) >= 0 ? a : b;
 }

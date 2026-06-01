@@ -275,6 +275,19 @@ final class _FakeWorkoutSetRepository implements WorkoutSetRepository {
   }
 
   @override
+  Future<WorkoutSetDailySummary> dailySummary(
+    WorkoutSetDailySummaryQuery query,
+  ) {
+    return Future.value(
+      const WorkoutSetDailySummary(
+        setCount: 0,
+        totalVolumeKg: 0,
+        lastLoggedSet: null,
+      ),
+    );
+  }
+
+  @override
   Future<WorkoutSetTimelinePage> timelineForExercise(
     WorkoutSetTimelineQuery query,
   ) {
