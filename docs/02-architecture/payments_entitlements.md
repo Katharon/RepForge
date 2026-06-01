@@ -180,8 +180,20 @@ fresh/stale/expired behavior.
 
 - Payments before local MVP.
 - Account requirement for local tracking.
+- Auth-based Premium unlock.
 - Cloud database for exercise definitions.
 - Paywalling user-owned workout history or export.
+
+## Auth separation
+
+Slice 35 introduces an optional auth boundary for future account/cloud features.
+Auth state is separate from entitlement evidence:
+
+- authenticated users do not receive Premium unless entitlement policy sees a
+  verified entitlement;
+- entitlement or purchase state does not imply an account identity;
+- purchases and purchase verification do not require login in the local MVP
+  boundary.
 
 
 ## v6 monetization boundary

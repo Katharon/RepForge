@@ -78,6 +78,25 @@ Update these if changed by implementation:
 feat(auth): add optional authentication boundary
 ```
 
+## Implementation note
+
+Slice 35 adds an optional pure-Dart auth boundary under `lib/src/features/auth/`
+without adding a real auth provider, account requirement, backend, SDK, token
+persistence, or login UI. The domain exposes `AuthUserId`, `AuthProvider`,
+`AuthIdentity`, `AuthSession`, `AuthSessionState`, `AuthFailure`,
+`AuthStatusSnapshot`, and the fakeable `AuthGateway` port.
+
+Application code adds `GetAuthStatus`, `SignOut`, `AuthSessionPolicy`, and
+`LocalOnlyAuthGateway`. The composition root uses `LocalOnlyAuthGateway` by
+default, so RepForge reports a local-only session and keeps all local MVP
+features usable without credentials. Auth state is deliberately independent of
+entitlements and purchases: signing in does not unlock Premium, and purchase
+verification does not require auth in this slice.
+
+No persistence was added. Future auth/provider slices must keep tokens out of
+domain, avoid storing secrets unprotected, and update privacy/security docs
+before adding accounts, sync, restore, or remote provider behavior.
+
 ## Ready-to-use Codex prompt
 
 ```text

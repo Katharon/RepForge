@@ -27,17 +27,32 @@ Official catalog updates arrive through app releases / bundled content patches.
 
 Cloud is split into separate concerns:
 
-1. Optional user-data sync.
-2. Optional purchase verification/entitlement backend.
-3. Optional remote push/news.
-4. Optional social/friends activity.
-5. Optional static content update channel.
+1. Optional authentication/account identity.
+2. Optional user-data sync.
+3. Optional purchase verification/entitlement backend.
+4. Optional remote push/news.
+5. Optional social/friends activity.
+6. Optional static content update channel.
 
 These must not be collapsed into one early backend.
+
+## Optional auth boundary
+
+Slice 35 adds a pure-Dart auth boundary for future account, sync, restore,
+device-link, or provider features. The default implementation is
+`LocalOnlyAuthGateway`, which reports local-only usage and does not require
+network, provider SDKs, credentials, token storage, or a backend.
+
+Auth is not required for local tracking, catalog access, workout groups,
+analytics, settings, backup/export/import, onboarding, rest timers, purchases,
+or entitlement checks. Auth state must not unlock Premium and entitlement state
+must not imply a user identity.
 
 ## Optional sync model if implemented later
 
 - Local database remains the source of truth for offline use.
+- Auth, if used, remains an optional boundary and must not be required for
+  local logging or local backup/export.
 - Add sync metadata: `createdAt`, `updatedAt`, `deletedAt`, `version`, `syncState`, `remoteId`.
 - Use tombstones for deletes.
 - Resolve conflicts explicitly.

@@ -1,6 +1,7 @@
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:repforge/src/app/composition_root.dart';
+import 'package:repforge/src/features/auth/domain/auth_domain.dart';
 import 'package:repforge/src/features/backup/data/backup_data.dart';
 import 'package:repforge/src/features/backup/domain/backup_domain.dart';
 import 'package:repforge/src/features/onboarding/data/onboarding_data.dart';
@@ -49,6 +50,7 @@ void main() {
       dependencies.restTimerNotifications,
       isA<RestTimerNotificationCoordinator>(),
     );
+    expect(dependencies.authGateway, isA<AuthGateway>());
     expect(dependencies.purchaseGateway, isA<PurchaseGateway>());
     expect(
       dependencies.purchaseVerificationSource,

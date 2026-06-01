@@ -92,6 +92,15 @@ verified snapshots with bounded fresh/stale/expired behavior. Tests must not use
 real store, server, network, account, receipt, token, Firebase, RevenueCat,
 Supabase, or cloud calls.
 
+## Auth boundary tests
+
+Slice 35 auth tests must use fake `AuthGateway` implementations or the
+`LocalOnlyAuthGateway`. They should assert local-only behavior, deterministic
+authenticated/expired/unavailable/failed states, sign-out isolation from local
+settings/workout data, no auth-based Premium unlock, and no auth requirement for
+purchase verification. Tests must not invoke real auth providers, network,
+platform services, backend calls, cloud services, files, or token handling.
+
 ## Golden/visual tests
 
 Use for stable components after design tokens mature:

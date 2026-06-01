@@ -7,6 +7,7 @@ import 'package:repforge/src/app/repforge_app.dart';
 import 'package:repforge/src/core/theme/theme.dart';
 import 'package:repforge/src/core/widgets/widgets.dart';
 import 'package:repforge/src/features/analytics/application/analytics_application.dart';
+import 'package:repforge/src/features/auth/application/auth_application.dart';
 import 'package:repforge/src/features/backup/application/backup_application.dart';
 import 'package:repforge/src/features/backup/domain/backup_domain.dart';
 import 'package:repforge/src/features/entitlements/application/entitlements_application.dart';
@@ -200,6 +201,7 @@ AppDependencies _testAppDependencies({
   final onboardingStatusRepository = _FakeOnboardingStatusRepository();
   final workoutGroupRepository = _FakeWorkoutGroupRepository();
   final backupRepository = _FakeBackupRepository();
+  final authGateway = LocalOnlyAuthGateway();
   final entitlementSnapshotSource = LocalFreeEntitlementSnapshotSource();
   final purchaseGateway = FakePurchaseGateway(
     products: const <PurchaseProduct>[],
@@ -238,6 +240,10 @@ AppDependencies _testAppDependencies({
     exportLocalBackup: ExportLocalBackup(backupRepository),
     validateLocalBackup: const ValidateLocalBackup(),
     importLocalBackup: ImportLocalBackup(backupRepository),
+    authGateway: authGateway,
+    getAuthStatus: GetAuthStatus(authGateway),
+    signOut: SignOut(authGateway),
+    authSessionPolicy: const AuthSessionPolicy(),
     entitlementSnapshotSource: entitlementSnapshotSource,
     getFeatureGateDecision: GetFeatureGateDecision(entitlementSnapshotSource),
     purchaseGateway: purchaseGateway,

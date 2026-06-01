@@ -98,6 +98,23 @@ Mitigations:
 - require threat-model update before implementation,
 - never mix sync logic into local domain rules.
 
+### Authentication privacy
+
+Risk: future auth state is treated as required identity for local tracking or is
+confused with purchase entitlement proof.
+
+Mitigations:
+
+- keep auth optional and separate from local workout data,
+- keep local tracking usable without accounts,
+- do not persist auth tokens in this slice,
+- do not use auth state to unlock Premium,
+- keep provider SDKs and backend APIs outside domain.
+
+Slice 35 adds only a pure-Dart auth boundary plus a local-only default gateway.
+It does not add login UI, provider SDKs, token persistence, backend calls,
+cloud sync, account requirements, or auth-based Premium unlocks.
+
 ### Entitlement privacy
 
 Risk: future purchase metadata could be confused with local training identity or

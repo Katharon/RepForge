@@ -4,6 +4,10 @@
 
 ### Added
 
+- Added Slice 35 optional authentication boundary with pure-Dart auth session,
+  identity, provider, failure, and gateway models, local-only default wiring,
+  fake auth tests, and sign-out/status use cases without login UI, auth SDKs,
+  backend, cloud sync, account requirement, or auth-based Premium unlock.
 - Added Slice 34 purchase verification boundary with pure-Dart verification
   requests/results/source ports, conservative entitlement-cache policy, fake
   verification tests, and default unavailable verification wiring without a

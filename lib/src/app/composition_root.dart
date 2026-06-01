@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:ui';
 
 import '../features/analytics/application/analytics_application.dart';
+import '../features/auth/application/auth_application.dart';
+import '../features/auth/domain/auth_domain.dart';
 import '../features/backup/application/backup_application.dart';
 import '../features/backup/data/backup_data.dart';
 import '../features/backup/domain/backup_domain.dart';
@@ -51,6 +53,10 @@ final class AppDependencies {
     required this.exportLocalBackup,
     required this.validateLocalBackup,
     required this.importLocalBackup,
+    required this.authGateway,
+    required this.getAuthStatus,
+    required this.signOut,
+    required this.authSessionPolicy,
     required this.entitlementSnapshotSource,
     required this.getFeatureGateDecision,
     required this.purchaseGateway,
@@ -81,6 +87,10 @@ final class AppDependencies {
     required this.exportLocalBackup,
     required this.validateLocalBackup,
     required this.importLocalBackup,
+    required this.authGateway,
+    required this.getAuthStatus,
+    required this.signOut,
+    required this.authSessionPolicy,
     required this.entitlementSnapshotSource,
     required this.getFeatureGateDecision,
     required this.purchaseGateway,
@@ -111,6 +121,10 @@ final class AppDependencies {
   final ExportLocalBackup exportLocalBackup;
   final ValidateLocalBackup validateLocalBackup;
   final ImportLocalBackup importLocalBackup;
+  final AuthGateway authGateway;
+  final GetAuthStatus getAuthStatus;
+  final SignOut signOut;
+  final AuthSessionPolicy authSessionPolicy;
   final EntitlementSnapshotSource entitlementSnapshotSource;
   final GetFeatureGateDecision getFeatureGateDecision;
   final PurchaseGateway purchaseGateway;
@@ -163,6 +177,7 @@ final class CompositionRoot {
     this.database,
     this.ownsDatabase,
     this.restTimerNotificationGateway,
+    this.authGateway,
     this.entitlementSnapshotSource,
     this.purchaseGateway,
     this.purchaseVerificationSource,
@@ -173,6 +188,7 @@ final class CompositionRoot {
   final RepForgeDatabase? database;
   final bool? ownsDatabase;
   final RestTimerNotificationGateway? restTimerNotificationGateway;
+  final AuthGateway? authGateway;
   final EntitlementSnapshotSource? entitlementSnapshotSource;
   final PurchaseGateway? purchaseGateway;
   final PurchaseVerificationSource? purchaseVerificationSource;
@@ -219,6 +235,10 @@ final class CompositionRoot {
     final exportLocalBackup = ExportLocalBackup(localBackupRepository);
     const validateLocalBackup = ValidateLocalBackup();
     final importLocalBackup = ImportLocalBackup(localBackupRepository);
+    final composedAuthGateway = authGateway ?? LocalOnlyAuthGateway();
+    final getAuthStatus = GetAuthStatus(composedAuthGateway);
+    final signOut = SignOut(composedAuthGateway);
+    const authSessionPolicy = AuthSessionPolicy();
     final composedEntitlementSnapshotSource =
         entitlementSnapshotSource ?? LocalFreeEntitlementSnapshotSource();
     final getFeatureGateDecision = GetFeatureGateDecision(
@@ -256,6 +276,10 @@ final class CompositionRoot {
         exportLocalBackup: exportLocalBackup,
         validateLocalBackup: validateLocalBackup,
         importLocalBackup: importLocalBackup,
+        authGateway: composedAuthGateway,
+        getAuthStatus: getAuthStatus,
+        signOut: signOut,
+        authSessionPolicy: authSessionPolicy,
         entitlementSnapshotSource: composedEntitlementSnapshotSource,
         getFeatureGateDecision: getFeatureGateDecision,
         purchaseGateway: composedPurchaseGateway,
@@ -287,6 +311,10 @@ final class CompositionRoot {
       exportLocalBackup: exportLocalBackup,
       validateLocalBackup: validateLocalBackup,
       importLocalBackup: importLocalBackup,
+      authGateway: composedAuthGateway,
+      getAuthStatus: getAuthStatus,
+      signOut: signOut,
+      authSessionPolicy: authSessionPolicy,
       entitlementSnapshotSource: composedEntitlementSnapshotSource,
       getFeatureGateDecision: getFeatureGateDecision,
       purchaseGateway: composedPurchaseGateway,
