@@ -6,6 +6,16 @@ enum UnitPreference { metric, imperial }
 
 enum ThemePreference { system, dark, light }
 
+enum SexGenderPreference { unspecified, male, female, other, preferNotToSay }
+
+enum TrainingGoal {
+  hypertrophy,
+  strength,
+  generalFitness,
+  recomposition,
+  maintenance,
+}
+
 enum FocusProfile {
   balanced,
   upperBodyFocus,
@@ -43,6 +53,10 @@ enum SessionDurationPreference {
   }
 }
 
+enum RecoverySensitivity { low, normal, high }
+
+enum CoachingStrictness { gentle, balanced, direct }
+
 enum AvailableEquipment {
   bodyweight,
   barbell,
@@ -52,5 +66,6 @@ enum AvailableEquipment {
   smithMachine,
   pullUpBar,
   bench,
+  rack,
   legPress,
 }

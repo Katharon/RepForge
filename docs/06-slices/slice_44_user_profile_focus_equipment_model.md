@@ -33,6 +33,22 @@ Write value-object/use-case/repository tests first for validation and persistenc
 - Handle loading, empty, error, and success states where UI is touched.
 - Update affected docs if implementation decisions differ from the plan.
 
+## Implementation note
+
+Slice 44 extends the existing Slice 22 `SettingsProfile`/`UserProfile` model
+rather than adding a duplicate profile aggregate. The implemented model adds
+optional sex/gender preference, birth year, body weight, height, primary
+training goal, recovery sensitivity, coaching strictness, rack equipment, and
+per-equipment max-load/increment constraints. Drift schema v8 adds the profile
+columns and `equipment_load_constraints` table additively. Settings and
+Onboarding keep their current compact surfaces and only preserve existing load
+constraints when equipment chips are toggled.
+
+This slice does not implement recommendation rules, coach decisions, adaptive
+set suggestions, readiness check-in UI, wearables, calorie estimation, cloud
+profile services, sync, Firebase, account requirements, or sex/gender-based
+training stereotypes.
+
 ## Acceptance criteria
 
 - Slice goal is implemented.
@@ -75,7 +91,7 @@ feat(profile): add training profile model
 ## Ready-to-use Codex prompt
 
 ```text
-You are working in the `gesundheit-gym-app` Flutter repository.
+You are working in the `RepForge` Flutter repository.
 
 Read first, in this order:
 1. AGENTS.md

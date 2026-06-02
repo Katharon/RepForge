@@ -315,9 +315,16 @@ SELECT
   theme_preference,
   default_rest_seconds,
   display_name,
+  sex_gender,
+  birth_year,
+  body_weight_kg,
+  height_cm,
+  training_goal,
   focus_profile,
   training_days_per_week,
-  session_duration_minutes
+  session_duration_minutes,
+  recovery_sensitivity,
+  coaching_strictness
 FROM settings_profiles
 ''',
           readsFrom: <ResultSetImplementation<Table, Object?>>{
@@ -329,6 +336,10 @@ FROM settings_profiles
     for (final row in profileRows) {
       final id = row.read<String>('profile_id');
       final displayName = row.readNullable<String>('display_name');
+      final sexGender = row.readNullable<String>('sex_gender');
+      final birthYear = row.readNullable<int>('birth_year');
+      final bodyWeight = row.readNullable<double>('body_weight_kg');
+      final height = row.readNullable<double>('height_cm');
       if (id.isEmpty ||
           !_validLanguageOverrides.contains(
             row.read<String>('language_override'),
@@ -343,11 +354,26 @@ FROM settings_profiles
           row.read<int>('default_rest_seconds') > 1800 ||
           (displayName != null &&
               (displayName.isEmpty || displayName.length > 80)) ||
+          (sexGender != null &&
+              !_validSexGenderPreferences.contains(sexGender)) ||
+          (birthYear != null &&
+              (birthYear < 1900 || birthYear > DateTime.now().toUtc().year)) ||
+          (bodyWeight != null &&
+              (bodyWeight <= 0 || bodyWeight > 500 || !bodyWeight.isFinite)) ||
+          (height != null &&
+              (height <= 0 || height > 300 || !height.isFinite)) ||
+          !_validTrainingGoals.contains(row.read<String>('training_goal')) ||
           !_validFocusProfiles.contains(row.read<String>('focus_profile')) ||
           row.read<int>('training_days_per_week') < 1 ||
           row.read<int>('training_days_per_week') > 7 ||
           !_validSessionDurations.contains(
             row.read<int>('session_duration_minutes'),
+          ) ||
+          !_validRecoverySensitivities.contains(
+            row.read<String>('recovery_sensitivity'),
+          ) ||
+          !_validCoachingStrictness.contains(
+            row.read<String>('coaching_strictness'),
           )) {
         findings.add(
           _error(
@@ -382,6 +408,42 @@ FROM equipment_inventory_items
             code: 'equipmentInventoryItems.invalidEquipment',
             message: 'Equipment inventory item contains unsupported values.',
             table: 'equipment_inventory_items',
+            entityId: '$profileId/$equipment',
+          ),
+        );
+      }
+    }
+
+    final loadConstraintRows = await _database
+        .customSelect(
+          '''
+SELECT profile_id, equipment, max_load_kg, increment_kg
+FROM equipment_load_constraints
+''',
+          readsFrom: <ResultSetImplementation<Table, Object?>>{
+            _database.equipmentLoadConstraints,
+          },
+        )
+        .get();
+
+    for (final row in loadConstraintRows) {
+      final profileId = row.read<String>('profile_id');
+      final equipment = row.read<String>('equipment');
+      final maxLoad = row.readNullable<double>('max_load_kg');
+      final increment = row.readNullable<double>('increment_kg');
+      if (profileId.isEmpty ||
+          !_validEquipment.contains(equipment) ||
+          (maxLoad == null && increment == null) ||
+          (maxLoad != null &&
+              (maxLoad <= 0 || maxLoad > 1000 || !maxLoad.isFinite)) ||
+          (increment != null &&
+              (increment <= 0 || increment > 100 || !increment.isFinite)) ||
+          (maxLoad != null && increment != null && increment > maxLoad)) {
+        findings.add(
+          _error(
+            code: 'equipmentLoadConstraints.invalidConstraint',
+            message: 'Equipment load constraint contains unsupported values.',
+            table: 'equipment_load_constraints',
             entityId: '$profileId/$equipment',
           ),
         );
@@ -558,6 +620,22 @@ const Set<String> _validLanguageOverrides = <String>{'system', 'en', 'de'};
 const Set<String> _validUnitPreferences = <String>{'metric', 'imperial'};
 const Set<String> _validThemePreferences = <String>{'system', 'dark', 'light'};
 
+const Set<String> _validSexGenderPreferences = <String>{
+  'unspecified',
+  'male',
+  'female',
+  'other',
+  'preferNotToSay',
+};
+
+const Set<String> _validTrainingGoals = <String>{
+  'hypertrophy',
+  'strength',
+  'generalFitness',
+  'recomposition',
+  'maintenance',
+};
+
 const Set<String> _validFocusProfiles = <String>{
   'balanced',
   'upperBodyFocus',
@@ -571,6 +649,18 @@ const Set<String> _validFocusProfiles = <String>{
 
 const Set<int> _validSessionDurations = <int>{15, 25, 35, 45, 60, 75};
 
+const Set<String> _validRecoverySensitivities = <String>{
+  'low',
+  'normal',
+  'high',
+};
+
+const Set<String> _validCoachingStrictness = <String>{
+  'gentle',
+  'balanced',
+  'direct',
+};
+
 const Set<String> _validEquipment = <String>{
   'bodyweight',
   'barbell',
@@ -580,6 +670,7 @@ const Set<String> _validEquipment = <String>{
   'smithMachine',
   'pullUpBar',
   'bench',
+  'rack',
   'legPress',
 };
 

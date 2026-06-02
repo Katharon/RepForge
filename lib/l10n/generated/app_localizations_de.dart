@@ -363,6 +363,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsEquipmentBench => 'Bank';
 
   @override
+  String get settingsEquipmentRack => 'Rack';
+
+  @override
   String get settingsEquipmentLegPress => 'Beinpresse';
 
   @override

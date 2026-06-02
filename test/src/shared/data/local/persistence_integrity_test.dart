@@ -99,11 +99,18 @@ INSERT INTO settings_profiles (
   theme_preference,
   default_rest_seconds,
   display_name,
+  sex_gender,
+  birth_year,
+  body_weight_kg,
+  height_cm,
+  training_goal,
   focus_profile,
   training_days_per_week,
-  session_duration_minutes
+  session_duration_minutes,
+  recovery_sensitivity,
+  coaching_strictness
 )
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ''',
         variables: <Variable<Object>>[
           const Variable<String>('local'),
@@ -112,9 +119,16 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
           const Variable<String>('system'),
           const Variable<int>(0),
           const Variable<String>(''),
+          const Variable<String>('robot'),
+          const Variable<int>(1800),
+          const Variable<double>(double.infinity),
+          const Variable<double>(0),
+          const Variable<String>('bulkOnly'),
           const Variable<String>('balanced'),
           const Variable<int>(8),
           const Variable<int>(10),
+          const Variable<String>('fragile'),
+          const Variable<String>('mean'),
         ],
       );
       await database.customInsert(
@@ -125,6 +139,23 @@ VALUES (?, ?)
         variables: <Variable<Object>>[
           const Variable<String>('local'),
           const Variable<String>('kettlebell'),
+        ],
+      );
+      await database.customInsert(
+        '''
+INSERT INTO equipment_load_constraints (
+  profile_id,
+  equipment,
+  max_load_kg,
+  increment_kg
+)
+VALUES (?, ?, ?, ?)
+''',
+        variables: <Variable<Object>>[
+          const Variable<String>('local'),
+          const Variable<String>('kettlebell'),
+          const Variable<double>(20),
+          const Variable<double>(25),
         ],
       );
       await database.customInsert(
@@ -154,6 +185,7 @@ VALUES (?, ?, ?)
     expect(_codes(await checker.inspect()), <String>[
       'catalogImports.invalidMetadata',
       'equipmentInventoryItems.invalidEquipment',
+      'equipmentLoadConstraints.invalidConstraint',
       'onboardingStatuses.invalidStatus',
       'settingsProfiles.invalidProfile',
     ]);

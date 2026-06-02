@@ -28,6 +28,20 @@ void main() {
     expect(repository.savedProfile, edited);
   });
 
+  test('validate equipment inventory returns structured valid inventory', () {
+    final inventory = EquipmentInventory(
+      const <AvailableEquipment>[AvailableEquipment.barbell],
+      loadConstraints: <AvailableEquipment, EquipmentLoadConstraint>{
+        AvailableEquipment.barbell: EquipmentLoadConstraint(
+          maxLoadKg: MaxLoadKg(120),
+          incrementKg: LoadIncrementKg(2.5),
+        ),
+      },
+    );
+
+    expect(ValidateEquipmentInventory()(inventory), inventory);
+  });
+
   test('reset saves and returns defaults', () async {
     final repository = _FakeSettingsProfileRepository(
       SettingsProfile.defaults().copyWith(

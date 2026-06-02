@@ -16,9 +16,20 @@ final class SettingsProfileMapper {
       themePreference: _themeToStorage(profile.themePreference),
       defaultRestSeconds: profile.defaultRestTime.inSeconds,
       displayName: Value<String?>(profile.userProfile.displayName),
+      sexGender: Value<String?>(_sexGenderToStorage(profile.userProfile)),
+      birthYear: Value<int?>(profile.userProfile.birthYear?.value),
+      bodyWeightKg: Value<double?>(profile.userProfile.bodyWeightKg?.value),
+      heightCm: Value<double?>(profile.userProfile.heightCm?.value),
+      trainingGoal: Value<String>(_trainingGoalToStorage(profile.trainingGoal)),
       focusProfile: _focusToStorage(profile.focusProfile),
       trainingDaysPerWeek: profile.trainingFrequency.daysPerWeek,
       sessionDurationMinutes: profile.sessionDuration.minutes,
+      recoverySensitivity: Value<String>(
+        _recoverySensitivityToStorage(profile.recoverySensitivity),
+      ),
+      coachingStrictness: Value<String>(
+        _coachingStrictnessToStorage(profile.coachingStrictness),
+      ),
     );
   }
 
@@ -31,23 +42,53 @@ final class SettingsProfileMapper {
     );
   }
 
+  static EquipmentLoadConstraintsCompanion toLoadConstraintCompanion(
+    AvailableEquipment equipment,
+    EquipmentLoadConstraint constraint,
+  ) {
+    return EquipmentLoadConstraintsCompanion.insert(
+      profileId: settingsProfileStorageId,
+      equipment: _equipmentToStorage(equipment),
+      maxLoadKg: Value<double?>(constraint.maxLoadKg?.value),
+      incrementKg: Value<double?>(constraint.incrementKg?.value),
+    );
+  }
+
   static SettingsProfile toDomain({
     required SettingsProfileRow row,
     required List<EquipmentInventoryItemRow> equipmentRows,
+    List<EquipmentLoadConstraintRow> loadConstraintRows =
+        const <EquipmentLoadConstraintRow>[],
   }) {
     return SettingsProfile(
       languageOverride: _languageFromStorage(row.languageOverride),
       unitPreference: _unitFromStorage(row.unitPreference),
       themePreference: _themeFromStorage(row.themePreference),
       defaultRestTime: DefaultRestTime.seconds(row.defaultRestSeconds),
-      userProfile: UserProfile(displayName: row.displayName),
+      userProfile: UserProfile(
+        displayName: row.displayName,
+        sexGender: _sexGenderFromStorage(row.sexGender),
+        birthYear: row.birthYear == null ? null : BirthYear(row.birthYear!),
+        bodyWeightKg: row.bodyWeightKg == null
+            ? null
+            : BodyWeightKg(row.bodyWeightKg!),
+        heightCm: row.heightCm == null ? null : HeightCm(row.heightCm!),
+      ),
+      trainingGoal: _trainingGoalFromStorage(row.trainingGoal),
       focusProfile: _focusFromStorage(row.focusProfile),
       trainingFrequency: TrainingFrequency(row.trainingDaysPerWeek),
       sessionDuration: SessionDurationPreference.fromMinutes(
         row.sessionDurationMinutes,
       ),
+      recoverySensitivity: _recoverySensitivityFromStorage(
+        row.recoverySensitivity,
+      ),
+      coachingStrictness: _coachingStrictnessFromStorage(
+        row.coachingStrictness,
+      ),
       equipmentInventory: EquipmentInventory(
         equipmentRows.map((row) => _equipmentFromStorage(row.equipment)),
+        loadConstraints: _loadConstraintsFromStorage(loadConstraintRows),
       ),
     );
   }
@@ -105,6 +146,43 @@ ThemePreference _themeFromStorage(String value) {
   };
 }
 
+String? _sexGenderToStorage(UserProfile profile) {
+  return profile.sexGender == SexGenderPreference.unspecified
+      ? null
+      : profile.sexGender.name;
+}
+
+SexGenderPreference _sexGenderFromStorage(String? value) {
+  if (value == null) {
+    return SexGenderPreference.unspecified;
+  }
+  for (final sexGender in SexGenderPreference.values) {
+    if (sexGender.name == value) {
+      return sexGender;
+    }
+  }
+
+  throw SettingsValidationException(
+    'sexGender',
+    'Unsupported stored sex/gender preference.',
+  );
+}
+
+String _trainingGoalToStorage(TrainingGoal value) => value.name;
+
+TrainingGoal _trainingGoalFromStorage(String value) {
+  for (final goal in TrainingGoal.values) {
+    if (goal.name == value) {
+      return goal;
+    }
+  }
+
+  throw SettingsValidationException(
+    'trainingGoal',
+    'Unsupported stored training goal.',
+  );
+}
+
 String _focusToStorage(FocusProfile value) => value.name;
 
 FocusProfile _focusFromStorage(String value) {
@@ -117,6 +195,36 @@ FocusProfile _focusFromStorage(String value) {
   throw SettingsValidationException(
     'focusProfile',
     'Unsupported stored focus profile.',
+  );
+}
+
+String _recoverySensitivityToStorage(RecoverySensitivity value) => value.name;
+
+RecoverySensitivity _recoverySensitivityFromStorage(String value) {
+  for (final sensitivity in RecoverySensitivity.values) {
+    if (sensitivity.name == value) {
+      return sensitivity;
+    }
+  }
+
+  throw SettingsValidationException(
+    'recoverySensitivity',
+    'Unsupported stored recovery sensitivity.',
+  );
+}
+
+String _coachingStrictnessToStorage(CoachingStrictness value) => value.name;
+
+CoachingStrictness _coachingStrictnessFromStorage(String value) {
+  for (final strictness in CoachingStrictness.values) {
+    if (strictness.name == value) {
+      return strictness;
+    }
+  }
+
+  throw SettingsValidationException(
+    'coachingStrictness',
+    'Unsupported stored coaching strictness.',
   );
 }
 
@@ -133,4 +241,18 @@ AvailableEquipment _equipmentFromStorage(String value) {
     'equipmentInventory',
     'Unsupported stored equipment option.',
   );
+}
+
+Map<AvailableEquipment, EquipmentLoadConstraint> _loadConstraintsFromStorage(
+  List<EquipmentLoadConstraintRow> rows,
+) {
+  return <AvailableEquipment, EquipmentLoadConstraint>{
+    for (final row in rows)
+      _equipmentFromStorage(row.equipment): EquipmentLoadConstraint(
+        maxLoadKg: row.maxLoadKg == null ? null : MaxLoadKg(row.maxLoadKg!),
+        incrementKg: row.incrementKg == null
+            ? null
+            : LoadIncrementKg(row.incrementKg!),
+      ),
+  };
 }

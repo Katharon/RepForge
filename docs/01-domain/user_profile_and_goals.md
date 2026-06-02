@@ -38,6 +38,7 @@ Initial equipment tags:
 - smith machine
 - pull-up bar
 - bench
+- rack
 - leg press
 - cardio machine later
 
@@ -105,3 +106,35 @@ completion status: optional profile display name, focus profile, training days
 per week, typical session duration, and equipment inventory. Broader body
 metrics and home-gym max-load values remain planned because they do not yet have
 persisted settings fields.
+
+## Slice 44 training profile model
+
+Slice 44 extends the existing local settings/profile model instead of creating a
+second profile aggregate. The implemented vocabulary is:
+
+- sex/gender preference: unspecified, male, female, other, prefer not to say,
+- birth year,
+- body weight in kg,
+- optional height in cm,
+- primary training goal: hypertrophy, strength, general fitness,
+  recomposition, or maintenance,
+- focus profile from the existing focus list,
+- training days per week,
+- preferred session duration bucket,
+- recovery sensitivity: low, normal, high,
+- coaching strictness: gentle, balanced, direct,
+- structured equipment inventory, including rack,
+- optional per-equipment max load and load increment in kg.
+
+Unknown or skipped body/profile fields are first-class valid states. Defaults
+remain user-overridable and keep the app usable without a completed profile.
+
+Sex/gender preference is stored only as user-declared profile context. It must
+not drive hard-coded training rules, stereotypes, or fixed focus assumptions.
+Explicit user choices such as focus profile, goals, equipment, and recovery
+sensitivity are authoritative for future personalization.
+
+Home-gym load constraints are modeled as optional equipment metadata. They can
+later inform equipment-aware filtering or recommendations, but Slice 44 does
+not implement recommendation rules, adaptive coaching decisions, wearables,
+calorie estimation, or muscle-load algorithms.

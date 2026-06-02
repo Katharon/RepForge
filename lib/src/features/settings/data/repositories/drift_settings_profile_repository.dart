@@ -49,9 +49,21 @@ final class DriftSettingsProfileRepository
       );
     }
 
+    final loadConstraintRows =
+        await (_database.select(_database.equipmentLoadConstraints)
+              ..where(($EquipmentLoadConstraintsTable table) {
+                return table.profileId.equals(settingsProfileStorageId);
+              })
+              ..orderBy([
+                ($EquipmentLoadConstraintsTable table) =>
+                    OrderingTerm.asc(table.equipment),
+              ]))
+            .get();
+
     return SettingsProfileMapper.toDomain(
       row: rows.single,
       equipmentRows: equipmentRows,
+      loadConstraintRows: loadConstraintRows,
     );
   }
 
@@ -69,11 +81,26 @@ final class DriftSettingsProfileRepository
               return table.profileId.equals(settingsProfileStorageId);
             }))
           .go();
+      await (_database.delete(_database.equipmentLoadConstraints)
+            ..where(($EquipmentLoadConstraintsTable table) {
+              return table.profileId.equals(settingsProfileStorageId);
+            }))
+          .go();
 
       for (final equipment in profile.equipmentInventory.items) {
         await _database
             .into(_database.equipmentInventoryItems)
             .insert(SettingsProfileMapper.toEquipmentCompanion(equipment));
+      }
+      for (final entry in profile.equipmentInventory.loadConstraints.entries) {
+        await _database
+            .into(_database.equipmentLoadConstraints)
+            .insert(
+              SettingsProfileMapper.toLoadConstraintCompanion(
+                entry.key,
+                entry.value,
+              ),
+            );
       }
     });
   }

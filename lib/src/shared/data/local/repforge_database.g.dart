@@ -3153,6 +3153,72 @@ class $SettingsProfilesTable extends SettingsProfiles
     $customConstraints:
         'NULL CHECK (display_name IS NULL OR (length(display_name) > 0 AND length(display_name) <= 80))',
   );
+  static const VerificationMeta _sexGenderMeta = const VerificationMeta(
+    'sexGender',
+  );
+  @override
+  late final GeneratedColumn<String> sexGender = GeneratedColumn<String>(
+    'sex_gender',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints:
+        'NULL CHECK (sex_gender IS NULL OR sex_gender IN (\'unspecified\', \'male\', \'female\', \'other\', \'preferNotToSay\'))',
+  );
+  static const VerificationMeta _birthYearMeta = const VerificationMeta(
+    'birthYear',
+  );
+  @override
+  late final GeneratedColumn<int> birthYear = GeneratedColumn<int>(
+    'birth_year',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    $customConstraints:
+        'NULL CHECK (birth_year IS NULL OR birth_year BETWEEN 1900 AND 2100)',
+  );
+  static const VerificationMeta _bodyWeightKgMeta = const VerificationMeta(
+    'bodyWeightKg',
+  );
+  @override
+  late final GeneratedColumn<double> bodyWeightKg = GeneratedColumn<double>(
+    'body_weight_kg',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+    $customConstraints:
+        'NULL CHECK (body_weight_kg IS NULL OR (body_weight_kg > 0 AND body_weight_kg <= 500))',
+  );
+  static const VerificationMeta _heightCmMeta = const VerificationMeta(
+    'heightCm',
+  );
+  @override
+  late final GeneratedColumn<double> heightCm = GeneratedColumn<double>(
+    'height_cm',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+    $customConstraints:
+        'NULL CHECK (height_cm IS NULL OR (height_cm > 0 AND height_cm <= 300))',
+  );
+  static const VerificationMeta _trainingGoalMeta = const VerificationMeta(
+    'trainingGoal',
+  );
+  @override
+  late final GeneratedColumn<String> trainingGoal = GeneratedColumn<String>(
+    'training_goal',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints:
+        'NOT NULL DEFAULT \'generalFitness\' CHECK (training_goal IN (\'hypertrophy\', \'strength\', \'generalFitness\', \'recomposition\', \'maintenance\'))',
+    defaultValue: const CustomExpression('\'generalFitness\''),
+  );
   static const VerificationMeta _focusProfileMeta = const VerificationMeta(
     'focusProfile',
   );
@@ -3190,6 +3256,34 @@ class $SettingsProfilesTable extends SettingsProfiles
     $customConstraints:
         'NOT NULL CHECK (session_duration_minutes IN (15, 25, 35, 45, 60, 75))',
   );
+  static const VerificationMeta _recoverySensitivityMeta =
+      const VerificationMeta('recoverySensitivity');
+  @override
+  late final GeneratedColumn<String>
+  recoverySensitivity = GeneratedColumn<String>(
+    'recovery_sensitivity',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints:
+        'NOT NULL DEFAULT \'normal\' CHECK (recovery_sensitivity IN (\'low\', \'normal\', \'high\'))',
+    defaultValue: const CustomExpression('\'normal\''),
+  );
+  static const VerificationMeta _coachingStrictnessMeta =
+      const VerificationMeta('coachingStrictness');
+  @override
+  late final GeneratedColumn<String>
+  coachingStrictness = GeneratedColumn<String>(
+    'coaching_strictness',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints:
+        'NOT NULL DEFAULT \'balanced\' CHECK (coaching_strictness IN (\'gentle\', \'balanced\', \'direct\'))',
+    defaultValue: const CustomExpression('\'balanced\''),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     profileId,
@@ -3198,9 +3292,16 @@ class $SettingsProfilesTable extends SettingsProfiles
     themePreference,
     defaultRestSeconds,
     displayName,
+    sexGender,
+    birthYear,
+    bodyWeightKg,
+    heightCm,
+    trainingGoal,
     focusProfile,
     trainingDaysPerWeek,
     sessionDurationMinutes,
+    recoverySensitivity,
+    coachingStrictness,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -3275,6 +3376,42 @@ class $SettingsProfilesTable extends SettingsProfiles
         ),
       );
     }
+    if (data.containsKey('sex_gender')) {
+      context.handle(
+        _sexGenderMeta,
+        sexGender.isAcceptableOrUnknown(data['sex_gender']!, _sexGenderMeta),
+      );
+    }
+    if (data.containsKey('birth_year')) {
+      context.handle(
+        _birthYearMeta,
+        birthYear.isAcceptableOrUnknown(data['birth_year']!, _birthYearMeta),
+      );
+    }
+    if (data.containsKey('body_weight_kg')) {
+      context.handle(
+        _bodyWeightKgMeta,
+        bodyWeightKg.isAcceptableOrUnknown(
+          data['body_weight_kg']!,
+          _bodyWeightKgMeta,
+        ),
+      );
+    }
+    if (data.containsKey('height_cm')) {
+      context.handle(
+        _heightCmMeta,
+        heightCm.isAcceptableOrUnknown(data['height_cm']!, _heightCmMeta),
+      );
+    }
+    if (data.containsKey('training_goal')) {
+      context.handle(
+        _trainingGoalMeta,
+        trainingGoal.isAcceptableOrUnknown(
+          data['training_goal']!,
+          _trainingGoalMeta,
+        ),
+      );
+    }
     if (data.containsKey('focus_profile')) {
       context.handle(
         _focusProfileMeta,
@@ -3307,6 +3444,24 @@ class $SettingsProfilesTable extends SettingsProfiles
       );
     } else if (isInserting) {
       context.missing(_sessionDurationMinutesMeta);
+    }
+    if (data.containsKey('recovery_sensitivity')) {
+      context.handle(
+        _recoverySensitivityMeta,
+        recoverySensitivity.isAcceptableOrUnknown(
+          data['recovery_sensitivity']!,
+          _recoverySensitivityMeta,
+        ),
+      );
+    }
+    if (data.containsKey('coaching_strictness')) {
+      context.handle(
+        _coachingStrictnessMeta,
+        coachingStrictness.isAcceptableOrUnknown(
+          data['coaching_strictness']!,
+          _coachingStrictnessMeta,
+        ),
+      );
     }
     return context;
   }
@@ -3341,6 +3496,26 @@ class $SettingsProfilesTable extends SettingsProfiles
         DriftSqlType.string,
         data['${effectivePrefix}display_name'],
       ),
+      sexGender: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sex_gender'],
+      ),
+      birthYear: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}birth_year'],
+      ),
+      bodyWeightKg: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}body_weight_kg'],
+      ),
+      heightCm: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}height_cm'],
+      ),
+      trainingGoal: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}training_goal'],
+      )!,
       focusProfile: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}focus_profile'],
@@ -3352,6 +3527,14 @@ class $SettingsProfilesTable extends SettingsProfiles
       sessionDurationMinutes: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}session_duration_minutes'],
+      )!,
+      recoverySensitivity: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}recovery_sensitivity'],
+      )!,
+      coachingStrictness: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}coaching_strictness'],
       )!,
     );
   }
@@ -3370,9 +3553,16 @@ class SettingsProfileRow extends DataClass
   final String themePreference;
   final int defaultRestSeconds;
   final String? displayName;
+  final String? sexGender;
+  final int? birthYear;
+  final double? bodyWeightKg;
+  final double? heightCm;
+  final String trainingGoal;
   final String focusProfile;
   final int trainingDaysPerWeek;
   final int sessionDurationMinutes;
+  final String recoverySensitivity;
+  final String coachingStrictness;
   const SettingsProfileRow({
     required this.profileId,
     required this.languageOverride,
@@ -3380,9 +3570,16 @@ class SettingsProfileRow extends DataClass
     required this.themePreference,
     required this.defaultRestSeconds,
     this.displayName,
+    this.sexGender,
+    this.birthYear,
+    this.bodyWeightKg,
+    this.heightCm,
+    required this.trainingGoal,
     required this.focusProfile,
     required this.trainingDaysPerWeek,
     required this.sessionDurationMinutes,
+    required this.recoverySensitivity,
+    required this.coachingStrictness,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -3395,9 +3592,24 @@ class SettingsProfileRow extends DataClass
     if (!nullToAbsent || displayName != null) {
       map['display_name'] = Variable<String>(displayName);
     }
+    if (!nullToAbsent || sexGender != null) {
+      map['sex_gender'] = Variable<String>(sexGender);
+    }
+    if (!nullToAbsent || birthYear != null) {
+      map['birth_year'] = Variable<int>(birthYear);
+    }
+    if (!nullToAbsent || bodyWeightKg != null) {
+      map['body_weight_kg'] = Variable<double>(bodyWeightKg);
+    }
+    if (!nullToAbsent || heightCm != null) {
+      map['height_cm'] = Variable<double>(heightCm);
+    }
+    map['training_goal'] = Variable<String>(trainingGoal);
     map['focus_profile'] = Variable<String>(focusProfile);
     map['training_days_per_week'] = Variable<int>(trainingDaysPerWeek);
     map['session_duration_minutes'] = Variable<int>(sessionDurationMinutes);
+    map['recovery_sensitivity'] = Variable<String>(recoverySensitivity);
+    map['coaching_strictness'] = Variable<String>(coachingStrictness);
     return map;
   }
 
@@ -3411,9 +3623,24 @@ class SettingsProfileRow extends DataClass
       displayName: displayName == null && nullToAbsent
           ? const Value.absent()
           : Value(displayName),
+      sexGender: sexGender == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sexGender),
+      birthYear: birthYear == null && nullToAbsent
+          ? const Value.absent()
+          : Value(birthYear),
+      bodyWeightKg: bodyWeightKg == null && nullToAbsent
+          ? const Value.absent()
+          : Value(bodyWeightKg),
+      heightCm: heightCm == null && nullToAbsent
+          ? const Value.absent()
+          : Value(heightCm),
+      trainingGoal: Value(trainingGoal),
       focusProfile: Value(focusProfile),
       trainingDaysPerWeek: Value(trainingDaysPerWeek),
       sessionDurationMinutes: Value(sessionDurationMinutes),
+      recoverySensitivity: Value(recoverySensitivity),
+      coachingStrictness: Value(coachingStrictness),
     );
   }
 
@@ -3429,12 +3656,23 @@ class SettingsProfileRow extends DataClass
       themePreference: serializer.fromJson<String>(json['themePreference']),
       defaultRestSeconds: serializer.fromJson<int>(json['defaultRestSeconds']),
       displayName: serializer.fromJson<String?>(json['displayName']),
+      sexGender: serializer.fromJson<String?>(json['sexGender']),
+      birthYear: serializer.fromJson<int?>(json['birthYear']),
+      bodyWeightKg: serializer.fromJson<double?>(json['bodyWeightKg']),
+      heightCm: serializer.fromJson<double?>(json['heightCm']),
+      trainingGoal: serializer.fromJson<String>(json['trainingGoal']),
       focusProfile: serializer.fromJson<String>(json['focusProfile']),
       trainingDaysPerWeek: serializer.fromJson<int>(
         json['trainingDaysPerWeek'],
       ),
       sessionDurationMinutes: serializer.fromJson<int>(
         json['sessionDurationMinutes'],
+      ),
+      recoverySensitivity: serializer.fromJson<String>(
+        json['recoverySensitivity'],
+      ),
+      coachingStrictness: serializer.fromJson<String>(
+        json['coachingStrictness'],
       ),
     );
   }
@@ -3448,9 +3686,16 @@ class SettingsProfileRow extends DataClass
       'themePreference': serializer.toJson<String>(themePreference),
       'defaultRestSeconds': serializer.toJson<int>(defaultRestSeconds),
       'displayName': serializer.toJson<String?>(displayName),
+      'sexGender': serializer.toJson<String?>(sexGender),
+      'birthYear': serializer.toJson<int?>(birthYear),
+      'bodyWeightKg': serializer.toJson<double?>(bodyWeightKg),
+      'heightCm': serializer.toJson<double?>(heightCm),
+      'trainingGoal': serializer.toJson<String>(trainingGoal),
       'focusProfile': serializer.toJson<String>(focusProfile),
       'trainingDaysPerWeek': serializer.toJson<int>(trainingDaysPerWeek),
       'sessionDurationMinutes': serializer.toJson<int>(sessionDurationMinutes),
+      'recoverySensitivity': serializer.toJson<String>(recoverySensitivity),
+      'coachingStrictness': serializer.toJson<String>(coachingStrictness),
     };
   }
 
@@ -3461,9 +3706,16 @@ class SettingsProfileRow extends DataClass
     String? themePreference,
     int? defaultRestSeconds,
     Value<String?> displayName = const Value.absent(),
+    Value<String?> sexGender = const Value.absent(),
+    Value<int?> birthYear = const Value.absent(),
+    Value<double?> bodyWeightKg = const Value.absent(),
+    Value<double?> heightCm = const Value.absent(),
+    String? trainingGoal,
     String? focusProfile,
     int? trainingDaysPerWeek,
     int? sessionDurationMinutes,
+    String? recoverySensitivity,
+    String? coachingStrictness,
   }) => SettingsProfileRow(
     profileId: profileId ?? this.profileId,
     languageOverride: languageOverride ?? this.languageOverride,
@@ -3471,10 +3723,17 @@ class SettingsProfileRow extends DataClass
     themePreference: themePreference ?? this.themePreference,
     defaultRestSeconds: defaultRestSeconds ?? this.defaultRestSeconds,
     displayName: displayName.present ? displayName.value : this.displayName,
+    sexGender: sexGender.present ? sexGender.value : this.sexGender,
+    birthYear: birthYear.present ? birthYear.value : this.birthYear,
+    bodyWeightKg: bodyWeightKg.present ? bodyWeightKg.value : this.bodyWeightKg,
+    heightCm: heightCm.present ? heightCm.value : this.heightCm,
+    trainingGoal: trainingGoal ?? this.trainingGoal,
     focusProfile: focusProfile ?? this.focusProfile,
     trainingDaysPerWeek: trainingDaysPerWeek ?? this.trainingDaysPerWeek,
     sessionDurationMinutes:
         sessionDurationMinutes ?? this.sessionDurationMinutes,
+    recoverySensitivity: recoverySensitivity ?? this.recoverySensitivity,
+    coachingStrictness: coachingStrictness ?? this.coachingStrictness,
   );
   SettingsProfileRow copyWithCompanion(SettingsProfilesCompanion data) {
     return SettingsProfileRow(
@@ -3494,6 +3753,15 @@ class SettingsProfileRow extends DataClass
       displayName: data.displayName.present
           ? data.displayName.value
           : this.displayName,
+      sexGender: data.sexGender.present ? data.sexGender.value : this.sexGender,
+      birthYear: data.birthYear.present ? data.birthYear.value : this.birthYear,
+      bodyWeightKg: data.bodyWeightKg.present
+          ? data.bodyWeightKg.value
+          : this.bodyWeightKg,
+      heightCm: data.heightCm.present ? data.heightCm.value : this.heightCm,
+      trainingGoal: data.trainingGoal.present
+          ? data.trainingGoal.value
+          : this.trainingGoal,
       focusProfile: data.focusProfile.present
           ? data.focusProfile.value
           : this.focusProfile,
@@ -3503,6 +3771,12 @@ class SettingsProfileRow extends DataClass
       sessionDurationMinutes: data.sessionDurationMinutes.present
           ? data.sessionDurationMinutes.value
           : this.sessionDurationMinutes,
+      recoverySensitivity: data.recoverySensitivity.present
+          ? data.recoverySensitivity.value
+          : this.recoverySensitivity,
+      coachingStrictness: data.coachingStrictness.present
+          ? data.coachingStrictness.value
+          : this.coachingStrictness,
     );
   }
 
@@ -3515,9 +3789,16 @@ class SettingsProfileRow extends DataClass
           ..write('themePreference: $themePreference, ')
           ..write('defaultRestSeconds: $defaultRestSeconds, ')
           ..write('displayName: $displayName, ')
+          ..write('sexGender: $sexGender, ')
+          ..write('birthYear: $birthYear, ')
+          ..write('bodyWeightKg: $bodyWeightKg, ')
+          ..write('heightCm: $heightCm, ')
+          ..write('trainingGoal: $trainingGoal, ')
           ..write('focusProfile: $focusProfile, ')
           ..write('trainingDaysPerWeek: $trainingDaysPerWeek, ')
-          ..write('sessionDurationMinutes: $sessionDurationMinutes')
+          ..write('sessionDurationMinutes: $sessionDurationMinutes, ')
+          ..write('recoverySensitivity: $recoverySensitivity, ')
+          ..write('coachingStrictness: $coachingStrictness')
           ..write(')'))
         .toString();
   }
@@ -3530,9 +3811,16 @@ class SettingsProfileRow extends DataClass
     themePreference,
     defaultRestSeconds,
     displayName,
+    sexGender,
+    birthYear,
+    bodyWeightKg,
+    heightCm,
+    trainingGoal,
     focusProfile,
     trainingDaysPerWeek,
     sessionDurationMinutes,
+    recoverySensitivity,
+    coachingStrictness,
   );
   @override
   bool operator ==(Object other) =>
@@ -3544,9 +3832,16 @@ class SettingsProfileRow extends DataClass
           other.themePreference == this.themePreference &&
           other.defaultRestSeconds == this.defaultRestSeconds &&
           other.displayName == this.displayName &&
+          other.sexGender == this.sexGender &&
+          other.birthYear == this.birthYear &&
+          other.bodyWeightKg == this.bodyWeightKg &&
+          other.heightCm == this.heightCm &&
+          other.trainingGoal == this.trainingGoal &&
           other.focusProfile == this.focusProfile &&
           other.trainingDaysPerWeek == this.trainingDaysPerWeek &&
-          other.sessionDurationMinutes == this.sessionDurationMinutes);
+          other.sessionDurationMinutes == this.sessionDurationMinutes &&
+          other.recoverySensitivity == this.recoverySensitivity &&
+          other.coachingStrictness == this.coachingStrictness);
 }
 
 class SettingsProfilesCompanion extends UpdateCompanion<SettingsProfileRow> {
@@ -3556,9 +3851,16 @@ class SettingsProfilesCompanion extends UpdateCompanion<SettingsProfileRow> {
   final Value<String> themePreference;
   final Value<int> defaultRestSeconds;
   final Value<String?> displayName;
+  final Value<String?> sexGender;
+  final Value<int?> birthYear;
+  final Value<double?> bodyWeightKg;
+  final Value<double?> heightCm;
+  final Value<String> trainingGoal;
   final Value<String> focusProfile;
   final Value<int> trainingDaysPerWeek;
   final Value<int> sessionDurationMinutes;
+  final Value<String> recoverySensitivity;
+  final Value<String> coachingStrictness;
   final Value<int> rowid;
   const SettingsProfilesCompanion({
     this.profileId = const Value.absent(),
@@ -3567,9 +3869,16 @@ class SettingsProfilesCompanion extends UpdateCompanion<SettingsProfileRow> {
     this.themePreference = const Value.absent(),
     this.defaultRestSeconds = const Value.absent(),
     this.displayName = const Value.absent(),
+    this.sexGender = const Value.absent(),
+    this.birthYear = const Value.absent(),
+    this.bodyWeightKg = const Value.absent(),
+    this.heightCm = const Value.absent(),
+    this.trainingGoal = const Value.absent(),
     this.focusProfile = const Value.absent(),
     this.trainingDaysPerWeek = const Value.absent(),
     this.sessionDurationMinutes = const Value.absent(),
+    this.recoverySensitivity = const Value.absent(),
+    this.coachingStrictness = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   SettingsProfilesCompanion.insert({
@@ -3579,9 +3888,16 @@ class SettingsProfilesCompanion extends UpdateCompanion<SettingsProfileRow> {
     required String themePreference,
     required int defaultRestSeconds,
     this.displayName = const Value.absent(),
+    this.sexGender = const Value.absent(),
+    this.birthYear = const Value.absent(),
+    this.bodyWeightKg = const Value.absent(),
+    this.heightCm = const Value.absent(),
+    this.trainingGoal = const Value.absent(),
     required String focusProfile,
     required int trainingDaysPerWeek,
     required int sessionDurationMinutes,
+    this.recoverySensitivity = const Value.absent(),
+    this.coachingStrictness = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : profileId = Value(profileId),
        languageOverride = Value(languageOverride),
@@ -3598,9 +3914,16 @@ class SettingsProfilesCompanion extends UpdateCompanion<SettingsProfileRow> {
     Expression<String>? themePreference,
     Expression<int>? defaultRestSeconds,
     Expression<String>? displayName,
+    Expression<String>? sexGender,
+    Expression<int>? birthYear,
+    Expression<double>? bodyWeightKg,
+    Expression<double>? heightCm,
+    Expression<String>? trainingGoal,
     Expression<String>? focusProfile,
     Expression<int>? trainingDaysPerWeek,
     Expression<int>? sessionDurationMinutes,
+    Expression<String>? recoverySensitivity,
+    Expression<String>? coachingStrictness,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -3611,11 +3934,19 @@ class SettingsProfilesCompanion extends UpdateCompanion<SettingsProfileRow> {
       if (defaultRestSeconds != null)
         'default_rest_seconds': defaultRestSeconds,
       if (displayName != null) 'display_name': displayName,
+      if (sexGender != null) 'sex_gender': sexGender,
+      if (birthYear != null) 'birth_year': birthYear,
+      if (bodyWeightKg != null) 'body_weight_kg': bodyWeightKg,
+      if (heightCm != null) 'height_cm': heightCm,
+      if (trainingGoal != null) 'training_goal': trainingGoal,
       if (focusProfile != null) 'focus_profile': focusProfile,
       if (trainingDaysPerWeek != null)
         'training_days_per_week': trainingDaysPerWeek,
       if (sessionDurationMinutes != null)
         'session_duration_minutes': sessionDurationMinutes,
+      if (recoverySensitivity != null)
+        'recovery_sensitivity': recoverySensitivity,
+      if (coachingStrictness != null) 'coaching_strictness': coachingStrictness,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -3627,9 +3958,16 @@ class SettingsProfilesCompanion extends UpdateCompanion<SettingsProfileRow> {
     Value<String>? themePreference,
     Value<int>? defaultRestSeconds,
     Value<String?>? displayName,
+    Value<String?>? sexGender,
+    Value<int?>? birthYear,
+    Value<double?>? bodyWeightKg,
+    Value<double?>? heightCm,
+    Value<String>? trainingGoal,
     Value<String>? focusProfile,
     Value<int>? trainingDaysPerWeek,
     Value<int>? sessionDurationMinutes,
+    Value<String>? recoverySensitivity,
+    Value<String>? coachingStrictness,
     Value<int>? rowid,
   }) {
     return SettingsProfilesCompanion(
@@ -3639,10 +3977,17 @@ class SettingsProfilesCompanion extends UpdateCompanion<SettingsProfileRow> {
       themePreference: themePreference ?? this.themePreference,
       defaultRestSeconds: defaultRestSeconds ?? this.defaultRestSeconds,
       displayName: displayName ?? this.displayName,
+      sexGender: sexGender ?? this.sexGender,
+      birthYear: birthYear ?? this.birthYear,
+      bodyWeightKg: bodyWeightKg ?? this.bodyWeightKg,
+      heightCm: heightCm ?? this.heightCm,
+      trainingGoal: trainingGoal ?? this.trainingGoal,
       focusProfile: focusProfile ?? this.focusProfile,
       trainingDaysPerWeek: trainingDaysPerWeek ?? this.trainingDaysPerWeek,
       sessionDurationMinutes:
           sessionDurationMinutes ?? this.sessionDurationMinutes,
+      recoverySensitivity: recoverySensitivity ?? this.recoverySensitivity,
+      coachingStrictness: coachingStrictness ?? this.coachingStrictness,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -3668,6 +4013,21 @@ class SettingsProfilesCompanion extends UpdateCompanion<SettingsProfileRow> {
     if (displayName.present) {
       map['display_name'] = Variable<String>(displayName.value);
     }
+    if (sexGender.present) {
+      map['sex_gender'] = Variable<String>(sexGender.value);
+    }
+    if (birthYear.present) {
+      map['birth_year'] = Variable<int>(birthYear.value);
+    }
+    if (bodyWeightKg.present) {
+      map['body_weight_kg'] = Variable<double>(bodyWeightKg.value);
+    }
+    if (heightCm.present) {
+      map['height_cm'] = Variable<double>(heightCm.value);
+    }
+    if (trainingGoal.present) {
+      map['training_goal'] = Variable<String>(trainingGoal.value);
+    }
     if (focusProfile.present) {
       map['focus_profile'] = Variable<String>(focusProfile.value);
     }
@@ -3678,6 +4038,12 @@ class SettingsProfilesCompanion extends UpdateCompanion<SettingsProfileRow> {
       map['session_duration_minutes'] = Variable<int>(
         sessionDurationMinutes.value,
       );
+    }
+    if (recoverySensitivity.present) {
+      map['recovery_sensitivity'] = Variable<String>(recoverySensitivity.value);
+    }
+    if (coachingStrictness.present) {
+      map['coaching_strictness'] = Variable<String>(coachingStrictness.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -3694,9 +4060,16 @@ class SettingsProfilesCompanion extends UpdateCompanion<SettingsProfileRow> {
           ..write('themePreference: $themePreference, ')
           ..write('defaultRestSeconds: $defaultRestSeconds, ')
           ..write('displayName: $displayName, ')
+          ..write('sexGender: $sexGender, ')
+          ..write('birthYear: $birthYear, ')
+          ..write('bodyWeightKg: $bodyWeightKg, ')
+          ..write('heightCm: $heightCm, ')
+          ..write('trainingGoal: $trainingGoal, ')
           ..write('focusProfile: $focusProfile, ')
           ..write('trainingDaysPerWeek: $trainingDaysPerWeek, ')
           ..write('sessionDurationMinutes: $sessionDurationMinutes, ')
+          ..write('recoverySensitivity: $recoverySensitivity, ')
+          ..write('coachingStrictness: $coachingStrictness, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -3732,7 +4105,7 @@ class $EquipmentInventoryItemsTable extends EquipmentInventoryItems
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     $customConstraints:
-        'NOT NULL CHECK (equipment IN (\'bodyweight\', \'barbell\', \'dumbbell\', \'cable\', \'machine\', \'smithMachine\', \'pullUpBar\', \'bench\', \'legPress\'))',
+        'NOT NULL CHECK (equipment IN (\'bodyweight\', \'barbell\', \'dumbbell\', \'cable\', \'machine\', \'smithMachine\', \'pullUpBar\', \'bench\', \'rack\', \'legPress\'))',
   );
   @override
   List<GeneratedColumn> get $columns => [profileId, equipment];
@@ -3928,6 +4301,347 @@ class EquipmentInventoryItemsCompanion
     return (StringBuffer('EquipmentInventoryItemsCompanion(')
           ..write('profileId: $profileId, ')
           ..write('equipment: $equipment, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $EquipmentLoadConstraintsTable extends EquipmentLoadConstraints
+    with TableInfo<$EquipmentLoadConstraintsTable, EquipmentLoadConstraintRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $EquipmentLoadConstraintsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _profileIdMeta = const VerificationMeta(
+    'profileId',
+  );
+  @override
+  late final GeneratedColumn<String> profileId = GeneratedColumn<String>(
+    'profile_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL CHECK (length(profile_id) > 0)',
+  );
+  static const VerificationMeta _equipmentMeta = const VerificationMeta(
+    'equipment',
+  );
+  @override
+  late final GeneratedColumn<String> equipment = GeneratedColumn<String>(
+    'equipment',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints:
+        'NOT NULL CHECK (equipment IN (\'bodyweight\', \'barbell\', \'dumbbell\', \'cable\', \'machine\', \'smithMachine\', \'pullUpBar\', \'bench\', \'rack\', \'legPress\'))',
+  );
+  static const VerificationMeta _maxLoadKgMeta = const VerificationMeta(
+    'maxLoadKg',
+  );
+  @override
+  late final GeneratedColumn<double> maxLoadKg = GeneratedColumn<double>(
+    'max_load_kg',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+    $customConstraints:
+        'NULL CHECK (max_load_kg IS NULL OR (max_load_kg > 0 AND max_load_kg <= 1000))',
+  );
+  static const VerificationMeta _incrementKgMeta = const VerificationMeta(
+    'incrementKg',
+  );
+  @override
+  late final GeneratedColumn<double> incrementKg = GeneratedColumn<double>(
+    'increment_kg',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+    $customConstraints:
+        'NULL CHECK (increment_kg IS NULL OR (increment_kg > 0 AND increment_kg <= 100))',
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    profileId,
+    equipment,
+    maxLoadKg,
+    incrementKg,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'equipment_load_constraints';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<EquipmentLoadConstraintRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('profile_id')) {
+      context.handle(
+        _profileIdMeta,
+        profileId.isAcceptableOrUnknown(data['profile_id']!, _profileIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_profileIdMeta);
+    }
+    if (data.containsKey('equipment')) {
+      context.handle(
+        _equipmentMeta,
+        equipment.isAcceptableOrUnknown(data['equipment']!, _equipmentMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_equipmentMeta);
+    }
+    if (data.containsKey('max_load_kg')) {
+      context.handle(
+        _maxLoadKgMeta,
+        maxLoadKg.isAcceptableOrUnknown(data['max_load_kg']!, _maxLoadKgMeta),
+      );
+    }
+    if (data.containsKey('increment_kg')) {
+      context.handle(
+        _incrementKgMeta,
+        incrementKg.isAcceptableOrUnknown(
+          data['increment_kg']!,
+          _incrementKgMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {profileId, equipment};
+  @override
+  EquipmentLoadConstraintRow map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return EquipmentLoadConstraintRow(
+      profileId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}profile_id'],
+      )!,
+      equipment: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}equipment'],
+      )!,
+      maxLoadKg: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}max_load_kg'],
+      ),
+      incrementKg: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}increment_kg'],
+      ),
+    );
+  }
+
+  @override
+  $EquipmentLoadConstraintsTable createAlias(String alias) {
+    return $EquipmentLoadConstraintsTable(attachedDatabase, alias);
+  }
+}
+
+class EquipmentLoadConstraintRow extends DataClass
+    implements Insertable<EquipmentLoadConstraintRow> {
+  final String profileId;
+  final String equipment;
+  final double? maxLoadKg;
+  final double? incrementKg;
+  const EquipmentLoadConstraintRow({
+    required this.profileId,
+    required this.equipment,
+    this.maxLoadKg,
+    this.incrementKg,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['profile_id'] = Variable<String>(profileId);
+    map['equipment'] = Variable<String>(equipment);
+    if (!nullToAbsent || maxLoadKg != null) {
+      map['max_load_kg'] = Variable<double>(maxLoadKg);
+    }
+    if (!nullToAbsent || incrementKg != null) {
+      map['increment_kg'] = Variable<double>(incrementKg);
+    }
+    return map;
+  }
+
+  EquipmentLoadConstraintsCompanion toCompanion(bool nullToAbsent) {
+    return EquipmentLoadConstraintsCompanion(
+      profileId: Value(profileId),
+      equipment: Value(equipment),
+      maxLoadKg: maxLoadKg == null && nullToAbsent
+          ? const Value.absent()
+          : Value(maxLoadKg),
+      incrementKg: incrementKg == null && nullToAbsent
+          ? const Value.absent()
+          : Value(incrementKg),
+    );
+  }
+
+  factory EquipmentLoadConstraintRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return EquipmentLoadConstraintRow(
+      profileId: serializer.fromJson<String>(json['profileId']),
+      equipment: serializer.fromJson<String>(json['equipment']),
+      maxLoadKg: serializer.fromJson<double?>(json['maxLoadKg']),
+      incrementKg: serializer.fromJson<double?>(json['incrementKg']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'profileId': serializer.toJson<String>(profileId),
+      'equipment': serializer.toJson<String>(equipment),
+      'maxLoadKg': serializer.toJson<double?>(maxLoadKg),
+      'incrementKg': serializer.toJson<double?>(incrementKg),
+    };
+  }
+
+  EquipmentLoadConstraintRow copyWith({
+    String? profileId,
+    String? equipment,
+    Value<double?> maxLoadKg = const Value.absent(),
+    Value<double?> incrementKg = const Value.absent(),
+  }) => EquipmentLoadConstraintRow(
+    profileId: profileId ?? this.profileId,
+    equipment: equipment ?? this.equipment,
+    maxLoadKg: maxLoadKg.present ? maxLoadKg.value : this.maxLoadKg,
+    incrementKg: incrementKg.present ? incrementKg.value : this.incrementKg,
+  );
+  EquipmentLoadConstraintRow copyWithCompanion(
+    EquipmentLoadConstraintsCompanion data,
+  ) {
+    return EquipmentLoadConstraintRow(
+      profileId: data.profileId.present ? data.profileId.value : this.profileId,
+      equipment: data.equipment.present ? data.equipment.value : this.equipment,
+      maxLoadKg: data.maxLoadKg.present ? data.maxLoadKg.value : this.maxLoadKg,
+      incrementKg: data.incrementKg.present
+          ? data.incrementKg.value
+          : this.incrementKg,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('EquipmentLoadConstraintRow(')
+          ..write('profileId: $profileId, ')
+          ..write('equipment: $equipment, ')
+          ..write('maxLoadKg: $maxLoadKg, ')
+          ..write('incrementKg: $incrementKg')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(profileId, equipment, maxLoadKg, incrementKg);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is EquipmentLoadConstraintRow &&
+          other.profileId == this.profileId &&
+          other.equipment == this.equipment &&
+          other.maxLoadKg == this.maxLoadKg &&
+          other.incrementKg == this.incrementKg);
+}
+
+class EquipmentLoadConstraintsCompanion
+    extends UpdateCompanion<EquipmentLoadConstraintRow> {
+  final Value<String> profileId;
+  final Value<String> equipment;
+  final Value<double?> maxLoadKg;
+  final Value<double?> incrementKg;
+  final Value<int> rowid;
+  const EquipmentLoadConstraintsCompanion({
+    this.profileId = const Value.absent(),
+    this.equipment = const Value.absent(),
+    this.maxLoadKg = const Value.absent(),
+    this.incrementKg = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  EquipmentLoadConstraintsCompanion.insert({
+    required String profileId,
+    required String equipment,
+    this.maxLoadKg = const Value.absent(),
+    this.incrementKg = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : profileId = Value(profileId),
+       equipment = Value(equipment);
+  static Insertable<EquipmentLoadConstraintRow> custom({
+    Expression<String>? profileId,
+    Expression<String>? equipment,
+    Expression<double>? maxLoadKg,
+    Expression<double>? incrementKg,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (profileId != null) 'profile_id': profileId,
+      if (equipment != null) 'equipment': equipment,
+      if (maxLoadKg != null) 'max_load_kg': maxLoadKg,
+      if (incrementKg != null) 'increment_kg': incrementKg,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  EquipmentLoadConstraintsCompanion copyWith({
+    Value<String>? profileId,
+    Value<String>? equipment,
+    Value<double?>? maxLoadKg,
+    Value<double?>? incrementKg,
+    Value<int>? rowid,
+  }) {
+    return EquipmentLoadConstraintsCompanion(
+      profileId: profileId ?? this.profileId,
+      equipment: equipment ?? this.equipment,
+      maxLoadKg: maxLoadKg ?? this.maxLoadKg,
+      incrementKg: incrementKg ?? this.incrementKg,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (profileId.present) {
+      map['profile_id'] = Variable<String>(profileId.value);
+    }
+    if (equipment.present) {
+      map['equipment'] = Variable<String>(equipment.value);
+    }
+    if (maxLoadKg.present) {
+      map['max_load_kg'] = Variable<double>(maxLoadKg.value);
+    }
+    if (incrementKg.present) {
+      map['increment_kg'] = Variable<double>(incrementKg.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('EquipmentLoadConstraintsCompanion(')
+          ..write('profileId: $profileId, ')
+          ..write('equipment: $equipment, ')
+          ..write('maxLoadKg: $maxLoadKg, ')
+          ..write('incrementKg: $incrementKg, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -4233,6 +4947,8 @@ abstract class _$RepForgeDatabase extends GeneratedDatabase {
   );
   late final $EquipmentInventoryItemsTable equipmentInventoryItems =
       $EquipmentInventoryItemsTable(this);
+  late final $EquipmentLoadConstraintsTable equipmentLoadConstraints =
+      $EquipmentLoadConstraintsTable(this);
   late final $OnboardingStatusesTable onboardingStatuses =
       $OnboardingStatusesTable(this);
   late final Index workoutSetsExerciseTimelineIdx = Index(
@@ -4262,6 +4978,7 @@ abstract class _$RepForgeDatabase extends GeneratedDatabase {
     workoutGroupExerciseAssignments,
     settingsProfiles,
     equipmentInventoryItems,
+    equipmentLoadConstraints,
     onboardingStatuses,
     workoutSetsExerciseTimelineIdx,
     workoutSetsHistoryOrderIdx,
@@ -5993,9 +6710,16 @@ typedef $$SettingsProfilesTableCreateCompanionBuilder =
       required String themePreference,
       required int defaultRestSeconds,
       Value<String?> displayName,
+      Value<String?> sexGender,
+      Value<int?> birthYear,
+      Value<double?> bodyWeightKg,
+      Value<double?> heightCm,
+      Value<String> trainingGoal,
       required String focusProfile,
       required int trainingDaysPerWeek,
       required int sessionDurationMinutes,
+      Value<String> recoverySensitivity,
+      Value<String> coachingStrictness,
       Value<int> rowid,
     });
 typedef $$SettingsProfilesTableUpdateCompanionBuilder =
@@ -6006,9 +6730,16 @@ typedef $$SettingsProfilesTableUpdateCompanionBuilder =
       Value<String> themePreference,
       Value<int> defaultRestSeconds,
       Value<String?> displayName,
+      Value<String?> sexGender,
+      Value<int?> birthYear,
+      Value<double?> bodyWeightKg,
+      Value<double?> heightCm,
+      Value<String> trainingGoal,
       Value<String> focusProfile,
       Value<int> trainingDaysPerWeek,
       Value<int> sessionDurationMinutes,
+      Value<String> recoverySensitivity,
+      Value<String> coachingStrictness,
       Value<int> rowid,
     });
 
@@ -6051,6 +6782,31 @@ class $$SettingsProfilesTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get sexGender => $composableBuilder(
+    column: $table.sexGender,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get birthYear => $composableBuilder(
+    column: $table.birthYear,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get bodyWeightKg => $composableBuilder(
+    column: $table.bodyWeightKg,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get heightCm => $composableBuilder(
+    column: $table.heightCm,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get trainingGoal => $composableBuilder(
+    column: $table.trainingGoal,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get focusProfile => $composableBuilder(
     column: $table.focusProfile,
     builder: (column) => ColumnFilters(column),
@@ -6063,6 +6819,16 @@ class $$SettingsProfilesTableFilterComposer
 
   ColumnFilters<int> get sessionDurationMinutes => $composableBuilder(
     column: $table.sessionDurationMinutes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get recoverySensitivity => $composableBuilder(
+    column: $table.recoverySensitivity,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get coachingStrictness => $composableBuilder(
+    column: $table.coachingStrictness,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -6106,6 +6872,31 @@ class $$SettingsProfilesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get sexGender => $composableBuilder(
+    column: $table.sexGender,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get birthYear => $composableBuilder(
+    column: $table.birthYear,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get bodyWeightKg => $composableBuilder(
+    column: $table.bodyWeightKg,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get heightCm => $composableBuilder(
+    column: $table.heightCm,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get trainingGoal => $composableBuilder(
+    column: $table.trainingGoal,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get focusProfile => $composableBuilder(
     column: $table.focusProfile,
     builder: (column) => ColumnOrderings(column),
@@ -6118,6 +6909,16 @@ class $$SettingsProfilesTableOrderingComposer
 
   ColumnOrderings<int> get sessionDurationMinutes => $composableBuilder(
     column: $table.sessionDurationMinutes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get recoverySensitivity => $composableBuilder(
+    column: $table.recoverySensitivity,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get coachingStrictness => $composableBuilder(
+    column: $table.coachingStrictness,
     builder: (column) => ColumnOrderings(column),
   );
 }
@@ -6159,6 +6960,25 @@ class $$SettingsProfilesTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<String> get sexGender =>
+      $composableBuilder(column: $table.sexGender, builder: (column) => column);
+
+  GeneratedColumn<int> get birthYear =>
+      $composableBuilder(column: $table.birthYear, builder: (column) => column);
+
+  GeneratedColumn<double> get bodyWeightKg => $composableBuilder(
+    column: $table.bodyWeightKg,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get heightCm =>
+      $composableBuilder(column: $table.heightCm, builder: (column) => column);
+
+  GeneratedColumn<String> get trainingGoal => $composableBuilder(
+    column: $table.trainingGoal,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<String> get focusProfile => $composableBuilder(
     column: $table.focusProfile,
     builder: (column) => column,
@@ -6171,6 +6991,16 @@ class $$SettingsProfilesTableAnnotationComposer
 
   GeneratedColumn<int> get sessionDurationMinutes => $composableBuilder(
     column: $table.sessionDurationMinutes,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get recoverySensitivity => $composableBuilder(
+    column: $table.recoverySensitivity,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get coachingStrictness => $composableBuilder(
+    column: $table.coachingStrictness,
     builder: (column) => column,
   );
 }
@@ -6218,9 +7048,16 @@ class $$SettingsProfilesTableTableManager
                 Value<String> themePreference = const Value.absent(),
                 Value<int> defaultRestSeconds = const Value.absent(),
                 Value<String?> displayName = const Value.absent(),
+                Value<String?> sexGender = const Value.absent(),
+                Value<int?> birthYear = const Value.absent(),
+                Value<double?> bodyWeightKg = const Value.absent(),
+                Value<double?> heightCm = const Value.absent(),
+                Value<String> trainingGoal = const Value.absent(),
                 Value<String> focusProfile = const Value.absent(),
                 Value<int> trainingDaysPerWeek = const Value.absent(),
                 Value<int> sessionDurationMinutes = const Value.absent(),
+                Value<String> recoverySensitivity = const Value.absent(),
+                Value<String> coachingStrictness = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SettingsProfilesCompanion(
                 profileId: profileId,
@@ -6229,9 +7066,16 @@ class $$SettingsProfilesTableTableManager
                 themePreference: themePreference,
                 defaultRestSeconds: defaultRestSeconds,
                 displayName: displayName,
+                sexGender: sexGender,
+                birthYear: birthYear,
+                bodyWeightKg: bodyWeightKg,
+                heightCm: heightCm,
+                trainingGoal: trainingGoal,
                 focusProfile: focusProfile,
                 trainingDaysPerWeek: trainingDaysPerWeek,
                 sessionDurationMinutes: sessionDurationMinutes,
+                recoverySensitivity: recoverySensitivity,
+                coachingStrictness: coachingStrictness,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -6242,9 +7086,16 @@ class $$SettingsProfilesTableTableManager
                 required String themePreference,
                 required int defaultRestSeconds,
                 Value<String?> displayName = const Value.absent(),
+                Value<String?> sexGender = const Value.absent(),
+                Value<int?> birthYear = const Value.absent(),
+                Value<double?> bodyWeightKg = const Value.absent(),
+                Value<double?> heightCm = const Value.absent(),
+                Value<String> trainingGoal = const Value.absent(),
                 required String focusProfile,
                 required int trainingDaysPerWeek,
                 required int sessionDurationMinutes,
+                Value<String> recoverySensitivity = const Value.absent(),
+                Value<String> coachingStrictness = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SettingsProfilesCompanion.insert(
                 profileId: profileId,
@@ -6253,9 +7104,16 @@ class $$SettingsProfilesTableTableManager
                 themePreference: themePreference,
                 defaultRestSeconds: defaultRestSeconds,
                 displayName: displayName,
+                sexGender: sexGender,
+                birthYear: birthYear,
+                bodyWeightKg: bodyWeightKg,
+                heightCm: heightCm,
+                trainingGoal: trainingGoal,
                 focusProfile: focusProfile,
                 trainingDaysPerWeek: trainingDaysPerWeek,
                 sessionDurationMinutes: sessionDurationMinutes,
+                recoverySensitivity: recoverySensitivity,
+                coachingStrictness: coachingStrictness,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -6447,6 +7305,208 @@ typedef $$EquipmentInventoryItemsTableProcessedTableManager =
         >,
       ),
       EquipmentInventoryItemRow,
+      PrefetchHooks Function()
+    >;
+typedef $$EquipmentLoadConstraintsTableCreateCompanionBuilder =
+    EquipmentLoadConstraintsCompanion Function({
+      required String profileId,
+      required String equipment,
+      Value<double?> maxLoadKg,
+      Value<double?> incrementKg,
+      Value<int> rowid,
+    });
+typedef $$EquipmentLoadConstraintsTableUpdateCompanionBuilder =
+    EquipmentLoadConstraintsCompanion Function({
+      Value<String> profileId,
+      Value<String> equipment,
+      Value<double?> maxLoadKg,
+      Value<double?> incrementKg,
+      Value<int> rowid,
+    });
+
+class $$EquipmentLoadConstraintsTableFilterComposer
+    extends Composer<_$RepForgeDatabase, $EquipmentLoadConstraintsTable> {
+  $$EquipmentLoadConstraintsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get profileId => $composableBuilder(
+    column: $table.profileId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get equipment => $composableBuilder(
+    column: $table.equipment,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get maxLoadKg => $composableBuilder(
+    column: $table.maxLoadKg,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get incrementKg => $composableBuilder(
+    column: $table.incrementKg,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$EquipmentLoadConstraintsTableOrderingComposer
+    extends Composer<_$RepForgeDatabase, $EquipmentLoadConstraintsTable> {
+  $$EquipmentLoadConstraintsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get profileId => $composableBuilder(
+    column: $table.profileId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get equipment => $composableBuilder(
+    column: $table.equipment,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get maxLoadKg => $composableBuilder(
+    column: $table.maxLoadKg,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get incrementKg => $composableBuilder(
+    column: $table.incrementKg,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$EquipmentLoadConstraintsTableAnnotationComposer
+    extends Composer<_$RepForgeDatabase, $EquipmentLoadConstraintsTable> {
+  $$EquipmentLoadConstraintsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get profileId =>
+      $composableBuilder(column: $table.profileId, builder: (column) => column);
+
+  GeneratedColumn<String> get equipment =>
+      $composableBuilder(column: $table.equipment, builder: (column) => column);
+
+  GeneratedColumn<double> get maxLoadKg =>
+      $composableBuilder(column: $table.maxLoadKg, builder: (column) => column);
+
+  GeneratedColumn<double> get incrementKg => $composableBuilder(
+    column: $table.incrementKg,
+    builder: (column) => column,
+  );
+}
+
+class $$EquipmentLoadConstraintsTableTableManager
+    extends
+        RootTableManager<
+          _$RepForgeDatabase,
+          $EquipmentLoadConstraintsTable,
+          EquipmentLoadConstraintRow,
+          $$EquipmentLoadConstraintsTableFilterComposer,
+          $$EquipmentLoadConstraintsTableOrderingComposer,
+          $$EquipmentLoadConstraintsTableAnnotationComposer,
+          $$EquipmentLoadConstraintsTableCreateCompanionBuilder,
+          $$EquipmentLoadConstraintsTableUpdateCompanionBuilder,
+          (
+            EquipmentLoadConstraintRow,
+            BaseReferences<
+              _$RepForgeDatabase,
+              $EquipmentLoadConstraintsTable,
+              EquipmentLoadConstraintRow
+            >,
+          ),
+          EquipmentLoadConstraintRow,
+          PrefetchHooks Function()
+        > {
+  $$EquipmentLoadConstraintsTableTableManager(
+    _$RepForgeDatabase db,
+    $EquipmentLoadConstraintsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$EquipmentLoadConstraintsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$EquipmentLoadConstraintsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$EquipmentLoadConstraintsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> profileId = const Value.absent(),
+                Value<String> equipment = const Value.absent(),
+                Value<double?> maxLoadKg = const Value.absent(),
+                Value<double?> incrementKg = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => EquipmentLoadConstraintsCompanion(
+                profileId: profileId,
+                equipment: equipment,
+                maxLoadKg: maxLoadKg,
+                incrementKg: incrementKg,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String profileId,
+                required String equipment,
+                Value<double?> maxLoadKg = const Value.absent(),
+                Value<double?> incrementKg = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => EquipmentLoadConstraintsCompanion.insert(
+                profileId: profileId,
+                equipment: equipment,
+                maxLoadKg: maxLoadKg,
+                incrementKg: incrementKg,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$EquipmentLoadConstraintsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$RepForgeDatabase,
+      $EquipmentLoadConstraintsTable,
+      EquipmentLoadConstraintRow,
+      $$EquipmentLoadConstraintsTableFilterComposer,
+      $$EquipmentLoadConstraintsTableOrderingComposer,
+      $$EquipmentLoadConstraintsTableAnnotationComposer,
+      $$EquipmentLoadConstraintsTableCreateCompanionBuilder,
+      $$EquipmentLoadConstraintsTableUpdateCompanionBuilder,
+      (
+        EquipmentLoadConstraintRow,
+        BaseReferences<
+          _$RepForgeDatabase,
+          $EquipmentLoadConstraintsTable,
+          EquipmentLoadConstraintRow
+        >,
+      ),
+      EquipmentLoadConstraintRow,
       PrefetchHooks Function()
     >;
 typedef $$OnboardingStatusesTableCreateCompanionBuilder =
@@ -6668,6 +7728,11 @@ class $RepForgeDatabaseManager {
       $$EquipmentInventoryItemsTableTableManager(
         _db,
         _db.equipmentInventoryItems,
+      );
+  $$EquipmentLoadConstraintsTableTableManager get equipmentLoadConstraints =>
+      $$EquipmentLoadConstraintsTableTableManager(
+        _db,
+        _db.equipmentLoadConstraints,
       );
   $$OnboardingStatusesTableTableManager get onboardingStatuses =>
       $$OnboardingStatusesTableTableManager(_db, _db.onboardingStatuses);

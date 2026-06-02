@@ -4,6 +4,13 @@
 
 ### Added
 
+- Added Slice 44 training profile model expansion with optional sex/gender
+  preference, birth year, body weight, height, explicit training goal,
+  recovery sensitivity, coaching strictness, structured rack equipment, and
+  home-gym max-load/increment constraints persisted locally through additive
+  Drift schema v8 changes without adding recommendations, stereotypes, cloud
+  profile services, sync, Firebase, accounts, wearables, or paid runtime
+  dependencies.
 - Added Slice 43 official exercise catalog expansion with a bundled catalog
   manifest, manifest validation, `2026.06.0` catalog version detection, a
   curated 15-exercise MVP official catalog, stronger parser/import tests, and

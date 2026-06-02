@@ -476,6 +476,10 @@
   "@settingsEquipmentBench": {
     "description": "Bench equipment option."
   },
+  "settingsEquipmentRack": "Rack",
+  "@settingsEquipmentRack": {
+    "description": "Rack equipment option."
+  },
   "settingsEquipmentLegPress": "Leg press",
   "@settingsEquipmentLegPress": {
     "description": "Leg press equipment option."

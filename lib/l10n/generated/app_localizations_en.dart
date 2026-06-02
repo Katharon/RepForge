@@ -361,6 +361,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsEquipmentBench => 'Bench';
 
   @override
+  String get settingsEquipmentRack => 'Rack';
+
+  @override
   String get settingsEquipmentLegPress => 'Leg press';
 
   @override

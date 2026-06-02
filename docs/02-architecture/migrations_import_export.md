@@ -42,6 +42,13 @@ Official catalog rows and bundled catalog assets are intentionally not exported.
 Logged workout data preserves snapshots so history remains readable even if a
 future catalog patch renames or replaces an official exercise.
 
+Slice 44 keeps JSON backup v1 backward-compatible while extending the optional
+`settingsProfile` object with sex/gender preference, birth year, body weight,
+height, training goal, recovery sensitivity, coaching strictness, and
+equipment load constraints. Older backups without those fields still parse with
+local defaults; new exports include the fields so local profile data remains
+exportable.
+
 ## Import rules
 
 - Validate schema version.

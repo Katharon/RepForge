@@ -64,6 +64,16 @@ deleted by later group-management flows.
 Home-gym max-load values are not collected yet because the current settings
 model does not persist max-load fields.
 
+## Slice 44 profile model readiness
+
+The local settings/profile model now supports optional body/profile basics,
+primary training goal, recovery sensitivity, coaching strictness, rack
+equipment, and per-equipment max-load/increment constraints. The current
+Settings and Onboarding surfaces keep their compact Slice 22/23 controls; they
+preserve existing load constraints when equipment chips are toggled, but Slice
+44 does not add a large form redesign, readiness check-in UI, coach UI, or
+recommendation flow.
+
 ## v5 onboarding additions
 
 Localization:

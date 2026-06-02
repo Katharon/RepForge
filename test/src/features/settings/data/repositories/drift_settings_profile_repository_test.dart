@@ -28,15 +28,36 @@ void main() {
       unitPreference: UnitPreference.imperial,
       themePreference: ThemePreference.dark,
       defaultRestTime: DefaultRestTime.seconds(120),
-      userProfile: UserProfile(displayName: 'Luki'),
+      userProfile: UserProfile(
+        displayName: 'Luki',
+        sexGender: SexGenderPreference.other,
+        birthYear: BirthYear(1991),
+        bodyWeightKg: BodyWeightKg(82.5),
+        heightCm: HeightCm(181),
+      ),
+      trainingGoal: TrainingGoal.strength,
       focusProfile: FocusProfile.strengthBasics,
       trainingFrequency: TrainingFrequency(5),
       sessionDuration: SessionDurationPreference.sixty,
-      equipmentInventory: EquipmentInventory(const <AvailableEquipment>[
-        AvailableEquipment.barbell,
-        AvailableEquipment.bench,
-        AvailableEquipment.pullUpBar,
-      ]),
+      recoverySensitivity: RecoverySensitivity.high,
+      coachingStrictness: CoachingStrictness.direct,
+      equipmentInventory: EquipmentInventory(
+        const <AvailableEquipment>[
+          AvailableEquipment.barbell,
+          AvailableEquipment.bench,
+          AvailableEquipment.pullUpBar,
+        ],
+        loadConstraints: <AvailableEquipment, EquipmentLoadConstraint>{
+          AvailableEquipment.barbell: EquipmentLoadConstraint(
+            maxLoadKg: MaxLoadKg(180),
+            incrementKg: LoadIncrementKg(2.5),
+          ),
+          AvailableEquipment.pullUpBar: EquipmentLoadConstraint(
+            maxLoadKg: MaxLoadKg(30),
+            incrementKg: LoadIncrementKg(1.25),
+          ),
+        },
+      ),
     );
 
     await repository.save(profile);
@@ -66,6 +87,46 @@ void main() {
 
     expect(rows, hasLength(1));
     expect(rows.single.equipment, 'cable');
+  });
+
+  test('saving profile replaces home-gym load constraints only', () async {
+    await repository.save(
+      SettingsProfile.defaults().copyWith(
+        equipmentInventory: EquipmentInventory(
+          const <AvailableEquipment>[
+            AvailableEquipment.barbell,
+            AvailableEquipment.dumbbell,
+          ],
+          loadConstraints: <AvailableEquipment, EquipmentLoadConstraint>{
+            AvailableEquipment.barbell: EquipmentLoadConstraint(
+              maxLoadKg: MaxLoadKg(160),
+              incrementKg: LoadIncrementKg(2.5),
+            ),
+          },
+        ),
+      ),
+    );
+
+    await repository.save(
+      SettingsProfile.defaults().copyWith(
+        equipmentInventory: EquipmentInventory(
+          const <AvailableEquipment>[AvailableEquipment.dumbbell],
+          loadConstraints: <AvailableEquipment, EquipmentLoadConstraint>{
+            AvailableEquipment.dumbbell: EquipmentLoadConstraint(
+              maxLoadKg: MaxLoadKg(40),
+              incrementKg: LoadIncrementKg(2),
+            ),
+          },
+        ),
+      ),
+    );
+
+    final rows = await database.select(database.equipmentLoadConstraints).get();
+
+    expect(rows, hasLength(1));
+    expect(rows.single.equipment, 'dumbbell');
+    expect(rows.single.maxLoadKg, 40);
+    expect(rows.single.incrementKg, 2);
   });
 
   test(

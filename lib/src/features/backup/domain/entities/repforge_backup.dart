@@ -573,6 +573,14 @@ final class BackupSettingsProfile {
     required this.sessionDurationMinutes,
     required this.equipmentInventory,
     this.displayName,
+    this.sexGender,
+    this.birthYear,
+    this.bodyWeightKg,
+    this.heightCm,
+    this.trainingGoal = 'generalFitness',
+    this.recoverySensitivity = 'normal',
+    this.coachingStrictness = 'balanced',
+    this.equipmentLoadConstraints = const <BackupEquipmentLoadConstraint>[],
   });
 
   factory BackupSettingsProfile.fromJson(
@@ -608,6 +616,13 @@ final class BackupSettingsProfile {
       errors,
     );
     final displayName = _optionalString(value, '$field.displayName', errors);
+    final sexGender = _optionalString(value, '$field.sexGender', errors);
+    final birthYear = _optionalInt(value, '$field.birthYear', errors);
+    final bodyWeight = _optionalNum(value, '$field.bodyWeightKg', errors);
+    final height = _optionalNum(value, '$field.heightCm', errors);
+    final trainingGoal =
+        _optionalString(value, '$field.trainingGoal', errors) ??
+        'generalFitness';
     final focus = _requiredString(value, '$field.focusProfile', errors);
     final days = _requiredInt(value, '$field.trainingDaysPerWeek', errors);
     final duration = _requiredInt(
@@ -615,10 +630,28 @@ final class BackupSettingsProfile {
       '$field.sessionDurationMinutes',
       errors,
     );
+    final recoverySensitivity =
+        _optionalString(value, '$field.recoverySensitivity', errors) ??
+        'normal';
+    final coachingStrictness =
+        _optionalString(value, '$field.coachingStrictness', errors) ??
+        'balanced';
     final equipment = _requiredStringList(
       value,
       '$field.equipmentInventory',
       errors,
+    );
+    final loadConstraints = _optionalList(
+      value,
+      '$field.equipmentLoadConstraints',
+      errors,
+      (value, childField) {
+        return BackupEquipmentLoadConstraint.fromJson(
+          value,
+          childField,
+          errors,
+        );
+      },
     );
 
     _validateAllowed(
@@ -632,9 +665,37 @@ final class BackupSettingsProfile {
     _validateAllowed(field, 'themePreference', theme, _allowedThemes, errors);
     _validateAllowed(
       field,
+      'sexGender',
+      sexGender,
+      _allowedSexGenderPreferences,
+      errors,
+    );
+    _validateAllowed(
+      field,
+      'trainingGoal',
+      trainingGoal,
+      _allowedTrainingGoals,
+      errors,
+    );
+    _validateAllowed(
+      field,
       'focusProfile',
       focus,
       _allowedFocusProfiles,
+      errors,
+    );
+    _validateAllowed(
+      field,
+      'recoverySensitivity',
+      recoverySensitivity,
+      _allowedRecoverySensitivities,
+      errors,
+    );
+    _validateAllowed(
+      field,
+      'coachingStrictness',
+      coachingStrictness,
+      _allowedCoachingStrictness,
       errors,
     );
     if (restSeconds != null && (restSeconds <= 0 || restSeconds > 1800)) {
@@ -642,6 +703,32 @@ final class BackupSettingsProfile {
         BackupValidationError(
           field: '$field.defaultRestSeconds',
           message: 'Default rest time must be between 1 and 1800 seconds.',
+        ),
+      );
+    }
+    if (birthYear != null &&
+        (birthYear < 1900 || birthYear > DateTime.now().toUtc().year)) {
+      errors.add(
+        BackupValidationError(
+          field: '$field.birthYear',
+          message: 'Birth year must be between 1900 and the current year.',
+        ),
+      );
+    }
+    if (bodyWeight != null &&
+        (bodyWeight <= 0 || bodyWeight > 500 || !bodyWeight.isFinite)) {
+      errors.add(
+        BackupValidationError(
+          field: '$field.bodyWeightKg',
+          message: 'Body weight must be greater than zero and 500 kg or less.',
+        ),
+      );
+    }
+    if (height != null && (height <= 0 || height > 300 || !height.isFinite)) {
+      errors.add(
+        BackupValidationError(
+          field: '$field.heightCm',
+          message: 'Height must be greater than zero and 300 cm or less.',
         ),
       );
     }
@@ -692,6 +779,23 @@ final class BackupSettingsProfile {
         );
       }
     }
+    _rejectDuplicates(
+      field: '$field.equipmentLoadConstraints.equipment',
+      values: loadConstraints.map((constraint) => constraint.equipment),
+      errors: errors,
+    );
+    final equipmentSet = equipment.toSet();
+    for (final constraint in loadConstraints) {
+      if (!equipmentSet.contains(constraint.equipment)) {
+        errors.add(
+          BackupValidationError(
+            field: '$field.equipmentLoadConstraints',
+            message:
+                'Equipment load constraints must belong to selected equipment.',
+          ),
+        );
+      }
+    }
 
     return BackupSettingsProfile(
       languageOverride: language ?? 'system',
@@ -699,10 +803,19 @@ final class BackupSettingsProfile {
       themePreference: theme ?? 'system',
       defaultRestSeconds: restSeconds ?? 90,
       displayName: displayName,
+      sexGender: sexGender,
+      birthYear: birthYear,
+      bodyWeightKg: bodyWeight?.toDouble(),
+      heightCm: height?.toDouble(),
+      trainingGoal: trainingGoal,
       focusProfile: focus ?? 'balanced',
       trainingDaysPerWeek: days ?? 3,
       sessionDurationMinutes: duration ?? 45,
+      recoverySensitivity: recoverySensitivity,
+      coachingStrictness: coachingStrictness,
       equipmentInventory: List<String>.unmodifiable(equipment),
+      equipmentLoadConstraints:
+          List<BackupEquipmentLoadConstraint>.unmodifiable(loadConstraints),
     );
   }
 
@@ -711,10 +824,18 @@ final class BackupSettingsProfile {
   final String themePreference;
   final int defaultRestSeconds;
   final String? displayName;
+  final String? sexGender;
+  final int? birthYear;
+  final double? bodyWeightKg;
+  final double? heightCm;
+  final String trainingGoal;
   final String focusProfile;
   final int trainingDaysPerWeek;
   final int sessionDurationMinutes;
+  final String recoverySensitivity;
+  final String coachingStrictness;
   final List<String> equipmentInventory;
+  final List<BackupEquipmentLoadConstraint> equipmentLoadConstraints;
 
   Map<String, Object?> toJson() {
     return <String, Object?>{
@@ -723,10 +844,108 @@ final class BackupSettingsProfile {
       'themePreference': themePreference,
       'defaultRestSeconds': defaultRestSeconds,
       'displayName': displayName,
+      'sexGender': sexGender,
+      'birthYear': birthYear,
+      'bodyWeightKg': bodyWeightKg,
+      'heightCm': heightCm,
+      'trainingGoal': trainingGoal,
       'focusProfile': focusProfile,
       'trainingDaysPerWeek': trainingDaysPerWeek,
       'sessionDurationMinutes': sessionDurationMinutes,
+      'recoverySensitivity': recoverySensitivity,
+      'coachingStrictness': coachingStrictness,
       'equipmentInventory': equipmentInventory,
+      'equipmentLoadConstraints': equipmentLoadConstraints
+          .map((constraint) => constraint.toJson())
+          .toList(),
+    };
+  }
+}
+
+final class BackupEquipmentLoadConstraint {
+  const BackupEquipmentLoadConstraint({
+    required this.equipment,
+    this.maxLoadKg,
+    this.incrementKg,
+  });
+
+  factory BackupEquipmentLoadConstraint.fromJson(
+    Object? value,
+    String field,
+    List<BackupValidationError> errors,
+  ) {
+    if (value is! Map<String, Object?>) {
+      errors.add(
+        BackupValidationError(
+          field: field,
+          message: 'Equipment load constraint must be an object.',
+        ),
+      );
+      return const BackupEquipmentLoadConstraint(equipment: 'invalid');
+    }
+
+    final equipment = _requiredString(value, '$field.equipment', errors);
+    final maxLoad = _optionalNum(value, '$field.maxLoadKg', errors);
+    final increment = _optionalNum(value, '$field.incrementKg', errors);
+    if (equipment != null && !_allowedEquipment.contains(equipment)) {
+      errors.add(
+        BackupValidationError(
+          field: '$field.equipment',
+          message: 'Unsupported equipment option.',
+        ),
+      );
+    }
+    if (maxLoad == null && increment == null) {
+      errors.add(
+        BackupValidationError(
+          field: field,
+          message: 'Max load or increment is required.',
+        ),
+      );
+    }
+    if (maxLoad != null &&
+        (maxLoad <= 0 || maxLoad > 1000 || !maxLoad.isFinite)) {
+      errors.add(
+        BackupValidationError(
+          field: '$field.maxLoadKg',
+          message: 'Max load must be greater than zero and 1000 kg or less.',
+        ),
+      );
+    }
+    if (increment != null &&
+        (increment <= 0 || increment > 100 || !increment.isFinite)) {
+      errors.add(
+        BackupValidationError(
+          field: '$field.incrementKg',
+          message: 'Increment must be greater than zero and 100 kg or less.',
+        ),
+      );
+    }
+    if (maxLoad != null && increment != null && increment > maxLoad) {
+      errors.add(
+        BackupValidationError(
+          field: '$field.incrementKg',
+          message: 'Increment must not be greater than max load.',
+        ),
+      );
+    }
+
+    return BackupEquipmentLoadConstraint(
+      equipment: equipment ?? 'invalid',
+      maxLoadKg: maxLoad?.toDouble(),
+      incrementKg: increment?.toDouble(),
+    );
+  }
+
+  final String equipment;
+  final double? maxLoadKg;
+  final double? incrementKg;
+
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      'equipment': equipment,
+      'maxLoadKg': maxLoadKg,
+      'incrementKg': incrementKg,
     };
   }
 }
@@ -850,6 +1069,20 @@ const Set<String> _allowedSetLabels = <String>{
 const Set<String> _allowedLanguages = <String>{'system', 'en', 'de'};
 const Set<String> _allowedUnits = <String>{'metric', 'imperial'};
 const Set<String> _allowedThemes = <String>{'system', 'dark', 'light'};
+const Set<String> _allowedSexGenderPreferences = <String>{
+  'unspecified',
+  'male',
+  'female',
+  'other',
+  'preferNotToSay',
+};
+const Set<String> _allowedTrainingGoals = <String>{
+  'hypertrophy',
+  'strength',
+  'generalFitness',
+  'recomposition',
+  'maintenance',
+};
 const Set<String> _allowedFocusProfiles = <String>{
   'balanced',
   'upperBodyFocus',
@@ -861,6 +1094,16 @@ const Set<String> _allowedFocusProfiles = <String>{
   'custom',
 };
 const Set<int> _allowedSessionDurations = <int>{15, 25, 35, 45, 60, 75};
+const Set<String> _allowedRecoverySensitivities = <String>{
+  'low',
+  'normal',
+  'high',
+};
+const Set<String> _allowedCoachingStrictness = <String>{
+  'gentle',
+  'balanced',
+  'direct',
+};
 const Set<String> _allowedEquipment = <String>{
   'bodyweight',
   'barbell',
@@ -870,6 +1113,7 @@ const Set<String> _allowedEquipment = <String>{
   'smithMachine',
   'pullUpBar',
   'bench',
+  'rack',
   'legPress',
 };
 const Set<String> _allowedOnboardingCompletions = <String>{
@@ -952,6 +1196,28 @@ int? _requiredInt(
   return null;
 }
 
+int? _optionalInt(
+  Map<String, Object?> json,
+  String field,
+  List<BackupValidationError> errors,
+) {
+  final key = field.split('.').last;
+  final value = json[key];
+  if (value == null) {
+    return null;
+  }
+  if (value is int) {
+    return value;
+  }
+  errors.add(
+    BackupValidationError(
+      field: field,
+      message: 'Optional integer must be a number when present.',
+    ),
+  );
+  return null;
+}
+
 num? _requiredNum(
   Map<String, Object?> json,
   String field,
@@ -964,6 +1230,28 @@ num? _requiredNum(
   }
   errors.add(
     BackupValidationError(field: field, message: 'Required number is missing.'),
+  );
+  return null;
+}
+
+num? _optionalNum(
+  Map<String, Object?> json,
+  String field,
+  List<BackupValidationError> errors,
+) {
+  final key = field.split('.').last;
+  final value = json[key];
+  if (value == null) {
+    return null;
+  }
+  if (value is num) {
+    return value;
+  }
+  errors.add(
+    BackupValidationError(
+      field: field,
+      message: 'Optional number must be numeric when present.',
+    ),
   );
   return null;
 }
@@ -1041,7 +1329,8 @@ List<T> _optionalList<T>(
   List<BackupValidationError> errors,
   T Function(Object? value, String field) map,
 ) {
-  final value = json[field];
+  final key = field.split('.').last;
+  final value = json[key];
   if (value == null) {
     return <T>[];
   }

@@ -62,7 +62,23 @@ void main() {
       expect(backup.settingsProfile?.equipmentInventory, <String>[
         'bodyweight',
         'dumbbell',
+        'rack',
       ]);
+      expect(backup.settingsProfile?.sexGender, 'preferNotToSay');
+      expect(backup.settingsProfile?.birthYear, 1991);
+      expect(backup.settingsProfile?.bodyWeightKg, 82.5);
+      expect(backup.settingsProfile?.heightCm, 181);
+      expect(backup.settingsProfile?.trainingGoal, 'strength');
+      expect(backup.settingsProfile?.recoverySensitivity, 'high');
+      expect(backup.settingsProfile?.coachingStrictness, 'direct');
+      expect(
+        backup.settingsProfile?.equipmentLoadConstraints.single.equipment,
+        'dumbbell',
+      );
+      expect(
+        backup.settingsProfile?.equipmentLoadConstraints.single.incrementKg,
+        2,
+      );
       expect(backup.onboardingStatus?.completion, 'completed');
     },
   );
@@ -132,10 +148,24 @@ void main() {
         unitPreference: 'metric',
         themePreference: 'dark',
         defaultRestSeconds: 90,
+        sexGender: 'other',
+        birthYear: 1990,
+        bodyWeightKg: 91.5,
+        heightCm: 188,
+        trainingGoal: 'recomposition',
         focusProfile: 'balanced',
         trainingDaysPerWeek: 3,
         sessionDurationMinutes: 45,
-        equipmentInventory: <String>['bodyweight'],
+        recoverySensitivity: 'low',
+        coachingStrictness: 'gentle',
+        equipmentInventory: <String>['bodyweight', 'barbell'],
+        equipmentLoadConstraints: <BackupEquipmentLoadConstraint>[
+          BackupEquipmentLoadConstraint(
+            equipment: 'barbell',
+            maxLoadKg: 160,
+            incrementKg: 2.5,
+          ),
+        ],
       ),
       onboardingStatus: BackupOnboardingStatus(
         completion: 'skipped',
@@ -156,6 +186,22 @@ void main() {
           .languageOverride,
       'en',
     );
+    final importedSettings = await database
+        .select(database.settingsProfiles)
+        .getSingle();
+    expect(importedSettings.sexGender, 'other');
+    expect(importedSettings.birthYear, 1990);
+    expect(importedSettings.bodyWeightKg, 91.5);
+    expect(importedSettings.heightCm, 188);
+    expect(importedSettings.trainingGoal, 'recomposition');
+    expect(importedSettings.recoverySensitivity, 'low');
+    expect(importedSettings.coachingStrictness, 'gentle');
+    final importedConstraints = await database
+        .select(database.equipmentLoadConstraints)
+        .get();
+    expect(importedConstraints.single.equipment, 'barbell');
+    expect(importedConstraints.single.maxLoadKg, 160);
+    expect(importedConstraints.single.incrementKg, 2.5);
     expect(
       (await database.select(database.onboardingStatuses).getSingle())
           .completion,
@@ -223,12 +269,19 @@ Future<void> _seedSettings(RepForgeDatabase database) async {
           themePreference: 'system',
           defaultRestSeconds: 120,
           displayName: const Value<String?>('Luki'),
+          sexGender: const Value<String?>('preferNotToSay'),
+          birthYear: const Value<int?>(1991),
+          bodyWeightKg: const Value<double?>(82.5),
+          heightCm: const Value<double?>(181),
+          trainingGoal: const Value<String>('strength'),
           focusProfile: 'strengthBasics',
           trainingDaysPerWeek: 4,
           sessionDurationMinutes: 60,
+          recoverySensitivity: const Value<String>('high'),
+          coachingStrictness: const Value<String>('direct'),
         ),
       );
-  for (final equipment in <String>['bodyweight', 'dumbbell']) {
+  for (final equipment in <String>['bodyweight', 'dumbbell', 'rack']) {
     await database
         .into(database.equipmentInventoryItems)
         .insert(
@@ -238,6 +291,16 @@ Future<void> _seedSettings(RepForgeDatabase database) async {
           ),
         );
   }
+  await database
+      .into(database.equipmentLoadConstraints)
+      .insert(
+        EquipmentLoadConstraintsCompanion.insert(
+          profileId: 'local',
+          equipment: 'dumbbell',
+          maxLoadKg: const Value<double?>(40),
+          incrementKg: const Value<double?>(2),
+        ),
+      );
 }
 
 Future<void> _seedOnboarding(RepForgeDatabase database) async {

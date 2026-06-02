@@ -245,6 +245,43 @@ class SettingsProfiles extends Table {
     ')',
   )();
 
+  TextColumn get sexGender => text().nullable().customConstraint(
+    'NULL CHECK (sex_gender IS NULL OR sex_gender IN ('
+    "'unspecified', "
+    "'male', "
+    "'female', "
+    "'other', "
+    "'preferNotToSay'"
+    '))',
+  )();
+
+  IntColumn get birthYear => integer().nullable().customConstraint(
+    'NULL CHECK (birth_year IS NULL OR birth_year BETWEEN 1900 AND 2100)',
+  )();
+
+  RealColumn get bodyWeightKg => real().nullable().customConstraint(
+    'NULL CHECK ('
+    'body_weight_kg IS NULL OR '
+    '(body_weight_kg > 0 AND body_weight_kg <= 500)'
+    ')',
+  )();
+
+  RealColumn get heightCm => real().nullable().customConstraint(
+    'NULL CHECK (height_cm IS NULL OR (height_cm > 0 AND height_cm <= 300))',
+  )();
+
+  TextColumn get trainingGoal => text().customConstraint(
+    'NOT NULL DEFAULT '
+    "'generalFitness' "
+    'CHECK (training_goal IN ('
+    "'hypertrophy', "
+    "'strength', "
+    "'generalFitness', "
+    "'recomposition', "
+    "'maintenance'"
+    '))',
+  )();
+
   TextColumn get focusProfile => text().customConstraint(
     'NOT NULL CHECK (focus_profile IN ('
     "'balanced', "
@@ -266,6 +303,18 @@ class SettingsProfiles extends Table {
     'NOT NULL CHECK (session_duration_minutes IN (15, 25, 35, 45, 60, 75))',
   )();
 
+  TextColumn get recoverySensitivity => text().customConstraint(
+    'NOT NULL DEFAULT '
+    "'normal' "
+    "CHECK (recovery_sensitivity IN ('low', 'normal', 'high'))",
+  )();
+
+  TextColumn get coachingStrictness => text().customConstraint(
+    'NOT NULL DEFAULT '
+    "'balanced' "
+    "CHECK (coaching_strictness IN ('gentle', 'balanced', 'direct'))",
+  )();
+
   @override
   Set<Column<Object>> get primaryKey => <Column<Object>>{profileId};
 }
@@ -285,9 +334,54 @@ class EquipmentInventoryItems extends Table {
     "'smithMachine', "
     "'pullUpBar', "
     "'bench', "
+    "'rack', "
     "'legPress'"
     '))',
   )();
+
+  @override
+  Set<Column<Object>> get primaryKey => <Column<Object>>{profileId, equipment};
+}
+
+@DataClassName('EquipmentLoadConstraintRow')
+class EquipmentLoadConstraints extends Table {
+  TextColumn get profileId =>
+      text().customConstraint('NOT NULL CHECK (length(profile_id) > 0)')();
+
+  TextColumn get equipment => text().customConstraint(
+    'NOT NULL CHECK (equipment IN ('
+    "'bodyweight', "
+    "'barbell', "
+    "'dumbbell', "
+    "'cable', "
+    "'machine', "
+    "'smithMachine', "
+    "'pullUpBar', "
+    "'bench', "
+    "'rack', "
+    "'legPress'"
+    '))',
+  )();
+
+  RealColumn get maxLoadKg => real().nullable().customConstraint(
+    'NULL CHECK (max_load_kg IS NULL OR '
+    '(max_load_kg > 0 AND max_load_kg <= 1000))',
+  )();
+
+  RealColumn get incrementKg => real().nullable().customConstraint(
+    'NULL CHECK (increment_kg IS NULL OR '
+    '(increment_kg > 0 AND increment_kg <= 100))',
+  )();
+
+  @override
+  List<String> get customConstraints => <String>[
+    'CHECK (max_load_kg IS NOT NULL OR increment_kg IS NOT NULL)',
+    'CHECK ('
+        'max_load_kg IS NULL OR '
+        'increment_kg IS NULL OR '
+        'increment_kg <= max_load_kg'
+        ')',
+  ];
 
   @override
   Set<Column<Object>> get primaryKey => <Column<Object>>{profileId, equipment};
@@ -320,6 +414,7 @@ class OnboardingStatuses extends Table {
     WorkoutGroupExerciseAssignments,
     SettingsProfiles,
     EquipmentInventoryItems,
+    EquipmentLoadConstraints,
     OnboardingStatuses,
   ],
 )
@@ -327,7 +422,7 @@ class RepForgeDatabase extends _$RepForgeDatabase {
   RepForgeDatabase(super.executor);
 
   @override
-  int get schemaVersion => 7;
+  int get schemaVersion => 8;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -356,6 +451,30 @@ class RepForgeDatabase extends _$RepForgeDatabase {
       }
       if (from < 7) {
         await _createPerformanceIndexes();
+      }
+      if (from >= 5 && from < 8) {
+        await migrator.addColumn(settingsProfiles, settingsProfiles.sexGender);
+        await migrator.addColumn(settingsProfiles, settingsProfiles.birthYear);
+        await migrator.addColumn(
+          settingsProfiles,
+          settingsProfiles.bodyWeightKg,
+        );
+        await migrator.addColumn(settingsProfiles, settingsProfiles.heightCm);
+        await migrator.addColumn(
+          settingsProfiles,
+          settingsProfiles.trainingGoal,
+        );
+        await migrator.addColumn(
+          settingsProfiles,
+          settingsProfiles.recoverySensitivity,
+        );
+        await migrator.addColumn(
+          settingsProfiles,
+          settingsProfiles.coachingStrictness,
+        );
+      }
+      if (from < 8) {
+        await migrator.createTable(equipmentLoadConstraints);
       }
     },
     // Future migrations must preserve logged set history and prefer additive

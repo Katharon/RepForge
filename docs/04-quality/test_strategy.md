@@ -176,6 +176,19 @@ Official exercise catalog must have:
 Activation-weight validation belongs to the later muscle activation slices until
 the current catalog schema stores weighted activation estimates.
 
+## Profile and equipment tests
+
+Slice 44 profile tests must cover pure-Dart value object validation, explicit
+unknown/skipped profile states, focus and goal representation, recovery
+sensitivity, coaching strictness, structured equipment inventory, max-load and
+increment constraints, local save/load roundtrips, additive migration behavior,
+and preservation of workout sets, catalog rows, and workout groups when settings
+are saved.
+
+Tests must not encode sex/gender stereotypes or require Premium, auth, Firebase,
+cloud sync, backend services, account state, wearables, calorie estimation, or a
+recommendation engine for local profile use.
+
 ## Validation commands
 
 ```bash

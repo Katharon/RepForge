@@ -46,10 +46,20 @@ void main() {
     settings
       ..['languageOverride'] = 'fr'
       ..['displayName'] = 'x' * 81
-      ..['equipmentInventory'] = <String>[
-        'bodyweight',
-        'bodyweight',
-        'jetpack',
+      ..['sexGender'] = 'robot'
+      ..['birthYear'] = 1800
+      ..['bodyWeightKg'] = 501
+      ..['heightCm'] = 0
+      ..['trainingGoal'] = 'bulkOnly'
+      ..['recoverySensitivity'] = 'fragile'
+      ..['coachingStrictness'] = 'mean'
+      ..['equipmentInventory'] = <String>['bodyweight', 'bodyweight', 'jetpack']
+      ..['equipmentLoadConstraints'] = <Map<String, Object?>>[
+        <String, Object?>{
+          'equipment': 'dumbbell',
+          'maxLoadKg': 20,
+          'incrementKg': 25,
+        },
       ];
 
     final result = RepForgeBackup.validateJsonString(jsonEncode(json));
@@ -63,7 +73,15 @@ void main() {
         'workoutSets[0].label',
         'settingsProfile.languageOverride',
         'settingsProfile.displayName',
+        'settingsProfile.sexGender',
+        'settingsProfile.birthYear',
+        'settingsProfile.bodyWeightKg',
+        'settingsProfile.heightCm',
+        'settingsProfile.trainingGoal',
+        'settingsProfile.recoverySensitivity',
+        'settingsProfile.coachingStrictness',
         'settingsProfile.equipmentInventory',
+        'settingsProfile.equipmentLoadConstraints[0].incrementKg',
       ]),
     );
   });
@@ -79,7 +97,19 @@ void main() {
     expect(backup.settingsProfile?.equipmentInventory, <String>[
       'bodyweight',
       'dumbbell',
+      'rack',
     ]);
+    expect(backup.settingsProfile?.sexGender, 'preferNotToSay');
+    expect(backup.settingsProfile?.birthYear, 1991);
+    expect(backup.settingsProfile?.bodyWeightKg, 82.5);
+    expect(backup.settingsProfile?.heightCm, 181);
+    expect(backup.settingsProfile?.trainingGoal, 'strength');
+    expect(backup.settingsProfile?.recoverySensitivity, 'high');
+    expect(backup.settingsProfile?.coachingStrictness, 'direct');
+    expect(
+      backup.settingsProfile?.equipmentLoadConstraints.single.maxLoadKg,
+      40,
+    );
     expect(backup.onboardingStatus?.completion, 'completed');
   });
 
@@ -92,11 +122,14 @@ void main() {
     ];
 
     final result = RepForgeBackup.validateJsonString(jsonEncode(json));
+    final equipmentError = result.errors.firstWhere(
+      (error) =>
+          error.field == 'settingsProfile.equipmentInventory' &&
+          error.message == 'Unsupported equipment option.',
+    );
 
     expect(result.isValid, isFalse);
-    expect(result.errors.single.field, 'settingsProfile.equipmentInventory');
-    expect(result.errors.single.message, 'Unsupported equipment option.');
-    expect(result.errors.single.message, isNot(contains('private')));
+    expect(equipmentError.message, isNot(contains('private')));
   });
 }
 
@@ -150,10 +183,24 @@ Map<String, Object?> _validBackupJson() {
       'themePreference': 'dark',
       'defaultRestSeconds': 120,
       'displayName': 'Luki',
+      'sexGender': 'preferNotToSay',
+      'birthYear': 1991,
+      'bodyWeightKg': 82.5,
+      'heightCm': 181,
+      'trainingGoal': 'strength',
       'focusProfile': 'strengthBasics',
       'trainingDaysPerWeek': 4,
       'sessionDurationMinutes': 60,
-      'equipmentInventory': <String>['bodyweight', 'dumbbell'],
+      'recoverySensitivity': 'high',
+      'coachingStrictness': 'direct',
+      'equipmentInventory': <String>['bodyweight', 'dumbbell', 'rack'],
+      'equipmentLoadConstraints': <Map<String, Object?>>[
+        <String, Object?>{
+          'equipment': 'dumbbell',
+          'maxLoadKg': 40,
+          'incrementKg': 2,
+        },
+      ],
     },
     'onboardingStatus': <String, Object?>{
       'completion': 'completed',

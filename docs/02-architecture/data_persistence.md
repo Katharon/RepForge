@@ -116,6 +116,22 @@ present. Saving settings upserts the single local profile row and replaces only
 that profile's structured equipment inventory; workout sets, workout groups, and
 official catalog rows are not modified.
 
+## Slice 44 profile persistence
+
+Drift schema v8 extends the existing `settings_profiles` table additively with
+optional sex/gender preference, birth year, body weight, height, primary
+training goal, recovery sensitivity, and coaching strictness fields. It also
+adds `equipment_load_constraints` for optional per-equipment max load and load
+increment values in kg.
+
+Existing settings rows keep loading through local defaults for newly added
+fields. Saving a profile still upserts the single local settings row, replaces
+only that profile's equipment inventory and load-constraint rows, and does not
+reinterpret workout sets, workout groups, official catalog rows, custom
+exercise data, onboarding status, purchases, auth, or sync metadata. Local JSON
+backup/export includes the new profile fields and equipment load constraints so
+user-owned profile data remains exportable.
+
 ## Slice 25 persistence hardening
 
 Drift schema remains v6. Slice 25 adds tests that pin the current table list,

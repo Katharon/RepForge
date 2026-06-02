@@ -27,8 +27,8 @@ void main() {
     expect(tables.map((row) => row.read<String>('name')), _expectedTableNames);
   });
 
-  test('uses schema version 7', () {
-    expect(database.schemaVersion, 7);
+  test('uses schema version 8', () {
+    expect(database.schemaVersion, 8);
   });
 
   test('current schema validates against Drift metadata', () async {
@@ -76,7 +76,7 @@ void main() {
     expect(migratedSet.exerciseDisplayNameSnapshot, 'Legacy Bench');
     expect(migratedSet.setLabel, isNull);
     expect(tables.map((row) => row.read<String>('name')), _expectedTableNames);
-    expect(userVersion.read<int>('user_version'), 7);
+    expect(userVersion.read<int>('user_version'), 8);
     await expectLater(database.validateDatabaseSchema(), completes);
   });
 
@@ -279,6 +279,22 @@ void main() {
       );
     });
 
+    test('reject invalid equipment load constraints', () async {
+      await expectLater(
+        database
+            .into(database.equipmentLoadConstraints)
+            .insert(
+              EquipmentLoadConstraintsCompanion.insert(
+                profileId: '',
+                equipment: 'kettlebell',
+                maxLoadKg: const Value<double?>(-1),
+                incrementKg: const Value<double?>(0),
+              ),
+            ),
+        throwsA(isA<Exception>()),
+      );
+    });
+
     test('reject invalid onboarding status', () async {
       await expectLater(
         database
@@ -299,6 +315,7 @@ void main() {
 const List<String> _expectedTableNames = <String>[
   'catalog_imports',
   'equipment_inventory_items',
+  'equipment_load_constraints',
   'official_exercise_equipment_tags',
   'official_exercise_movement_patterns',
   'official_exercise_muscle_groups',

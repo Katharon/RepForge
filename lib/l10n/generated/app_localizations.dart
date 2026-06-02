@@ -750,6 +750,12 @@ abstract class AppLocalizations {
   /// **'Bench'**
   String get settingsEquipmentBench;
 
+  /// Rack equipment option.
+  ///
+  /// In en, this message translates to:
+  /// **'Rack'**
+  String get settingsEquipmentRack;
+
   /// Leg press equipment option.
   ///
   /// In en, this message translates to:

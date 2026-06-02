@@ -476,6 +476,10 @@
   "@settingsEquipmentBench": {
     "description": "Bank-Ausruestung."
   },
+  "settingsEquipmentRack": "Rack",
+  "@settingsEquipmentRack": {
+    "description": "Rack-Ausruestung."
+  },
   "settingsEquipmentLegPress": "Beinpresse",
   "@settingsEquipmentLegPress": {
     "description": "Beinpresse-Ausruestung."

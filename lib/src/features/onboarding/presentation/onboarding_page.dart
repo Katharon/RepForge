@@ -112,8 +112,16 @@ class _OnboardingPageState extends State<OnboardingPage> {
     } else {
       selected.add(equipment);
     }
+    final loadConstraints = Map<AvailableEquipment, EquipmentLoadConstraint>.of(
+      _draft.equipmentInventory.loadConstraints,
+    )..removeWhere((equipment, _) => !selected.contains(equipment));
     _setDraft(
-      _draft.copyWith(equipmentInventory: EquipmentInventory(selected)),
+      _draft.copyWith(
+        equipmentInventory: EquipmentInventory(
+          selected,
+          loadConstraints: loadConstraints,
+        ),
+      ),
     );
   }
 
@@ -634,6 +642,7 @@ String _equipmentLabel(
       localizations.settingsEquipmentSmithMachine,
     AvailableEquipment.pullUpBar => localizations.settingsEquipmentPullUpBar,
     AvailableEquipment.bench => localizations.settingsEquipmentBench,
+    AvailableEquipment.rack => localizations.settingsEquipmentRack,
     AvailableEquipment.legPress => localizations.settingsEquipmentLegPress,
   };
 }

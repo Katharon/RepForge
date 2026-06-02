@@ -65,6 +65,17 @@ final class DriftLocalBackupRepository implements LocalBackupRepository {
                 },
               ]))
             .get();
+    final loadConstraintRows =
+        await (_database.select(_database.equipmentLoadConstraints)
+              ..where(($EquipmentLoadConstraintsTable table) {
+                return table.profileId.equals('local');
+              })
+              ..orderBy([
+                ($EquipmentLoadConstraintsTable table) {
+                  return OrderingTerm.asc(table.equipment);
+                },
+              ]))
+            .get();
     final onboardingRow =
         await (_database.select(_database.onboardingStatuses)
               ..where(($OnboardingStatusesTable table) {
@@ -90,7 +101,7 @@ final class DriftLocalBackupRepository implements LocalBackupRepository {
           .toList(growable: false),
       settingsProfile: settingsRow == null
           ? null
-          : _settingsFromRows(settingsRow, equipmentRows),
+          : _settingsFromRows(settingsRow, equipmentRows, loadConstraintRows),
       onboardingStatus: onboardingRow == null
           ? null
           : _onboardingFromRow(onboardingRow),
@@ -131,6 +142,11 @@ final class DriftLocalBackupRepository implements LocalBackupRepository {
                 return table.profileId.equals('local');
               }))
             .go();
+        await (_database.delete(_database.equipmentLoadConstraints)
+              ..where(($EquipmentLoadConstraintsTable table) {
+                return table.profileId.equals('local');
+              }))
+            .go();
         for (final equipment in settings.equipmentInventory) {
           await _database
               .into(_database.equipmentInventoryItems)
@@ -140,6 +156,11 @@ final class DriftLocalBackupRepository implements LocalBackupRepository {
                   equipment: equipment,
                 ),
               );
+        }
+        for (final constraint in settings.equipmentLoadConstraints) {
+          await _database
+              .into(_database.equipmentLoadConstraints)
+              .insert(_equipmentLoadConstraintToCompanion(constraint));
         }
       }
 
@@ -248,6 +269,7 @@ WorkoutGroupExerciseAssignmentsCompanion _assignmentToCompanion(
 BackupSettingsProfile _settingsFromRows(
   SettingsProfileRow row,
   List<EquipmentInventoryItemRow> equipmentRows,
+  List<EquipmentLoadConstraintRow> loadConstraintRows,
 ) {
   return BackupSettingsProfile(
     languageOverride: row.languageOverride,
@@ -255,11 +277,21 @@ BackupSettingsProfile _settingsFromRows(
     themePreference: row.themePreference,
     defaultRestSeconds: row.defaultRestSeconds,
     displayName: row.displayName,
+    sexGender: row.sexGender,
+    birthYear: row.birthYear,
+    bodyWeightKg: row.bodyWeightKg,
+    heightCm: row.heightCm,
+    trainingGoal: row.trainingGoal,
     focusProfile: row.focusProfile,
     trainingDaysPerWeek: row.trainingDaysPerWeek,
     sessionDurationMinutes: row.sessionDurationMinutes,
+    recoverySensitivity: row.recoverySensitivity,
+    coachingStrictness: row.coachingStrictness,
     equipmentInventory: equipmentRows
         .map((row) => row.equipment)
+        .toList(growable: false),
+    equipmentLoadConstraints: loadConstraintRows
+        .map(_equipmentLoadConstraintFromRow)
         .toList(growable: false),
   );
 }
@@ -272,9 +304,37 @@ SettingsProfilesCompanion _settingsToCompanion(BackupSettingsProfile profile) {
     themePreference: profile.themePreference,
     defaultRestSeconds: profile.defaultRestSeconds,
     displayName: Value<String?>(profile.displayName),
+    sexGender: Value<String?>(profile.sexGender),
+    birthYear: Value<int?>(profile.birthYear),
+    bodyWeightKg: Value<double?>(profile.bodyWeightKg),
+    heightCm: Value<double?>(profile.heightCm),
+    trainingGoal: Value<String>(profile.trainingGoal),
     focusProfile: profile.focusProfile,
     trainingDaysPerWeek: profile.trainingDaysPerWeek,
     sessionDurationMinutes: profile.sessionDurationMinutes,
+    recoverySensitivity: Value<String>(profile.recoverySensitivity),
+    coachingStrictness: Value<String>(profile.coachingStrictness),
+  );
+}
+
+BackupEquipmentLoadConstraint _equipmentLoadConstraintFromRow(
+  EquipmentLoadConstraintRow row,
+) {
+  return BackupEquipmentLoadConstraint(
+    equipment: row.equipment,
+    maxLoadKg: row.maxLoadKg,
+    incrementKg: row.incrementKg,
+  );
+}
+
+EquipmentLoadConstraintsCompanion _equipmentLoadConstraintToCompanion(
+  BackupEquipmentLoadConstraint constraint,
+) {
+  return EquipmentLoadConstraintsCompanion.insert(
+    profileId: 'local',
+    equipment: constraint.equipment,
+    maxLoadKg: Value<double?>(constraint.maxLoadKg),
+    incrementKg: Value<double?>(constraint.incrementKg),
   );
 }
 
