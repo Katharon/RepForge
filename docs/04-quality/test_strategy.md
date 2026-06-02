@@ -125,6 +125,19 @@ Tests must not invoke real network, cloud, Firebase, Firestore, provider SDKs,
 remote APIs, background jobs, accounts, upload/download flows, file IO, or a
 production sync engine.
 
+## Remote push boundary tests
+
+Slice 38 Remote Push tests must use fake `RemotePushGateway` implementations or
+the default unavailable gateway. They should assert disabled-by-default
+behavior, deterministic registered/unavailable/permission-denied/
+token-unavailable/failed states, no token request while disabled, no auth
+requirement for local-only use, no sync activation, Firebase-unavailable
+separation, and local rest-timer notification behavior.
+
+Tests must not invoke real Firebase Messaging, FCM/APNS token APIs, platform
+push services, network, backend registration, accounts, upload/download flows,
+remote message handlers, or notification SDKs for Remote Push.
+
 ## Golden/visual tests
 
 Use for stable components after design tokens mature:

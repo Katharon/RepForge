@@ -4,6 +4,11 @@
 
 ### Added
 
+- Added Slice 38 remote push notification boundary with pure-Dart token,
+  capability, message-type, registration-state, failure, and gateway models,
+  plus default disabled/unavailable composition wiring and tests proving remote
+  push does not request tokens, require auth, activate sync/Firebase, replace
+  local rest-timer notifications, or add FCM/backend runtime behavior.
 - Added Slice 37 optional sync metadata boundary with pure-Dart entity,
   version, state, tombstone, and conflict-policy types, plus tests proving
   local-only defaults, official catalog separation, optional auth/Firebase

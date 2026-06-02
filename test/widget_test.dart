@@ -12,6 +12,7 @@ import 'package:repforge/src/features/backup/application/backup_application.dart
 import 'package:repforge/src/features/backup/domain/backup_domain.dart';
 import 'package:repforge/src/features/cloud/application/cloud_application.dart';
 import 'package:repforge/src/features/entitlements/application/entitlements_application.dart';
+import 'package:repforge/src/features/notifications/application/notifications_application.dart';
 import 'package:repforge/src/features/onboarding/application/onboarding_application.dart';
 import 'package:repforge/src/features/onboarding/domain/onboarding_domain.dart';
 import 'package:repforge/src/features/purchases/application/purchases_application.dart';
@@ -205,6 +206,7 @@ AppDependencies _testAppDependencies({
   final authGateway = LocalOnlyAuthGateway();
   final firebaseInitializationGateway =
       UnavailableFirebaseInitializationGateway();
+  final remotePushGateway = UnavailableRemotePushGateway();
   final entitlementSnapshotSource = LocalFreeEntitlementSnapshotSource();
   final purchaseGateway = FakePurchaseGateway(
     products: const <PurchaseProduct>[],
@@ -251,6 +253,8 @@ AppDependencies _testAppDependencies({
     initializeFirebaseIntegration: InitializeFirebaseIntegration(
       firebaseInitializationGateway,
     ),
+    remotePushGateway: remotePushGateway,
+    registerRemotePush: RegisterRemotePush(remotePushGateway),
     entitlementSnapshotSource: entitlementSnapshotSource,
     getFeatureGateDecision: GetFeatureGateDecision(entitlementSnapshotSource),
     purchaseGateway: purchaseGateway,

@@ -5,6 +5,7 @@ import 'package:repforge/src/features/auth/domain/auth_domain.dart';
 import 'package:repforge/src/features/backup/data/backup_data.dart';
 import 'package:repforge/src/features/backup/domain/backup_domain.dart';
 import 'package:repforge/src/features/cloud/domain/cloud_domain.dart';
+import 'package:repforge/src/features/notifications/domain/notifications_domain.dart';
 import 'package:repforge/src/features/onboarding/data/onboarding_data.dart';
 import 'package:repforge/src/features/onboarding/domain/onboarding_domain.dart';
 import 'package:repforge/src/features/purchases/domain/purchases_domain.dart';
@@ -57,9 +58,14 @@ void main() {
       const FirebaseIntegrationConfiguration.disabled(),
     );
     expect(
+      dependencies.configuration.remotePushRegistrationConfiguration,
+      const RemotePushRegistrationConfiguration.disabled(),
+    );
+    expect(
       dependencies.firebaseInitializationGateway,
       isA<FirebaseInitializationGateway>(),
     );
+    expect(dependencies.remotePushGateway, isA<RemotePushGateway>());
     expect(dependencies.purchaseGateway, isA<PurchaseGateway>());
     expect(
       dependencies.purchaseVerificationSource,
@@ -168,6 +174,28 @@ void main() {
       );
     },
   );
+
+  test('default remote push registration does not block local data', () async {
+    final dependencies = _composeInMemoryDependencies();
+
+    addTearDown(dependencies.close);
+
+    final registration = await dependencies.registerRemotePush(
+      dependencies.configuration.remotePushRegistrationConfiguration,
+    );
+    final set = _set(id: 'remote-push-disabled-local-set');
+
+    await dependencies.workoutSetRepository.save(set);
+
+    expect(registration.status, RemotePushRegistrationStatus.disabled);
+    expect(registration.blocksLocalUse, isFalse);
+    expect(
+      await dependencies.workoutSetRepository.findById(
+        WorkoutSetId('remote-push-disabled-local-set'),
+      ),
+      set,
+    );
+  });
 
   test('close is idempotent for owned dependencies', () async {
     final dependencies = _composeInMemoryDependencies();

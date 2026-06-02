@@ -65,6 +65,20 @@ settings/profile, onboarding, base analytics, local backup/export/import, rest
 timers, local notifications, purchases, entitlements, and auth status all remain
 usable without Firebase.
 
+## Optional remote push boundary
+
+Slice 38 adds a pure-Dart Remote Push registration boundary for possible future
+server-driven notifications. It is disabled by default and backed by an
+unavailable gateway. The default path does not request a push token, initialize
+Firebase/FCM, upload a token, contact a backend, require an account, activate
+sync, handle remote messages, or change rest-timer local notification behavior.
+
+Remote Push is a separate cloud concern from auth, sync, purchase verification,
+Firebase initialization, and catalog distribution. Future provider work may use
+Firebase Messaging or another provider only in an explicit later slice with
+privacy review and tests proving local MVP features remain usable when Remote
+Push is disabled, denied, unavailable, or failed.
+
 ## Optional sync model if implemented later
 
 Slice 37 adds only a pure-Dart sync metadata and conflict-policy boundary. It

@@ -39,3 +39,33 @@ FCM may be introduced later only for true remote/server-driven features such as:
 - remote coach messages if a backend exists.
 
 FCM token handling must be opt-in or tied to account/cloud features.
+
+## Remote Push Boundary
+
+Slice 38 adds a pure-Dart Remote Push boundary under the notifications feature.
+It models future server-driven notification registration with:
+
+- remote push token value objects,
+- registration configuration and status,
+- permission, unavailable, token-unavailable, registered, and failed states,
+- future capabilities such as account/security notices, sync-conflict notices,
+  social activity, server news, and remote coach messages,
+- a fakeable `RemotePushGateway`.
+
+Default app wiring uses a disabled registration configuration and an unavailable
+gateway. Disabled registration returns locally without asking the gateway for a
+token. Enabled registration still has no production adapter in this slice and
+therefore reports unavailable through the default gateway.
+
+Remote Push is separate from Local Notifications:
+
+- rest timers use `RestTimerNotificationGateway`,
+- normal rest periods never use Remote Push,
+- local notification scheduling/cancel behavior is unchanged,
+- local MVP features do not require a push token, account, Firebase, sync, or a
+  backend.
+
+Future Remote Push provider work must be an explicit slice. It must add privacy
+review, consent/account rules where needed, provider-specific token handling
+outside domain, backend registration if used, and tests proving local features
+still work when Remote Push is disabled or unavailable.

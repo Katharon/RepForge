@@ -4,6 +4,20 @@
 
 Add FCM token and remote push abstraction only if cloud/account features are enabled.
 
+## Implementation note
+
+Slice 38 adds only a pure-Dart Remote Push boundary for possible future
+server-driven notifications. The boundary includes token, capability,
+message-type, registration-state, failure, and gateway vocabulary plus a
+disabled/unavailable default registration path in the composition root.
+
+The slice does not add Firebase Messaging, request FCM/APNS tokens, upload
+tokens, add a backend, initialize Firebase/FCM, handle remote messages, add UI,
+or change rest-timer scheduling. Normal rest periods still use the local
+rest-timer notification gateway only. Local tracking, catalog import, settings,
+analytics, backups, purchases, auth, sync metadata, Firebase-disabled behavior,
+and rest timers remain available without Remote Push.
+
 ## Read first
 
 1. `AGENTS.md`

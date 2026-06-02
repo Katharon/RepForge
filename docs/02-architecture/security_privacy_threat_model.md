@@ -76,6 +76,27 @@ generic completion content before scheduling. Future notification UI must keep
 lock-screen previews generic unless a later explicit privacy setting changes
 that behavior.
 
+### Remote push privacy
+
+Risk: a future Remote Push integration requests device tokens or sends account,
+sync, social, news, or coaching notification metadata before the product has an
+explicit provider, consent, and backend decision.
+
+Mitigations:
+
+- keep Remote Push disabled by default,
+- do not request FCM/APNS tokens in the boundary slice,
+- do not upload tokens or register a device with a backend,
+- keep remote message handling outside the MVP,
+- keep local rest timers on local notifications,
+- require a later privacy review before any provider adapter sends identifiers
+  or notification registration data off-device.
+
+Slice 38 adds only pure-Dart Remote Push vocabulary, a fakeable gateway, and a
+disabled/unavailable default registration path. It does not add Firebase
+Messaging, token requests, token upload, backend APIs, account requirements,
+sync activation, UI, or changes to local rest-timer notifications.
+
 ### Catalog patch corruption
 
 Risk: bundled or downloaded catalog data is malformed.
