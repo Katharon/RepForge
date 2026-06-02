@@ -4,6 +4,12 @@
 
 ### Added
 
+- Added Slice 36 optional Firebase integration boundary with pure-Dart
+  capability/configuration/status models, a fakeable initialization gateway,
+  default disabled/unavailable composition-root wiring, and tests proving local
+  MVP features, auth defaults, and local rest-timer notifications do not require
+  Firebase, FCM, Firebase Auth, Crashlytics, Remote Config, Firestore, sync, or
+  analytics SDK events.
 - Added Slice 35 optional authentication boundary with pure-Dart auth session,
   identity, provider, failure, and gateway models, local-only default wiring,
   fake auth tests, and sign-out/status use cases without login UI, auth SDKs,

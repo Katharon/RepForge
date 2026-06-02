@@ -7,6 +7,8 @@ import '../features/auth/domain/auth_domain.dart';
 import '../features/backup/application/backup_application.dart';
 import '../features/backup/data/backup_data.dart';
 import '../features/backup/domain/backup_domain.dart';
+import '../features/cloud/application/cloud_application.dart';
+import '../features/cloud/domain/cloud_domain.dart';
 import '../features/entitlements/application/entitlements_application.dart';
 import '../features/entitlements/domain/entitlements_domain.dart';
 import '../features/onboarding/application/onboarding_application.dart';
@@ -29,9 +31,14 @@ import '../shared/data/local/repforge_database.dart';
 import '../shared/data/local/repforge_database_factory.dart';
 
 final class AppConfiguration {
-  const AppConfiguration({this.locale});
+  const AppConfiguration({
+    this.locale,
+    this.firebaseIntegrationConfiguration =
+        const FirebaseIntegrationConfiguration.disabled(),
+  });
 
   final Locale? locale;
+  final FirebaseIntegrationConfiguration firebaseIntegrationConfiguration;
 }
 
 final class AppDependencies {
@@ -57,6 +64,8 @@ final class AppDependencies {
     required this.getAuthStatus,
     required this.signOut,
     required this.authSessionPolicy,
+    required this.firebaseInitializationGateway,
+    required this.initializeFirebaseIntegration,
     required this.entitlementSnapshotSource,
     required this.getFeatureGateDecision,
     required this.purchaseGateway,
@@ -91,6 +100,8 @@ final class AppDependencies {
     required this.getAuthStatus,
     required this.signOut,
     required this.authSessionPolicy,
+    required this.firebaseInitializationGateway,
+    required this.initializeFirebaseIntegration,
     required this.entitlementSnapshotSource,
     required this.getFeatureGateDecision,
     required this.purchaseGateway,
@@ -125,6 +136,8 @@ final class AppDependencies {
   final GetAuthStatus getAuthStatus;
   final SignOut signOut;
   final AuthSessionPolicy authSessionPolicy;
+  final FirebaseInitializationGateway firebaseInitializationGateway;
+  final InitializeFirebaseIntegration initializeFirebaseIntegration;
   final EntitlementSnapshotSource entitlementSnapshotSource;
   final GetFeatureGateDecision getFeatureGateDecision;
   final PurchaseGateway purchaseGateway;
@@ -178,6 +191,7 @@ final class CompositionRoot {
     this.ownsDatabase,
     this.restTimerNotificationGateway,
     this.authGateway,
+    this.firebaseInitializationGateway,
     this.entitlementSnapshotSource,
     this.purchaseGateway,
     this.purchaseVerificationSource,
@@ -189,6 +203,7 @@ final class CompositionRoot {
   final bool? ownsDatabase;
   final RestTimerNotificationGateway? restTimerNotificationGateway;
   final AuthGateway? authGateway;
+  final FirebaseInitializationGateway? firebaseInitializationGateway;
   final EntitlementSnapshotSource? entitlementSnapshotSource;
   final PurchaseGateway? purchaseGateway;
   final PurchaseVerificationSource? purchaseVerificationSource;
@@ -239,6 +254,12 @@ final class CompositionRoot {
     final getAuthStatus = GetAuthStatus(composedAuthGateway);
     final signOut = SignOut(composedAuthGateway);
     const authSessionPolicy = AuthSessionPolicy();
+    final composedFirebaseInitializationGateway =
+        firebaseInitializationGateway ??
+        UnavailableFirebaseInitializationGateway();
+    final initializeFirebaseIntegration = InitializeFirebaseIntegration(
+      composedFirebaseInitializationGateway,
+    );
     final composedEntitlementSnapshotSource =
         entitlementSnapshotSource ?? LocalFreeEntitlementSnapshotSource();
     final getFeatureGateDecision = GetFeatureGateDecision(
@@ -280,6 +301,8 @@ final class CompositionRoot {
         getAuthStatus: getAuthStatus,
         signOut: signOut,
         authSessionPolicy: authSessionPolicy,
+        firebaseInitializationGateway: composedFirebaseInitializationGateway,
+        initializeFirebaseIntegration: initializeFirebaseIntegration,
         entitlementSnapshotSource: composedEntitlementSnapshotSource,
         getFeatureGateDecision: getFeatureGateDecision,
         purchaseGateway: composedPurchaseGateway,
@@ -315,6 +338,8 @@ final class CompositionRoot {
       getAuthStatus: getAuthStatus,
       signOut: signOut,
       authSessionPolicy: authSessionPolicy,
+      firebaseInitializationGateway: composedFirebaseInitializationGateway,
+      initializeFirebaseIntegration: initializeFirebaseIntegration,
       entitlementSnapshotSource: composedEntitlementSnapshotSource,
       getFeatureGateDecision: getFeatureGateDecision,
       purchaseGateway: composedPurchaseGateway,

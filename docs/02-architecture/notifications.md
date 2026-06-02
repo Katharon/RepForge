@@ -27,6 +27,10 @@ Later:
 
 FCM is not needed for rest timers or local training reminders.
 
+Slice 36 models remote push/FCM only as an optional Firebase capability flag.
+The default configuration is disabled and the app does not request a token,
+initialize FCM, or route rest-timer notifications through Firebase.
+
 FCM may be introduced later only for true remote/server-driven features such as:
 
 - social activity notifications,

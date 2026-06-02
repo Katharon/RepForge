@@ -115,6 +115,28 @@ Slice 35 adds only a pure-Dart auth boundary plus a local-only default gateway.
 It does not add login UI, provider SDKs, token persistence, backend calls,
 cloud sync, account requirements, or auth-based Premium unlocks.
 
+### Optional Firebase privacy
+
+Risk: a future Firebase integration is accidentally treated as required
+infrastructure or begins sending training, auth, notification, crash, analytics,
+or configuration data before the product has an explicit consent and provider
+decision.
+
+Mitigations:
+
+- keep Firebase disabled by default,
+- expose only pure-Dart capability/configuration/status models in this slice,
+- use an unavailable no-op initialization gateway as the default wiring,
+- do not add Firebase SDK packages, options files, Firestore/cloud database,
+  Firebase Auth, FCM behavior, Crashlytics upload, Remote Config fetch,
+  analytics SDK events, sync, or account requirements,
+- require a later explicit slice and privacy review before any real provider
+  adapter sends data off-device.
+
+Slice 36 adds only that optional boundary. Failed or unavailable Firebase
+initialization must not block local workout logging, local notifications,
+settings, backups, purchases, entitlements, or auth boundary behavior.
+
 ### Entitlement privacy
 
 Risk: future purchase metadata could be confused with local training identity or

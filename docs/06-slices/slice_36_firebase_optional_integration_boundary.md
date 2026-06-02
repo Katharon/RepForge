@@ -4,6 +4,17 @@
 
 Add Firebase initialization behind capability flags for future auth/FCM/crash features, if product decision confirms Firebase.
 
+## Implementation note
+
+Slice 36 adds only a pure-Dart optional Firebase boundary under
+`lib/src/features/cloud/`. It models explicit future capability flags for auth,
+remote push/FCM, crash reporting, remote config, and analytics events, plus a
+fakeable initialization gateway and deterministic initialization result states.
+The composition root wires a default unavailable/no-op gateway and disabled
+configuration; it does not initialize Firebase at app start, add Firebase
+packages, require Firebase options files, or make any local MVP feature depend
+on Firebase.
+
 ## Read first
 
 1. `AGENTS.md`

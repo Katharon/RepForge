@@ -48,6 +48,23 @@ analytics, settings, backup/export/import, onboarding, rest timers, purchases,
 or entitlement checks. Auth state must not unlock Premium and entitlement state
 must not imply a user identity.
 
+## Optional Firebase boundary
+
+Slice 36 adds a pure-Dart Firebase integration boundary for possible future
+Firebase Auth, remote push/FCM, Crashlytics, Remote Config, or analytics-event
+infrastructure. The boundary is disabled by default and backed by an unavailable
+no-op gateway in the composition root.
+
+Firebase is not initialized at app start. No Firebase packages, config files,
+Firestore/cloud database, sync behavior, Firebase Auth flow, FCM behavior,
+Crashlytics upload, Remote Config fetch, analytics SDK event tracking, or
+account requirement is introduced by this boundary.
+
+Local tracking, workout groups, custom exercises, official catalog import,
+settings/profile, onboarding, base analytics, local backup/export/import, rest
+timers, local notifications, purchases, entitlements, and auth status all remain
+usable without Firebase.
+
 ## Optional sync model if implemented later
 
 - Local database remains the source of truth for offline use.

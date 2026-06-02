@@ -101,6 +101,18 @@ settings/workout data, no auth-based Premium unlock, and no auth requirement for
 purchase verification. Tests must not invoke real auth providers, network,
 platform services, backend calls, cloud services, files, or token handling.
 
+## Firebase boundary tests
+
+Slice 36 Firebase tests must use fake `FirebaseInitializationGateway`
+implementations or the default unavailable no-op gateway. They should assert
+disabled-by-default behavior, explicit capability flags, deterministic
+initialized/unavailable/failed states, no Firebase requirement for local MVP
+features, local rest-timer notification separation from remote push/FCM,
+local-only auth defaults, and domain import purity. Tests must not invoke real
+Firebase SDKs, Firebase config files, network, platform services, accounts,
+remote push, Crashlytics, Remote Config, Firestore, sync, or analytics SDK
+events.
+
 ## Golden/visual tests
 
 Use for stable components after design tokens mature:

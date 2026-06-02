@@ -4,6 +4,7 @@ import 'package:repforge/src/app/composition_root.dart';
 import 'package:repforge/src/features/auth/domain/auth_domain.dart';
 import 'package:repforge/src/features/backup/data/backup_data.dart';
 import 'package:repforge/src/features/backup/domain/backup_domain.dart';
+import 'package:repforge/src/features/cloud/domain/cloud_domain.dart';
 import 'package:repforge/src/features/onboarding/data/onboarding_data.dart';
 import 'package:repforge/src/features/onboarding/domain/onboarding_domain.dart';
 import 'package:repforge/src/features/purchases/domain/purchases_domain.dart';
@@ -51,6 +52,14 @@ void main() {
       isA<RestTimerNotificationCoordinator>(),
     );
     expect(dependencies.authGateway, isA<AuthGateway>());
+    expect(
+      dependencies.configuration.firebaseIntegrationConfiguration,
+      const FirebaseIntegrationConfiguration.disabled(),
+    );
+    expect(
+      dependencies.firebaseInitializationGateway,
+      isA<FirebaseInitializationGateway>(),
+    );
     expect(dependencies.purchaseGateway, isA<PurchaseGateway>());
     expect(
       dependencies.purchaseVerificationSource,
@@ -113,6 +122,53 @@ void main() {
     expect(json, contains('"appId":"repforge"'));
   });
 
+  test(
+    'failed Firebase initialization does not block local dependencies',
+    () async {
+      final failedFirebaseGateway = _FakeFirebaseInitializationGateway(
+        FirebaseInitializationResult.failed(
+          capturedAt: DateTime.utc(2026, 6),
+          configuredCapabilities: FirebaseCapabilitySet.only(
+            FirebaseCapability.auth,
+          ),
+          failure: const FirebaseInitializationFailure(
+            code: 'firebase_unavailable',
+            message: 'Firebase is not configured.',
+          ),
+        ),
+      );
+      final dependencies = _composeInMemoryDependencies(
+        configuration: AppConfiguration(
+          firebaseIntegrationConfiguration:
+              FirebaseIntegrationConfiguration.enabled(
+                enabledCapabilities: FirebaseCapabilitySet.only(
+                  FirebaseCapability.auth,
+                ),
+              ),
+        ),
+        firebaseInitializationGateway: failedFirebaseGateway,
+      );
+
+      addTearDown(dependencies.close);
+
+      final firebaseResult = await dependencies.initializeFirebaseIntegration(
+        dependencies.configuration.firebaseIntegrationConfiguration,
+      );
+      final set = _set(id: 'firebase-failed-local-set');
+
+      await dependencies.workoutSetRepository.save(set);
+
+      expect(firebaseResult.status, FirebaseIntegrationStatus.failed);
+      expect(failedFirebaseGateway.initializeCount, 1);
+      expect(
+        await dependencies.workoutSetRepository.findById(
+          WorkoutSetId('firebase-failed-local-set'),
+        ),
+        set,
+      );
+    },
+  );
+
   test('close is idempotent for owned dependencies', () async {
     final dependencies = _composeInMemoryDependencies();
 
@@ -122,11 +178,16 @@ void main() {
   });
 }
 
-AppDependencies _composeInMemoryDependencies() {
+AppDependencies _composeInMemoryDependencies({
+  AppConfiguration configuration = const AppConfiguration(),
+  FirebaseInitializationGateway? firebaseInitializationGateway,
+}) {
   return CompositionRoot(
+    configuration: configuration,
     databaseFactory: RepForgeDatabaseFactory(
       createExecutor: () => NativeDatabase.memory(),
     ),
+    firebaseInitializationGateway: firebaseInitializationGateway,
     purchaseGateway: FakePurchaseGateway(
       products: const <PurchaseProduct>[],
       now: DateTime.now,
@@ -146,4 +207,20 @@ WorkoutSet _set({required String id}) {
     load: LoadKg(100),
     performedAt: PerformedAt(DateTime.utc(2026, 5, 27, 12)),
   );
+}
+
+final class _FakeFirebaseInitializationGateway
+    implements FirebaseInitializationGateway {
+  _FakeFirebaseInitializationGateway(this.result);
+
+  final FirebaseInitializationResult result;
+  int initializeCount = 0;
+
+  @override
+  Future<FirebaseInitializationResult> initialize(
+    FirebaseIntegrationConfiguration configuration,
+  ) async {
+    initializeCount += 1;
+    return result;
+  }
 }
