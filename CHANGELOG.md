@@ -4,6 +4,10 @@
 
 ### Added
 
+- Added Slice 39 release-ready GitHub Actions CI foundation with generated-code
+  checks, formatting, analysis, full Flutter tests, deterministic integration
+  tests, local script parity, and a secret-free Android debug APK artifact
+  upload.
 - Added Slice 38 remote push notification boundary with pure-Dart token,
   capability, message-type, registration-state, failure, and gateway models,
   plus default disabled/unavailable composition wiring and tests proving remote

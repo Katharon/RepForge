@@ -185,6 +185,15 @@ The same local quality gate is available through:
 scripts/check.sh
 ```
 
+## CI execution
+
+Slice 39 CI runs generated-code checks before formatting, analysis, and tests.
+The workflow executes localization generation, Drift/source generation,
+`git diff --exit-code -- lib test`, `flutter test`, and
+`flutter test test/src/integration`. Golden tests are included in the normal
+test suite and should be updated only through a deliberate local
+`flutter test --update-goldens` run.
+
 Add as applicable:
 
 ```bash

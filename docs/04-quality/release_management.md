@@ -48,3 +48,34 @@ Before public release:
 - Age rating/content declaration.
 - Subscription metadata if premium exists.
 - Data safety forms.
+
+## CI artifacts
+
+Slice 39 adds a secret-free Android debug artifact through the `RepForge CI`
+workflow. The artifact is named `repforge-debug-apk` and is produced with:
+
+```bash
+flutter build apk --debug
+```
+
+This is not a Play Store artifact and is not suitable for public distribution.
+It exists so CI can prove the Android project builds and so reviewers can
+inspect a debug APK when needed.
+
+## Signing and publishing boundaries
+
+Store release signing is intentionally not implemented in Slice 39.
+
+Do not commit:
+
+- keystores,
+- signing passwords,
+- provisioning profiles,
+- App Store Connect credentials,
+- Google Play service-account JSON,
+- Firebase configuration files.
+
+Future release slices may add signed Android App Bundle and iOS/TestFlight jobs
+only after secrets, store identifiers, privacy declarations, and signing
+ownership are defined. Those workflows should use GitHub Actions secrets and
+environment protection, not repository files.

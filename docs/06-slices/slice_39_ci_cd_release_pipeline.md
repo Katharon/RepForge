@@ -4,6 +4,22 @@
 
 Add GitHub Actions workflows for analyze/test/build/release artifacts.
 
+## Implementation note
+
+Slice 39 upgrades the GitHub Actions quality workflow into `RepForge CI`.
+It runs on pull requests, pushes to `main`/`develop`, and manual
+`workflow_dispatch`. The quality job installs Flutter dependencies, generates
+localizations, runs `build_runner`, verifies generated `lib`/`test` files are
+committed, checks formatting, analyzes, runs the full Flutter test suite, runs
+the deterministic integration-style test folder, and runs `scripts/check.sh` for
+local/CI parity.
+
+The workflow also adds a dependent Android debug artifact job. It builds
+`flutter build apk --debug` and uploads `repforge-debug-apk` through
+`actions/upload-artifact`. It does not publish to app stores, add signing
+secrets, commit keystores, configure Firebase, add cloud/backend integration, or
+change app code.
+
 ## Read first
 
 1. `AGENTS.md`

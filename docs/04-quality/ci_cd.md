@@ -2,37 +2,62 @@
 
 ## GitHub Actions baseline
 
-Run on pull requests and pushes to main/develop:
+Slice 39 provides `.github/workflows/quality.yml` with the workflow name
+`RepForge CI`.
+
+Triggers:
+
+- pull requests,
+- pushes to `main`,
+- pushes to `develop`,
+- manual `workflow_dispatch`.
+
+Permissions are read-only for repository contents. The workflow does not require
+secrets.
+
+## Quality job
+
+Job name: `Analyze, generate, and test`
+
+Commands:
 
 ```bash
-dart format --set-exit-if-changed .
+flutter pub get
+flutter gen-l10n
+dart run build_runner build --delete-conflicting-outputs
+git diff --exit-code -- lib test
+dart format --output=none --set-exit-if-changed .
 flutter analyze
-flutter test --coverage
+flutter test
+flutter test test/src/integration
+scripts/check.sh
 ```
 
-After app bootstrap:
+The generated-code check fails CI if generated Dart files under `lib` or `test`
+are stale after localization/build-runner generation. Golden tests run as part
+of `flutter test`; CI must not update golden baselines.
+
+`scripts/check.sh` intentionally repeats the core local quality gate so the
+script remains trustworthy for developers and CI.
+
+## Android debug artifact job
+
+Job name: `Android debug artifact`
+
+The job depends on the quality job and runs:
 
 ```bash
+flutter pub get
 flutter build apk --debug
 ```
 
-After release setup:
+It uploads:
 
-```bash
-flutter build appbundle --release
-```
+- artifact name: `repforge-debug-apk`
+- path: `build/app/outputs/flutter-apk/app-debug.apk`
 
-## Workflow stages
-
-1. Checkout.
-2. Set up Flutter stable.
-3. Cache pub packages if useful.
-4. `flutter pub get`.
-5. Format check.
-6. Analyze.
-7. Tests.
-8. Debug build.
-9. Upload coverage/build artifacts where appropriate.
+This artifact is for CI smoke testing and internal inspection only. It is not a
+signed store release.
 
 ## Release workflow
 
@@ -45,4 +70,9 @@ Tag-based release workflow after production hardening:
 
 ## Secrets
 
-Never commit signing keys, API secrets, or store credentials. Use GitHub Actions secrets.
+Never commit signing keys, API secrets, Firebase configs, keystores,
+provisioning profiles, or store credentials. Use GitHub Actions secrets only in
+a later explicit signing/publishing slice.
+
+Slice 39 does not publish to Google Play, App Store, TestFlight, Firebase,
+backend services, or any paid runtime service.
