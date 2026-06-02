@@ -33,6 +33,8 @@ Local-first reduces risk, but it does not eliminate legal duties. The app can st
 - `cyber_resilience_act_position.md` — cybersecurity product-governance baseline.
 - `data_act_position.md` — connected-product and wearable-data considerations.
 - `store_compliance.md` — App Store / Google Play compliance checklist.
+- `store_listing_draft.md` — English/German store metadata and privacy copy
+  draft for the local-first MVP.
 
 ## Release rule
 

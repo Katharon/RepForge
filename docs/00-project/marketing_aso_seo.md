@@ -18,6 +18,11 @@ Planned metadata:
 - Localized screenshots for English and German.
 - Screenshot sequence: log fast, group workouts, view progress, analyze volume, understand trends.
 
+Slice 40 adds the first store metadata draft in
+`docs/08-legal-compliance/store_listing_draft.md`. Treat it as a working ASO and
+privacy-copy baseline until screenshots, final privacy declarations, support
+links, and store availability checks are complete.
+
 ## SEO
 
 SEO is relevant for external web presence, not inside the native app itself.

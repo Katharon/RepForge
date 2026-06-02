@@ -15,6 +15,16 @@ A custom Material 3-based dark design system with athletic dashboard styling.
 - Rounded rectangles, not sharp enterprise cards.
 - Strong numeric typography.
 
+## App icon and launch surface
+
+- Product name: `RepForge`.
+- Launcher icon source: `assets/icon/repforge_icon.png`.
+- Launcher icon background: `#0B0F14`.
+- Native launch screens should use the same `#0B0F14` background so cold start
+  does not flash white before the dark Flutter theme draws.
+- Keep app icon and splash assets brand-only. Do not add medical, guaranteed
+  progress, cloud, or Premium claims to launch surfaces.
+
 ## Design tokens
 
 ### Color tokens

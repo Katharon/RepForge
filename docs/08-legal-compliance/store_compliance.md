@@ -6,6 +6,7 @@
 - Trademark and store availability checked.
 - Privacy policy available in English and German.
 - Safety disclaimer available in English and German.
+- Store listing draft available in English and German.
 - App uses supported locales and English fallback.
 - No hidden cloud data transfer.
 - No ad SDK if app declares no ads.

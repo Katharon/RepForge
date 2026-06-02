@@ -9,7 +9,7 @@ Add app icon/splash assets, app metadata, privacy copy, and store listing draft 
 1. `AGENTS.md`
 2. `docs/04-quality/release_management.md`
 3. `docs/03-design-ux/design_system.md`
-4. `docs/06-slices/slice_40_app_icon_splash_store_metadata.md`
+4. `docs/06-slices/slice_40_app_icon_splash_and_store_metadata.md`
 
 ## Current assumptions
 
@@ -49,6 +49,29 @@ If strict TDD is impractical because this is a repository/bootstrap slice, expla
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
 
+## Implementation notes
+
+Slice 40 validates the existing launcher icon setup instead of regenerating it:
+
+- `flutter_launcher_icons` is configured in `pubspec.yaml`.
+- Source icon: `assets/icon/repforge_icon.png`.
+- Android launcher outputs exist under `android/app/src/main/res/mipmap-*`.
+- iOS launcher outputs exist under
+  `ios/Runner/Assets.xcassets/AppIcon.appiconset`.
+- Android and iOS display names are `RepForge`.
+
+The splash foundation is limited to native launch-screen background consistency:
+Android launch drawables and iOS `LaunchScreen.storyboard` use the RepForge
+near-black background `#0B0F14`. No `flutter_native_splash` dependency is added
+in this slice because no generator config existed and no centered splash image
+was required.
+
+Store metadata is drafted in
+`docs/08-legal-compliance/store_listing_draft.md`. The draft is not a publishing
+action and must be reviewed against the final binary, privacy policy, data
+safety declarations, screenshots, and trademark/store availability checks before
+public release.
+
 ## Validation commands
 
 ```bash
@@ -63,6 +86,10 @@ Add slice-specific commands if appropriate, such as:
 flutter test integration_test
 flutter build apk --debug
 ```
+
+Slice 40 should additionally run the configured localization/build checks,
+integration tests, release script, metadata guardrails, and debug Android build
+when feasible.
 
 ## Documentation updates
 
@@ -81,13 +108,13 @@ feat(release): add app branding and store metadata
 ## Ready-to-use Codex prompt
 
 ```text
-You are working in the `gesundheit-gym-app` Flutter repository.
+You are working in the `RepForge` Flutter repository.
 
 Read first, in this order:
 1. AGENTS.md
 2. docs/04-quality/release_management.md
 3. docs/03-design-ux/design_system.md
-4. docs/06-slices/slice_40_app_icon_splash_store_metadata.md
+4. docs/06-slices/slice_40_app_icon_splash_and_store_metadata.md
 
 Implement Slice 40: App icon, splash, and store metadata.
 

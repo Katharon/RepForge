@@ -4,6 +4,11 @@
 
 ### Added
 
+- Added Slice 40 app branding and store metadata baseline with validated
+  RepForge launcher icon outputs, brand-consistent native launch backgrounds,
+  English/German store listing drafts, privacy copy guardrails, and release docs
+  without publishing, signing secrets, cloud services, ads, Firebase, backend,
+  or new runtime services.
 - Added Slice 39 release-ready GitHub Actions CI foundation with generated-code
   checks, formatting, analysis, full Flutter tests, deterministic integration
   tests, local script parity, and a secret-free Android debug APK artifact

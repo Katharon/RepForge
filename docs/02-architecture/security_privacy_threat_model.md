@@ -4,6 +4,13 @@
 
 The app is local-first. The user can track workouts without an account and without sending training data to a backend.
 
+Store privacy copy must match that stance: for the current MVP baseline,
+describe RepForge as local-first with no account requirement, no ads, no
+analytics SDK, no cloud sync, and no developer collection of workout data.
+Future sync, remote diagnostics, analytics, wearable import, support upload, or
+push-provider registration must update this threat model and the store privacy
+metadata before any data leaves the device.
+
 ## Sensitive data
 
 Potentially sensitive:
@@ -211,6 +218,11 @@ Mitigations:
 - show disclaimer,
 - label estimates,
 - recommend professional advice for pain/illness.
+
+Slice 40 store metadata must use non-medical wording such as `progress trends`,
+`estimated`, `signals`, and `readiness`. Store screenshots and descriptions must
+not promise diagnosis, injury prevention, guaranteed hypertrophy, or guaranteed
+strength outcomes.
 
 ## v5 health/training disclaimer and privacy boundary
 

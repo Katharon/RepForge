@@ -45,9 +45,41 @@ Before public release:
 - App icon.
 - Screenshots.
 - Store description.
+- Store privacy/data safety copy.
+- Splash/launch-screen review.
 - Age rating/content declaration.
 - Subscription metadata if premium exists.
 - Data safety forms.
+
+## Branding and store metadata
+
+Slice 40 validates the current launcher icon setup:
+
+- source asset: `assets/icon/repforge_icon.png`
+- Android generated icons: `android/app/src/main/res/mipmap-*`
+- iOS generated icons: `ios/Runner/Assets.xcassets/AppIcon.appiconset`
+- display name: `RepForge` on Android and iOS
+
+The launcher icon is managed by `flutter_launcher_icons` in `pubspec.yaml`.
+Regenerate only when the source icon or icon config changes:
+
+```bash
+dart run flutter_launcher_icons
+```
+
+Native launch screens currently use the RepForge near-black background
+`#0B0F14` as a stable splash foundation without adding
+`flutter_native_splash`. If a later slice adds a branded centered splash image
+or Android 12 splash customization, define the generator config first and then
+run:
+
+```bash
+dart run flutter_native_splash:create
+```
+
+Store copy drafts live in `docs/08-legal-compliance/store_listing_draft.md`.
+They are product/legal drafts only; they do not publish to Google Play, App
+Store Connect, TestFlight, or any paid runtime service.
 
 ## CI artifacts
 
