@@ -50,3 +50,22 @@ A beta release-candidate hardening slice is done when:
   introduced.
 - A proposed beta tag command is documented, but no tag is pushed as part of the
   slice.
+
+## Production release readiness acceptance
+
+A production release-readiness slice is done when:
+
+- The current app version, release stage, proposed production version, and tag
+  policy are documented without contradicting beta metadata.
+- Production status is stated honestly as ready, blocked, owner-decision
+  required, and follow-up-slice required.
+- Release-owner approval, clean working tree, generated-code freshness, local
+  validation, CI green status, platform signing, store metadata, screenshots,
+  support/contact, privacy/data-safety, age/content, subscription/payment, and
+  trademark/name checks are covered.
+- Final-release tag commands are documented for a future approved release, but
+  no production tag is created or pushed by Codex.
+- Production blockers remain blockers instead of being papered over by docs.
+- No store publishing workflow, signing secret, cloud runtime, Firebase config,
+  ads, remote sync, backend activation, remote push runtime, or paid runtime
+  service is added unless a later explicit slice requires it.

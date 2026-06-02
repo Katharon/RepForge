@@ -159,3 +159,122 @@ Future release slices may add signed Android App Bundle and iOS/TestFlight jobs
 only after secrets, store identifiers, privacy declarations, and signing
 ownership are defined. Those workflows should use GitHub Actions secrets and
 environment protection, not repository files.
+
+## Production v1.0.0 readiness
+
+Slice 42 prepares the production-release checklist only. RepForge is not
+production-ready at the current `0.9.0+1` beta-candidate metadata, and this
+slice does not publish the app, create store artifacts, add signing secrets, or
+push tags.
+
+Current production status:
+
+- Ready: no.
+- Blocked: yes, pending release-owner decisions and store/signing work.
+- Owner decision required: yes.
+- Follow-up slice required: yes, for final production hardening/signing/store
+  submission once the blockers below are resolved.
+
+### Production blockers
+
+RepForge v1.0.0 must not be tagged or submitted publicly until all of these are
+resolved:
+
+- Release owner approves the exact source revision, final changelog, final
+  version number, final binaries, and store metadata.
+- Working tree is clean after generation, formatting, analysis, tests, and build
+  checks.
+- CI is green on the release revision, including generated-code freshness.
+- Android release signing ownership is defined, and a signed release App Bundle
+  is built outside the repository-secret boundary.
+- iOS signing ownership, bundle identifier, provisioning, archive, TestFlight,
+  and App Store submission path are defined.
+- Final English and German store listing copy, screenshots, privacy/data-safety
+  declarations, support/contact URL or email, and age/content declarations are
+  approved.
+- `RepForge` trademark and App Store / Google Play name availability are
+  checked by the release owner.
+- Any Premium/subscription metadata is either disabled from the shipped
+  production binary or fully configured with store products, review copy, and
+  privacy declarations. Provisional/unverified purchases must not unlock future
+  Premium gates.
+- Backup/export wording, privacy warnings, and local-first data ownership copy
+  are reviewed against the exact shipped binary.
+- No Firebase/cloud sync/backend/remote-push runtime, ads, analytics SDK,
+  crash-reporting SDK, or paid runtime service is active unless a later explicit
+  slice enables it and updates privacy/security/store documentation.
+
+### Production validation gate
+
+Run these commands on the release candidate revision before creating a
+production tag:
+
+```bash
+git status --short
+git rev-parse --short HEAD
+git log --oneline -8
+flutter pub get
+flutter gen-l10n
+dart run build_runner build --delete-conflicting-outputs
+git diff --check
+git diff --exit-code -- lib test
+dart format --output=none --set-exit-if-changed .
+flutter analyze
+flutter test
+flutter test test/src/integration
+scripts/check.sh
+flutter build apk --debug
+```
+
+For production store artifacts, the release owner must additionally run the
+signed platform builds after signing and store identifiers are configured:
+
+```bash
+flutter build appbundle --release
+flutter build ipa --release
+```
+
+The signed release outputs must be reviewed before upload. Do not commit
+keystores, provisioning profiles, certificates, service-account files, App Store
+Connect credentials, Play Store credentials, Firebase config files, or generated
+store secrets.
+
+### Production guardrail checks
+
+Run these text checks during the final release pass and review every hit:
+
+```bash
+rg "RepForge|repforge|production|v1.0.0|release checklist|release notes|tag|store listing|privacy|data safety|support|trademark|age rating" docs CHANGELOG.md pubspec.yaml android ios .github scripts
+rg "0.9.0|v0.9.0-beta.1|1.0.0|v1.0.0" docs CHANGELOG.md pubspec.yaml
+rg "gesundheit-gym-app|Gesundheit Gym App" pubspec.yaml android ios lib docs CHANGELOG.md .github scripts
+rg "TODO|FIXME|HACK|temporary|placeholder" lib docs pubspec.yaml android ios .github scripts
+rg "storePassword|keyPassword|keyAlias|keystore|provisioning|App Store Connect|PLAY_STORE|GOOGLE_SERVICE_ACCOUNT|firebase_options|google-services.json|GoogleService-Info.plist" .github android ios lib docs
+rg "Firebase|Firestore|firebase_messaging|firebase_core|cloud database|remote sync|backend|RevenueCat|AdMob|google_mobile_ads" pubspec.yaml lib docs .github
+```
+
+Expected non-blocking hits include historical documentation about future
+Firebase, sync, backend, remote push, and store workflows. Blocking hits include
+active runtime configuration, committed secrets, stale product names in shipped
+metadata, or unreviewed production placeholders.
+
+### v1.0.0 tag instructions
+
+The future production tag is expected to be:
+
+```text
+v1.0.0
+```
+
+Do not create or push this tag until every production blocker is resolved and
+the release owner approves the exact commit. When approved, run:
+
+```bash
+git status --short
+git rev-parse --short HEAD
+git tag -a v1.0.0 -m "RepForge v1.0.0"
+git push origin v1.0.0
+```
+
+The `pubspec.yaml` version should remain `0.9.0+1` until the final production
+hardening pass explicitly bumps it to `1.0.0+<build>` and all production gates
+are met.

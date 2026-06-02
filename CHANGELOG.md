@@ -4,6 +4,12 @@
 
 ### Added
 
+- Added Slice 42 production release-readiness documentation with an honest
+  blocked/not-ready `v1.0.0` checklist, release-owner decision gates, platform
+  signing and store submission requirements, privacy/data-safety and
+  trademark/name checks, and future-only tag instructions while keeping beta
+  metadata at `0.9.0+1` and avoiding publishing, signing secrets, cloud runtime,
+  ads, sync, backend activation, and production tag pushes.
 - Added Slice 41 beta release-candidate preparation with `0.9.0+1` app version
   metadata, `v0.9.0-beta.1` tag instructions, beta acceptance criteria, release
   blockers/follow-ups, and validation expectations while keeping store

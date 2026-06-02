@@ -50,6 +50,31 @@ If strict TDD is impractical because this is a repository/bootstrap slice, expla
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
 
+## Implementation notes
+
+Slice 42 adds an honest production-readiness checklist for the future
+`v1.0.0` release. The current repository remains a beta-oriented release
+candidate at app version `0.9.0+1`; this slice does not bump the app version,
+publish to stores, create or push a production tag, add signing material, or add
+new runtime services.
+
+Production status after this slice:
+
+- Ready: no.
+- Blocked: yes.
+- Owner decision required: yes.
+- Follow-up slice required: yes.
+
+The production blockers are documented in
+`docs/04-quality/release_management.md` and include release-owner approval,
+clean validation, CI status, Android/iOS signing and store submission paths,
+final screenshots, support/contact details, privacy/data-safety declarations,
+age/content declarations, Premium/subscription declarations if enabled,
+trademark/store-name checks, backup/export privacy review, and confirmation
+that Firebase/cloud/sync/backend/remote-push runtime, ads, analytics SDKs, and
+paid runtime services remain disabled unless a later explicit slice enables
+them.
+
 ## Validation commands
 
 ```bash
@@ -82,7 +107,7 @@ chore(release): prepare production release checklist
 ## Ready-to-use Codex prompt
 
 ```text
-You are working in the `gesundheit-gym-app` Flutter repository.
+You are working in the `RepForge` Flutter repository.
 
 Read first, in this order:
 1. AGENTS.md
