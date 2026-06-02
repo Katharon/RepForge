@@ -129,6 +129,24 @@ muscleWeeklyLoad = sum(muscleSetLoad for muscle in rolling week)
 
 For bodyweight or machine exercises where load is incomplete, later versions may use normalized stimulus points.
 
+Slice 45 implements the initial pure-Dart formula:
+
+```text
+estimatedMuscleLoadKg = loggedLoadKg * repetitions * activationWeight
+```
+
+Inputs:
+
+- `WorkoutSet.load` and `WorkoutSet.repetitions` remain the source of truth.
+- `ActivationWeight` must be finite and between `0.0` and `1.0`.
+- missing exercise activation data returns unavailable confidence plus the
+  unknown exercise refs.
+- incomplete/bodyweight-style load inputs are allowed but lower confidence to a
+  conservative estimate.
+
+Zero logged load produces `0` estimated muscle load. Zero repetitions remain
+invalid before analytics because the training-log domain rejects them.
+
 ## Weighted set estimate
 
 For recommendation and imbalance purposes, a weighted set can be simpler and more stable than raw volume:

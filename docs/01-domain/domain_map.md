@@ -41,6 +41,7 @@ Analytics
  ├─ ExerciseMetrics
  ├─ SessionMetrics
  ├─ MuscleLoadMetrics
+ ├─ MuscleActivationProfile
  ├─ PeriodComparison
  ├─ ImbalanceSignal
  └─ EstimatedOneRepMax
@@ -74,6 +75,11 @@ Owns official bundled exercise definitions, custom exercises, catalog versions, 
 ### Analytics
 
 Reads training-log data and calculates metrics. It must not mutate sets.
+
+Slice 45 adds the pure-Dart muscle activation/load-estimate primitives here:
+activation profiles reference existing exercise source/id pairs, estimated
+per-muscle load is derived from logged set volume, and unknown activation data is
+reported explicitly instead of being stored as zero load.
 
 ### Training Intelligence
 

@@ -8,6 +8,17 @@ Help the user avoid obvious long-term neglect of muscles and movement patterns w
 
 The app tracks estimated rolling muscle load from logged sets and compares it to target ranges derived from the user's focus profile.
 
+Slice 45 supplies the input foundation only. Muscle balance detection should read
+`MuscleLoadEstimate` values from the analytics domain, use the estimate
+confidence, and carry unknown exercises forward as incomplete evidence instead
+of treating missing activation data as zero muscle work.
+
+If a rolling window contains unavailable activation data, later balance
+detection should avoid strong conclusions for affected muscles and present the
+result as a partial signal. Conservative estimates, such as bodyweight-only or
+incomplete load inputs, can still be used for trend direction but should not be
+shown as precise workload.
+
 ## Main dimensions
 
 - Chest

@@ -173,8 +173,18 @@ Official exercise catalog must have:
 - snapshot-preservation tests for workout sets and workout group assignments,
 - migration/import test with previous catalog fixture.
 
-Activation-weight validation belongs to the later muscle activation slices until
-the current catalog schema stores weighted activation estimates.
+Catalog parser activation-weight validation belongs to a later catalog asset
+schema slice; Slice 45 covers the pure analytics-domain activation weight model.
+
+## Muscle activation tests
+
+Slice 45 muscle activation tests live under
+`test/src/features/analytics/domain/` and must stay pure Dart. They should cover
+stable muscle ids, bounded activation weights, known and unavailable exercise
+activation profiles, duplicate muscle-entry rejection, deterministic estimated
+load aggregation, zero-load behavior, incomplete/bodyweight-style load
+confidence, explicit unknown exercises, and preservation of existing
+`WorkoutSet` history.
 
 ## Profile and equipment tests
 

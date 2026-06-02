@@ -47,7 +47,7 @@ Each slice is an incremental Codex task. Codex should implement exactly one slic
 - [42 — Production release checklist](slice_42_production_release_checklist.md) — done
 - [43 — Official exercise catalog assets and importer](slice_43_official_catalog_assets_and_importer.md) — done
 - [44 — User profile, focus, and equipment domain model](slice_44_user_profile_focus_equipment_model.md) — done
-- [45 — Muscle activation model](slice_45_muscle_activation_model.md)
+- [45 — Muscle activation model](slice_45_muscle_activation_model.md) — done
 - [46 — Muscle balance detection](slice_46_muscle_balance_detection.md)
 - [47 — Recovery and readiness check-ins](slice_47_recovery_readiness_checkins.md)
 - [48 — Recommendation engine MVP](slice_48_recommendation_engine_mvp.md)

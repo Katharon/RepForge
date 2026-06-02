@@ -4,6 +4,12 @@
 
 ### Added
 
+- Added Slice 45 muscle activation model foundation with pure-Dart muscle IDs,
+  bounded activation weights, known/unavailable exercise activation profiles,
+  confidence-aware estimated per-muscle load calculation, explicit unknown
+  exercises, and focused analytics-domain tests without catalog rewrites,
+  persistence changes, UI, heatmaps, recommendations, recovery logic, wearables,
+  calorie estimates, cloud services, Firebase, sync, or remote catalog fetching.
 - Added Slice 44 training profile model expansion with optional sex/gender
   preference, birth year, body weight, height, explicit training goal,
   recovery sensitivity, coaching strictness, structured rack equipment, and

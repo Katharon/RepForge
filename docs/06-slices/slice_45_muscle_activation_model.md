@@ -42,6 +42,27 @@ Write pure domain tests for activation validation and muscle-load calculations f
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
 
+## Implementation note
+
+Slice 45 adds a pure-Dart analytics-domain muscle activation foundation:
+
+- `MuscleId`, `ActivationWeight`, and `MuscleActivationEntry` validate stable
+  muscle identifiers and bounded `0.0..1.0` activation weights.
+- `ExerciseActivationProfile` references existing `ExerciseRef`-compatible
+  source/id pairs and supports both known profiles and explicit unavailable
+  activation data.
+- `MuscleLoadInput`, `MuscleLoad`, `MuscleLoadEstimate`, and
+  `MuscleLoadEstimator` calculate deterministic estimated per-muscle load from
+  logged set volume and activation weights.
+- Missing activation profiles produce unavailable confidence and an explicit
+  unknown exercise list; incomplete/bodyweight-style load inputs produce
+  conservative confidence.
+
+This slice does not persist muscle-load results, rewrite official catalog JSON,
+build dashboard UI, body graphics, heatmaps, recommendations, recovery logic,
+wearable inputs, calorie estimates, Firebase, sync, remote catalog fetching, or
+cloud services.
+
 ## Validation commands
 
 ```bash

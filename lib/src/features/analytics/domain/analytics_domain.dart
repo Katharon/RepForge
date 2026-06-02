@@ -1,7 +1,9 @@
 export 'exceptions/analytics_validation_exception.dart';
 export 'formulas/epley_one_rep_max_formula.dart';
+export 'services/muscle_load_estimator.dart';
 export 'services/workout_set_analytics_formula_service.dart';
 export 'value_objects/estimated_one_rep_max.dart';
 export 'value_objects/formula_identity.dart';
+export 'value_objects/muscle_activation.dart';
 export 'value_objects/period_comparison.dart';
 export 'value_objects/workout_set_analytics_summary.dart';

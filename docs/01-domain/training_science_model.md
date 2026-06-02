@@ -84,6 +84,38 @@ bench_press:
 
 These values are practical estimates for relative analysis. They are not EMG truth.
 
+Slice 45 implements the first pure-Dart activation vocabulary:
+
+- `MuscleId`: stable non-localized muscle identifier, such as `chest` or
+  `front_deltoids`.
+- `ActivationWeight`: deterministic finite value from `0.0` to `1.0`.
+- `MuscleActivationEntry`: one muscle plus its activation weight.
+- `ExerciseActivationProfile`: known or explicitly unavailable activation data
+  for an `ExerciseRef`-compatible source/id pair.
+- `MuscleLoadInput`: a logged set plus whether the load is fully logged or
+  incomplete, for example bodyweight-only/incomplete machine load cases.
+- `MuscleLoadEstimate`: derived per-muscle estimated load, unknown exercises,
+  and confidence.
+
+Confidence semantics:
+
+- `estimated`: all logged sets had known activation profiles and logged loads.
+- `conservative`: activation data exists, but at least one input has incomplete
+  load semantics or a conservative profile.
+- `unavailable`: at least one exercise has missing or explicitly unavailable
+  activation data. Known exercises can still contribute estimated load, but the
+  overall result must be shown as incomplete.
+
+The initial formula is:
+
+```text
+estimatedMuscleLoadKg = loggedLoadKg * repetitions * activationWeight
+```
+
+Zero-load sets produce `0` estimated load deterministically. Zero repetitions
+remain invalid in the training-log domain, so muscle-load calculations do not
+invent a separate zero-repetition path.
+
 ## Imbalance prevention
 
 The app compares rolling muscle load against focus-aware target ranges.
