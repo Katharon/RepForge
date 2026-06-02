@@ -4,6 +4,12 @@
 
 ### Added
 
+- Added Slice 37 optional sync metadata boundary with pure-Dart entity,
+  version, state, tombstone, and conflict-policy types, plus tests proving
+  local-only defaults, official catalog separation, optional auth/Firebase
+  behavior, and deterministic conflict handling without a sync engine, remote
+  API, upload/download transport, Firestore, account requirement, UI, or Drift
+  schema changes.
 - Added Slice 36 optional Firebase integration boundary with pure-Dart
   capability/configuration/status models, a fakeable initialization gateway,
   default disabled/unavailable composition-root wiring, and tests proving local

@@ -136,3 +136,16 @@ Drift schema v7 adds only indexes:
 The migration is additive and non-destructive. Existing workout sets, catalog
 rows, settings, onboarding status, groups, and backup-compatible data remain
 unchanged.
+
+## Slice 37 optional sync metadata boundary
+
+Slice 37 does not change the Drift schema. It adds only pure-Dart sync metadata
+and conflict-policy types for future design work.
+
+No `sync_records` table, migration, remote id column, tombstone table, sync
+queue, background job, upload/download transport, account requirement, Firebase,
+Firestore, or cloud exercise database is introduced.
+
+If a later slice persists sync metadata, the migration must be additive and must
+not reinterpret existing local data. Official catalog rows remain release/patch
+content and do not require user-data sync metadata for bundled import.

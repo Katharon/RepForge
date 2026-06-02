@@ -67,17 +67,45 @@ usable without Firebase.
 
 ## Optional sync model if implemented later
 
-- Local database remains the source of truth for offline use.
-- Auth, if used, remains an optional boundary and must not be required for
-  local logging or local backup/export.
-- Add sync metadata: `createdAt`, `updatedAt`, `deletedAt`, `version`, `syncState`, `remoteId`.
-- Use tombstones for deletes.
-- Resolve conflicts explicitly.
-- Never block local set logging because sync is unavailable.
+Slice 37 adds only a pure-Dart sync metadata and conflict-policy boundary. It
+does not add production sync, a sync engine, background jobs, remote transport,
+upload/download behavior, provider SDKs, Firebase, Firestore, accounts, UI, or
+database schema changes.
+
+Local database remains the source of truth for offline use. Local tracking,
+groups, custom exercises, settings/profile, onboarding, analytics, local
+backups, purchases, entitlements, auth status, rest timers, and local
+notifications must continue to work with no account and no sync metadata.
+
+Future user-data sync may attach metadata to user-owned entities only:
+
+- `createdAt`,
+- `updatedAt`,
+- `deletedAt` for tombstones,
+- local version,
+- optional `remoteId`,
+- sync state such as `localOnly`, `pendingUpload`, `synced`, `conflict`,
+  `tombstoned`, `failed`, or `unavailable`.
+
+Auth, if used, is optional and may be required only for the optional sync
+feature itself. Auth must not be required for local logging, local backup/export,
+settings, catalog access, purchases, or entitlement checks.
+
+Firebase is also optional and disabled/unavailable by default. The sync boundary
+does not depend on Firebase activation, and Firebase unavailability must not
+block local-only use.
+
+Future sync deletes must use tombstones and conflict resolution must be explicit.
+No automatic merge should silently overwrite logged set history. Same-entity
+version conflicts should default to manual review unless a later explicit sync
+slice introduces and tests a narrower safe rule.
 
 ## Catalog updates are not sync
 
 Exercise catalog updates are content distribution, not user-data synchronization.
+
+Official catalog and official exercise rows are not cloud-synced user data.
+They do not require sync metadata for import or local use.
 
 Default mechanism:
 

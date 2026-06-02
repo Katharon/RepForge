@@ -113,6 +113,18 @@ Firebase SDKs, Firebase config files, network, platform services, accounts,
 remote push, Crashlytics, Remote Config, Firestore, sync, or analytics SDK
 events.
 
+## Sync metadata tests
+
+Slice 37 sync tests cover only pure-Dart metadata and conflict-policy behavior.
+They should assert local-only defaults, no local MVP dependency on sync
+metadata, official catalog separation from user-data sync, deterministic
+tombstones, deterministic version/conflict policy, no auth requirement for
+local-only mode, Firebase-disabled behavior, and domain import purity.
+
+Tests must not invoke real network, cloud, Firebase, Firestore, provider SDKs,
+remote APIs, background jobs, accounts, upload/download flows, file IO, or a
+production sync engine.
+
 ## Golden/visual tests
 
 Use for stable components after design tokens mature:

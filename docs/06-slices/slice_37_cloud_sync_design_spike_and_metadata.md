@@ -4,6 +4,18 @@
 
 Prepare optional future sync metadata boundaries without enabling cloud sync and without using sync for exercise catalog updates.
 
+## Implementation note
+
+Slice 37 adds a pure-Dart metadata and conflict-policy boundary under
+`lib/src/features/sync/domain/`. It models future user-data sync vocabulary:
+entity ids and types, local versions, local-only/pending/synced/conflict/
+tombstoned/failed/unavailable states, optional remote ids, deterministic
+tombstones, and conservative conflict resolution. No sync engine, remote API,
+upload/download transport, background job, account requirement, Firebase,
+Firestore, cloud exercise database, UI, or Drift schema change is introduced.
+Official catalog and official exercise rows are explicitly not user-data sync
+candidates; catalog updates remain bundled assets/app releases/content patches.
+
 ## Read first
 
 1. `AGENTS.md`

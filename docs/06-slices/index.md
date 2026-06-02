@@ -39,7 +39,7 @@ Each slice is an incremental Codex task. Codex should implement exactly one slic
 - [34 — Purchase verification strategy](slice_34_purchase_verification_strategy.md) — done
 - [35 — Authentication abstraction](slice_35_authentication_abstraction.md) — done
 - [36 — Firebase optional integration boundary](slice_36_firebase_optional_integration_boundary.md) — done
-- [37 — Optional sync design spike and metadata](slice_37_cloud_sync_design_spike_and_metadata.md)
+- [37 — Optional sync design spike and metadata](slice_37_cloud_sync_design_spike_and_metadata.md) — done
 - [38 — Remote push notification boundary](slice_38_remote_push_notification_boundary.md)
 - [39 — CI/CD release pipeline](slice_39_ci_cd_release_pipeline.md)
 - [40 — App icon, splash, and store metadata](slice_40_app_icon_splash_and_store_metadata.md)

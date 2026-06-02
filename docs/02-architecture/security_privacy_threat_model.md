@@ -98,6 +98,18 @@ Mitigations:
 - require threat-model update before implementation,
 - never mix sync logic into local domain rules.
 
+Slice 37 adds only pure-Dart sync metadata and conflict-policy types. It does
+not add a sync engine, remote API, upload/download behavior, background jobs,
+provider SDKs, Firebase, Firestore, accounts, UI, database schema changes, or a
+cloud exercise catalog. The metadata boundary keeps local-only mode as the
+default and models official catalog rows as non-user-data sync candidates.
+
+Future sync implementation must update this threat model before any data leaves
+the device. It must keep logged training history protected from silent overwrite,
+use tombstones for deletes, keep account use optional and limited to the sync
+feature, and keep local use available when sync, auth, or Firebase is
+unavailable.
+
 ### Authentication privacy
 
 Risk: future auth state is treated as required identity for local tracking or is
