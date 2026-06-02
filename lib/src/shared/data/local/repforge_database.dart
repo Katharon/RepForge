@@ -402,6 +402,45 @@ class OnboardingStatuses extends Table {
   Set<Column<Object>> get primaryKey => <Column<Object>>{statusId};
 }
 
+@DataClassName('ReadinessCheckInRow')
+@TableIndex(
+  name: 'readiness_checkins_latest_idx',
+  columns: {
+    IndexedColumn(#checkedInAt, orderBy: OrderingMode.desc),
+    IndexedColumn(#readinessCheckInId, orderBy: OrderingMode.desc),
+  },
+)
+class ReadinessCheckIns extends Table {
+  @override
+  String get tableName => 'readiness_checkins';
+
+  TextColumn get readinessCheckInId => text().customConstraint(
+    'NOT NULL CHECK (length(readiness_check_in_id) > 0)',
+  )();
+
+  DateTimeColumn get checkedInAt => dateTime().customConstraint('NOT NULL')();
+
+  IntColumn get soreness =>
+      integer().customConstraint('NOT NULL CHECK (soreness BETWEEN 0 AND 4)')();
+
+  IntColumn get sleepQuality => integer().customConstraint(
+    'NOT NULL CHECK (sleep_quality BETWEEN 1 AND 5)',
+  )();
+
+  IntColumn get energy =>
+      integer().customConstraint('NOT NULL CHECK (energy BETWEEN 1 AND 5)')();
+
+  IntColumn get stress =>
+      integer().customConstraint('NOT NULL CHECK (stress BETWEEN 1 AND 5)')();
+
+  IntColumn get motivation => integer().customConstraint(
+    'NOT NULL CHECK (motivation BETWEEN 1 AND 5)',
+  )();
+
+  @override
+  Set<Column<Object>> get primaryKey => <Column<Object>>{readinessCheckInId};
+}
+
 @DriftDatabase(
   tables: <Type>[
     WorkoutSets,
@@ -416,13 +455,14 @@ class OnboardingStatuses extends Table {
     EquipmentInventoryItems,
     EquipmentLoadConstraints,
     OnboardingStatuses,
+    ReadinessCheckIns,
   ],
 )
 class RepForgeDatabase extends _$RepForgeDatabase {
   RepForgeDatabase(super.executor);
 
   @override
-  int get schemaVersion => 8;
+  int get schemaVersion => 9;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -475,6 +515,9 @@ class RepForgeDatabase extends _$RepForgeDatabase {
       }
       if (from < 8) {
         await migrator.createTable(equipmentLoadConstraints);
+      }
+      if (from < 9) {
+        await migrator.createTable(readinessCheckIns);
       }
     },
     // Future migrations must preserve logged set history and prefer additive

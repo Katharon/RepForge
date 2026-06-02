@@ -17,6 +17,8 @@ import 'package:repforge/src/features/onboarding/application/onboarding_applicat
 import 'package:repforge/src/features/onboarding/domain/onboarding_domain.dart';
 import 'package:repforge/src/features/purchases/application/purchases_application.dart';
 import 'package:repforge/src/features/purchases/domain/purchases_domain.dart';
+import 'package:repforge/src/features/recovery/application/recovery_application.dart';
+import 'package:repforge/src/features/recovery/domain/recovery_domain.dart';
 import 'package:repforge/src/features/rest_timer/application/rest_timer_application.dart';
 import 'package:repforge/src/features/rest_timer/domain/rest_timer_domain.dart';
 import 'package:repforge/src/features/settings/application/settings_application.dart';
@@ -203,6 +205,7 @@ AppDependencies _testAppDependencies({
   final onboardingStatusRepository = _FakeOnboardingStatusRepository();
   final workoutGroupRepository = _FakeWorkoutGroupRepository();
   final backupRepository = _FakeBackupRepository();
+  final readinessCheckInRepository = _FakeReadinessCheckInRepository();
   final authGateway = LocalOnlyAuthGateway();
   final firebaseInitializationGateway =
       UnavailableFirebaseInitializationGateway();
@@ -245,6 +248,12 @@ AppDependencies _testAppDependencies({
     exportLocalBackup: ExportLocalBackup(backupRepository),
     validateLocalBackup: const ValidateLocalBackup(),
     importLocalBackup: ImportLocalBackup(backupRepository),
+    readinessCheckInRepository: readinessCheckInRepository,
+    saveReadinessCheckIn: SaveReadinessCheckIn(readinessCheckInRepository),
+    getLatestReadiness: GetLatestReadiness(readinessCheckInRepository),
+    getTodayReadiness: GetTodayReadiness(
+      repository: readinessCheckInRepository,
+    ),
     authGateway: authGateway,
     getAuthStatus: GetAuthStatus(authGateway),
     signOut: SignOut(authGateway),
@@ -268,6 +277,38 @@ AppDependencies _testAppDependencies({
     ),
     entitlementCachePolicy: const EntitlementCachePolicy(),
   );
+}
+
+final class _FakeReadinessCheckInRepository
+    implements ReadinessCheckInRepository {
+  ReadinessCheckIn? latestCheckIn;
+
+  @override
+  Future<ReadinessCheckIn?> latest() async => latestCheckIn;
+
+  @override
+  Future<ReadinessCheckIn?> latestForRange({
+    required DateTime startInclusive,
+    required DateTime endExclusive,
+  }) async {
+    final checkIn = latestCheckIn;
+    if (checkIn == null) {
+      return null;
+    }
+
+    final checkedInAt = checkIn.checkedInAt;
+    if (checkedInAt.isBefore(startInclusive.toUtc()) ||
+        !checkedInAt.isBefore(endExclusive.toUtc())) {
+      return null;
+    }
+
+    return checkIn;
+  }
+
+  @override
+  Future<void> save(ReadinessCheckIn checkIn) async {
+    latestCheckIn = checkIn;
+  }
 }
 
 final class _FakeRestTimerNotificationGateway

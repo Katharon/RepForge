@@ -27,8 +27,8 @@ void main() {
     expect(tables.map((row) => row.read<String>('name')), _expectedTableNames);
   });
 
-  test('uses schema version 8', () {
-    expect(database.schemaVersion, 8);
+  test('uses schema version 9', () {
+    expect(database.schemaVersion, 9);
   });
 
   test('current schema validates against Drift metadata', () async {
@@ -76,7 +76,7 @@ void main() {
     expect(migratedSet.exerciseDisplayNameSnapshot, 'Legacy Bench');
     expect(migratedSet.setLabel, isNull);
     expect(tables.map((row) => row.read<String>('name')), _expectedTableNames);
-    expect(userVersion.read<int>('user_version'), 8);
+    expect(userVersion.read<int>('user_version'), 9);
     await expectLater(database.validateDatabaseSchema(), completes);
   });
 
@@ -309,6 +309,25 @@ void main() {
         throwsA(isA<Exception>()),
       );
     });
+
+    test('reject invalid readiness check-in', () async {
+      await expectLater(
+        database
+            .into(database.readinessCheckIns)
+            .insert(
+              ReadinessCheckInsCompanion.insert(
+                readinessCheckInId: '',
+                checkedInAt: DateTime.utc(2026, 6, 2),
+                soreness: 5,
+                sleepQuality: 0,
+                energy: 6,
+                stress: 0,
+                motivation: 6,
+              ),
+            ),
+        throwsA(isA<Exception>()),
+      );
+    });
   });
 }
 
@@ -321,6 +340,7 @@ const List<String> _expectedTableNames = <String>[
   'official_exercise_muscle_groups',
   'official_exercises',
   'onboarding_statuses',
+  'readiness_checkins',
   'settings_profiles',
   'workout_group_exercise_assignments',
   'workout_groups',

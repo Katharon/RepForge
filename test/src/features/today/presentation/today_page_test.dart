@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:repforge/src/app/localization/app_localizations.dart';
 import 'package:repforge/src/core/theme/theme.dart';
+import 'package:repforge/src/features/recovery/application/recovery_application.dart';
+import 'package:repforge/src/features/recovery/domain/recovery_domain.dart';
 import 'package:repforge/src/features/rest_timer/application/rest_timer_application.dart';
 import 'package:repforge/src/features/rest_timer/domain/rest_timer_domain.dart';
 import 'package:repforge/src/features/rest_timer/presentation/rest_timer_presentation.dart';
@@ -41,6 +43,10 @@ void main() {
         notificationGateway: _FakeRestTimerNotificationGateway(),
       ),
       workoutSetRepository: repository,
+      getTodayReadiness: GetTodayReadiness(
+        repository: _InMemoryReadinessCheckInRepository(),
+        nowProvider: () => DateTime.utc(2026, 6, 1, 12),
+      ),
       nowProvider: () => DateTime.utc(2026, 6, 1, 12),
     );
 
@@ -100,6 +106,7 @@ void main() {
     expect(find.text('Rest timer'), findsOneWidget);
     expect(find.text('Quick action'), findsOneWidget);
     expect(find.text('Training signal'), findsOneWidget);
+    expect(find.text('Readiness estimate'), findsOneWidget);
   });
 
   testWidgets('success state remains readable at increased text scale', (
@@ -128,7 +135,46 @@ void main() {
 
     expect(_semanticsLabel('Sets today, 4'), findsOneWidget);
     expect(_semanticsLabel('Volume today, 1250 kg'), findsOneWidget);
+    expect(
+      _semanticsLabel(
+        'Readiness estimate, Medium, 70 / 100. '
+        'Estimate based on your latest local check-in.',
+      ),
+      findsOneWidget,
+    );
     expect(_semanticsLabel('Rest timer, Resting, 01:30'), findsOneWidget);
+  });
+
+  testWidgets('readiness estimate card renders success state', (tester) async {
+    await tester.pumpWidget(
+      _testApp(TodayPage(loader: _StaticTodayDashboardLoader(_successModel()))),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Readiness estimate'), findsOneWidget);
+    expect(find.text('Medium'), findsOneWidget);
+    expect(find.text('70 / 100'), findsOneWidget);
+    expect(
+      find.text('Estimate based on your latest local check-in.'),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('readiness alone can make Today a success state', (tester) async {
+    await tester.pumpWidget(
+      _testApp(
+        TodayPage(
+          loader: _StaticTodayDashboardLoader(
+            _emptyModel().copyWith(readiness: _readinessModel()),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Readiness estimate'), findsOneWidget);
+    expect(find.text('No sets logged today'), findsNothing);
+    expect(find.text('Log set'), findsOneWidget);
   });
 
   testWidgets('today set count and volume are displayed', (tester) async {
@@ -238,33 +284,72 @@ final class _FakeRestTimerNotificationGateway
 }
 
 TodayDashboardReadModel _emptyModel() {
-  return const TodayDashboardReadModel(
+  return TodayDashboardReadModel(
     setCount: 0,
     totalVolumeKg: 0,
-    restTimer: RestTimerCountdownState(
+    restTimer: const RestTimerCountdownState(
       status: RestTimerStatus.idle,
       remaining: Duration.zero,
       displayText: '00:00',
       isVisible: false,
     ),
+    readiness: ReadinessReadModel.empty(forDate: _today),
   );
 }
 
 TodayDashboardReadModel _successModel() {
-  return const TodayDashboardReadModel(
+  return TodayDashboardReadModel(
     setCount: 4,
     totalVolumeKg: 1250,
-    lastLoggedSet: TodayLastLoggedSetViewModel(
+    lastLoggedSet: const TodayLastLoggedSetViewModel(
       exerciseName: 'Barbell Bench Press',
       repetitions: 5,
       loadKg: 100,
     ),
-    restTimer: RestTimerCountdownState(
+    restTimer: const RestTimerCountdownState(
       status: RestTimerStatus.running,
       remaining: Duration(seconds: 90),
       displayText: '01:30',
       isVisible: true,
     ),
+    readiness: _readinessModel(),
+  );
+}
+
+final _today = DateTime.utc(2026, 6);
+
+extension on TodayDashboardReadModel {
+  TodayDashboardReadModel copyWith({ReadinessReadModel? readiness}) {
+    return TodayDashboardReadModel(
+      setCount: setCount,
+      totalVolumeKg: totalVolumeKg,
+      lastLoggedSet: lastLoggedSet,
+      restTimer: restTimer,
+      readiness: readiness ?? this.readiness,
+    );
+  }
+}
+
+ReadinessReadModel _readinessModel() {
+  final checkIn = ReadinessCheckIn(
+    id: ReadinessCheckInId('today-readiness'),
+    checkedInAt: DateTime.utc(2026, 6, 1, 8),
+    soreness: SorenessRating.light(),
+    sleepQuality: SleepQualityRating(4),
+    energy: EnergyRating(3),
+    stress: StressRating(3),
+    motivation: MotivationRating(4),
+  );
+  const calculator = ReadinessScoreCalculator();
+  final result = calculator.calculate(checkIn);
+  return ReadinessReadModel(
+    status: ReadinessReadModelStatus.available,
+    forDate: _today,
+    confidence: result.confidence,
+    latestCheckIn: checkIn,
+    score: result.score,
+    level: result.level,
+    reasons: result.reasons,
   );
 }
 
@@ -285,4 +370,21 @@ WorkoutSet _set({
     load: LoadKg(loadKg),
     performedAt: PerformedAt(performedAt),
   );
+}
+
+final class _InMemoryReadinessCheckInRepository
+    implements ReadinessCheckInRepository {
+  @override
+  Future<ReadinessCheckIn?> latest() async => null;
+
+  @override
+  Future<ReadinessCheckIn?> latestForRange({
+    required DateTime startInclusive,
+    required DateTime endExclusive,
+  }) async {
+    return null;
+  }
+
+  @override
+  Future<void> save(ReadinessCheckIn checkIn) async {}
 }

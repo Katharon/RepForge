@@ -11,6 +11,7 @@ import 'package:repforge/src/features/exercise_catalog/data/importers/official_e
 import 'package:repforge/src/features/exercise_catalog/data/parsers/official_exercise_catalog_parser.dart';
 import 'package:repforge/src/features/exercise_catalog/data/repositories/drift_exercise_catalog_repository.dart';
 import 'package:repforge/src/features/exercise_catalog/domain/exercise_catalog_domain.dart';
+import 'package:repforge/src/features/recovery/domain/recovery_domain.dart';
 import 'package:repforge/src/features/rest_timer/application/rest_timer_application.dart';
 import 'package:repforge/src/features/rest_timer/domain/rest_timer_domain.dart';
 import 'package:repforge/src/features/rest_timer/presentation/rest_timer_presentation.dart';
@@ -594,6 +595,7 @@ final class _RepositoryTodayDashboardLoader implements TodayDashboardLoader {
       restTimer: RestTimerCountdownState.fromSnapshot(
         restTimerNotifications.snapshot,
       ),
+      readiness: ReadinessReadModel.empty(forDate: DateTime.utc(2026, 6)),
     );
   }
 }

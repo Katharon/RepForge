@@ -66,6 +66,36 @@ class AppLocalizationsEn extends AppLocalizations {
   String get todayVolume => 'Volume today';
 
   @override
+  String get todayReadinessTitle => 'Readiness estimate';
+
+  @override
+  String get todayReadinessUnavailable => 'No check-in today';
+
+  @override
+  String get todayReadinessNoScore => '--';
+
+  @override
+  String todayReadinessScore(int score) {
+    return '$score / 100';
+  }
+
+  @override
+  String get todayReadinessHigh => 'High';
+
+  @override
+  String get todayReadinessMedium => 'Medium';
+
+  @override
+  String get todayReadinessLow => 'Low';
+
+  @override
+  String get todayReadinessVeryLow => 'Very low';
+
+  @override
+  String get todayReadinessEstimateNote =>
+      'Estimate based on your latest local check-in.';
+
+  @override
   String get todayLastLoggedTitle => 'Last logged';
 
   @override

@@ -112,6 +112,12 @@ Keep:
 - compact but readable data cards,
 - color-coded metrics.
 
+Slice 47 adds a compact Today `Readiness estimate` card. It should stay in the
+same metric-card family as the existing Today dashboard, use localized careful
+wording, expose a semantic summary for assistive technology, and avoid
+medical, injury-prevention, or mandatory-rest language. Do not introduce body
+heatmaps or region graphics for this slice.
+
 Change:
 
 - create original component shapes and spacing,

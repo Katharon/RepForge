@@ -159,6 +159,12 @@ Use input to adjust recommendations:
 - Moderate soreness: avoid overload jumps, keep volume stable or slightly reduced.
 - Low soreness and good trend: allow normal progression.
 
+Slice 47 implements general local readiness check-ins and a deterministic
+readiness score from soreness, sleep quality, energy, stress, and motivation.
+The score is an estimate only. It can explain future training guidance and can
+appear on Today, but it does not diagnose recovery state and never blocks set
+logging.
+
 ## Progressive overload policy
 
 Progression can happen via:

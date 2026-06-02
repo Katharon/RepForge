@@ -72,6 +72,48 @@
   "@todayVolume": {
     "description": "Metriklabel fuer heute protokolliertes Volumen."
   },
+  "todayReadinessTitle": "Readiness-Schaetzung",
+  "@todayReadinessTitle": {
+    "description": "Titel fuer die Readiness-Karte in Heute."
+  },
+  "todayReadinessUnavailable": "Heute kein Check-in",
+  "@todayReadinessUnavailable": {
+    "description": "Readiness-Text, wenn heute kein Check-in vorhanden ist."
+  },
+  "todayReadinessNoScore": "--",
+  "@todayReadinessNoScore": {
+    "description": "Readiness-Platzhalter, wenn kein Score verfuegbar ist."
+  },
+  "todayReadinessScore": "{score} / 100",
+  "@todayReadinessScore": {
+    "description": "Readiness-Schaetzung in Heute.",
+    "placeholders": {
+      "score": {
+        "type": "int",
+        "example": "72"
+      }
+    }
+  },
+  "todayReadinessHigh": "Hoch",
+  "@todayReadinessHigh": {
+    "description": "Hohe Readiness-Schaetzung."
+  },
+  "todayReadinessMedium": "Mittel",
+  "@todayReadinessMedium": {
+    "description": "Mittlere Readiness-Schaetzung."
+  },
+  "todayReadinessLow": "Niedrig",
+  "@todayReadinessLow": {
+    "description": "Niedrige Readiness-Schaetzung."
+  },
+  "todayReadinessVeryLow": "Sehr niedrig",
+  "@todayReadinessVeryLow": {
+    "description": "Sehr niedrige Readiness-Schaetzung."
+  },
+  "todayReadinessEstimateNote": "Schaetzung anhand deines letzten lokalen Check-ins.",
+  "@todayReadinessEstimateNote": {
+    "description": "Kurzer nicht-medizinischer Hinweis zur Readiness-Schaetzung."
+  },
   "todayLastLoggedTitle": "Zuletzt protokolliert",
   "@todayLastLoggedTitle": {
     "description": "Titel fuer die Karte zum letzten protokollierten Satz."

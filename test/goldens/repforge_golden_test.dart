@@ -9,6 +9,7 @@ import 'package:repforge/src/features/analytics/presentation/analytics_presentat
 import 'package:repforge/src/features/onboarding/application/onboarding_application.dart';
 import 'package:repforge/src/features/onboarding/domain/onboarding_domain.dart';
 import 'package:repforge/src/features/onboarding/presentation/onboarding_presentation.dart';
+import 'package:repforge/src/features/recovery/domain/recovery_domain.dart';
 import 'package:repforge/src/features/rest_timer/domain/rest_timer_domain.dart';
 import 'package:repforge/src/features/rest_timer/presentation/rest_timer_presentation.dart';
 import 'package:repforge/src/features/settings/application/settings_application.dart';
@@ -154,20 +155,21 @@ Future<void> _pumpGolden(
 }
 
 TodayDashboardReadModel _todaySuccessModel() {
-  return const TodayDashboardReadModel(
+  return TodayDashboardReadModel(
     setCount: 4,
     totalVolumeKg: 1250,
-    lastLoggedSet: TodayLastLoggedSetViewModel(
+    lastLoggedSet: const TodayLastLoggedSetViewModel(
       exerciseName: 'Barbell Bench Press',
       repetitions: 5,
       loadKg: 100,
     ),
-    restTimer: RestTimerCountdownState(
+    restTimer: const RestTimerCountdownState(
       status: RestTimerStatus.running,
       remaining: Duration(seconds: 90),
       displayText: '01:30',
       isVisible: true,
     ),
+    readiness: ReadinessReadModel.empty(forDate: DateTime.utc(2026, 6)),
   );
 }
 

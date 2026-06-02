@@ -1,3 +1,4 @@
+import '../../recovery/application/recovery_application.dart';
 import '../../rest_timer/application/rest_timer_application.dart';
 import '../../rest_timer/presentation/rest_timer_presentation.dart';
 import '../../training_log/domain/training_log_domain.dart';
@@ -13,11 +14,13 @@ final class RestTimerTodayDashboardLoader implements TodayDashboardLoader {
   const RestTimerTodayDashboardLoader({
     required this.restTimerNotifications,
     required this.workoutSetRepository,
+    required this.getTodayReadiness,
     this.nowProvider = _systemNow,
   });
 
   final RestTimerNotificationCoordinator restTimerNotifications;
   final WorkoutSetRepository workoutSetRepository;
+  final GetTodayReadiness getTodayReadiness;
   final TodayDashboardNowProvider nowProvider;
 
   @override
@@ -31,6 +34,7 @@ final class RestTimerTodayDashboardLoader implements TodayDashboardLoader {
       ),
     );
     final lastLoggedSet = summary.lastLoggedSet;
+    final readiness = await getTodayReadiness();
 
     return TodayDashboardReadModel(
       setCount: summary.setCount,
@@ -45,6 +49,7 @@ final class RestTimerTodayDashboardLoader implements TodayDashboardLoader {
       restTimer: RestTimerCountdownState.fromSnapshot(
         restTimerNotifications.snapshot,
       ),
+      readiness: readiness,
     );
   }
 }

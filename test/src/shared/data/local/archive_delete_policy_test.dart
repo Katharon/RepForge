@@ -5,6 +5,8 @@ import 'package:repforge/src/features/backup/data/backup_data.dart';
 import 'package:repforge/src/features/backup/domain/backup_domain.dart';
 import 'package:repforge/src/features/onboarding/data/repositories/drift_onboarding_status_repository.dart';
 import 'package:repforge/src/features/onboarding/domain/onboarding_domain.dart';
+import 'package:repforge/src/features/recovery/data/recovery_data.dart';
+import 'package:repforge/src/features/recovery/domain/recovery_domain.dart';
 import 'package:repforge/src/features/settings/data/repositories/drift_settings_profile_repository.dart';
 import 'package:repforge/src/features/settings/domain/settings_domain.dart';
 import 'package:repforge/src/features/training_log/data/repositories/drift_workout_set_repository.dart';
@@ -166,6 +168,41 @@ void main() {
       hasLength(1),
     );
   });
+
+  test(
+    'readiness check-ins export and import without mutating other data',
+    () async {
+      await _seedOfficialCatalog(database);
+      await _seedGroupAndAssignment(database);
+      await DriftWorkoutSetRepository(database).save(_set(id: 'local-set'));
+      await DriftReadinessCheckInRepository(database).save(
+        ReadinessCheckIn(
+          id: ReadinessCheckInId('readiness-1'),
+          checkedInAt: DateTime.utc(2026, 6, 2, 8),
+          soreness: SorenessRating.moderate(),
+          sleepQuality: SleepQualityRating(4),
+          energy: EnergyRating(4),
+          stress: StressRating(2),
+          motivation: MotivationRating(4),
+        ),
+      );
+
+      final backup = await DriftLocalBackupRepository(database).exportBackup();
+      await database.close();
+      database = RepForgeDatabase(NativeDatabase.memory());
+      await DriftLocalBackupRepository(database).importBackup(backup);
+
+      final latest = await DriftReadinessCheckInRepository(database).latest();
+
+      expect(latest?.id, ReadinessCheckInId('readiness-1'));
+      expect(await database.select(database.workoutSets).get(), hasLength(1));
+      expect(
+        await database.select(database.officialExercises).get(),
+        hasLength(1),
+      );
+      expect(await database.select(database.workoutGroups).get(), hasLength(1));
+    },
+  );
 }
 
 Future<void> _seedOfficialCatalog(RepForgeDatabase database) async {

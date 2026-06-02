@@ -1,3 +1,4 @@
+import '../../recovery/domain/recovery_domain.dart';
 import '../../rest_timer/presentation/rest_timer_presentation.dart';
 
 final class TodayDashboardReadModel {
@@ -5,6 +6,7 @@ final class TodayDashboardReadModel {
     required this.setCount,
     required this.totalVolumeKg,
     required this.restTimer,
+    required this.readiness,
     this.lastLoggedSet,
   });
 
@@ -12,10 +14,14 @@ final class TodayDashboardReadModel {
   final double totalVolumeKg;
   final TodayLastLoggedSetViewModel? lastLoggedSet;
   final RestTimerCountdownState restTimer;
+  final ReadinessReadModel readiness;
 
   bool get hasLoggedSets => setCount > 0;
 
   bool get hasVisibleRestTimer => restTimer.isVisible;
+
+  bool get hasReadinessEstimate =>
+      readiness.status == ReadinessReadModelStatus.available;
 }
 
 final class TodayLastLoggedSetViewModel {

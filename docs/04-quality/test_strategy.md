@@ -195,6 +195,16 @@ pull-neglect signals, leg-neglect signals, focus-aware upper/lower target ranges
 unknown activation evidence, movement-pattern gaps, non-diagnostic API wording,
 and preservation of supplied `MuscleLoadEstimate` inputs.
 
+## Readiness check-in tests
+
+Slice 47 readiness tests live under `test/src/features/recovery/` and must keep
+domain/application logic pure Dart. They should cover bounded soreness,
+sleep-quality, energy, stress, and motivation validation; deterministic scoring
+and readiness level mapping; high-soreness behavior; explicit empty state;
+non-diagnostic/non-blocking API wording; Drift save/load/latest ordering; date
+filtering; backup export/import; and preservation of workout sets, catalog
+rows, groups, and profile data when readiness check-ins are saved.
+
 ## Profile and equipment tests
 
 Slice 44 profile tests must cover pure-Dart value object validation, explicit

@@ -4,6 +4,12 @@
 
 ### Added
 
+- Added Slice 47 recovery readiness check-ins with bounded local soreness,
+  sleep-quality, energy, stress, and motivation inputs; deterministic readiness
+  scoring; local Drift schema v9 persistence; backup/export support; and a
+  localized Today readiness estimate card without medical advice, wearables,
+  recommendation generation, cloud services, Firebase, sync, or workout-logging
+  blocks.
 - Added Slice 46 muscle balance detection with pure-Dart focus-aware target
   ranges, confidence-aware balance assessments, insufficient-data handling,
   explainable push/pull/lower-body and movement-pattern signals, unknown

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../app/localization/app_localizations.dart';
 import '../../../core/theme/theme.dart';
 import '../../../core/widgets/widgets.dart';
+import '../../recovery/domain/recovery_domain.dart';
 import '../../rest_timer/domain/rest_timer_domain.dart';
 import 'today_dashboard_loader.dart';
 import 'today_dashboard_models.dart';
@@ -76,7 +77,10 @@ class _TodayPageState extends State<TodayPage> {
 
       setState(() {
         _state = TodayDashboardState(
-          status: dashboard.hasLoggedSets || dashboard.hasVisibleRestTimer
+          status:
+              dashboard.hasLoggedSets ||
+                  dashboard.hasVisibleRestTimer ||
+                  dashboard.hasReadinessEstimate
               ? TodayDashboardStatus.success
               : TodayDashboardStatus.empty,
           dashboard: dashboard,
@@ -176,6 +180,10 @@ class _TodayEmptyState extends StatelessWidget {
         if (dashboard != null) ...[
           _MetricStrip(dashboard: dashboard!),
           const SizedBox(height: RepForgeSpacing.md),
+          if (dashboard!.hasReadinessEstimate) ...[
+            _ReadinessCard(dashboard: dashboard!),
+            const SizedBox(height: RepForgeSpacing.md),
+          ],
           _RestTimerCard(dashboard: dashboard!),
           const SizedBox(height: RepForgeSpacing.md),
         ],
@@ -234,6 +242,8 @@ class _TodaySuccessState extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _MetricStrip(dashboard: dashboard),
+        const SizedBox(height: RepForgeSpacing.md),
+        _ReadinessCard(dashboard: dashboard),
         const SizedBox(height: RepForgeSpacing.md),
         _LastLoggedSetCard(dashboard: dashboard),
         const SizedBox(height: RepForgeSpacing.md),
@@ -322,6 +332,72 @@ class _MetricCard extends StatelessWidget {
                 context,
               ).textTheme.metricValue.copyWith(color: color),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ReadinessCard extends StatelessWidget {
+  const _ReadinessCard({required this.dashboard});
+
+  final TodayDashboardReadModel dashboard;
+
+  @override
+  Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+    final readiness = dashboard.readiness;
+    final level = readiness.level;
+    final score = readiness.score;
+    final levelText = level == null
+        ? localizations.todayReadinessUnavailable
+        : _readinessLevelText(context, level);
+    final scoreText = score == null
+        ? localizations.todayReadinessNoScore
+        : localizations.todayReadinessScore(score.value);
+
+    return Semantics(
+      label:
+          '${localizations.todayReadinessTitle}, $levelText, $scoreText. '
+          '${localizations.todayReadinessEstimateNote}',
+      child: AppCard(
+        child: Wrap(
+          spacing: RepForgeSpacing.md,
+          runSpacing: RepForgeSpacing.sm,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            const Icon(
+              Icons.battery_saver_outlined,
+              color: RepForgeColorTokens.accentPrimaryGreen,
+            ),
+            ConstrainedBox(
+              constraints: const BoxConstraints(minWidth: 180, maxWidth: 420),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    localizations.todayReadinessTitle,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: RepForgeSpacing.xs),
+                  Text(
+                    levelText,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: RepForgeColorTokens.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(height: RepForgeSpacing.xs),
+                  Text(
+                    localizations.todayReadinessEstimateNote,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: RepForgeColorTokens.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Text(scoreText, style: Theme.of(context).textTheme.metricUnit),
           ],
         ),
       ),
@@ -482,6 +558,17 @@ class _AnalyticsHintCard extends StatelessWidget {
       ),
     );
   }
+}
+
+String _readinessLevelText(BuildContext context, ReadinessLevel level) {
+  final localizations = AppLocalizations.of(context);
+
+  return switch (level) {
+    ReadinessLevel.high => localizations.todayReadinessHigh,
+    ReadinessLevel.medium => localizations.todayReadinessMedium,
+    ReadinessLevel.low => localizations.todayReadinessLow,
+    ReadinessLevel.veryLow => localizations.todayReadinessVeryLow,
+  };
 }
 
 String _restTimerStatusText(BuildContext context, RestTimerStatus status) {

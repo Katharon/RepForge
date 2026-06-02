@@ -4924,6 +4924,500 @@ class OnboardingStatusesCompanion extends UpdateCompanion<OnboardingStatusRow> {
   }
 }
 
+class $ReadinessCheckInsTable extends ReadinessCheckIns
+    with TableInfo<$ReadinessCheckInsTable, ReadinessCheckInRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ReadinessCheckInsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _readinessCheckInIdMeta =
+      const VerificationMeta('readinessCheckInId');
+  @override
+  late final GeneratedColumn<String> readinessCheckInId =
+      GeneratedColumn<String>(
+        'readiness_check_in_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+        $customConstraints:
+            'NOT NULL CHECK (length(readiness_check_in_id) > 0)',
+      );
+  static const VerificationMeta _checkedInAtMeta = const VerificationMeta(
+    'checkedInAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> checkedInAt = GeneratedColumn<DateTime>(
+    'checked_in_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  static const VerificationMeta _sorenessMeta = const VerificationMeta(
+    'soreness',
+  );
+  @override
+  late final GeneratedColumn<int> soreness = GeneratedColumn<int>(
+    'soreness',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL CHECK (soreness BETWEEN 0 AND 4)',
+  );
+  static const VerificationMeta _sleepQualityMeta = const VerificationMeta(
+    'sleepQuality',
+  );
+  @override
+  late final GeneratedColumn<int> sleepQuality = GeneratedColumn<int>(
+    'sleep_quality',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL CHECK (sleep_quality BETWEEN 1 AND 5)',
+  );
+  static const VerificationMeta _energyMeta = const VerificationMeta('energy');
+  @override
+  late final GeneratedColumn<int> energy = GeneratedColumn<int>(
+    'energy',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL CHECK (energy BETWEEN 1 AND 5)',
+  );
+  static const VerificationMeta _stressMeta = const VerificationMeta('stress');
+  @override
+  late final GeneratedColumn<int> stress = GeneratedColumn<int>(
+    'stress',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL CHECK (stress BETWEEN 1 AND 5)',
+  );
+  static const VerificationMeta _motivationMeta = const VerificationMeta(
+    'motivation',
+  );
+  @override
+  late final GeneratedColumn<int> motivation = GeneratedColumn<int>(
+    'motivation',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL CHECK (motivation BETWEEN 1 AND 5)',
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    readinessCheckInId,
+    checkedInAt,
+    soreness,
+    sleepQuality,
+    energy,
+    stress,
+    motivation,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'readiness_checkins';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ReadinessCheckInRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('readiness_check_in_id')) {
+      context.handle(
+        _readinessCheckInIdMeta,
+        readinessCheckInId.isAcceptableOrUnknown(
+          data['readiness_check_in_id']!,
+          _readinessCheckInIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_readinessCheckInIdMeta);
+    }
+    if (data.containsKey('checked_in_at')) {
+      context.handle(
+        _checkedInAtMeta,
+        checkedInAt.isAcceptableOrUnknown(
+          data['checked_in_at']!,
+          _checkedInAtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_checkedInAtMeta);
+    }
+    if (data.containsKey('soreness')) {
+      context.handle(
+        _sorenessMeta,
+        soreness.isAcceptableOrUnknown(data['soreness']!, _sorenessMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sorenessMeta);
+    }
+    if (data.containsKey('sleep_quality')) {
+      context.handle(
+        _sleepQualityMeta,
+        sleepQuality.isAcceptableOrUnknown(
+          data['sleep_quality']!,
+          _sleepQualityMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_sleepQualityMeta);
+    }
+    if (data.containsKey('energy')) {
+      context.handle(
+        _energyMeta,
+        energy.isAcceptableOrUnknown(data['energy']!, _energyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_energyMeta);
+    }
+    if (data.containsKey('stress')) {
+      context.handle(
+        _stressMeta,
+        stress.isAcceptableOrUnknown(data['stress']!, _stressMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_stressMeta);
+    }
+    if (data.containsKey('motivation')) {
+      context.handle(
+        _motivationMeta,
+        motivation.isAcceptableOrUnknown(data['motivation']!, _motivationMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_motivationMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {readinessCheckInId};
+  @override
+  ReadinessCheckInRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ReadinessCheckInRow(
+      readinessCheckInId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}readiness_check_in_id'],
+      )!,
+      checkedInAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}checked_in_at'],
+      )!,
+      soreness: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}soreness'],
+      )!,
+      sleepQuality: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sleep_quality'],
+      )!,
+      energy: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}energy'],
+      )!,
+      stress: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}stress'],
+      )!,
+      motivation: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}motivation'],
+      )!,
+    );
+  }
+
+  @override
+  $ReadinessCheckInsTable createAlias(String alias) {
+    return $ReadinessCheckInsTable(attachedDatabase, alias);
+  }
+}
+
+class ReadinessCheckInRow extends DataClass
+    implements Insertable<ReadinessCheckInRow> {
+  final String readinessCheckInId;
+  final DateTime checkedInAt;
+  final int soreness;
+  final int sleepQuality;
+  final int energy;
+  final int stress;
+  final int motivation;
+  const ReadinessCheckInRow({
+    required this.readinessCheckInId,
+    required this.checkedInAt,
+    required this.soreness,
+    required this.sleepQuality,
+    required this.energy,
+    required this.stress,
+    required this.motivation,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['readiness_check_in_id'] = Variable<String>(readinessCheckInId);
+    map['checked_in_at'] = Variable<DateTime>(checkedInAt);
+    map['soreness'] = Variable<int>(soreness);
+    map['sleep_quality'] = Variable<int>(sleepQuality);
+    map['energy'] = Variable<int>(energy);
+    map['stress'] = Variable<int>(stress);
+    map['motivation'] = Variable<int>(motivation);
+    return map;
+  }
+
+  ReadinessCheckInsCompanion toCompanion(bool nullToAbsent) {
+    return ReadinessCheckInsCompanion(
+      readinessCheckInId: Value(readinessCheckInId),
+      checkedInAt: Value(checkedInAt),
+      soreness: Value(soreness),
+      sleepQuality: Value(sleepQuality),
+      energy: Value(energy),
+      stress: Value(stress),
+      motivation: Value(motivation),
+    );
+  }
+
+  factory ReadinessCheckInRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ReadinessCheckInRow(
+      readinessCheckInId: serializer.fromJson<String>(
+        json['readinessCheckInId'],
+      ),
+      checkedInAt: serializer.fromJson<DateTime>(json['checkedInAt']),
+      soreness: serializer.fromJson<int>(json['soreness']),
+      sleepQuality: serializer.fromJson<int>(json['sleepQuality']),
+      energy: serializer.fromJson<int>(json['energy']),
+      stress: serializer.fromJson<int>(json['stress']),
+      motivation: serializer.fromJson<int>(json['motivation']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'readinessCheckInId': serializer.toJson<String>(readinessCheckInId),
+      'checkedInAt': serializer.toJson<DateTime>(checkedInAt),
+      'soreness': serializer.toJson<int>(soreness),
+      'sleepQuality': serializer.toJson<int>(sleepQuality),
+      'energy': serializer.toJson<int>(energy),
+      'stress': serializer.toJson<int>(stress),
+      'motivation': serializer.toJson<int>(motivation),
+    };
+  }
+
+  ReadinessCheckInRow copyWith({
+    String? readinessCheckInId,
+    DateTime? checkedInAt,
+    int? soreness,
+    int? sleepQuality,
+    int? energy,
+    int? stress,
+    int? motivation,
+  }) => ReadinessCheckInRow(
+    readinessCheckInId: readinessCheckInId ?? this.readinessCheckInId,
+    checkedInAt: checkedInAt ?? this.checkedInAt,
+    soreness: soreness ?? this.soreness,
+    sleepQuality: sleepQuality ?? this.sleepQuality,
+    energy: energy ?? this.energy,
+    stress: stress ?? this.stress,
+    motivation: motivation ?? this.motivation,
+  );
+  ReadinessCheckInRow copyWithCompanion(ReadinessCheckInsCompanion data) {
+    return ReadinessCheckInRow(
+      readinessCheckInId: data.readinessCheckInId.present
+          ? data.readinessCheckInId.value
+          : this.readinessCheckInId,
+      checkedInAt: data.checkedInAt.present
+          ? data.checkedInAt.value
+          : this.checkedInAt,
+      soreness: data.soreness.present ? data.soreness.value : this.soreness,
+      sleepQuality: data.sleepQuality.present
+          ? data.sleepQuality.value
+          : this.sleepQuality,
+      energy: data.energy.present ? data.energy.value : this.energy,
+      stress: data.stress.present ? data.stress.value : this.stress,
+      motivation: data.motivation.present
+          ? data.motivation.value
+          : this.motivation,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ReadinessCheckInRow(')
+          ..write('readinessCheckInId: $readinessCheckInId, ')
+          ..write('checkedInAt: $checkedInAt, ')
+          ..write('soreness: $soreness, ')
+          ..write('sleepQuality: $sleepQuality, ')
+          ..write('energy: $energy, ')
+          ..write('stress: $stress, ')
+          ..write('motivation: $motivation')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    readinessCheckInId,
+    checkedInAt,
+    soreness,
+    sleepQuality,
+    energy,
+    stress,
+    motivation,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ReadinessCheckInRow &&
+          other.readinessCheckInId == this.readinessCheckInId &&
+          other.checkedInAt == this.checkedInAt &&
+          other.soreness == this.soreness &&
+          other.sleepQuality == this.sleepQuality &&
+          other.energy == this.energy &&
+          other.stress == this.stress &&
+          other.motivation == this.motivation);
+}
+
+class ReadinessCheckInsCompanion extends UpdateCompanion<ReadinessCheckInRow> {
+  final Value<String> readinessCheckInId;
+  final Value<DateTime> checkedInAt;
+  final Value<int> soreness;
+  final Value<int> sleepQuality;
+  final Value<int> energy;
+  final Value<int> stress;
+  final Value<int> motivation;
+  final Value<int> rowid;
+  const ReadinessCheckInsCompanion({
+    this.readinessCheckInId = const Value.absent(),
+    this.checkedInAt = const Value.absent(),
+    this.soreness = const Value.absent(),
+    this.sleepQuality = const Value.absent(),
+    this.energy = const Value.absent(),
+    this.stress = const Value.absent(),
+    this.motivation = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ReadinessCheckInsCompanion.insert({
+    required String readinessCheckInId,
+    required DateTime checkedInAt,
+    required int soreness,
+    required int sleepQuality,
+    required int energy,
+    required int stress,
+    required int motivation,
+    this.rowid = const Value.absent(),
+  }) : readinessCheckInId = Value(readinessCheckInId),
+       checkedInAt = Value(checkedInAt),
+       soreness = Value(soreness),
+       sleepQuality = Value(sleepQuality),
+       energy = Value(energy),
+       stress = Value(stress),
+       motivation = Value(motivation);
+  static Insertable<ReadinessCheckInRow> custom({
+    Expression<String>? readinessCheckInId,
+    Expression<DateTime>? checkedInAt,
+    Expression<int>? soreness,
+    Expression<int>? sleepQuality,
+    Expression<int>? energy,
+    Expression<int>? stress,
+    Expression<int>? motivation,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (readinessCheckInId != null)
+        'readiness_check_in_id': readinessCheckInId,
+      if (checkedInAt != null) 'checked_in_at': checkedInAt,
+      if (soreness != null) 'soreness': soreness,
+      if (sleepQuality != null) 'sleep_quality': sleepQuality,
+      if (energy != null) 'energy': energy,
+      if (stress != null) 'stress': stress,
+      if (motivation != null) 'motivation': motivation,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ReadinessCheckInsCompanion copyWith({
+    Value<String>? readinessCheckInId,
+    Value<DateTime>? checkedInAt,
+    Value<int>? soreness,
+    Value<int>? sleepQuality,
+    Value<int>? energy,
+    Value<int>? stress,
+    Value<int>? motivation,
+    Value<int>? rowid,
+  }) {
+    return ReadinessCheckInsCompanion(
+      readinessCheckInId: readinessCheckInId ?? this.readinessCheckInId,
+      checkedInAt: checkedInAt ?? this.checkedInAt,
+      soreness: soreness ?? this.soreness,
+      sleepQuality: sleepQuality ?? this.sleepQuality,
+      energy: energy ?? this.energy,
+      stress: stress ?? this.stress,
+      motivation: motivation ?? this.motivation,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (readinessCheckInId.present) {
+      map['readiness_check_in_id'] = Variable<String>(readinessCheckInId.value);
+    }
+    if (checkedInAt.present) {
+      map['checked_in_at'] = Variable<DateTime>(checkedInAt.value);
+    }
+    if (soreness.present) {
+      map['soreness'] = Variable<int>(soreness.value);
+    }
+    if (sleepQuality.present) {
+      map['sleep_quality'] = Variable<int>(sleepQuality.value);
+    }
+    if (energy.present) {
+      map['energy'] = Variable<int>(energy.value);
+    }
+    if (stress.present) {
+      map['stress'] = Variable<int>(stress.value);
+    }
+    if (motivation.present) {
+      map['motivation'] = Variable<int>(motivation.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ReadinessCheckInsCompanion(')
+          ..write('readinessCheckInId: $readinessCheckInId, ')
+          ..write('checkedInAt: $checkedInAt, ')
+          ..write('soreness: $soreness, ')
+          ..write('sleepQuality: $sleepQuality, ')
+          ..write('energy: $energy, ')
+          ..write('stress: $stress, ')
+          ..write('motivation: $motivation, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$RepForgeDatabase extends GeneratedDatabase {
   _$RepForgeDatabase(QueryExecutor e) : super(e);
   $RepForgeDatabaseManager get managers => $RepForgeDatabaseManager(this);
@@ -4951,6 +5445,8 @@ abstract class _$RepForgeDatabase extends GeneratedDatabase {
       $EquipmentLoadConstraintsTable(this);
   late final $OnboardingStatusesTable onboardingStatuses =
       $OnboardingStatusesTable(this);
+  late final $ReadinessCheckInsTable readinessCheckIns =
+      $ReadinessCheckInsTable(this);
   late final Index workoutSetsExerciseTimelineIdx = Index(
     'workout_sets_exercise_timeline_idx',
     'CREATE INDEX workout_sets_exercise_timeline_idx ON workout_sets (exercise_source, exercise_id, performed_at DESC, workout_set_id DESC)',
@@ -4962,6 +5458,10 @@ abstract class _$RepForgeDatabase extends GeneratedDatabase {
   late final Index workoutSetsSessionOrderIdx = Index(
     'workout_sets_session_order_idx',
     'CREATE INDEX workout_sets_session_order_idx ON workout_sets (workout_session_id, performed_at, workout_set_id)',
+  );
+  late final Index readinessCheckinsLatestIdx = Index(
+    'readiness_checkins_latest_idx',
+    'CREATE INDEX readiness_checkins_latest_idx ON readiness_checkins (checked_in_at DESC, readiness_check_in_id DESC)',
   );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
@@ -4980,9 +5480,11 @@ abstract class _$RepForgeDatabase extends GeneratedDatabase {
     equipmentInventoryItems,
     equipmentLoadConstraints,
     onboardingStatuses,
+    readinessCheckIns,
     workoutSetsExerciseTimelineIdx,
     workoutSetsHistoryOrderIdx,
     workoutSetsSessionOrderIdx,
+    readinessCheckinsLatestIdx,
   ];
 }
 
@@ -7686,6 +8188,265 @@ typedef $$OnboardingStatusesTableProcessedTableManager =
       OnboardingStatusRow,
       PrefetchHooks Function()
     >;
+typedef $$ReadinessCheckInsTableCreateCompanionBuilder =
+    ReadinessCheckInsCompanion Function({
+      required String readinessCheckInId,
+      required DateTime checkedInAt,
+      required int soreness,
+      required int sleepQuality,
+      required int energy,
+      required int stress,
+      required int motivation,
+      Value<int> rowid,
+    });
+typedef $$ReadinessCheckInsTableUpdateCompanionBuilder =
+    ReadinessCheckInsCompanion Function({
+      Value<String> readinessCheckInId,
+      Value<DateTime> checkedInAt,
+      Value<int> soreness,
+      Value<int> sleepQuality,
+      Value<int> energy,
+      Value<int> stress,
+      Value<int> motivation,
+      Value<int> rowid,
+    });
+
+class $$ReadinessCheckInsTableFilterComposer
+    extends Composer<_$RepForgeDatabase, $ReadinessCheckInsTable> {
+  $$ReadinessCheckInsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get readinessCheckInId => $composableBuilder(
+    column: $table.readinessCheckInId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get checkedInAt => $composableBuilder(
+    column: $table.checkedInAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get soreness => $composableBuilder(
+    column: $table.soreness,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get sleepQuality => $composableBuilder(
+    column: $table.sleepQuality,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get energy => $composableBuilder(
+    column: $table.energy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get stress => $composableBuilder(
+    column: $table.stress,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get motivation => $composableBuilder(
+    column: $table.motivation,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ReadinessCheckInsTableOrderingComposer
+    extends Composer<_$RepForgeDatabase, $ReadinessCheckInsTable> {
+  $$ReadinessCheckInsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get readinessCheckInId => $composableBuilder(
+    column: $table.readinessCheckInId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get checkedInAt => $composableBuilder(
+    column: $table.checkedInAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get soreness => $composableBuilder(
+    column: $table.soreness,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get sleepQuality => $composableBuilder(
+    column: $table.sleepQuality,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get energy => $composableBuilder(
+    column: $table.energy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get stress => $composableBuilder(
+    column: $table.stress,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get motivation => $composableBuilder(
+    column: $table.motivation,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ReadinessCheckInsTableAnnotationComposer
+    extends Composer<_$RepForgeDatabase, $ReadinessCheckInsTable> {
+  $$ReadinessCheckInsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get readinessCheckInId => $composableBuilder(
+    column: $table.readinessCheckInId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get checkedInAt => $composableBuilder(
+    column: $table.checkedInAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get soreness =>
+      $composableBuilder(column: $table.soreness, builder: (column) => column);
+
+  GeneratedColumn<int> get sleepQuality => $composableBuilder(
+    column: $table.sleepQuality,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get energy =>
+      $composableBuilder(column: $table.energy, builder: (column) => column);
+
+  GeneratedColumn<int> get stress =>
+      $composableBuilder(column: $table.stress, builder: (column) => column);
+
+  GeneratedColumn<int> get motivation => $composableBuilder(
+    column: $table.motivation,
+    builder: (column) => column,
+  );
+}
+
+class $$ReadinessCheckInsTableTableManager
+    extends
+        RootTableManager<
+          _$RepForgeDatabase,
+          $ReadinessCheckInsTable,
+          ReadinessCheckInRow,
+          $$ReadinessCheckInsTableFilterComposer,
+          $$ReadinessCheckInsTableOrderingComposer,
+          $$ReadinessCheckInsTableAnnotationComposer,
+          $$ReadinessCheckInsTableCreateCompanionBuilder,
+          $$ReadinessCheckInsTableUpdateCompanionBuilder,
+          (
+            ReadinessCheckInRow,
+            BaseReferences<
+              _$RepForgeDatabase,
+              $ReadinessCheckInsTable,
+              ReadinessCheckInRow
+            >,
+          ),
+          ReadinessCheckInRow,
+          PrefetchHooks Function()
+        > {
+  $$ReadinessCheckInsTableTableManager(
+    _$RepForgeDatabase db,
+    $ReadinessCheckInsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ReadinessCheckInsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ReadinessCheckInsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ReadinessCheckInsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> readinessCheckInId = const Value.absent(),
+                Value<DateTime> checkedInAt = const Value.absent(),
+                Value<int> soreness = const Value.absent(),
+                Value<int> sleepQuality = const Value.absent(),
+                Value<int> energy = const Value.absent(),
+                Value<int> stress = const Value.absent(),
+                Value<int> motivation = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ReadinessCheckInsCompanion(
+                readinessCheckInId: readinessCheckInId,
+                checkedInAt: checkedInAt,
+                soreness: soreness,
+                sleepQuality: sleepQuality,
+                energy: energy,
+                stress: stress,
+                motivation: motivation,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String readinessCheckInId,
+                required DateTime checkedInAt,
+                required int soreness,
+                required int sleepQuality,
+                required int energy,
+                required int stress,
+                required int motivation,
+                Value<int> rowid = const Value.absent(),
+              }) => ReadinessCheckInsCompanion.insert(
+                readinessCheckInId: readinessCheckInId,
+                checkedInAt: checkedInAt,
+                soreness: soreness,
+                sleepQuality: sleepQuality,
+                energy: energy,
+                stress: stress,
+                motivation: motivation,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ReadinessCheckInsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$RepForgeDatabase,
+      $ReadinessCheckInsTable,
+      ReadinessCheckInRow,
+      $$ReadinessCheckInsTableFilterComposer,
+      $$ReadinessCheckInsTableOrderingComposer,
+      $$ReadinessCheckInsTableAnnotationComposer,
+      $$ReadinessCheckInsTableCreateCompanionBuilder,
+      $$ReadinessCheckInsTableUpdateCompanionBuilder,
+      (
+        ReadinessCheckInRow,
+        BaseReferences<
+          _$RepForgeDatabase,
+          $ReadinessCheckInsTable,
+          ReadinessCheckInRow
+        >,
+      ),
+      ReadinessCheckInRow,
+      PrefetchHooks Function()
+    >;
 
 class $RepForgeDatabaseManager {
   final _$RepForgeDatabase _db;
@@ -7736,4 +8497,6 @@ class $RepForgeDatabaseManager {
       );
   $$OnboardingStatusesTableTableManager get onboardingStatuses =>
       $$OnboardingStatusesTableTableManager(_db, _db.onboardingStatuses);
+  $$ReadinessCheckInsTableTableManager get readinessCheckIns =>
+      $$ReadinessCheckInsTableTableManager(_db, _db.readinessCheckIns);
 }

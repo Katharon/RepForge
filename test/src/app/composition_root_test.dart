@@ -9,6 +9,8 @@ import 'package:repforge/src/features/notifications/domain/notifications_domain.
 import 'package:repforge/src/features/onboarding/data/onboarding_data.dart';
 import 'package:repforge/src/features/onboarding/domain/onboarding_domain.dart';
 import 'package:repforge/src/features/purchases/domain/purchases_domain.dart';
+import 'package:repforge/src/features/recovery/data/recovery_data.dart';
+import 'package:repforge/src/features/recovery/domain/recovery_domain.dart';
 import 'package:repforge/src/features/rest_timer/application/rest_timer_application.dart';
 import 'package:repforge/src/features/settings/data/settings_data.dart';
 import 'package:repforge/src/features/settings/domain/settings_domain.dart';
@@ -27,6 +29,14 @@ void main() {
     expect(dependencies.configuration.locale, isNull);
     expect(dependencies.workoutSetRepository, isA<WorkoutSetRepository>());
     expect(dependencies.workoutSetRepository, isA<DriftWorkoutSetRepository>());
+    expect(
+      dependencies.readinessCheckInRepository,
+      isA<ReadinessCheckInRepository>(),
+    );
+    expect(
+      dependencies.readinessCheckInRepository,
+      isA<DriftReadinessCheckInRepository>(),
+    );
     expect(
       dependencies.settingsProfileRepository,
       isA<SettingsProfileRepository>(),
@@ -103,6 +113,30 @@ void main() {
 
     expect(await dependencies.loadSettingsProfile(), profile);
   });
+
+  test(
+    'composed readiness repository saves and loads latest check-in',
+    () async {
+      final dependencies = _composeInMemoryDependencies();
+
+      addTearDown(dependencies.close);
+
+      final checkIn = ReadinessCheckIn(
+        id: ReadinessCheckInId('composed-readiness'),
+        checkedInAt: DateTime.utc(2026, 6, 2, 8),
+        soreness: SorenessRating.light(),
+        sleepQuality: SleepQualityRating(4),
+        energy: EnergyRating(4),
+        stress: StressRating(2),
+        motivation: MotivationRating(4),
+      );
+
+      await dependencies.saveReadinessCheckIn(checkIn);
+
+      expect(await dependencies.readinessCheckInRepository.latest(), checkIn);
+      expect((await dependencies.getLatestReadiness()).score, isNotNull);
+    },
+  );
 
   test('composed onboarding status repository saves skipped state', () async {
     final dependencies = _composeInMemoryDependencies();

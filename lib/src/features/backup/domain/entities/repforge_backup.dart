@@ -36,6 +36,7 @@ final class RepForgeBackup {
     required this.workoutGroups,
     required this.workoutGroupAssignments,
     required this.catalogImports,
+    required this.readinessCheckIns,
     this.settingsProfile,
     this.onboardingStatus,
   });
@@ -47,6 +48,8 @@ final class RepForgeBackup {
     List<BackupWorkoutGroupAssignment> workoutGroupAssignments =
         const <BackupWorkoutGroupAssignment>[],
     List<BackupCatalogImport> catalogImports = const <BackupCatalogImport>[],
+    List<BackupReadinessCheckIn> readinessCheckIns =
+        const <BackupReadinessCheckIn>[],
     BackupSettingsProfile? settingsProfile,
     BackupOnboardingStatus? onboardingStatus,
   }) {
@@ -59,6 +62,7 @@ final class RepForgeBackup {
       workoutGroups: workoutGroups,
       workoutGroupAssignments: workoutGroupAssignments,
       catalogImports: catalogImports,
+      readinessCheckIns: readinessCheckIns,
       settingsProfile: settingsProfile,
       onboardingStatus: onboardingStatus,
     );
@@ -121,6 +125,12 @@ final class RepForgeBackup {
       errors,
       (value, field) => BackupCatalogImport.fromJson(value, field, errors),
     );
+    final readinessCheckIns = _optionalList(
+      json,
+      'readinessCheckIns',
+      errors,
+      (value, field) => BackupReadinessCheckIn.fromJson(value, field, errors),
+    );
 
     final settingsProfile = _optionalObject(
       json,
@@ -150,6 +160,11 @@ final class RepForgeBackup {
       values: assignments.map((assignment) => assignment.id),
       errors: errors,
     );
+    _rejectDuplicates(
+      field: 'readinessCheckIns.id',
+      values: readinessCheckIns.map((checkIn) => checkIn.id),
+      errors: errors,
+    );
 
     if (errors.isNotEmpty) {
       throw BackupValidationException(errors);
@@ -166,6 +181,9 @@ final class RepForgeBackup {
         assignments,
       ),
       catalogImports: List<BackupCatalogImport>.unmodifiable(catalogImports),
+      readinessCheckIns: List<BackupReadinessCheckIn>.unmodifiable(
+        readinessCheckIns,
+      ),
       settingsProfile: settingsProfile,
       onboardingStatus: onboardingStatus,
     );
@@ -181,6 +199,7 @@ final class RepForgeBackup {
   final BackupSettingsProfile? settingsProfile;
   final BackupOnboardingStatus? onboardingStatus;
   final List<BackupCatalogImport> catalogImports;
+  final List<BackupReadinessCheckIn> readinessCheckIns;
 
   Map<String, Object?> toJson() {
     return <String, Object?>{
@@ -196,6 +215,9 @@ final class RepForgeBackup {
       'settingsProfile': settingsProfile?.toJson(),
       'onboardingStatus': onboardingStatus?.toJson(),
       'catalogImports': catalogImports.map((row) => row.toJson()).toList(),
+      'readinessCheckIns': readinessCheckIns
+          .map((checkIn) => checkIn.toJson())
+          .toList(),
     };
   }
 
@@ -1057,6 +1079,116 @@ final class BackupCatalogImport {
   }
 }
 
+final class BackupReadinessCheckIn {
+  const BackupReadinessCheckIn({
+    required this.id,
+    required this.checkedInAt,
+    required this.soreness,
+    required this.sleepQuality,
+    required this.energy,
+    required this.stress,
+    required this.motivation,
+  });
+
+  factory BackupReadinessCheckIn.fromJson(
+    Object? value,
+    String field,
+    List<BackupValidationError> errors,
+  ) {
+    if (value is! Map<String, Object?>) {
+      errors.add(
+        BackupValidationError(
+          field: field,
+          message: 'Readiness check-in must be an object.',
+        ),
+      );
+      return BackupReadinessCheckIn(
+        id: 'invalid',
+        checkedInAt: DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
+        soreness: 0,
+        sleepQuality: 1,
+        energy: 1,
+        stress: 1,
+        motivation: 1,
+      );
+    }
+
+    final id = _requiredString(value, '$field.id', errors);
+    final checkedInAt = _requiredDateTime(value, '$field.checkedInAt', errors);
+    final soreness = _requiredInt(value, '$field.soreness', errors);
+    final sleep = _requiredInt(value, '$field.sleepQuality', errors);
+    final energy = _requiredInt(value, '$field.energy', errors);
+    final stress = _requiredInt(value, '$field.stress', errors);
+    final motivation = _requiredInt(value, '$field.motivation', errors);
+
+    _validateRange(
+      field: '$field.soreness',
+      value: soreness,
+      minimum: 0,
+      maximum: 4,
+      errors: errors,
+    );
+    _validateRange(
+      field: '$field.sleepQuality',
+      value: sleep,
+      minimum: 1,
+      maximum: 5,
+      errors: errors,
+    );
+    _validateRange(
+      field: '$field.energy',
+      value: energy,
+      minimum: 1,
+      maximum: 5,
+      errors: errors,
+    );
+    _validateRange(
+      field: '$field.stress',
+      value: stress,
+      minimum: 1,
+      maximum: 5,
+      errors: errors,
+    );
+    _validateRange(
+      field: '$field.motivation',
+      value: motivation,
+      minimum: 1,
+      maximum: 5,
+      errors: errors,
+    );
+
+    return BackupReadinessCheckIn(
+      id: id ?? 'invalid',
+      checkedInAt: checkedInAt ?? DateTime.fromMillisecondsSinceEpoch(0),
+      soreness: soreness ?? 0,
+      sleepQuality: sleep ?? 1,
+      energy: energy ?? 1,
+      stress: stress ?? 1,
+      motivation: motivation ?? 1,
+    );
+  }
+
+  final String id;
+  final DateTime checkedInAt;
+  final int soreness;
+  final int sleepQuality;
+  final int energy;
+  final int stress;
+  final int motivation;
+
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      'id': id,
+      'checkedInAt': checkedInAt.toUtc().toIso8601String(),
+      'soreness': soreness,
+      'sleepQuality': sleepQuality,
+      'energy': energy,
+      'stress': stress,
+      'motivation': motivation,
+    };
+  }
+}
+
 const Set<String> _allowedSetLabels = <String>{
   'none',
   'warmup',
@@ -1121,6 +1253,23 @@ const Set<String> _allowedOnboardingCompletions = <String>{
   'skipped',
   'completed',
 };
+
+void _validateRange({
+  required String field,
+  required int? value,
+  required int minimum,
+  required int maximum,
+  required List<BackupValidationError> errors,
+}) {
+  if (value != null && (value < minimum || value > maximum)) {
+    errors.add(
+      BackupValidationError(
+        field: field,
+        message: 'Value must be between $minimum and $maximum.',
+      ),
+    );
+  }
+}
 
 void _validateAllowed(
   String parentField,

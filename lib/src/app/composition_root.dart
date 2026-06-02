@@ -19,6 +19,9 @@ import '../features/onboarding/domain/onboarding_domain.dart';
 import '../features/purchases/application/purchases_application.dart';
 import '../features/purchases/data/purchases_data.dart';
 import '../features/purchases/domain/purchases_domain.dart';
+import '../features/recovery/application/recovery_application.dart';
+import '../features/recovery/data/recovery_data.dart';
+import '../features/recovery/domain/recovery_domain.dart';
 import '../features/rest_timer/application/rest_timer_application.dart';
 import '../features/rest_timer/data/rest_timer_data.dart';
 import '../features/rest_timer/domain/rest_timer_domain.dart';
@@ -51,6 +54,10 @@ final class AppDependencies {
     required this.configuration,
     required this.workoutSetRepository,
     required this.getExerciseAnalytics,
+    required this.readinessCheckInRepository,
+    required this.saveReadinessCheckIn,
+    required this.getLatestReadiness,
+    required this.getTodayReadiness,
     required this.restTimerNotifications,
     required this.settingsProfileRepository,
     required this.loadSettingsProfile,
@@ -89,6 +96,10 @@ final class AppDependencies {
     required this.configuration,
     required this.workoutSetRepository,
     required this.getExerciseAnalytics,
+    required this.readinessCheckInRepository,
+    required this.saveReadinessCheckIn,
+    required this.getLatestReadiness,
+    required this.getTodayReadiness,
     required this.restTimerNotifications,
     required this.settingsProfileRepository,
     required this.loadSettingsProfile,
@@ -127,6 +138,10 @@ final class AppDependencies {
   final AppConfiguration configuration;
   final WorkoutSetRepository workoutSetRepository;
   final GetExerciseAnalytics getExerciseAnalytics;
+  final ReadinessCheckInRepository readinessCheckInRepository;
+  final SaveReadinessCheckIn saveReadinessCheckIn;
+  final GetLatestReadiness getLatestReadiness;
+  final GetTodayReadiness getTodayReadiness;
   final RestTimerNotificationCoordinator restTimerNotifications;
   final SettingsProfileRepository settingsProfileRepository;
   final LoadSettingsProfile loadSettingsProfile;
@@ -230,11 +245,21 @@ final class CompositionRoot {
     final settingsProfileRepository = DriftSettingsProfileRepository(
       composedDatabase,
     );
+    final readinessCheckInRepository = DriftReadinessCheckInRepository(
+      composedDatabase,
+    );
     final onboardingStatusRepository = DriftOnboardingStatusRepository(
       composedDatabase,
     );
     final localBackupRepository = DriftLocalBackupRepository(composedDatabase);
     final getExerciseAnalytics = GetExerciseAnalytics(workoutSetRepository);
+    final saveReadinessCheckIn = SaveReadinessCheckIn(
+      readinessCheckInRepository,
+    );
+    final getLatestReadiness = GetLatestReadiness(readinessCheckInRepository);
+    final getTodayReadiness = GetTodayReadiness(
+      repository: readinessCheckInRepository,
+    );
     final restTimerNotifications = RestTimerNotificationCoordinator(
       timerController: RestTimerController(
         timeProvider: const SystemTimeProvider(),
@@ -299,6 +324,10 @@ final class CompositionRoot {
         configuration: configuration,
         workoutSetRepository: workoutSetRepository,
         getExerciseAnalytics: getExerciseAnalytics,
+        readinessCheckInRepository: readinessCheckInRepository,
+        saveReadinessCheckIn: saveReadinessCheckIn,
+        getLatestReadiness: getLatestReadiness,
+        getTodayReadiness: getTodayReadiness,
         restTimerNotifications: restTimerNotifications,
         settingsProfileRepository: settingsProfileRepository,
         loadSettingsProfile: loadSettingsProfile,
@@ -338,6 +367,10 @@ final class CompositionRoot {
       configuration: configuration,
       workoutSetRepository: workoutSetRepository,
       getExerciseAnalytics: getExerciseAnalytics,
+      readinessCheckInRepository: readinessCheckInRepository,
+      saveReadinessCheckIn: saveReadinessCheckIn,
+      getLatestReadiness: getLatestReadiness,
+      getTodayReadiness: getTodayReadiness,
       restTimerNotifications: restTimerNotifications,
       settingsProfileRepository: settingsProfileRepository,
       loadSettingsProfile: loadSettingsProfile,

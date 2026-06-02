@@ -72,6 +72,48 @@
   "@todayVolume": {
     "description": "Metric label for volume logged today."
   },
+  "todayReadinessTitle": "Readiness estimate",
+  "@todayReadinessTitle": {
+    "description": "Title for the Today readiness estimate card."
+  },
+  "todayReadinessUnavailable": "No check-in today",
+  "@todayReadinessUnavailable": {
+    "description": "Readiness card text when no readiness check-in exists today."
+  },
+  "todayReadinessNoScore": "--",
+  "@todayReadinessNoScore": {
+    "description": "Readiness card score placeholder when no score is available."
+  },
+  "todayReadinessScore": "{score} / 100",
+  "@todayReadinessScore": {
+    "description": "Readiness estimate score shown on Today.",
+    "placeholders": {
+      "score": {
+        "type": "int",
+        "example": "72"
+      }
+    }
+  },
+  "todayReadinessHigh": "High",
+  "@todayReadinessHigh": {
+    "description": "High readiness estimate level."
+  },
+  "todayReadinessMedium": "Medium",
+  "@todayReadinessMedium": {
+    "description": "Medium readiness estimate level."
+  },
+  "todayReadinessLow": "Low",
+  "@todayReadinessLow": {
+    "description": "Low readiness estimate level."
+  },
+  "todayReadinessVeryLow": "Very low",
+  "@todayReadinessVeryLow": {
+    "description": "Very low readiness estimate level."
+  },
+  "todayReadinessEstimateNote": "Estimate based on your latest local check-in.",
+  "@todayReadinessEstimateNote": {
+    "description": "Short non-medical readiness estimate explanation."
+  },
   "todayLastLoggedTitle": "Last logged",
   "@todayLastLoggedTitle": {
     "description": "Title for the last logged set card."

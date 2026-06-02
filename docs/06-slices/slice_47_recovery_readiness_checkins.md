@@ -42,6 +42,20 @@ Write domain/use-case tests for soreness input, readiness scoring, high soreness
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
 
+## Implementation notes
+
+Slice 47 adds pure-Dart readiness check-in value objects, entity, repository
+port, score calculator, and save/latest/today use cases. Drift schema v9 adds
+the local `readiness_checkins` table and deterministic latest ordering.
+
+The Today dashboard can read a localized `Readiness estimate` card from the
+local check-in state. This is a cautious estimate only; it does not diagnose,
+prescribe medical action, implement recommendations, integrate wearables, or
+block workout logging.
+
+Backup JSON includes an optional `readinessCheckIns` array so local readiness
+feedback remains exportable while older backups without the field still import.
+
 ## Validation commands
 
 ```bash

@@ -80,6 +80,11 @@ When suggesting next set:
 Slice 46 supplies muscle-balance signals for future recommendation use. It does
 not yet select exercises, generate coaching copy, or change workout plans.
 
+Slice 47 supplies a local readiness read model for future recommendation use.
+It exposes empty/available state, score, level, reasons, confidence, and the
+latest local check-in. It still does not generate recommendations, select
+exercises, prescribe deloads, or block logging.
+
 ## Test strategy
 
 Domain tests must cover:

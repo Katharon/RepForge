@@ -35,10 +35,10 @@ A relational local database is a strong fit. Drift offers type-safe queries, mig
 - `set_labels`
 - `settings_profiles`
 - `equipment_inventory_items`
+- `readiness_checkins`
 
 Later tables:
 
-- `readiness_checkins`
 - `soreness_checkins`
 - `recommendation_snapshots` optional
 - `entitlements`
@@ -131,6 +131,19 @@ reinterpret workout sets, workout groups, official catalog rows, custom
 exercise data, onboarding status, purchases, auth, or sync metadata. Local JSON
 backup/export includes the new profile fields and equipment load constraints so
 user-owned profile data remains exportable.
+
+## Slice 47 readiness persistence
+
+Drift schema v9 adds `readiness_checkins` additively. Each row stores a stable
+check-in id, UTC timestamp, general soreness 0–4, and sleep quality, energy,
+stress, and motivation values 1–5. The table is indexed newest-first by
+timestamp and stable id so latest-readiness queries are deterministic.
+
+Saving readiness check-ins does not mutate workout sets, workout groups,
+official catalog rows, custom exercise data, settings/profile rows, onboarding
+status, purchases, auth, sync metadata, or notification state. Local JSON
+backup/export includes an optional `readinessCheckIns` array. Older backups
+without that field still import because the backup shape remains additive.
 
 ## Slice 25 persistence hardening
 

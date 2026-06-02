@@ -89,6 +89,16 @@ final class DriftLocalBackupRepository implements LocalBackupRepository {
               },
             ]))
             .get();
+    final readinessRows =
+        await (_database.select(_database.readinessCheckIns)..orderBy([
+              ($ReadinessCheckInsTable table) {
+                return OrderingTerm.asc(table.checkedInAt);
+              },
+              ($ReadinessCheckInsTable table) {
+                return OrderingTerm.asc(table.readinessCheckInId);
+              },
+            ]))
+            .get();
 
     return RepForgeBackup.create(
       exportedAt: _clock().toUtc(),
@@ -107,6 +117,9 @@ final class DriftLocalBackupRepository implements LocalBackupRepository {
           : _onboardingFromRow(onboardingRow),
       catalogImports: catalogRows
           .map(_catalogImportFromRow)
+          .toList(growable: false),
+      readinessCheckIns: readinessRows
+          .map(_readinessCheckInFromRow)
           .toList(growable: false),
     );
   }
@@ -175,6 +188,12 @@ final class DriftLocalBackupRepository implements LocalBackupRepository {
         await _database
             .into(_database.catalogImports)
             .insertOnConflictUpdate(_catalogImportToCompanion(row));
+      }
+
+      for (final checkIn in backup.readinessCheckIns) {
+        await _database
+            .into(_database.readinessCheckIns)
+            .insertOnConflictUpdate(_readinessCheckInToCompanion(checkIn));
       }
     });
   }
@@ -368,5 +387,31 @@ CatalogImportsCompanion _catalogImportToCompanion(BackupCatalogImport row) {
     catalogVersion: row.catalogVersion,
     schemaVersion: row.schemaVersion,
     importedAt: row.importedAt.toUtc(),
+  );
+}
+
+BackupReadinessCheckIn _readinessCheckInFromRow(ReadinessCheckInRow row) {
+  return BackupReadinessCheckIn(
+    id: row.readinessCheckInId,
+    checkedInAt: row.checkedInAt.toUtc(),
+    soreness: row.soreness,
+    sleepQuality: row.sleepQuality,
+    energy: row.energy,
+    stress: row.stress,
+    motivation: row.motivation,
+  );
+}
+
+ReadinessCheckInsCompanion _readinessCheckInToCompanion(
+  BackupReadinessCheckIn checkIn,
+) {
+  return ReadinessCheckInsCompanion.insert(
+    readinessCheckInId: checkIn.id,
+    checkedInAt: checkIn.checkedInAt.toUtc(),
+    soreness: checkIn.soreness,
+    sleepQuality: checkIn.sleepQuality,
+    energy: checkIn.energy,
+    stress: checkIn.stress,
+    motivation: checkIn.motivation,
   );
 }

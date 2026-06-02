@@ -206,6 +206,60 @@ abstract class AppLocalizations {
   /// **'Volume today'**
   String get todayVolume;
 
+  /// Title for the Today readiness estimate card.
+  ///
+  /// In en, this message translates to:
+  /// **'Readiness estimate'**
+  String get todayReadinessTitle;
+
+  /// Readiness card text when no readiness check-in exists today.
+  ///
+  /// In en, this message translates to:
+  /// **'No check-in today'**
+  String get todayReadinessUnavailable;
+
+  /// Readiness card score placeholder when no score is available.
+  ///
+  /// In en, this message translates to:
+  /// **'--'**
+  String get todayReadinessNoScore;
+
+  /// Readiness estimate score shown on Today.
+  ///
+  /// In en, this message translates to:
+  /// **'{score} / 100'**
+  String todayReadinessScore(int score);
+
+  /// High readiness estimate level.
+  ///
+  /// In en, this message translates to:
+  /// **'High'**
+  String get todayReadinessHigh;
+
+  /// Medium readiness estimate level.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get todayReadinessMedium;
+
+  /// Low readiness estimate level.
+  ///
+  /// In en, this message translates to:
+  /// **'Low'**
+  String get todayReadinessLow;
+
+  /// Very low readiness estimate level.
+  ///
+  /// In en, this message translates to:
+  /// **'Very low'**
+  String get todayReadinessVeryLow;
+
+  /// Short non-medical readiness estimate explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimate based on your latest local check-in.'**
+  String get todayReadinessEstimateNote;
+
   /// Title for the last logged set card.
   ///
   /// In en, this message translates to:

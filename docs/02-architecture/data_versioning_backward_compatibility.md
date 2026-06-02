@@ -100,6 +100,18 @@ single MVP set marker. Existing logged rows with null or empty labels continue
 to mean `none`; unsupported non-empty stored labels fail deterministically in
 the training-log mapper instead of being silently reinterpreted.
 
+Schema version 9 additively adds `readiness_checkins` for local readiness
+feedback. It stores stable check-in ids, UTC timestamps, bounded soreness,
+sleep quality, energy, stress, and motivation ratings, plus a latest-query
+index. The migration creates only the new table and must not rewrite workout
+history, catalog rows, workout groups, settings/profile data, onboarding
+status, purchases, auth, sync metadata, or notification state.
+
+Slice 47 also adds an optional `readinessCheckIns` array to local backup JSON.
+The backup schema version remains compatible because older backups without the
+field continue to parse as an empty readiness list, while exported readiness
+rows preserve their stable ids and timestamps.
+
 The app composition root owns the runtime `RepForgeDatabase` instance it
 creates through the local database factory and closes it through
 `AppDependencies.close()`. Tests may inject in-memory executors or caller-owned
