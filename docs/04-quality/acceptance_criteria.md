@@ -33,3 +33,20 @@ A data slice is done when:
 ## Payment/cloud slice acceptance
 
 A payment/cloud slice is done only when security and privacy docs are updated, local-only features still work without cloud, and tests/fakes exist for offline or unavailable service states.
+
+## Beta release-candidate acceptance
+
+A beta release-candidate hardening slice is done when:
+
+- `pubspec.yaml` version metadata matches the documented beta plan.
+- App display names, launcher icon setup, launch-screen foundation, and store
+  metadata docs are consistent.
+- Store and privacy copy avoid medical guarantees and match the local-first,
+  no-account, no-ads, no-cloud-default MVP stance.
+- CI expectations match local validation, including generated-code freshness.
+- Debug APK artifacts are documented as inspection-only and not store-ready.
+- Signing secrets, keystores, provisioning profiles, Firebase config files,
+  store publishing credentials, cloud sync, ads, and backend activation are not
+  introduced.
+- A proposed beta tag command is documented, but no tag is pushed as part of the
+  slice.

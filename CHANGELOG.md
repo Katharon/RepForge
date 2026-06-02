@@ -4,6 +4,11 @@
 
 ### Added
 
+- Added Slice 41 beta release-candidate preparation with `0.9.0+1` app version
+  metadata, `v0.9.0-beta.1` tag instructions, beta acceptance criteria, release
+  blockers/follow-ups, and validation expectations while keeping store
+  publishing, signing secrets, Firebase/cloud runtime behavior, ads, sync, and
+  backend activation out of scope.
 - Added Slice 40 app branding and store metadata baseline with validated
   RepForge launcher icon outputs, brand-consistent native launch backgrounds,
   English/German store listing drafts, privacy copy guardrails, and release docs

@@ -50,6 +50,20 @@ If strict TDD is impractical because this is a repository/bootstrap slice, expla
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
 
+## Implementation notes
+
+Slice 41 aligns the beta release-candidate metadata around app version
+`0.9.0+1` and proposed tag `v0.9.0-beta.1`. It documents the tag command but
+does not create or push a tag.
+
+The hardening pass verifies:
+
+- RepForge display names and local-first store copy remain consistent.
+- CI and local validation expectations include generated-code freshness.
+- The Android debug APK remains an inspection artifact, not a store release.
+- Store signing, TestFlight/App Store/Play upload, Firebase config, cloud sync,
+  ads, backend activation, and paid runtime services remain future work.
+
 ## Validation commands
 
 ```bash
@@ -82,7 +96,7 @@ chore(release): prepare beta release candidate
 ## Ready-to-use Codex prompt
 
 ```text
-You are working in the `gesundheit-gym-app` Flutter repository.
+You are working in the `RepForge` Flutter repository.
 
 Read first, in this order:
 1. AGENTS.md
