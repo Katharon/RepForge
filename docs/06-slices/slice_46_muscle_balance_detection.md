@@ -32,6 +32,13 @@ Write deterministic domain tests for push-heavy, leg-neglect, upper-focus, lower
 - Handle loading, empty, error, and success states where UI is touched.
 - Update affected docs if implementation decisions differ from the plan.
 
+## Implementation note
+
+Slice 46 is implemented as a pure-Dart analytics domain detector. It exposes
+focus-aware target ranges, insufficient-data handling, confidence-aware
+evidence, movement-pattern coverage gaps, and explainable signal codes. It does
+not add UI, persistence, recommendation generation, cloud AI, or medical claims.
+
 ## Acceptance criteria
 
 - Slice goal is implemented.

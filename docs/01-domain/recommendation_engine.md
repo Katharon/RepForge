@@ -12,6 +12,7 @@ Provide practical, explainable training suggestions based on the user's workout 
 - available equipment
 - recent sets and sessions
 - muscle-load analytics
+- muscle-balance signals
 - soreness/readiness input
 - exercise catalog
 - custom exercises
@@ -75,6 +76,9 @@ When suggesting next set:
 - No medical advice.
 - No mandatory account.
 - No remote exercise database.
+
+Slice 46 supplies muscle-balance signals for future recommendation use. It does
+not yet select exercises, generate coaching copy, or change workout plans.
 
 ## Test strategy
 

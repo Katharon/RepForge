@@ -81,9 +81,16 @@ activation profiles reference existing exercise source/id pairs, estimated
 per-muscle load is derived from logged set volume, and unknown activation data is
 reported explicitly instead of being stored as zero load.
 
+Slice 46 adds the pure-Dart muscle balance detector here: focus-aware target
+ranges, confidence-aware balance assessments, movement-pattern coverage gaps,
+and explainable signal evidence derived from muscle-load estimates.
+
 ### Training Intelligence
 
 Owns recommendation rules, focus profiles, imbalance detection, readiness signals, progressive overload suggestions, quick session generation, and deload hints.
+
+Slice 46 provides the imbalance-detection vocabulary consumed by this context in
+future slices, but it does not yet generate recommendation plans or UI guidance.
 
 ### Timer & Notification
 

@@ -138,6 +138,13 @@ Output categories:
 - `overEmphasized`
 - `recoveryLimited`
 
+Slice 46 implements the first detector vocabulary behind these future UI
+categories. It produces evidence-coded `balanced`, `pushHeavy`, `pullNeglect`,
+`legNeglect`, `lowerBodyUnderTarget`, `upperBodyUnderTarget`,
+`movementPatternGap`, `incompleteData`, and `insufficientData` signals from
+rolling muscle-load estimates and movement-pattern coverage. These are training
+signals only; they do not diagnose injury risk or generate recommendations yet.
+
 ## Recovery and soreness
 
 The app should ask short questions only when useful:

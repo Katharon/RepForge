@@ -202,3 +202,25 @@ imbalance = actualShare - targetShare
 ```
 
 Use thresholds and warnings carefully. The UI should show this as `under target`, `on track`, or `above target`, not as a medical diagnosis.
+
+Slice 46 implements a conservative first pass:
+
+```text
+lowerShare = lowerBodyLoad / totalKnownMuscleLoad
+upperShare = upperBodyLoad / totalKnownMuscleLoad
+pushPullRatio = pushLoad / pullLoad
+```
+
+The detector uses focus-aware target ranges:
+
+- balanced/default: lower-body minimum `0.25`, upper-body minimum `0.45`,
+  push/pull maximum `1.6`.
+- upper-body focus: lower-body minimum `0.10`, upper-body minimum `0.65`,
+  push/pull maximum `1.8`.
+- lower-body/glute focus: lower-body minimum `0.40`, upper-body minimum `0.25`,
+  push/pull maximum `1.6`.
+- arms/chest focus: lower-body minimum `0.12`, upper-body minimum `0.55`,
+  push/pull maximum `1.7`.
+
+Missing or explicitly unavailable activation data lowers balance confidence and
+adds incomplete-data evidence instead of being counted as zero workload.

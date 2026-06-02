@@ -4,6 +4,12 @@
 
 ### Added
 
+- Added Slice 46 muscle balance detection with pure-Dart focus-aware target
+  ranges, confidence-aware balance assessments, insufficient-data handling,
+  explainable push/pull/lower-body and movement-pattern signals, unknown
+  activation evidence, and focused analytics-domain tests without UI,
+  persistence changes, recommendations, recovery logic, wearables, calorie
+  estimates, cloud services, Firebase, sync, or remote catalog fetching.
 - Added Slice 45 muscle activation model foundation with pure-Dart muscle IDs,
   bounded activation weights, known/unavailable exercise activation profiles,
   confidence-aware estimated per-muscle load calculation, explicit unknown

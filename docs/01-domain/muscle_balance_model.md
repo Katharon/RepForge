@@ -6,18 +6,18 @@ Help the user avoid obvious long-term neglect of muscles and movement patterns w
 
 ## Concept
 
-The app tracks estimated rolling muscle load from logged sets and compares it to target ranges derived from the user's focus profile.
+The app tracks estimated rolling muscle load from logged sets and compares it to
+target ranges derived from the user's focus profile.
 
-Slice 45 supplies the input foundation only. Muscle balance detection should read
-`MuscleLoadEstimate` values from the analytics domain, use the estimate
-confidence, and carry unknown exercises forward as incomplete evidence instead
-of treating missing activation data as zero muscle work.
+Slice 46 implements the first pure-Dart muscle balance detector in the analytics
+domain. The detector reads `MuscleLoadEstimate` values from Slice 45, respects
+estimate confidence, and carries unknown exercises forward as incomplete
+evidence instead of treating missing activation data as zero muscle work.
 
-If a rolling window contains unavailable activation data, later balance
-detection should avoid strong conclusions for affected muscles and present the
-result as a partial signal. Conservative estimates, such as bodyweight-only or
-incomplete load inputs, can still be used for trend direction but should not be
-shown as precise workload.
+If a rolling window contains unavailable activation data, balance detection
+lowers confidence and reports the result as partial evidence. Conservative
+estimates, such as bodyweight-only or incomplete load inputs, can still be used
+for trend direction but should not be shown as precise workload.
 
 ## Main dimensions
 
@@ -58,7 +58,23 @@ Arms/chest focus can intentionally overweight chest/arms, but should warn if pul
 
 ## Output
 
-The UI should show simple statuses:
+The domain outputs explainable, non-medical signals:
+
+- `insufficientData`
+- `balanced`
+- `pushHeavy`
+- `pullNeglect`
+- `legNeglect`
+- `lowerBodyUnderTarget`
+- `upperBodyUnderTarget`
+- `movementPatternGap`
+- `incompleteData`
+
+Each signal includes a stable evidence code, severity, confidence, affected
+muscles or movement patterns where applicable, and target/actual values where a
+ratio or share was evaluated.
+
+Future UI should translate those signals into simple statuses:
 
 - On track
 - Slightly under target
@@ -82,3 +98,5 @@ Test the balance model with deterministic sample histories:
 - Leg-neglect week triggers lower-body minimum warning for balanced profile.
 - Upper-body focus tolerates higher chest/arm load but still warns on zero legs.
 - Lower-body focus tolerates higher glute/quad load but still warns on no upper-back work.
+- Missing movement-pattern coverage is reported without inventing diagnosis or
+  shame-oriented wording.

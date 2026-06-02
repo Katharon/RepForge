@@ -186,6 +186,15 @@ load aggregation, zero-load behavior, incomplete/bodyweight-style load
 confidence, explicit unknown exercises, and preservation of existing
 `WorkoutSet` history.
 
+## Muscle balance tests
+
+Slice 46 muscle balance tests live under
+`test/src/features/analytics/domain/` and must stay pure Dart. They should cover
+empty and insufficient histories, balanced full-body history, push-heavy signals,
+pull-neglect signals, leg-neglect signals, focus-aware upper/lower target ranges,
+unknown activation evidence, movement-pattern gaps, non-diagnostic API wording,
+and preservation of supplied `MuscleLoadEstimate` inputs.
+
 ## Profile and equipment tests
 
 Slice 44 profile tests must cover pure-Dart value object validation, explicit
