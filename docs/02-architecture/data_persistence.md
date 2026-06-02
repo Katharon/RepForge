@@ -61,6 +61,14 @@ Import requirements:
 - does not overwrite user overrides,
 - does not require internet.
 
+Slice 43 adds `assets/catalog/catalog_manifest.json` and bumps the bundled
+official catalog content version to `2026.06.0`. The importer remains
+version-aware through `catalog_imports`: a catalog version already recorded
+there is skipped, while a newer bundled version is imported additively/upserted
+by stable `catalogId`. Workout-set snapshots, workout group assignment
+snapshots, custom exercises, and user overrides remain user-owned data and are
+not rewritten by official catalog imports.
+
 ## Mapping rule
 
 Database rows are not domain entities. Use mappers:

@@ -10,53 +10,52 @@ A curated exercise catalog changes slowly enough that app releases are acceptabl
 
 ## Asset layout
 
-Recommended structure:
+Current bundled structure:
 
 ```text
 assets/
   catalog/
     catalog_manifest.json
-    muscles_v1.json
-    equipment_v1.json
-    exercises_v2026_01.json
-    exercise_aliases_de_v2026_01.json
-    exercise_aliases_en_v2026_01.json
+    official_exercises_v1.json
 ```
+
+Slice 11 introduced `official_exercises_v1.json` as the first versioned
+official exercise asset. Slice 43 keeps that asset path stable, adds
+`catalog_manifest.json`, bumps the content version to `2026.06.0`, and expands
+the bundled MVP catalog with a small curated set of fundamental barbell,
+dumbbell, cable, machine, and bodyweight exercises.
 
 ## Manifest fields
 
 ```json
 {
-  "catalogVersion": "2026.01.0",
+  "catalogVersion": "2026.06.0",
   "schemaVersion": 1,
-  "createdAt": "2026-05-26",
-  "files": [
-    "muscles_v1.json",
-    "equipment_v1.json",
-    "exercises_v2026_01.json"
+  "currentCatalogAsset": "assets/catalog/official_exercises_v1.json",
+  "contentNotes": [
+    "Expanded MVP catalog with fundamental barbell, dumbbell, cable, machine, and bodyweight movements."
   ]
 }
 ```
+
+The manifest is validation metadata for bundled content. It does not fetch
+remote catalog data. Parser tests verify that the manifest schema is supported
+and that `currentCatalogAsset` points to an existing bundled catalog JSON file
+under `assets/catalog/`.
 
 ## Exercise fields
 
 ```json
 {
-  "catalogId": "machine_leg_press_seated",
-  "canonicalName": "Seated Leg Press",
-  "localizedNames": { "de": "Beinpresse sitzend" },
-  "aliases": ["leg press", "beinpresse"],
-  "equipment": ["machine", "leg_press"],
-  "movementPatterns": ["squat_pattern", "knee_dominant"],
-  "primaryMuscles": ["quadriceps", "glutes"],
-  "activation": {
-    "quadriceps": 1.0,
-    "glutes": 0.6,
-    "hamstrings": 0.25,
-    "calves": 0.1
+  "catalogId": "dumbbell_goblet_squat",
+  "localizedNames": {
+    "en": "Dumbbell Goblet Squat",
+    "de": "Goblet-Kniebeuge mit Kurzhantel"
   },
-  "defaultRestSeconds": 120,
-  "trackingMode": "load_reps"
+  "equipment": ["dumbbells"],
+  "movementPatterns": ["squat", "knee_dominant"],
+  "primaryMuscles": ["quadriceps", "glutes"],
+  "secondaryMuscles": ["hamstrings", "core"]
 }
 ```
 
@@ -102,10 +101,12 @@ On first launch:
 1. Create/open Drift database.
 2. Apply schema migrations.
 3. Read `assets/catalog/catalog_manifest.json`.
-4. Validate schema version and checksums.
-5. Import official muscles, equipment, exercises, aliases, and recommendation metadata.
-6. Store imported catalog version in a local `catalog_imports` table.
-7. Continue onboarding.
+4. Validate the manifest schema and current catalog asset reference.
+5. Read and validate the referenced official exercise catalog JSON.
+6. Import official exercises, equipment tags, movement patterns, and muscle
+   metadata.
+7. Store imported catalog version in a local `catalog_imports` table.
+8. Continue onboarding.
 
 ## Bundled starter templates
 
@@ -167,8 +168,10 @@ Initial catalog acceptance criteria:
 - every exercise has stable catalog ID,
 - every exercise has movement pattern tags,
 - every exercise has equipment requirements,
-- every load-based exercise defines whether equipment max-load constraints apply,
-- muscle activation estimates are present but explicitly approximate.
+- every load-based exercise can be extended with equipment max-load constraint
+  metadata in a later slice,
+- muscle activation estimates remain explicitly approximate and are deferred to
+  the later muscle activation slices unless the current schema adds them.
 
 ## Equipment-aware fields
 

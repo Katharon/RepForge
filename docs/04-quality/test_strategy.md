@@ -162,12 +162,19 @@ flutter test --update-goldens
 
 Official exercise catalog must have:
 
+- manifest validation and bundled asset-reference checks,
 - JSON schema/shape validation,
 - stable ID validation,
-- duplicate alias detection,
-- activation weights within valid range,
+- duplicate ID detection,
+- localized English/German name validation,
+- equipment, movement-pattern, and muscle tag list validation,
 - import idempotency test,
+- version-aware import detection,
+- snapshot-preservation tests for workout sets and workout group assignments,
 - migration/import test with previous catalog fixture.
+
+Activation-weight validation belongs to the later muscle activation slices until
+the current catalog schema stores weighted activation estimates.
 
 ## Validation commands
 

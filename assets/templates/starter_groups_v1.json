@@ -1,5 +1,5 @@
 {
-  "templateVersion": "2026.05.0",
+  "templateVersion": "2026.06.0",
   "groups": [
     {
       "id": "full_body_a",
@@ -8,17 +8,17 @@
         {
           "catalogId": "barbell_back_squat",
           "displayNameSnapshot": "Barbell Back Squat",
-          "catalogVersionSnapshot": "2026.05.0"
+          "catalogVersionSnapshot": "2026.06.0"
         },
         {
           "catalogId": "barbell_bench_press",
           "displayNameSnapshot": "Barbell Bench Press",
-          "catalogVersionSnapshot": "2026.05.0"
+          "catalogVersionSnapshot": "2026.06.0"
         },
         {
           "catalogId": "barbell_bent_over_row",
           "displayNameSnapshot": "Barbell Bent-Over Row",
-          "catalogVersionSnapshot": "2026.05.0"
+          "catalogVersionSnapshot": "2026.06.0"
         }
       ]
     },
@@ -29,17 +29,17 @@
         {
           "catalogId": "barbell_deadlift",
           "displayNameSnapshot": "Barbell Deadlift",
-          "catalogVersionSnapshot": "2026.05.0"
+          "catalogVersionSnapshot": "2026.06.0"
         },
         {
           "catalogId": "barbell_overhead_press",
           "displayNameSnapshot": "Barbell Overhead Press",
-          "catalogVersionSnapshot": "2026.05.0"
+          "catalogVersionSnapshot": "2026.06.0"
         },
         {
           "catalogId": "bodyweight_pull_up",
           "displayNameSnapshot": "Pull-Up",
-          "catalogVersionSnapshot": "2026.05.0"
+          "catalogVersionSnapshot": "2026.06.0"
         }
       ]
     }

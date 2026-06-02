@@ -7,6 +7,7 @@ import 'package:repforge/src/features/exercise_catalog/data/importers/official_e
 import 'package:repforge/src/features/exercise_catalog/data/parsers/official_exercise_catalog_parser.dart';
 import 'package:repforge/src/features/exercise_catalog/data/repositories/drift_exercise_catalog_repository.dart';
 import 'package:repforge/src/features/exercise_catalog/domain/exercise_catalog_domain.dart';
+import 'package:repforge/src/features/training_log/domain/value_objects/stable_ids.dart';
 import 'package:repforge/src/shared/data/local/repforge_database.dart';
 
 void main() {
@@ -35,10 +36,32 @@ void main() {
         .get();
     final importRows = await database.select(database.catalogImports).get();
 
-    expect(exerciseRows, hasLength(6));
+    expect(exerciseRows, hasLength(15));
     expect(importRows, hasLength(1));
-    expect(importRows.single.catalogVersion, '2026.05.0');
+    expect(importRows.single.catalogVersion, '2026.06.0');
   });
+
+  test(
+    'imports a newer official catalog version when the version changes',
+    () async {
+      await importer.importCatalog(
+        _singleExerciseCatalog(version: '2026.05.0'),
+      );
+
+      await importer.importCatalog(_bundledCatalog());
+
+      final exerciseRows = await database
+          .select(database.officialExercises)
+          .get();
+      final importRows = await database.select(database.catalogImports).get();
+
+      expect(exerciseRows, hasLength(15));
+      expect(
+        importRows.map((row) => row.catalogVersion),
+        containsAll(<String>['2026.05.0', '2026.06.0']),
+      );
+    },
+  );
 
   test('official catalog import does not touch workout sets', () async {
     await database
@@ -68,6 +91,48 @@ void main() {
     );
   });
 
+  test(
+    'official catalog import does not touch group assignment snapshots',
+    () async {
+      await database
+          .into(database.workoutGroups)
+          .insert(
+            WorkoutGroupsCompanion.insert(
+              workoutGroupId: 'push-day',
+              name: 'Push Day',
+              sortOrder: 0,
+            ),
+          );
+      await database
+          .into(database.workoutGroupExerciseAssignments)
+          .insert(
+            WorkoutGroupExerciseAssignmentsCompanion.insert(
+              assignmentId: 'bench-assignment',
+              workoutGroupId: 'push-day',
+              exerciseSource: 'official',
+              exerciseId: 'barbell_bench_press',
+              exerciseDisplayNameSnapshot: 'Bench Press Snapshot',
+              catalogVersionSnapshot: const Value<String?>('2026.05.0'),
+              position: 0,
+            ),
+          );
+
+      await importer.importCatalog(_bundledCatalog());
+
+      final assignments = await database
+          .select(database.workoutGroupExerciseAssignments)
+          .get();
+
+      expect(assignments, hasLength(1));
+      expect(assignments.single.assignmentId, 'bench-assignment');
+      expect(
+        assignments.single.exerciseDisplayNameSnapshot,
+        'Bench Press Snapshot',
+      );
+      expect(assignments.single.catalogVersionSnapshot, '2026.05.0');
+    },
+  );
+
   test('queries official exercises with limit and offset', () async {
     await importer.importCatalog(_bundledCatalog());
 
@@ -79,7 +144,7 @@ void main() {
     );
 
     expect(firstPage.items, hasLength(2));
-    expect(firstPage.totalCount, 6);
+    expect(firstPage.totalCount, 15);
     expect(firstPage.hasMore, isTrue);
     expect(secondPage.items, hasLength(2));
     expect(
@@ -94,7 +159,7 @@ void main() {
       await importer.importCatalog(_bundledCatalog());
 
       final page = await repository.findOfficialExercises(
-        ExerciseCatalogQuery(limit: 10, offset: 0),
+        ExerciseCatalogQuery(limit: 20, offset: 0),
       );
 
       expect(page.items.map((exercise) => exercise.englishName), <String>[
@@ -103,7 +168,16 @@ void main() {
         'Barbell Bent-Over Row',
         'Barbell Deadlift',
         'Barbell Overhead Press',
+        'Cable Triceps Pushdown',
+        'Dumbbell Bench Press',
+        'Dumbbell Biceps Curl',
+        'Dumbbell Goblet Squat',
+        'Dumbbell Lunge',
+        'Dumbbell Shoulder Press',
+        'Lat Pulldown',
         'Pull-Up',
+        'Romanian Deadlift',
+        'Seated Cable Row',
       ]);
     },
   );
@@ -131,7 +205,10 @@ void main() {
 
     expect(searchPage.items.single.id.value, 'bodyweight_pull_up');
     expect(equipmentPage.items.single.id.value, 'bodyweight_pull_up');
-    expect(musclePage.items.single.id.value, 'barbell_bench_press');
+    expect(
+      musclePage.items.map((exercise) => exercise.id.value),
+      containsAll(<String>['barbell_bench_press', 'dumbbell_bench_press']),
+    );
   });
 
   test('rejects invalid catalog pagination inputs', () {
@@ -149,5 +226,27 @@ void main() {
 OfficialExerciseCatalog _bundledCatalog() {
   return const OfficialExerciseCatalogParser().parseString(
     File('assets/catalog/official_exercises_v1.json').readAsStringSync(),
+  );
+}
+
+OfficialExerciseCatalog _singleExerciseCatalog({required String version}) {
+  return OfficialExerciseCatalog(
+    catalogVersion: CatalogVersion(version),
+    schemaVersion: 1,
+    exercises: <OfficialExercise>[
+      OfficialExercise(
+        id: OfficialExerciseId('barbell_bench_press'),
+        catalogVersion: CatalogVersion(version),
+        englishName: 'Barbell Bench Press',
+        germanName: 'Bankdruecken mit Langhantel',
+        equipment: <EquipmentTag>[
+          EquipmentTag('barbell'),
+          EquipmentTag('bench'),
+        ],
+        movementPatterns: <MovementPattern>[MovementPattern('horizontal_push')],
+        primaryMuscles: <MuscleGroup>[MuscleGroup('chest')],
+        secondaryMuscles: <MuscleGroup>[MuscleGroup('triceps')],
+      ),
+    ],
   );
 }

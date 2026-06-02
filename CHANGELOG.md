@@ -4,6 +4,12 @@
 
 ### Added
 
+- Added Slice 43 official exercise catalog expansion with a bundled catalog
+  manifest, manifest validation, `2026.06.0` catalog version detection, a
+  curated 15-exercise MVP official catalog, stronger parser/import tests, and
+  importer checks that preserve workout-set and workout-group assignment
+  snapshots without adding cloud catalog fetching, Firebase, sync, backend, ads,
+  or paid runtime services.
 - Added Slice 42 production release-readiness documentation with an honest
   blocked/not-ready `v1.0.0` checklist, release-owner decision gates, platform
   signing and store submission requirements, privacy/data-safety and

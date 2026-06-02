@@ -1,5 +1,5 @@
 {
-  "catalogVersion": "2026.05.0",
+  "catalogVersion": "2026.06.0",
   "schemaVersion": 1,
   "exercises": [
     {
@@ -67,6 +67,105 @@
       "movementPatterns": ["vertical_pull"],
       "primaryMuscles": ["lats", "upper_back"],
       "secondaryMuscles": ["biceps", "forearms"]
+    },
+    {
+      "catalogId": "cable_triceps_pushdown",
+      "localizedNames": {
+        "en": "Cable Triceps Pushdown",
+        "de": "Trizepsdruecken am Kabel"
+      },
+      "equipment": ["cable_machine"],
+      "movementPatterns": ["elbow_extension", "accessory_push"],
+      "primaryMuscles": ["triceps"],
+      "secondaryMuscles": ["front_deltoids"]
+    },
+    {
+      "catalogId": "dumbbell_bench_press",
+      "localizedNames": {
+        "en": "Dumbbell Bench Press",
+        "de": "Bankdruecken mit Kurzhanteln"
+      },
+      "equipment": ["dumbbells", "bench"],
+      "movementPatterns": ["horizontal_push"],
+      "primaryMuscles": ["chest"],
+      "secondaryMuscles": ["triceps", "front_deltoids"]
+    },
+    {
+      "catalogId": "dumbbell_biceps_curl",
+      "localizedNames": {
+        "en": "Dumbbell Biceps Curl",
+        "de": "Bizepscurls mit Kurzhanteln"
+      },
+      "equipment": ["dumbbells"],
+      "movementPatterns": ["elbow_flexion", "accessory_pull"],
+      "primaryMuscles": ["biceps"],
+      "secondaryMuscles": ["forearms"]
+    },
+    {
+      "catalogId": "dumbbell_goblet_squat",
+      "localizedNames": {
+        "en": "Dumbbell Goblet Squat",
+        "de": "Goblet-Kniebeuge mit Kurzhantel"
+      },
+      "equipment": ["dumbbells"],
+      "movementPatterns": ["squat", "knee_dominant"],
+      "primaryMuscles": ["quadriceps", "glutes"],
+      "secondaryMuscles": ["hamstrings", "core"]
+    },
+    {
+      "catalogId": "dumbbell_lunge",
+      "localizedNames": {
+        "en": "Dumbbell Lunge",
+        "de": "Ausfallschritt mit Kurzhanteln"
+      },
+      "equipment": ["dumbbells"],
+      "movementPatterns": ["lunge", "knee_dominant"],
+      "primaryMuscles": ["quadriceps", "glutes"],
+      "secondaryMuscles": ["hamstrings", "core"]
+    },
+    {
+      "catalogId": "dumbbell_shoulder_press",
+      "localizedNames": {
+        "en": "Dumbbell Shoulder Press",
+        "de": "Schulterdruecken mit Kurzhanteln"
+      },
+      "equipment": ["dumbbells"],
+      "movementPatterns": ["vertical_push"],
+      "primaryMuscles": ["shoulders"],
+      "secondaryMuscles": ["triceps", "upper_chest"]
+    },
+    {
+      "catalogId": "lat_pulldown",
+      "localizedNames": {
+        "en": "Lat Pulldown",
+        "de": "Latzug"
+      },
+      "equipment": ["cable_machine", "lat_pulldown_station"],
+      "movementPatterns": ["vertical_pull"],
+      "primaryMuscles": ["lats", "upper_back"],
+      "secondaryMuscles": ["biceps", "forearms"]
+    },
+    {
+      "catalogId": "romanian_deadlift",
+      "localizedNames": {
+        "en": "Romanian Deadlift",
+        "de": "Rumaenisches Kreuzheben"
+      },
+      "equipment": ["barbell"],
+      "movementPatterns": ["hinge"],
+      "primaryMuscles": ["hamstrings", "glutes"],
+      "secondaryMuscles": ["erector_spinae", "forearms"]
+    },
+    {
+      "catalogId": "seated_cable_row",
+      "localizedNames": {
+        "en": "Seated Cable Row",
+        "de": "Kabelrudern sitzend"
+      },
+      "equipment": ["cable_machine"],
+      "movementPatterns": ["horizontal_pull"],
+      "primaryMuscles": ["lats", "upper_back"],
+      "secondaryMuscles": ["rear_deltoids", "biceps"]
     }
   ]
 }

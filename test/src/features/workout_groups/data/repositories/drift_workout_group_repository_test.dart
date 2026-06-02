@@ -173,7 +173,7 @@ void main() {
       expect(await database.select(database.workoutSets).get(), hasLength(1));
       expect(
         await database.select(database.officialExercises).get(),
-        hasLength(6),
+        hasLength(15),
       );
       expect(
         await database.select(database.workoutGroupExerciseAssignments).get(),
@@ -320,7 +320,7 @@ void main() {
 
       expect(assignments, isEmpty);
       expect(workoutSets, hasLength(1));
-      expect(officialExercises, hasLength(6));
+      expect(officialExercises, hasLength(15));
     },
   );
 

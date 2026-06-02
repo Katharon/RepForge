@@ -2,7 +2,8 @@
 
 ## Goal
 
-Add the first versioned bundled official exercise catalog JSON assets plus schema validation and an idempotent local importer.
+Expand and harden the existing Slice 11 official exercise catalog assets,
+manifest validation, and idempotent local importer behavior.
 
 ## Read first
 
@@ -43,6 +44,32 @@ Write catalog fixture validation/import tests first: duplicate IDs, invalid acti
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
 
+## Implementation notes
+
+Slice 11 already introduced the first bundled official exercise catalog JSON,
+parser validation, Drift import foundation, and repository/query API. Slice 43
+therefore extends that foundation instead of rebuilding it.
+
+Slice 43 adds:
+
+- `assets/catalog/catalog_manifest.json` with the current bundled catalog asset
+  path, catalog version, schema version, and content notes.
+- Manifest parser validation for supported schema versions and local bundled
+  catalog asset references.
+- A version bump from `2026.05.0` to `2026.06.0` so existing local installs can
+  detect and import the expanded bundled catalog.
+- A small curated MVP catalog expansion from 6 to 15 official exercises,
+  covering fundamental barbell movements plus essential dumbbell, cable,
+  machine-station, and bodyweight accessories.
+- Parser tests for malformed tag lists and manifest references.
+- Importer/repository tests proving idempotency, version-aware import,
+  deterministic bounded queries, and preservation of workout-set and workout
+  group assignment snapshots.
+
+This slice does not add cloud catalog fetching, Firebase, sync, an Exercise
+backend, UI, recommendations, coaching, set stimulus, body visualization, or
+weighted muscle activation analytics.
+
 ## Validation commands
 
 ```bash
@@ -69,13 +96,13 @@ Update these if changed by implementation:
 ## Commit message
 
 ```text
-feat(catalog): add bundled exercise catalog importer
+feat(catalog): expand bundled exercise catalog
 ```
 
 ## Ready-to-use Codex prompt
 
 ```text
-You are working in the `gesundheit-gym-app` Flutter repository.
+You are working in the `RepForge` Flutter repository.
 
 Read first, in this order:
 1. AGENTS.md
@@ -87,7 +114,8 @@ Read first, in this order:
 Implement Slice 43: Official exercise catalog assets and importer.
 
 Goal:
-Add the first versioned bundled official exercise catalog JSON assets plus schema validation and an idempotent local importer.
+Expand and harden the existing bundled official exercise catalog assets,
+manifest validation, and idempotent local importer behavior.
 
 Non-goals:
 - Do not add a cloud database.
@@ -129,7 +157,7 @@ Documentation:
 
 Commit:
 Create one git commit with this exact message:
-`feat(catalog): add bundled exercise catalog importer`
+`feat(catalog): expand bundled exercise catalog`
 
 When finished, report summary, tests, validation results, changed files, commit hash, and follow-ups.
 ```

@@ -1,0 +1,9 @@
+{
+  "catalogVersion": "2026.06.0",
+  "schemaVersion": 1,
+  "currentCatalogAsset": "assets/catalog/official_exercises_v1.json",
+  "contentNotes": [
+    "Expanded MVP catalog with fundamental barbell, dumbbell, cable, machine, and bodyweight movements.",
+    "Official catalog remains bundled JSON imported into local Drift storage."
+  ]
+}

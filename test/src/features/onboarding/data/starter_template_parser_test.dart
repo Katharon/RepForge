@@ -10,7 +10,7 @@ void main() {
       File('assets/templates/starter_groups_v1.json').readAsStringSync(),
     );
 
-    expect(catalog.templateVersion, '2026.05.0');
+    expect(catalog.templateVersion, '2026.06.0');
     expect(catalog.groups, hasLength(2));
     expect(
       catalog.groups.first.exercises.first.catalogId,
