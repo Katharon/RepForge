@@ -215,6 +215,16 @@ readiness/soreness down-ranking, alternatives, substitution/exclusion
 recomputation, advisory/non-blocking behavior, sex/gender-neutral behavior, and
 domain import guardrails.
 
+## Quick session tests
+
+Slice 49 quick-session tests live under
+`test/src/features/recommendations/` and must keep domain/application logic pure
+Dart. They should cover 15/25/35-minute plan sizes, unavailable inputs, limited
+equipment, max-load adjustment propagation, high-soreness/readiness behavior,
+muscle-balance priorities, balanced fallback, covered/skipped muscles and
+movement patterns, stable tie-breaking, advisory/non-replacement semantics, and
+domain import guardrails.
+
 ## Profile and equipment tests
 
 Slice 44 profile tests must cover pure-Dart value object validation, explicit

@@ -4,6 +4,12 @@
 
 ### Added
 
+- Added Slice 49 quick-session mode with pure-Dart deterministic 15/25/35-minute
+  plan generation, 2-5 exercise selection, equipment and max-load handling,
+  readiness-aware filtering, muscle-balance priorities, balanced fallback,
+  covered/skipped muscle and movement-pattern summaries, and an injectable
+  application use case without persistence, UI, cloud AI, Firebase, sync,
+  accounts, wearables, payments, or replacing normal group sessions.
 - Added Slice 48 recommendation engine MVP with a pure-Dart deterministic
   recommendation boundary, explicit request/plan/read-model types, equipment
   filtering, max-load adjustment, focus-aware ordering, muscle-balance and

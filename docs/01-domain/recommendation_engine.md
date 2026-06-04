@@ -128,3 +128,26 @@ implemented MVP: empty plans, stable ordering, equipment filtering, max-load
 adjustment, focus-aware scoring, balance/readiness adjustments, alternatives,
 substitution/exclusion recomputation, deterministic reason codes, sex/gender
 neutrality, and domain-import guardrails.
+
+Slice 49 adds quick-session generation as a deterministic layer on top of the
+Slice 48 recommendation engine:
+
+- `QuickSessionRequest` wraps a normal `RecommendationRequest` plus a 15, 25,
+  or 35 minute duration bucket.
+- `DeterministicQuickSessionGenerator` reuses the injected
+  `RecommendationEngine`, then selects a time-bounded 2-5 exercise subset.
+- 15-minute plans target 2 exercises, 25-minute plans target 3 exercises, and
+  35-minute plans target 5 exercises when enough local candidates are available.
+- Balanced fallback can preserve broad push, pull, and lower-body coverage when
+  explicit muscle-balance signals are absent and the selected candidate set has
+  enough local options.
+- `QuickSessionPlan` reports ordered exercises, suggested adjusted loads where
+  max-load constraints apply, covered/skipped muscles, covered/skipped movement
+  patterns, skipped items, and stable reason codes.
+- Quick sessions are advisory only. They never replace normal group sessions
+  and never block workout logging, including when readiness is low or input
+  quality is partial.
+
+Slice 49 intentionally does not add UI, persistence, cloud AI, remote data,
+wearables, accounts, sync, payments, or set/rep prescription. Today and Groups
+can call the use case later through a localized presentation slice.

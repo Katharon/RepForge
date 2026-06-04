@@ -42,6 +42,17 @@ Write tests for 15/25/35-minute generation, limited equipment, high soreness, an
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
 
+## Implementation notes
+
+Slice 49 is implemented as a pure domain/application extension of the Slice 48
+recommendation feature. It adds deterministic quick-session request, plan,
+coverage, skipped-item, reason-code, generator, and use-case types under
+`lib/src/features/recommendations/`.
+
+No presentation code was touched in this slice. The Today and Groups surfaces
+can wire the use case in a later localized UI slice with normal loading, empty,
+error, and success states.
+
 ## Validation commands
 
 ```bash

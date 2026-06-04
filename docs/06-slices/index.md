@@ -51,7 +51,7 @@ Each slice is an incremental Codex task. Codex should implement exactly one slic
 - [46 — Muscle balance detection](slice_46_muscle_balance_detection.md) — done
 - [47 — Recovery and readiness check-ins](slice_47_recovery_readiness_checkins.md) — done
 - [48 — Recommendation engine MVP](slice_48_recommendation_engine_mvp.md) — done
-- [49 — Quick session mode](slice_49_quick_session_mode.md)
+- [49 — Quick session mode](slice_49_quick_session_mode.md) — done
 - [50 — Adaptive set suggestions and backoff logic](slice_50_adaptive_set_suggestions.md)
 - [51 — Muscle load and balance dashboard](slice_51_muscle_load_dashboard.md)
 - [52 — Catalog patch workflow and validation tooling](slice_52_catalog_patch_workflow.md)
