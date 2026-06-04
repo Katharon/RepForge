@@ -44,6 +44,17 @@ Write domain tests first for filtering, scoring, substitution recalculation, sor
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
 
+## Implementation note
+
+Slice 48 adds the MVP as a computed pure-Dart `recommendations` feature
+boundary. `RecommendationRequest` accepts explicit candidate exercise metadata
+plus local profile, equipment inventory, max-load constraints, muscle-balance
+assessment, readiness read model, exclusions, and substitutions. The
+deterministic engine returns an advisory `RecommendationPlan` with ordered
+recommendations, stable reason codes, load adjustments, alternatives, input
+quality, and constraints. It does not persist snapshots, add UI, call remote
+services, use cloud AI, require accounts, or block workout logging.
+
 ## Validation commands
 
 ```bash

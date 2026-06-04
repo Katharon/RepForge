@@ -92,6 +92,14 @@ Owns recommendation rules, focus profiles, imbalance detection, readiness signal
 Slice 46 provides the imbalance-detection vocabulary consumed by this context in
 future slices, but it does not yet generate recommendation plans or UI guidance.
 
+Slice 48 adds the first pure-Dart recommendation boundary under
+`lib/src/features/recommendations/`. It computes advisory recommendation plans
+from explicit local inputs: candidate exercise metadata, profile/focus,
+equipment inventory and load constraints, muscle-balance assessment, readiness
+read model, substitutions, and exclusions. Plans are deterministic read models
+with reason codes, alternatives, and constraints; they are not persisted and do
+not block workout logging.
+
 ### Timer & Notification
 
 Coordinates rest timers and local notifications. It references sets/exercises but must not own training-log persistence.

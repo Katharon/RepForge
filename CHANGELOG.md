@@ -4,6 +4,12 @@
 
 ### Added
 
+- Added Slice 48 recommendation engine MVP with a pure-Dart deterministic
+  recommendation boundary, explicit request/plan/read-model types, equipment
+  filtering, max-load adjustment, focus-aware ordering, muscle-balance and
+  readiness scoring, alternatives, substitution/exclusion recomputation, and an
+  injectable application use case without persistence, UI, cloud AI, Firebase,
+  sync, accounts, wearables, payments, or blocking workout logging.
 - Added Slice 47 recovery readiness check-ins with bounded local soreness,
   sleep-quality, energy, stress, and motivation inputs; deterministic readiness
   scoring; local Drift schema v9 persistence; backup/export support; and a

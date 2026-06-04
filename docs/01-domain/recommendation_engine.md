@@ -85,6 +85,31 @@ It exposes empty/available state, score, level, reasons, confidence, and the
 latest local check-in. It still does not generate recommendations, select
 exercises, prescribe deloads, or block logging.
 
+Slice 48 implements the first computed recommendation MVP. The feature boundary
+lives under `lib/src/features/recommendations/` and stays pure Dart:
+
+- `RecommendationRequest` contains explicit candidate exercise metadata,
+  settings/profile context, equipment inventory, optional max-load constraints,
+  optional muscle-balance assessment, optional readiness read model, excluded
+  exercises, and substitutions.
+- `RecommendationPlan` is a read model, not persisted canonical data. It
+  returns ordered `RecommendedExercise` items, `RecommendationAlternative`
+  items, input-quality state, constraints, and deterministic reason codes.
+- `DeterministicRecommendationEngine` filters unavailable equipment, adjusts
+  infeasible max-load suggestions instead of returning impossible loads, applies
+  focus/profile weighting, uses balance signals to prioritize pull/lower-body
+  gaps and suppress push-heavy reinforcement, and down-ranks heavy work when
+  readiness or soreness signals are low.
+- Substitution/exclusion recomputation is intentionally small: skipped
+  exercises are excluded, selected substitutions are treated as already covered,
+  and the remaining candidates are re-ranked deterministically.
+- The plan is advisory only. `allowsWorkoutLogging` remains true even when input
+  quality is partial, readiness is low, or an exercise is filtered.
+
+Reason-code semantics are stable and non-localized. Presentation may translate
+codes into careful copy later, but domain code must avoid shame, diagnosis,
+mandatory-rest language, or sex/gender stereotypes.
+
 ## Test strategy
 
 Domain tests must cover:
@@ -97,3 +122,9 @@ Domain tests must cover:
 - imbalance correction,
 - strength-down backoff behavior,
 - empty-history behavior.
+
+Slice 48 tests live under `test/src/features/recommendations/` and cover the
+implemented MVP: empty plans, stable ordering, equipment filtering, max-load
+adjustment, focus-aware scoring, balance/readiness adjustments, alternatives,
+substitution/exclusion recomputation, deterministic reason codes, sex/gender
+neutrality, and domain-import guardrails.

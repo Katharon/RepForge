@@ -205,6 +205,16 @@ non-diagnostic/non-blocking API wording; Drift save/load/latest ordering; date
 filtering; backup export/import; and preservation of workout sets, catalog
 rows, groups, and profile data when readiness check-ins are saved.
 
+## Recommendation engine tests
+
+Slice 48 recommendation tests live under `test/src/features/recommendations/`
+and must keep domain/application logic pure Dart. They should cover empty and
+partial input quality, deterministic ordering and tie-breaking, equipment
+filtering, max-load adjustment, focus-aware scoring, muscle-balance priorities,
+readiness/soreness down-ranking, alternatives, substitution/exclusion
+recomputation, advisory/non-blocking behavior, sex/gender-neutral behavior, and
+domain import guardrails.
+
 ## Profile and equipment tests
 
 Slice 44 profile tests must cover pure-Dart value object validation, explicit

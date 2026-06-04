@@ -518,6 +518,7 @@ class RepForgeDatabase extends _$RepForgeDatabase {
       }
       if (from < 9) {
         await migrator.createTable(readinessCheckIns);
+        await _createReadinessIndexes();
       }
     },
     // Future migrations must preserve logged set history and prefer additive
@@ -547,6 +548,16 @@ ON workout_sets (
   workout_session_id,
   performed_at,
   workout_set_id
+)
+''');
+  }
+
+  Future<void> _createReadinessIndexes() async {
+    await customStatement('''
+CREATE INDEX IF NOT EXISTS readiness_checkins_latest_idx
+ON readiness_checkins (
+  checked_in_at DESC,
+  readiness_check_in_id DESC
 )
 ''');
   }
