@@ -225,6 +225,17 @@ muscle-balance priorities, balanced fallback, covered/skipped muscles and
 movement patterns, stable tie-breaking, advisory/non-replacement semantics, and
 domain import guardrails.
 
+## Adaptive set suggestion tests
+
+Slice 50 adaptive-set tests live under
+`test/src/features/recommendations/` and must keep domain/application logic pure
+Dart. They should cover no-history starter guidance, good-readiness progression,
+max-load and increment handling, low-readiness backoff, very-high-soreness
+suppression, strength-down backoff, baseline matching and small dips,
+alternative surfacing, user override/advisory semantics, missing-RPE behavior,
+deterministic reason codes, non-medical/non-forcing API wording, and domain
+import guardrails.
+
 ## Profile and equipment tests
 
 Slice 44 profile tests must cover pure-Dart value object validation, explicit

@@ -151,3 +151,29 @@ Slice 48 recommendation engine:
 Slice 49 intentionally does not add UI, persistence, cloud AI, remote data,
 wearables, accounts, sync, payments, or set/rep prescription. Today and Groups
 can call the use case later through a localized presentation slice.
+
+Slice 50 adds adaptive next-set suggestions as another deterministic advisory
+layer inside `lib/src/features/recommendations/`:
+
+- `AdaptiveSetSuggestionRequest` contains the current exercise/set performance,
+  an optional comparable `SetPerformanceBaseline`, optional readiness read
+  model, optional equipment inventory plus primary equipment, optional
+  recommendation alternatives, and explicit overload/backoff policies.
+- `DeterministicAdaptiveSetSuggester` returns an `AdaptiveSetSuggestion` with a
+  stable direction: `addWeight`, `addReps`, `maintain`, `backoff`, `stop`,
+  `chooseAlternative`, or `noSuggestion`.
+- Readiness and soreness are checked before progression. Low readiness backs
+  off, very low readiness can recommend a conservative stop or alternative, and
+  none of these states block workout logging.
+- Load increases respect modeled max-load and increment constraints. When an
+  increase would be impossible, the suggester prefers reps or maintain rather
+  than inventing unavailable load.
+- RPE is not required because the training-log domain does not model it yet.
+  The suggestion reasons explicitly carry `rpeNotRequired`.
+- The output is read-only, advisory, explainable through reason codes, and
+  always user-overridable.
+
+Slice 50 intentionally does not persist suggestions, mutate logged sets,
+introduce UI, require RPE, add medical diagnosis, force heavier loads, add
+cloud AI, remote services, wearables, accounts, sync, payments, or block
+logging.

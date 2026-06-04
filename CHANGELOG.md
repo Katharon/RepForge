@@ -4,6 +4,13 @@
 
 ### Added
 
+- Added Slice 50 adaptive set suggestions with pure-Dart deterministic
+  next-set directions, comparable-baseline and current-performance inputs,
+  readiness/backoff handling, max-load and increment-aware load suggestions,
+  optional recommendation alternatives, stable reason codes, and an injectable
+  application use case without persistence, UI, RPE requirements, medical
+  claims, cloud AI, Firebase, sync, accounts, wearables, payments, or blocking
+  workout logging.
 - Added Slice 49 quick-session mode with pure-Dart deterministic 15/25/35-minute
   plan generation, 2-5 exercise selection, equipment and max-load handling,
   readiness-aware filtering, muscle-balance priorities, balanced fallback,

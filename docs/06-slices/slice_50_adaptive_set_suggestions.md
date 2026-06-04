@@ -42,6 +42,17 @@ Write domain tests for good readiness progression, low readiness reduction, stre
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
 
+## Implementation notes
+
+Slice 50 is implemented as a pure domain/application extension of the
+recommendations feature. It adds deterministic adaptive-set request, baseline,
+current-performance, policy, suggestion, alternative, reason-code, suggester,
+and use-case types under `lib/src/features/recommendations/`.
+
+No presentation or persistence code was touched. RPE is not modeled in the
+training-log domain yet, so adaptive suggestions do not require it and expose a
+stable `rpeNotRequired` reason for current behavior.
+
 ## Validation commands
 
 ```bash

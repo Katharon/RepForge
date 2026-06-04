@@ -184,6 +184,23 @@ Rules:
 - If readiness is okay but top-set strength is down, suggest a backoff set or extra lower-intensity set to preserve volume.
 - If readiness is poor, reduce volume/intensity instead.
 
+Slice 50 implements the first deterministic adaptive next-set policy:
+
+- no comparable baseline returns conservative maintain/starter guidance,
+- matched or slightly below-baseline performance returns maintain,
+- exceeded-baseline performance with good readiness can suggest a small load or
+  rep increase,
+- modeled load increments and max loads are respected before suggesting weight,
+- low readiness, high soreness, or clear strength-down signals suggest backoff
+  before progression,
+- very low readiness or very high soreness can surface an alternative or a
+  conservative stop direction,
+- every suggestion remains advisory, explainable, and user-overridable.
+
+RPE/RIR is not required for this slice because set logging does not model it
+yet. Future RPE/RIR support can refine these rules without changing logged-set
+history.
+
 ## Quick Session mode
 
 Inputs:

@@ -135,6 +135,8 @@ Explicit user choices such as focus profile, goals, equipment, and recovery
 sensitivity are authoritative for future personalization.
 
 Home-gym load constraints are modeled as optional equipment metadata. They can
-later inform equipment-aware filtering or recommendations, but Slice 44 does
-not implement recommendation rules, adaptive coaching decisions, wearables,
-calorie estimation, or muscle-load algorithms.
+inform equipment-aware filtering, recommendations, quick sessions, and adaptive
+set suggestions, but they do not reinterpret existing logged sets. Slice 50 uses
+max-load and increment constraints to avoid suggesting unavailable load jumps.
+Wearables, calorie estimation, and muscle-load algorithms remain outside this
+profile model.
