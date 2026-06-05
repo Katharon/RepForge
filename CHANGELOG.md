@@ -4,6 +4,12 @@
 
 ### Added
 
+- Added Slice 50b MVP UI integration with a visible local Exercises catalog
+  list, local Groups list and assignment previews, enabled Today quick set
+  logging through the existing save-set path, Today refresh after saved sets,
+  on-demand bundled catalog import, and careful readiness/coach preview copy
+  without cloud services, Firebase, sync, accounts, wearables, payments, remote
+  catalog fetching, medical claims, or blocking workout logging.
 - Added Slice 50 adaptive set suggestions with pure-Dart deterministic
   next-set directions, comparable-baseline and current-performance inputs,
   readiness/backoff handling, max-load and increment-aware load suggestions,

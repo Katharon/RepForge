@@ -11,6 +11,8 @@ import '../features/cloud/application/cloud_application.dart';
 import '../features/cloud/domain/cloud_domain.dart';
 import '../features/entitlements/application/entitlements_application.dart';
 import '../features/entitlements/domain/entitlements_domain.dart';
+import '../features/exercise_catalog/data/exercise_catalog_data.dart';
+import '../features/exercise_catalog/domain/exercise_catalog_domain.dart';
 import '../features/notifications/application/notifications_application.dart';
 import '../features/notifications/domain/notifications_domain.dart';
 import '../features/onboarding/application/onboarding_application.dart';
@@ -28,6 +30,7 @@ import '../features/rest_timer/domain/rest_timer_domain.dart';
 import '../features/settings/application/settings_application.dart';
 import '../features/settings/data/settings_data.dart';
 import '../features/settings/domain/settings_domain.dart';
+import '../features/training_log/application/training_log_application.dart';
 import '../features/training_log/data/repositories/drift_workout_set_repository.dart';
 import '../features/training_log/domain/training_log_domain.dart';
 import '../features/workout_groups/data/repositories/drift_workout_group_repository.dart';
@@ -53,7 +56,10 @@ final class AppDependencies {
   AppDependencies({
     required this.configuration,
     required this.workoutSetRepository,
+    required this.saveWorkoutSet,
     required this.getExerciseAnalytics,
+    required this.exerciseCatalogRepository,
+    required this.ensureOfficialCatalogImported,
     required this.readinessCheckInRepository,
     required this.saveReadinessCheckIn,
     required this.getLatestReadiness,
@@ -95,7 +101,10 @@ final class AppDependencies {
   AppDependencies._withOwnedResources({
     required this.configuration,
     required this.workoutSetRepository,
+    required this.saveWorkoutSet,
     required this.getExerciseAnalytics,
+    required this.exerciseCatalogRepository,
+    required this.ensureOfficialCatalogImported,
     required this.readinessCheckInRepository,
     required this.saveReadinessCheckIn,
     required this.getLatestReadiness,
@@ -137,7 +146,10 @@ final class AppDependencies {
 
   final AppConfiguration configuration;
   final WorkoutSetRepository workoutSetRepository;
+  final SaveWorkoutSet saveWorkoutSet;
   final GetExerciseAnalytics getExerciseAnalytics;
+  final ExerciseCatalogRepository exerciseCatalogRepository;
+  final Future<void> Function() ensureOfficialCatalogImported;
   final ReadinessCheckInRepository readinessCheckInRepository;
   final SaveReadinessCheckIn saveReadinessCheckIn;
   final GetLatestReadiness getLatestReadiness;
@@ -239,6 +251,13 @@ final class CompositionRoot {
   AppDependencies compose() {
     final composedDatabase = database ?? databaseFactory.createDatabase();
     final workoutSetRepository = DriftWorkoutSetRepository(composedDatabase);
+    final saveWorkoutSet = SaveWorkoutSet(workoutSetRepository);
+    final exerciseCatalogRepository = DriftExerciseCatalogRepository(
+      composedDatabase,
+    );
+    final ensureOfficialCatalogImported = BundledOfficialExerciseCatalogImport(
+      importer: OfficialExerciseCatalogImporter(composedDatabase),
+    );
     final workoutGroupRepository = DriftWorkoutGroupRepository(
       composedDatabase,
     );
@@ -323,7 +342,10 @@ final class CompositionRoot {
       return AppDependencies(
         configuration: configuration,
         workoutSetRepository: workoutSetRepository,
+        saveWorkoutSet: saveWorkoutSet,
         getExerciseAnalytics: getExerciseAnalytics,
+        exerciseCatalogRepository: exerciseCatalogRepository,
+        ensureOfficialCatalogImported: ensureOfficialCatalogImported.call,
         readinessCheckInRepository: readinessCheckInRepository,
         saveReadinessCheckIn: saveReadinessCheckIn,
         getLatestReadiness: getLatestReadiness,
@@ -366,7 +388,10 @@ final class CompositionRoot {
     return AppDependencies._withOwnedResources(
       configuration: configuration,
       workoutSetRepository: workoutSetRepository,
+      saveWorkoutSet: saveWorkoutSet,
       getExerciseAnalytics: getExerciseAnalytics,
+      exerciseCatalogRepository: exerciseCatalogRepository,
+      ensureOfficialCatalogImported: ensureOfficialCatalogImported.call,
       readinessCheckInRepository: readinessCheckInRepository,
       saveReadinessCheckIn: saveReadinessCheckIn,
       getLatestReadiness: getLatestReadiness,

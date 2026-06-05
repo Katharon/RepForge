@@ -12,6 +12,7 @@ import 'package:repforge/src/features/backup/application/backup_application.dart
 import 'package:repforge/src/features/backup/domain/backup_domain.dart';
 import 'package:repforge/src/features/cloud/application/cloud_application.dart';
 import 'package:repforge/src/features/entitlements/application/entitlements_application.dart';
+import 'package:repforge/src/features/exercise_catalog/domain/exercise_catalog_domain.dart';
 import 'package:repforge/src/features/notifications/application/notifications_application.dart';
 import 'package:repforge/src/features/onboarding/application/onboarding_application.dart';
 import 'package:repforge/src/features/onboarding/domain/onboarding_domain.dart';
@@ -23,6 +24,7 @@ import 'package:repforge/src/features/rest_timer/application/rest_timer_applicat
 import 'package:repforge/src/features/rest_timer/domain/rest_timer_domain.dart';
 import 'package:repforge/src/features/settings/application/settings_application.dart';
 import 'package:repforge/src/features/settings/domain/settings_domain.dart';
+import 'package:repforge/src/features/training_log/application/training_log_application.dart';
 import 'package:repforge/src/features/training_log/domain/training_log_domain.dart';
 import 'package:repforge/src/features/workout_groups/domain/workout_groups_domain.dart';
 
@@ -121,7 +123,7 @@ void main() {
     expect(find.text('Heute noch keine Saetze'), findsOneWidget);
   });
 
-  testWidgets('tapping each destination shows the matching placeholder', (
+  testWidgets('tapping each destination shows the wired destination state', (
     tester,
   ) async {
     final dependencies = _testAppDependencies();
@@ -129,8 +131,8 @@ void main() {
     await tester.pumpWidget(RepForgeApp(dependencies: dependencies));
 
     const destinations = <String, String>{
-      'Groups': 'Workout groups will be connected in a later slice.',
-      'Exercises': 'Exercises will use the bundled catalog and custom entries.',
+      'Groups': 'No groups yet',
+      'Exercises': 'Search exercises',
       'Analytics': 'No sets in this range',
       'Settings': 'Using local defaults',
       'Today': 'No sets logged today',
@@ -201,6 +203,7 @@ AppDependencies _testAppDependencies({
   AppConfiguration configuration = const AppConfiguration(),
 }) {
   final workoutSetRepository = _FakeWorkoutSetRepository();
+  final exerciseCatalogRepository = _FakeExerciseCatalogRepository();
   final settingsProfileRepository = _FakeSettingsProfileRepository();
   final onboardingStatusRepository = _FakeOnboardingStatusRepository();
   final workoutGroupRepository = _FakeWorkoutGroupRepository();
@@ -228,7 +231,10 @@ AppDependencies _testAppDependencies({
       notificationGateway: _FakeRestTimerNotificationGateway(),
     ),
     workoutSetRepository: workoutSetRepository,
+    saveWorkoutSet: SaveWorkoutSet(workoutSetRepository),
     getExerciseAnalytics: GetExerciseAnalytics(workoutSetRepository),
+    exerciseCatalogRepository: exerciseCatalogRepository,
+    ensureOfficialCatalogImported: () async {},
     settingsProfileRepository: settingsProfileRepository,
     loadSettingsProfile: loadSettingsProfile,
     saveSettingsProfile: saveSettingsProfile,
@@ -277,6 +283,37 @@ AppDependencies _testAppDependencies({
     ),
     entitlementCachePolicy: const EntitlementCachePolicy(),
   );
+}
+
+final class _FakeExerciseCatalogRepository
+    implements ExerciseCatalogRepository {
+  @override
+  Future<OfficialExercise?> findOfficialExerciseById(
+    OfficialExerciseId id,
+  ) async => null;
+
+  @override
+  Future<ExerciseCatalogPage> findOfficialExercises(
+    ExerciseCatalogQuery query,
+  ) {
+    final exercise = OfficialExercise(
+      id: OfficialExerciseId('barbell_bench_press'),
+      catalogVersion: CatalogVersion('2026.06.0'),
+      englishName: 'Barbell Bench Press',
+      germanName: 'Bankdruecken mit Langhantel',
+      equipment: [EquipmentTag('barbell')],
+      movementPatterns: [MovementPattern('horizontal_push')],
+      primaryMuscles: [MuscleGroup('chest')],
+    );
+    return Future.value(
+      ExerciseCatalogPage(
+        items: [exercise],
+        totalCount: 1,
+        limit: query.limit,
+        offset: query.offset,
+      ),
+    );
+  }
 }
 
 final class _FakeReadinessCheckInRepository
@@ -455,7 +492,14 @@ final class _FakeWorkoutGroupRepository implements WorkoutGroupRepository {
 
   @override
   Future<WorkoutGroupPage> listGroups(WorkoutGroupQuery query) {
-    throw UnimplementedError();
+    return Future.value(
+      WorkoutGroupPage(
+        items: const [],
+        totalCount: 0,
+        limit: query.limit,
+        offset: query.offset,
+      ),
+    );
   }
 
   @override

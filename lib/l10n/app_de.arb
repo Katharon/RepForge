@@ -164,9 +164,9 @@
   "@todayQuickActionLogSet": {
     "description": "Kuenftiges Schnellaktionslabel zum Protokollieren eines Satzes."
   },
-  "todayQuickActionPlaceholder": "Schnelles Protokollieren wird in einem spaeteren Tracking-Slice hier verbunden.",
-  "@todayQuickActionPlaceholder": {
-    "description": "Platzhaltertext fuer den kuenftigen Schnellzugriff zum Protokollieren."
+  "todayQuickActionMessage": "Waehle eine Uebung, trage Gewicht und Wiederholungen ein und speichere den Satz lokal.",
+  "@todayQuickActionMessage": {
+    "description": "Hilfetext fuer den Heute-Schnellzugriff zum Protokollieren."
   },
   "todayAnalyticsHintTitle": "Trainingssignal",
   "@todayAnalyticsHintTitle": {
@@ -176,13 +176,177 @@
   "@todayAnalyticsHintMessage": {
     "description": "Text fuer eine kleine Analyse-Hinweiskarte in Heute."
   },
-  "groupsPlaceholderMessage": "Workout-Gruppen werden in einem spaeteren Slice verbunden.",
-  "@groupsPlaceholderMessage": {
-    "description": "Platzhaltertext fuer Workout-Gruppen."
+  "groupsLoading": "Gruppen werden geladen",
+  "@groupsLoading": {
+    "description": "Ladezustand fuer Workout-Gruppen."
   },
-  "exercisesPlaceholderMessage": "Uebungen nutzen spaeter den gebuendelten Katalog und eigene Eintraege.",
-  "@exercisesPlaceholderMessage": {
-    "description": "Platzhaltertext fuer Uebungen."
+  "groupsEmptyTitle": "Noch keine Gruppen",
+  "@groupsEmptyTitle": {
+    "description": "Titel fuer leere Workout-Gruppen."
+  },
+  "groupsEmptyMessage": "Schliesse das Onboarding ab, um Startgruppen zu erstellen. Bearbeiten folgt in einem spaeteren Flow.",
+  "@groupsEmptyMessage": {
+    "description": "Text fuer leere Workout-Gruppen."
+  },
+  "groupsErrorTitle": "Gruppen konnten nicht geladen werden",
+  "@groupsErrorTitle": {
+    "description": "Titel fuer Gruppen-Ladefehler."
+  },
+  "groupsErrorMessage": "Versuche es erneut, ohne lokale Daten zu aendern.",
+  "@groupsErrorMessage": {
+    "description": "Text fuer Gruppen-Ladefehler."
+  },
+  "groupsCount": "{count, plural, =1{1 Gruppe} other{{count} Gruppen}}",
+  "@groupsCount": {
+    "description": "Anzahl der Workout-Gruppen.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "groupsExerciseCount": "{count, plural, =0{Keine Uebungen zugewiesen} =1{1 Uebung zugewiesen} other{{count} Uebungen zugewiesen}}",
+  "@groupsExerciseCount": {
+    "description": "Anzahl zugewiesener Uebungen in einer Gruppe.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "groupsSemanticsLabel": "{name}, {count, plural, =0{keine Uebungen} =1{1 Uebung} other{{count} Uebungen}}",
+  "@groupsSemanticsLabel": {
+    "description": "Semantische Zusammenfassung fuer eine Workout-Gruppe.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Push Day"
+      },
+      "count": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "groupsCoachPreviewTitle": "Coach-Vorschau",
+  "@groupsCoachPreviewTitle": {
+    "description": "Titel fuer eine kleine lokale Coach-Vorschau in Gruppen."
+  },
+  "groupsCoachPreviewMessage": "Empfehlungen koennen lokale Gruppen, Readiness, Equipment und Balance-Signale nutzen, sobald genug Eingaben vorhanden sind.",
+  "@groupsCoachPreviewMessage": {
+    "description": "Vorsichtiger Coach-Vorschautext fuer Workout-Gruppen."
+  },
+  "exercisesLoading": "Uebungen werden geladen",
+  "@exercisesLoading": {
+    "description": "Ladezustand fuer Uebungen."
+  },
+  "exercisesSearchLabel": "Uebungen suchen",
+  "@exercisesSearchLabel": {
+    "description": "Suchfeldlabel fuer Uebungen."
+  },
+  "exercisesSearchTooltip": "Suchen",
+  "@exercisesSearchTooltip": {
+    "description": "Tooltip fuer Uebungssuche."
+  },
+  "exercisesEmptyTitle": "Keine Uebungen gefunden",
+  "@exercisesEmptyTitle": {
+    "description": "Titel fuer leeren Uebungskatalog."
+  },
+  "exercisesEmptyMessage": "Probiere eine andere Suche oder importiere den gebuendelten Katalog erneut.",
+  "@exercisesEmptyMessage": {
+    "description": "Text fuer leeren Uebungskatalog."
+  },
+  "exercisesErrorTitle": "Uebungen konnten nicht geladen werden",
+  "@exercisesErrorTitle": {
+    "description": "Titel fuer Uebungs-Ladefehler."
+  },
+  "exercisesErrorMessage": "Versuche es erneut, ohne lokale Daten zu aendern.",
+  "@exercisesErrorMessage": {
+    "description": "Text fuer Uebungs-Ladefehler."
+  },
+  "exercisesCount": "{count, plural, =1{1 Uebung} other{{count} Uebungen}}",
+  "@exercisesCount": {
+    "description": "Anzahl offizieller Uebungen.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "exercisesMoreTitle": "Weitere Uebungen verfuegbar",
+  "@exercisesMoreTitle": {
+    "description": "Titel, wenn die Liste begrenzt ist."
+  },
+  "exercisesMoreMessage": "Nutze die Suche, um den lokalen Katalog einzugrenzen.",
+  "@exercisesMoreMessage": {
+    "description": "Text, wenn die Liste begrenzt ist."
+  },
+  "quickLogTitle": "Satz protokollieren",
+  "@quickLogTitle": {
+    "description": "Dialogtitel zum schnellen Protokollieren eines Satzes."
+  },
+  "quickLogExerciseSearchLabel": "Uebung",
+  "@quickLogExerciseSearchLabel": {
+    "description": "Uebungs-Suchfeld im Schnellprotokoll."
+  },
+  "quickLogNoExercises": "Keine Uebungen verfuegbar.",
+  "@quickLogNoExercises": {
+    "description": "Leerer Uebungszustand im Schnellprotokoll."
+  },
+  "quickLogLoadLabel": "Gewicht (kg)",
+  "@quickLogLoadLabel": {
+    "description": "Gewichtsfeld im Schnellprotokoll."
+  },
+  "quickLogRepetitionsLabel": "Wdh.",
+  "@quickLogRepetitionsLabel": {
+    "description": "Wiederholungsfeld im Schnellprotokoll."
+  },
+  "quickLogLabelLabel": "Label",
+  "@quickLogLabelLabel": {
+    "description": "Set-Label-Auswahl im Schnellprotokoll."
+  },
+  "quickLogCommentLabel": "Kommentar",
+  "@quickLogCommentLabel": {
+    "description": "Kommentarfeld im Schnellprotokoll."
+  },
+  "quickLogCancel": "Abbrechen",
+  "@quickLogCancel": {
+    "description": "Abbrechen-Button im Schnellprotokoll."
+  },
+  "quickLogSave": "Satz speichern",
+  "@quickLogSave": {
+    "description": "Speichern-Button im Schnellprotokoll."
+  },
+  "quickLogSaveError": "Pruefe die Satzdetails und versuche es erneut.",
+  "@quickLogSaveError": {
+    "description": "Validierungs-/Speicherfehler im Schnellprotokoll."
+  },
+  "quickLogLabelNone": "Keins",
+  "@quickLogLabelNone": {
+    "description": "Keine Set-Markierung."
+  },
+  "quickLogLabelWarmup": "Aufwaermen",
+  "@quickLogLabelWarmup": {
+    "description": "Aufwaermsatz-Markierung."
+  },
+  "quickLogLabelFailure": "Failure",
+  "@quickLogLabelFailure": {
+    "description": "Failure-Markierung."
+  },
+  "quickLogLabelPersonalRecord": "Persoenlicher Rekord",
+  "@quickLogLabelPersonalRecord": {
+    "description": "PR-Markierung."
+  },
+  "quickLogLabelDropSet": "Drop-Set",
+  "@quickLogLabelDropSet": {
+    "description": "Drop-Set-Markierung."
+  },
+  "quickLogLabelPain": "Schmerznotiz",
+  "@quickLogLabelPain": {
+    "description": "Schmerznotiz-Markierung."
   },
   "analyticsPlaceholderMessage": "Analysen zeigen spaeter lokale Trainingstrends.",
   "@analyticsPlaceholderMessage": {

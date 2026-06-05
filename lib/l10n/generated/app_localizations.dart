@@ -318,11 +318,11 @@ abstract class AppLocalizations {
   /// **'Log set'**
   String get todayQuickActionLogSet;
 
-  /// Placeholder text for future quick logging entry point.
+  /// Helper text for the Today quick logging entry point.
   ///
   /// In en, this message translates to:
-  /// **'Quick logging will connect here in a later tracking slice.'**
-  String get todayQuickActionPlaceholder;
+  /// **'Choose an exercise, enter load and reps, and save the set locally.'**
+  String get todayQuickActionMessage;
 
   /// Title for a small Today analytics hint card.
   ///
@@ -336,17 +336,221 @@ abstract class AppLocalizations {
   /// **'Local trends stay in Analytics while today\'s work stays here.'**
   String get todayAnalyticsHintMessage;
 
-  /// Placeholder message for the workout groups destination.
+  /// Loading state for workout groups.
   ///
   /// In en, this message translates to:
-  /// **'Workout groups will be connected in a later slice.'**
-  String get groupsPlaceholderMessage;
+  /// **'Loading groups'**
+  String get groupsLoading;
 
-  /// Placeholder message for the exercises destination.
+  /// Title for empty workout groups list.
   ///
   /// In en, this message translates to:
-  /// **'Exercises will use the bundled catalog and custom entries.'**
-  String get exercisesPlaceholderMessage;
+  /// **'No groups yet'**
+  String get groupsEmptyTitle;
+
+  /// Message for empty workout groups list.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete onboarding to create starter groups, or add groups in a later editing flow.'**
+  String get groupsEmptyMessage;
+
+  /// Title for groups loading error.
+  ///
+  /// In en, this message translates to:
+  /// **'Groups could not load'**
+  String get groupsErrorTitle;
+
+  /// Message for groups loading error.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again without changing local data.'**
+  String get groupsErrorMessage;
+
+  /// Workout group count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 group} other{{count} groups}}'**
+  String groupsCount(int count);
+
+  /// Exercise assignment count for a group.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No exercises assigned} =1{1 exercise assigned} other{{count} exercises assigned}}'**
+  String groupsExerciseCount(int count);
+
+  /// Semantic summary for a workout group card.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, {count, plural, =0{no exercises} =1{1 exercise} other{{count} exercises}}'**
+  String groupsSemanticsLabel(String name, int count);
+
+  /// Title for a small local coach preview on groups.
+  ///
+  /// In en, this message translates to:
+  /// **'Coach preview'**
+  String get groupsCoachPreviewTitle;
+
+  /// Careful coach preview message for workout groups.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommendations can use local groups, readiness, equipment, and balance signals when enough inputs are available.'**
+  String get groupsCoachPreviewMessage;
+
+  /// Loading state for exercises.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading exercises'**
+  String get exercisesLoading;
+
+  /// Search field label for exercises.
+  ///
+  /// In en, this message translates to:
+  /// **'Search exercises'**
+  String get exercisesSearchLabel;
+
+  /// Tooltip for exercise search button.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get exercisesSearchTooltip;
+
+  /// Title for empty exercise catalog state.
+  ///
+  /// In en, this message translates to:
+  /// **'No exercises found'**
+  String get exercisesEmptyTitle;
+
+  /// Message for empty exercise catalog state.
+  ///
+  /// In en, this message translates to:
+  /// **'Try a different search or import the bundled catalog again.'**
+  String get exercisesEmptyMessage;
+
+  /// Title for exercise loading error.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercises could not load'**
+  String get exercisesErrorTitle;
+
+  /// Message for exercise loading error.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again without changing local data.'**
+  String get exercisesErrorMessage;
+
+  /// Official exercise count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 exercise} other{{count} exercises}}'**
+  String exercisesCount(int count);
+
+  /// Title shown when the list is capped.
+  ///
+  /// In en, this message translates to:
+  /// **'More exercises available'**
+  String get exercisesMoreTitle;
+
+  /// Message shown when the list is capped.
+  ///
+  /// In en, this message translates to:
+  /// **'Use search to narrow the local catalog.'**
+  String get exercisesMoreMessage;
+
+  /// Dialog title for quick logging a set.
+  ///
+  /// In en, this message translates to:
+  /// **'Log set'**
+  String get quickLogTitle;
+
+  /// Exercise search field label in quick log dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercise'**
+  String get quickLogExerciseSearchLabel;
+
+  /// Empty exercise state in quick log dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'No exercises available.'**
+  String get quickLogNoExercises;
+
+  /// Load field label in quick log dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Load (kg)'**
+  String get quickLogLoadLabel;
+
+  /// Repetitions field label in quick log dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Reps'**
+  String get quickLogRepetitionsLabel;
+
+  /// Set label dropdown label in quick log dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Label'**
+  String get quickLogLabelLabel;
+
+  /// Comment field label in quick log dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Comment'**
+  String get quickLogCommentLabel;
+
+  /// Cancel button in quick log dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get quickLogCancel;
+
+  /// Save button in quick log dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Save set'**
+  String get quickLogSave;
+
+  /// Validation/save error message in quick log dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the set details and try again.'**
+  String get quickLogSaveError;
+
+  /// No set label option.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get quickLogLabelNone;
+
+  /// Warm-up set label option.
+  ///
+  /// In en, this message translates to:
+  /// **'Warm-up'**
+  String get quickLogLabelWarmup;
+
+  /// Failure set label option.
+  ///
+  /// In en, this message translates to:
+  /// **'Failure'**
+  String get quickLogLabelFailure;
+
+  /// Personal record set label option.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal record'**
+  String get quickLogLabelPersonalRecord;
+
+  /// Drop set label option.
+  ///
+  /// In en, this message translates to:
+  /// **'Drop set'**
+  String get quickLogLabelDropSet;
+
+  /// Pain note set label option.
+  ///
+  /// In en, this message translates to:
+  /// **'Pain note'**
+  String get quickLogLabelPain;
 
   /// Placeholder message for the analytics destination.
   ///

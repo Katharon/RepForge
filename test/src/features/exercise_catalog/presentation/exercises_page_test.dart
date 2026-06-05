@@ -1,0 +1,180 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:repforge/src/app/localization/app_localizations.dart';
+import 'package:repforge/src/core/theme/theme.dart';
+import 'package:repforge/src/features/exercise_catalog/presentation/exercise_catalog_presentation.dart';
+
+void main() {
+  testWidgets('loading state renders', (tester) async {
+    _useLargeViewport(tester);
+    await tester.pumpWidget(
+      _testApp(ExercisesPage(loader: _PendingExerciseCatalogListLoader())),
+    );
+
+    expect(find.text('Loading exercises'), findsOneWidget);
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+  });
+
+  testWidgets('empty state renders', (tester) async {
+    _useLargeViewport(tester);
+    await tester.pumpWidget(
+      _testApp(
+        ExercisesPage(
+          loader: _StaticExerciseCatalogListLoader(
+            const ExerciseCatalogListViewModel(
+              exercises: [],
+              totalCount: 0,
+              hasMore: false,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('No exercises found'), findsOneWidget);
+    expect(find.text('Exercises will use the bundled catalog'), findsNothing);
+  });
+
+  testWidgets('error state renders', (tester) async {
+    _useLargeViewport(tester);
+    await tester.pumpWidget(
+      _testApp(ExercisesPage(loader: _FailingExerciseCatalogListLoader())),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Exercises could not load'), findsOneWidget);
+    expect(find.text('Try again without changing local data.'), findsOneWidget);
+  });
+
+  testWidgets('success state renders catalog exercise metadata', (
+    tester,
+  ) async {
+    _useLargeViewport(tester);
+    await tester.pumpWidget(
+      _testApp(
+        ExercisesPage(
+          loader: _StaticExerciseCatalogListLoader(
+            const ExerciseCatalogListViewModel(
+              exercises: [
+                ExerciseListItemViewModel(
+                  id: 'barbell_bench_press',
+                  name: 'Barbell Bench Press',
+                  equipment: ['barbell'],
+                  movementPatterns: ['horizontal_push'],
+                  primaryMuscles: ['chest'],
+                ),
+              ],
+              totalCount: 1,
+              hasMore: false,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Barbell Bench Press'), findsOneWidget);
+    expect(find.text('Barbell'), findsOneWidget);
+    expect(find.text('Horizontal Push'), findsOneWidget);
+    expect(find.text('Chest'), findsOneWidget);
+  });
+
+  testWidgets('search text is forwarded to loader', (tester) async {
+    _useLargeViewport(tester);
+    final loader = _RecordingExerciseCatalogListLoader();
+
+    await tester.pumpWidget(_testApp(ExercisesPage(loader: loader)));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+      find.byKey(const Key('exercise_catalog_search_field')),
+      'bench',
+    );
+    await tester.tap(find.byKey(const Key('exercise_catalog_search_button')));
+    await tester.pumpAndSettle();
+
+    expect(loader.searches, contains('bench'));
+  });
+}
+
+void _useLargeViewport(WidgetTester tester) {
+  tester.view.devicePixelRatio = 1;
+  tester.view.physicalSize = const Size(1000, 1200);
+  addTearDown(tester.view.resetDevicePixelRatio);
+  addTearDown(tester.view.resetPhysicalSize);
+}
+
+Widget _testApp(Widget child) {
+  return MaterialApp(
+    localizationsDelegates: AppLocalizations.localizationsDelegates,
+    supportedLocales: AppLocalizations.supportedLocales,
+    theme: RepForgeTheme.dark(),
+    home: Scaffold(body: child),
+  );
+}
+
+final class _PendingExerciseCatalogListLoader
+    implements ExerciseCatalogListLoader {
+  @override
+  Future<ExerciseCatalogListViewModel> load({
+    String? searchText,
+    Locale? locale,
+  }) {
+    return Completer<ExerciseCatalogListViewModel>().future;
+  }
+}
+
+final class _StaticExerciseCatalogListLoader
+    implements ExerciseCatalogListLoader {
+  const _StaticExerciseCatalogListLoader(this.model);
+
+  final ExerciseCatalogListViewModel model;
+
+  @override
+  Future<ExerciseCatalogListViewModel> load({
+    String? searchText,
+    Locale? locale,
+  }) async {
+    return model;
+  }
+}
+
+final class _RecordingExerciseCatalogListLoader
+    implements ExerciseCatalogListLoader {
+  final List<String?> searches = [];
+
+  @override
+  Future<ExerciseCatalogListViewModel> load({
+    String? searchText,
+    Locale? locale,
+  }) async {
+    searches.add(searchText);
+    return const ExerciseCatalogListViewModel(
+      exercises: [
+        ExerciseListItemViewModel(
+          id: 'barbell_bench_press',
+          name: 'Barbell Bench Press',
+          equipment: ['barbell'],
+          movementPatterns: ['horizontal_push'],
+          primaryMuscles: ['chest'],
+        ),
+      ],
+      totalCount: 1,
+      hasMore: false,
+    );
+  }
+}
+
+final class _FailingExerciseCatalogListLoader
+    implements ExerciseCatalogListLoader {
+  @override
+  Future<ExerciseCatalogListViewModel> load({
+    String? searchText,
+    Locale? locale,
+  }) {
+    return Future<ExerciseCatalogListViewModel>.error(StateError('boom'));
+  }
+}

@@ -16,20 +16,33 @@ Purpose: fastest path to action.
 
 Contains:
 
-- recommended next workout/group,
-- quick session button,
 - readiness summary,
 - recent training summary,
-- rest timer if active.
+- rest timer if active,
+- quick set logging from the local official exercise catalog,
+- later: recommended next workout/group,
+- later: quick session button,
+- later: full coach card.
+
+Slice 50b wires Today to a compact `Log set` dialog. The dialog selects an
+official exercise from the bundled catalog, captures load, repetitions, label,
+and comment, saves locally, and refreshes the existing Today summary.
 
 ## Groups
 
 Purpose: organize training.
 
-Contains:
+Contains now:
 
-- Push/Pull/Legs/custom groups,
-- exercises assigned to each group,
+- local workout groups,
+- exercise assignment count,
+- compact assigned-exercise preview,
+- careful coach preview when enough local inputs exist later.
+
+Later:
+
+- create/edit/archive groups,
+- assign/reorder exercises,
 - start session,
 - recommended exercise order,
 - group analytics.
@@ -38,11 +51,17 @@ Contains:
 
 Purpose: find and manage exercises.
 
-Contains:
+Contains now:
 
-- official bundled exercises,
+- official bundled exercises imported into local storage,
+- localized catalog names,
+- search,
+- equipment, movement-pattern, and primary-muscle chips.
+
+Later:
+
 - custom exercises,
-- search/filter by muscle/equipment/movement,
+- advanced filters by muscle/equipment/movement,
 - favorites/hidden,
 - exercise detail timeline.
 

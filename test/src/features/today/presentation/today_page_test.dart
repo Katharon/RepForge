@@ -210,7 +210,7 @@ void main() {
     expect(find.text('01:30'), findsOneWidget);
   });
 
-  testWidgets('quick action placeholder is present', (tester) async {
+  testWidgets('quick action message is present', (tester) async {
     await tester.pumpWidget(
       _testApp(TodayPage(loader: _StaticTodayDashboardLoader(_successModel()))),
     );
@@ -218,9 +218,61 @@ void main() {
 
     expect(find.text('Log set'), findsOneWidget);
     expect(
-      find.text('Quick logging will connect here in a later tracking slice.'),
+      find.text(
+        'Choose an exercise, enter load and reps, and save the set locally.',
+      ),
       findsOneWidget,
     );
+  });
+
+  testWidgets('quick action is enabled when logging flow is available', (
+    tester,
+  ) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(800, 900);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    addTearDown(tester.view.resetPhysicalSize);
+    var callCount = 0;
+
+    await tester.pumpWidget(
+      _testApp(
+        TodayPage(
+          loader: _StaticTodayDashboardLoader(_successModel()),
+          logSetAction: (_) async {
+            callCount += 1;
+            return false;
+          },
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final button = tester.widget<FilledButton>(
+      find.widgetWithText(FilledButton, 'Log set'),
+    );
+    expect(button.onPressed, isNotNull);
+
+    await tester.tap(find.text('Log set'));
+    await tester.pumpAndSettle();
+
+    expect(callCount, 1);
+  });
+
+  testWidgets('quick action refreshes Today after a saved set', (tester) async {
+    final loader = _QueueTodayDashboardLoader([_emptyModel(), _successModel()]);
+
+    await tester.pumpWidget(
+      _testApp(TodayPage(loader: loader, logSetAction: (_) async => true)),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('No sets logged today'), findsOneWidget);
+
+    await tester.tap(find.text('Log set'));
+    await tester.pumpAndSettle();
+
+    expect(loader.loadCount, 2);
+    expect(find.text('Barbell Bench Press: 5 reps at 100 kg'), findsOneWidget);
   });
 }
 
@@ -257,6 +309,20 @@ final class _StaticTodayDashboardLoader implements TodayDashboardLoader {
   @override
   Future<TodayDashboardReadModel> load() {
     return Future.value(model);
+  }
+}
+
+final class _QueueTodayDashboardLoader implements TodayDashboardLoader {
+  _QueueTodayDashboardLoader(this.models);
+
+  final List<TodayDashboardReadModel> models;
+  var loadCount = 0;
+
+  @override
+  Future<TodayDashboardReadModel> load() async {
+    final index = loadCount;
+    loadCount += 1;
+    return models[index.clamp(0, models.length - 1)];
   }
 }
 

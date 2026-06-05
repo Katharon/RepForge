@@ -2,15 +2,16 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/analytics/presentation/analytics_presentation.dart';
+import '../../features/exercise_catalog/presentation/exercise_catalog_presentation.dart';
 import '../../features/onboarding/presentation/onboarding_presentation.dart';
 import '../../features/settings/presentation/settings_presentation.dart';
 import '../../features/today/presentation/today_presentation.dart';
 import '../../features/training_log/domain/training_log_domain.dart';
+import '../../features/training_log/presentation/training_log_presentation.dart';
+import '../../features/workout_groups/presentation/workout_groups_presentation.dart';
 import '../composition_root.dart';
-import '../localization/app_localizations.dart';
 import 'app_route.dart';
 import 'navigation_shell.dart';
-import 'placeholder_destination_page.dart';
 
 GoRouter createAppRouter({required AppDependencies dependencies}) {
   return GoRouter(
@@ -35,6 +36,13 @@ GoRouter createAppRouter({required AppDependencies dependencies}) {
                     workoutSetRepository: dependencies.workoutSetRepository,
                     getTodayReadiness: dependencies.getTodayReadiness,
                   ),
+                  logSetAction: QuickLogSetController(
+                    exerciseCatalogRepository:
+                        dependencies.exerciseCatalogRepository,
+                    saveWorkoutSet: dependencies.saveWorkoutSet,
+                    ensureCatalogImported:
+                        dependencies.ensureOfficialCatalogImported,
+                  ).show,
                 ),
               );
             },
@@ -42,20 +50,22 @@ GoRouter createAppRouter({required AppDependencies dependencies}) {
           _branch(
             route: AppRoute.groups,
             builder: (context, state) {
-              final localizations = AppLocalizations.of(context);
-              return PlaceholderDestinationPage(
-                title: localizations.navGroups,
-                message: localizations.groupsPlaceholderMessage,
+              return GroupsPage(
+                loader: RepositoryWorkoutGroupListLoader(
+                  repository: dependencies.workoutGroupRepository,
+                ),
               );
             },
           ),
           _branch(
             route: AppRoute.exercises,
             builder: (context, state) {
-              final localizations = AppLocalizations.of(context);
-              return PlaceholderDestinationPage(
-                title: localizations.navExercises,
-                message: localizations.exercisesPlaceholderMessage,
+              return ExercisesPage(
+                loader: RepositoryExerciseCatalogListLoader(
+                  repository: dependencies.exerciseCatalogRepository,
+                  ensureCatalogImported:
+                      dependencies.ensureOfficialCatalogImported,
+                ),
               );
             },
           ),

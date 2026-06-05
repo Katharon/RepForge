@@ -40,6 +40,13 @@ Required for critical UI:
 - recommendation cards,
 - analytics metric cards.
 
+Slice 50b adds focused widget coverage for the first wired MVP UI integration:
+Exercises page loading/empty/error/success/search states, Groups page
+loading/empty/error/success/semantic summaries, Today quick-log enabled and
+refresh behavior, the compact quick-log dialog save path through `SaveWorkoutSet`,
+and route smoke tests that assert Groups and Exercises are no longer only
+placeholders.
+
 ## Integration/E2E tests
 
 Critical flow:

@@ -164,9 +164,9 @@
   "@todayQuickActionLogSet": {
     "description": "Future quick action label for logging a set."
   },
-  "todayQuickActionPlaceholder": "Quick logging will connect here in a later tracking slice.",
-  "@todayQuickActionPlaceholder": {
-    "description": "Placeholder text for future quick logging entry point."
+  "todayQuickActionMessage": "Choose an exercise, enter load and reps, and save the set locally.",
+  "@todayQuickActionMessage": {
+    "description": "Helper text for the Today quick logging entry point."
   },
   "todayAnalyticsHintTitle": "Training signal",
   "@todayAnalyticsHintTitle": {
@@ -176,13 +176,177 @@
   "@todayAnalyticsHintMessage": {
     "description": "Message for a small Today analytics hint card."
   },
-  "groupsPlaceholderMessage": "Workout groups will be connected in a later slice.",
-  "@groupsPlaceholderMessage": {
-    "description": "Placeholder message for the workout groups destination."
+  "groupsLoading": "Loading groups",
+  "@groupsLoading": {
+    "description": "Loading state for workout groups."
   },
-  "exercisesPlaceholderMessage": "Exercises will use the bundled catalog and custom entries.",
-  "@exercisesPlaceholderMessage": {
-    "description": "Placeholder message for the exercises destination."
+  "groupsEmptyTitle": "No groups yet",
+  "@groupsEmptyTitle": {
+    "description": "Title for empty workout groups list."
+  },
+  "groupsEmptyMessage": "Complete onboarding to create starter groups, or add groups in a later editing flow.",
+  "@groupsEmptyMessage": {
+    "description": "Message for empty workout groups list."
+  },
+  "groupsErrorTitle": "Groups could not load",
+  "@groupsErrorTitle": {
+    "description": "Title for groups loading error."
+  },
+  "groupsErrorMessage": "Try again without changing local data.",
+  "@groupsErrorMessage": {
+    "description": "Message for groups loading error."
+  },
+  "groupsCount": "{count, plural, =1{1 group} other{{count} groups}}",
+  "@groupsCount": {
+    "description": "Workout group count.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "groupsExerciseCount": "{count, plural, =0{No exercises assigned} =1{1 exercise assigned} other{{count} exercises assigned}}",
+  "@groupsExerciseCount": {
+    "description": "Exercise assignment count for a group.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "groupsSemanticsLabel": "{name}, {count, plural, =0{no exercises} =1{1 exercise} other{{count} exercises}}",
+  "@groupsSemanticsLabel": {
+    "description": "Semantic summary for a workout group card.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Push Day"
+      },
+      "count": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "groupsCoachPreviewTitle": "Coach preview",
+  "@groupsCoachPreviewTitle": {
+    "description": "Title for a small local coach preview on groups."
+  },
+  "groupsCoachPreviewMessage": "Recommendations can use local groups, readiness, equipment, and balance signals when enough inputs are available.",
+  "@groupsCoachPreviewMessage": {
+    "description": "Careful coach preview message for workout groups."
+  },
+  "exercisesLoading": "Loading exercises",
+  "@exercisesLoading": {
+    "description": "Loading state for exercises."
+  },
+  "exercisesSearchLabel": "Search exercises",
+  "@exercisesSearchLabel": {
+    "description": "Search field label for exercises."
+  },
+  "exercisesSearchTooltip": "Search",
+  "@exercisesSearchTooltip": {
+    "description": "Tooltip for exercise search button."
+  },
+  "exercisesEmptyTitle": "No exercises found",
+  "@exercisesEmptyTitle": {
+    "description": "Title for empty exercise catalog state."
+  },
+  "exercisesEmptyMessage": "Try a different search or import the bundled catalog again.",
+  "@exercisesEmptyMessage": {
+    "description": "Message for empty exercise catalog state."
+  },
+  "exercisesErrorTitle": "Exercises could not load",
+  "@exercisesErrorTitle": {
+    "description": "Title for exercise loading error."
+  },
+  "exercisesErrorMessage": "Try again without changing local data.",
+  "@exercisesErrorMessage": {
+    "description": "Message for exercise loading error."
+  },
+  "exercisesCount": "{count, plural, =1{1 exercise} other{{count} exercises}}",
+  "@exercisesCount": {
+    "description": "Official exercise count.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "exercisesMoreTitle": "More exercises available",
+  "@exercisesMoreTitle": {
+    "description": "Title shown when the list is capped."
+  },
+  "exercisesMoreMessage": "Use search to narrow the local catalog.",
+  "@exercisesMoreMessage": {
+    "description": "Message shown when the list is capped."
+  },
+  "quickLogTitle": "Log set",
+  "@quickLogTitle": {
+    "description": "Dialog title for quick logging a set."
+  },
+  "quickLogExerciseSearchLabel": "Exercise",
+  "@quickLogExerciseSearchLabel": {
+    "description": "Exercise search field label in quick log dialog."
+  },
+  "quickLogNoExercises": "No exercises available.",
+  "@quickLogNoExercises": {
+    "description": "Empty exercise state in quick log dialog."
+  },
+  "quickLogLoadLabel": "Load (kg)",
+  "@quickLogLoadLabel": {
+    "description": "Load field label in quick log dialog."
+  },
+  "quickLogRepetitionsLabel": "Reps",
+  "@quickLogRepetitionsLabel": {
+    "description": "Repetitions field label in quick log dialog."
+  },
+  "quickLogLabelLabel": "Label",
+  "@quickLogLabelLabel": {
+    "description": "Set label dropdown label in quick log dialog."
+  },
+  "quickLogCommentLabel": "Comment",
+  "@quickLogCommentLabel": {
+    "description": "Comment field label in quick log dialog."
+  },
+  "quickLogCancel": "Cancel",
+  "@quickLogCancel": {
+    "description": "Cancel button in quick log dialog."
+  },
+  "quickLogSave": "Save set",
+  "@quickLogSave": {
+    "description": "Save button in quick log dialog."
+  },
+  "quickLogSaveError": "Check the set details and try again.",
+  "@quickLogSaveError": {
+    "description": "Validation/save error message in quick log dialog."
+  },
+  "quickLogLabelNone": "None",
+  "@quickLogLabelNone": {
+    "description": "No set label option."
+  },
+  "quickLogLabelWarmup": "Warm-up",
+  "@quickLogLabelWarmup": {
+    "description": "Warm-up set label option."
+  },
+  "quickLogLabelFailure": "Failure",
+  "@quickLogLabelFailure": {
+    "description": "Failure set label option."
+  },
+  "quickLogLabelPersonalRecord": "Personal record",
+  "@quickLogLabelPersonalRecord": {
+    "description": "Personal record set label option."
+  },
+  "quickLogLabelDropSet": "Drop set",
+  "@quickLogLabelDropSet": {
+    "description": "Drop set label option."
+  },
+  "quickLogLabelPain": "Pain note",
+  "@quickLogLabelPain": {
+    "description": "Pain note set label option."
   },
   "analyticsPlaceholderMessage": "Analytics will show local training trends later.",
   "@analyticsPlaceholderMessage": {

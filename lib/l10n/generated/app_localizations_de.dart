@@ -130,8 +130,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get todayQuickActionLogSet => 'Satz protokollieren';
 
   @override
-  String get todayQuickActionPlaceholder =>
-      'Schnelles Protokollieren wird in einem spaeteren Tracking-Slice hier verbunden.';
+  String get todayQuickActionMessage =>
+      'Waehle eine Uebung, trage Gewicht und Wiederholungen ein und speichere den Satz lokal.';
 
   @override
   String get todayAnalyticsHintTitle => 'Trainingssignal';
@@ -141,12 +141,153 @@ class AppLocalizationsDe extends AppLocalizations {
       'Lokale Trends bleiben in Analyse, waehrend die heutige Arbeit hier sichtbar ist.';
 
   @override
-  String get groupsPlaceholderMessage =>
-      'Workout-Gruppen werden in einem spaeteren Slice verbunden.';
+  String get groupsLoading => 'Gruppen werden geladen';
 
   @override
-  String get exercisesPlaceholderMessage =>
-      'Uebungen nutzen spaeter den gebuendelten Katalog und eigene Eintraege.';
+  String get groupsEmptyTitle => 'Noch keine Gruppen';
+
+  @override
+  String get groupsEmptyMessage =>
+      'Schliesse das Onboarding ab, um Startgruppen zu erstellen. Bearbeiten folgt in einem spaeteren Flow.';
+
+  @override
+  String get groupsErrorTitle => 'Gruppen konnten nicht geladen werden';
+
+  @override
+  String get groupsErrorMessage =>
+      'Versuche es erneut, ohne lokale Daten zu aendern.';
+
+  @override
+  String groupsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Gruppen',
+      one: '1 Gruppe',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String groupsExerciseCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Uebungen zugewiesen',
+      one: '1 Uebung zugewiesen',
+      zero: 'Keine Uebungen zugewiesen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String groupsSemanticsLabel(String name, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Uebungen',
+      one: '1 Uebung',
+      zero: 'keine Uebungen',
+    );
+    return '$name, $_temp0';
+  }
+
+  @override
+  String get groupsCoachPreviewTitle => 'Coach-Vorschau';
+
+  @override
+  String get groupsCoachPreviewMessage =>
+      'Empfehlungen koennen lokale Gruppen, Readiness, Equipment und Balance-Signale nutzen, sobald genug Eingaben vorhanden sind.';
+
+  @override
+  String get exercisesLoading => 'Uebungen werden geladen';
+
+  @override
+  String get exercisesSearchLabel => 'Uebungen suchen';
+
+  @override
+  String get exercisesSearchTooltip => 'Suchen';
+
+  @override
+  String get exercisesEmptyTitle => 'Keine Uebungen gefunden';
+
+  @override
+  String get exercisesEmptyMessage =>
+      'Probiere eine andere Suche oder importiere den gebuendelten Katalog erneut.';
+
+  @override
+  String get exercisesErrorTitle => 'Uebungen konnten nicht geladen werden';
+
+  @override
+  String get exercisesErrorMessage =>
+      'Versuche es erneut, ohne lokale Daten zu aendern.';
+
+  @override
+  String exercisesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Uebungen',
+      one: '1 Uebung',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get exercisesMoreTitle => 'Weitere Uebungen verfuegbar';
+
+  @override
+  String get exercisesMoreMessage =>
+      'Nutze die Suche, um den lokalen Katalog einzugrenzen.';
+
+  @override
+  String get quickLogTitle => 'Satz protokollieren';
+
+  @override
+  String get quickLogExerciseSearchLabel => 'Uebung';
+
+  @override
+  String get quickLogNoExercises => 'Keine Uebungen verfuegbar.';
+
+  @override
+  String get quickLogLoadLabel => 'Gewicht (kg)';
+
+  @override
+  String get quickLogRepetitionsLabel => 'Wdh.';
+
+  @override
+  String get quickLogLabelLabel => 'Label';
+
+  @override
+  String get quickLogCommentLabel => 'Kommentar';
+
+  @override
+  String get quickLogCancel => 'Abbrechen';
+
+  @override
+  String get quickLogSave => 'Satz speichern';
+
+  @override
+  String get quickLogSaveError =>
+      'Pruefe die Satzdetails und versuche es erneut.';
+
+  @override
+  String get quickLogLabelNone => 'Keins';
+
+  @override
+  String get quickLogLabelWarmup => 'Aufwaermen';
+
+  @override
+  String get quickLogLabelFailure => 'Failure';
+
+  @override
+  String get quickLogLabelPersonalRecord => 'Persoenlicher Rekord';
+
+  @override
+  String get quickLogLabelDropSet => 'Drop-Set';
+
+  @override
+  String get quickLogLabelPain => 'Schmerznotiz';
 
   @override
   String get analyticsPlaceholderMessage =>

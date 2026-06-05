@@ -118,6 +118,13 @@ wording, expose a semantic summary for assistive technology, and avoid
 medical, injury-prevention, or mandatory-rest language. Do not introduce body
 heatmaps or region graphics for this slice.
 
+Slice 50b adds the first wired list surfaces for Groups and Exercises plus a
+compact quick-log dialog. These surfaces reuse `AppResponsiveSliverList`,
+`AppCard`, Material 3 text fields, icon buttons, chips, list tiles, and filled
+buttons. Keep catalog/group lists scan-friendly and compact, and keep dialog
+fields practical for repeated set entry rather than turning quick logging into a
+full workout planner.
+
 Change:
 
 - create original component shapes and spacing,

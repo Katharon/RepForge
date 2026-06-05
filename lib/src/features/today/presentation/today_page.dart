@@ -10,6 +10,8 @@ import '../../rest_timer/domain/rest_timer_domain.dart';
 import 'today_dashboard_loader.dart';
 import 'today_dashboard_models.dart';
 
+typedef TodayLogSetAction = Future<bool> Function(BuildContext context);
+
 enum TodayDashboardStatus { loading, empty, error, success }
 
 final class TodayDashboardState {
@@ -21,9 +23,10 @@ final class TodayDashboardState {
 }
 
 class TodayPage extends StatefulWidget {
-  const TodayPage({required this.loader, super.key});
+  const TodayPage({required this.loader, super.key, this.logSetAction});
 
   final TodayDashboardLoader loader;
+  final TodayLogSetAction? logSetAction;
 
   @override
   State<TodayPage> createState() => _TodayPageState();
@@ -57,7 +60,13 @@ class _TodayPageState extends State<TodayPage> {
       slivers: [
         SliverAppBar.large(title: Text(localizations.todayDashboardTitle)),
         AppResponsiveSliverList(
-          children: [_TodayStateBody(state: _state, onRetry: _load)],
+          children: [
+            _TodayStateBody(
+              state: _state,
+              onRetry: _load,
+              logSetAction: widget.logSetAction,
+            ),
+          ],
         ),
       ],
     );
@@ -102,10 +111,15 @@ class _TodayPageState extends State<TodayPage> {
 }
 
 class _TodayStateBody extends StatelessWidget {
-  const _TodayStateBody({required this.state, required this.onRetry});
+  const _TodayStateBody({
+    required this.state,
+    required this.onRetry,
+    required this.logSetAction,
+  });
 
   final TodayDashboardState state;
   final VoidCallback onRetry;
+  final TodayLogSetAction? logSetAction;
 
   @override
   Widget build(BuildContext context) {
@@ -113,11 +127,19 @@ class _TodayStateBody extends StatelessWidget {
       case TodayDashboardStatus.loading:
         return const _TodayLoadingState();
       case TodayDashboardStatus.empty:
-        return _TodayEmptyState(dashboard: state.dashboard);
+        return _TodayEmptyState(
+          dashboard: state.dashboard,
+          onReload: onRetry,
+          logSetAction: logSetAction,
+        );
       case TodayDashboardStatus.error:
         return _TodayErrorState(onRetry: onRetry);
       case TodayDashboardStatus.success:
-        return _TodaySuccessState(dashboard: state.dashboard!);
+        return _TodaySuccessState(
+          dashboard: state.dashboard!,
+          onReload: onRetry,
+          logSetAction: logSetAction,
+        );
     }
   }
 }
@@ -145,9 +167,15 @@ class _TodayLoadingState extends StatelessWidget {
 }
 
 class _TodayEmptyState extends StatelessWidget {
-  const _TodayEmptyState({required this.dashboard});
+  const _TodayEmptyState({
+    required this.dashboard,
+    required this.onReload,
+    required this.logSetAction,
+  });
 
   final TodayDashboardReadModel? dashboard;
+  final VoidCallback onReload;
+  final TodayLogSetAction? logSetAction;
 
   @override
   Widget build(BuildContext context) {
@@ -187,9 +215,16 @@ class _TodayEmptyState extends StatelessWidget {
           _RestTimerCard(dashboard: dashboard!),
           const SizedBox(height: RepForgeSpacing.md),
         ],
-        const _QuickActionCard(),
+        _QuickActionCard(onLogSet: logSetAction == null ? null : _logSet),
       ],
     );
+  }
+
+  Future<void> _logSet(BuildContext context) async {
+    final saved = await logSetAction!(context);
+    if (saved) {
+      onReload();
+    }
   }
 }
 
@@ -232,9 +267,15 @@ class _TodayErrorState extends StatelessWidget {
 }
 
 class _TodaySuccessState extends StatelessWidget {
-  const _TodaySuccessState({required this.dashboard});
+  const _TodaySuccessState({
+    required this.dashboard,
+    required this.onReload,
+    required this.logSetAction,
+  });
 
   final TodayDashboardReadModel dashboard;
+  final VoidCallback onReload;
+  final TodayLogSetAction? logSetAction;
 
   @override
   Widget build(BuildContext context) {
@@ -249,11 +290,18 @@ class _TodaySuccessState extends StatelessWidget {
         const SizedBox(height: RepForgeSpacing.md),
         _RestTimerCard(dashboard: dashboard),
         const SizedBox(height: RepForgeSpacing.md),
-        const _QuickActionCard(),
+        _QuickActionCard(onLogSet: logSetAction == null ? null : _logSet),
         const SizedBox(height: RepForgeSpacing.md),
         const _AnalyticsHintCard(),
       ],
     );
+  }
+
+  Future<void> _logSet(BuildContext context) async {
+    final saved = await logSetAction!(context);
+    if (saved) {
+      onReload();
+    }
   }
 }
 
@@ -496,7 +544,9 @@ class _RestTimerCard extends StatelessWidget {
 }
 
 class _QuickActionCard extends StatelessWidget {
-  const _QuickActionCard();
+  const _QuickActionCard({required this.onLogSet});
+
+  final Future<void> Function(BuildContext context)? onLogSet;
 
   @override
   Widget build(BuildContext context) {
@@ -514,14 +564,14 @@ class _QuickActionCard extends StatelessWidget {
           ConstrainedBox(
             constraints: const BoxConstraints(minHeight: 48),
             child: FilledButton.icon(
-              onPressed: null,
+              onPressed: onLogSet == null ? null : () => onLogSet!(context),
               icon: const Icon(Icons.add),
               label: Text(localizations.todayQuickActionLogSet),
             ),
           ),
           const SizedBox(height: RepForgeSpacing.sm),
           Text(
-            localizations.todayQuickActionPlaceholder,
+            localizations.todayQuickActionMessage,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: RepForgeColorTokens.textSecondary,
             ),
