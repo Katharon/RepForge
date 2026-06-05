@@ -38,6 +38,9 @@ jobs:
       - name: Check generated files are committed
         run: git diff --exit-code -- lib test
 
+      - name: Validate bundled exercise catalog
+        run: dart run tool/validate_catalog.dart
+
       - name: Check formatting
         run: dart format --output=none --set-exit-if-changed .
 

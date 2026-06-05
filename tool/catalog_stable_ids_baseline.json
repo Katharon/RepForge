@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "releasedCatalogVersion": "2026.06.0",
+  "stableExerciseIds": [
+    "barbell_back_squat",
+    "barbell_bench_press",
+    "barbell_deadlift",
+    "barbell_overhead_press",
+    "barbell_bent_over_row",
+    "bodyweight_pull_up",
+    "cable_triceps_pushdown",
+    "dumbbell_bench_press",
+    "dumbbell_biceps_curl",
+    "dumbbell_goblet_squat",
+    "dumbbell_lunge",
+    "dumbbell_shoulder_press",
+    "lat_pulldown",
+    "romanian_deadlift",
+    "seated_cable_row"
+  ]
+}

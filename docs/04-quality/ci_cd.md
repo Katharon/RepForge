@@ -26,6 +26,7 @@ flutter pub get
 flutter gen-l10n
 dart run build_runner build --delete-conflicting-outputs
 git diff --exit-code -- lib test
+dart run tool/validate_catalog.dart
 dart format --output=none --set-exit-if-changed .
 flutter analyze
 flutter test
@@ -36,6 +37,12 @@ scripts/check.sh
 The generated-code check fails CI if generated Dart files under `lib` or `test`
 are stale after localization/build-runner generation. Golden tests run as part
 of `flutter test`; CI must not update golden baselines.
+
+Slice 52 adds an offline bundled catalog validation step. The validator checks
+manifest consistency, current catalog asset references, stable official IDs,
+localized names, aliases when present, known equipment/movement/muscle values,
+duplicate per-exercise tag lists, and future-ready activation-weight ranges
+without network access or remote catalog fetching.
 
 `scripts/check.sh` intentionally repeats the core local quality gate so the
 script remains trustworthy for developers and CI.

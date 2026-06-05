@@ -174,19 +174,32 @@ flutter test --update-goldens
 
 Official exercise catalog must have:
 
+- offline repository validation through `dart run tool/validate_catalog.dart`,
 - manifest validation and bundled asset-reference checks,
 - JSON schema/shape validation,
 - stable ID validation,
 - duplicate ID detection,
 - localized English/German name validation,
+- optional localized alias/synonym validation when those fields are present,
 - equipment, movement-pattern, and muscle tag list validation,
+- known-value validation for enum-like catalog tags,
+- duplicate per-exercise equipment, movement-pattern, and muscle values rejected,
 - import idempotency test,
 - version-aware import detection,
 - snapshot-preservation tests for workout sets and workout group assignments,
 - migration/import test with previous catalog fixture.
 
-Catalog parser activation-weight validation belongs to a later catalog asset
-schema slice; Slice 45 covers the pure analytics-domain activation weight model.
+Slice 52 adds fixture tests for the catalog patch validator covering current
+bundled success, manifest asset/version mismatch, unsupported schema versions,
+blank/duplicate/misformatted IDs, missing English/German names, missing or
+unknown equipment, unknown movement patterns, missing or unknown muscles,
+duplicate tags/muscles, optional aliases, optional activation-weight ranges, and
+stable-ID removal detection.
+
+The current catalog asset schema still uses primary/secondary muscle metadata,
+not first-class activation weights. The validator rejects invalid activation
+weights when optional future activation fields are present; broader catalog
+activation semantics belong to a later catalog asset schema slice.
 
 ## Muscle activation tests
 

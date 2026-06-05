@@ -108,6 +108,11 @@ Suggested future tables/entities:
 
 Official catalog assets are imported into local Drift tables. App patches may add official records, but user overrides and custom exercises remain separate.
 
+Slice 52 adds repository-side catalog patch validation before assets are shipped.
+It does not change Drift schema or runtime import behavior: official catalog
+JSON remains canonical, Drift remains the local imported runtime database, and
+imports still avoid network access.
+
 ## Slice 22 settings persistence
 
 Drift schema v5 adds `settings_profiles` and `equipment_inventory_items`

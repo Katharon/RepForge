@@ -42,9 +42,54 @@ Write validation tests/scripts for catalog schema, stable IDs, aliases, and acti
 - `docs/05-codex/slice_status.md` is updated.
 - No unrelated future feature is introduced.
 
+## Implementation note
+
+Slice 52 adds an offline repository command:
+
+```bash
+dart run tool/validate_catalog.dart
+```
+
+The command validates bundled official catalog patch content without network
+access. It checks the manifest and catalog assets, supported schema versions,
+manifest/catalog version consistency, stable snake_case exercise IDs, duplicate
+IDs, English/German localized names, known equipment tags, known movement
+patterns, known primary and secondary muscles, duplicate per-exercise
+equipment/pattern/muscle values, localized aliases/synonyms if present, and
+future-ready activation-weight fields if they appear.
+
+The current bundled schema does not yet contain first-class activation weights.
+Slice 52 therefore validates primary/secondary muscle metadata and rejects
+out-of-range activation weights only when optional activation fields are added
+to a fixture or future catalog asset. `tool/catalog_stable_ids_baseline.json`
+pins the official IDs released in catalog version `2026.06.0`; future patches
+may add IDs, but removed or renamed released IDs fail validation.
+
+The local quality script and GitHub Actions quality job now run the validator.
+This is tooling only: it does not add UI, runtime remote fetching, cloud
+database behavior, Firebase, sync, account requirements, or paid runtime
+services.
+
+Weekly patch workflow:
+
+1. Edit bundled JSON under `assets/catalog/`.
+2. Bump `catalogVersion` when content changes.
+3. Update `assets/catalog/catalog_manifest.json` if the current asset path,
+   catalog version, schema version, or notes change.
+4. Preserve all IDs listed in `tool/catalog_stable_ids_baseline.json`;
+   deprecate in a later schema instead of deleting or renaming released IDs.
+5. Run `dart run tool/validate_catalog.dart`.
+6. Run catalog tests and the normal quality gate.
+7. Review localization, aliases, equipment, movement patterns, and muscle
+   metadata in the pull request.
+
+Do not fetch catalog patches from cloud storage, auto-download unsigned content,
+or add a remote exercise backend in this workflow.
+
 ## Validation commands
 
 ```bash
+dart run tool/validate_catalog.dart
 dart format --set-exit-if-changed .
 flutter analyze
 flutter test

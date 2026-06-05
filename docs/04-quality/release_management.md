@@ -105,6 +105,7 @@ Before creating a beta tag:
    flutter gen-l10n
    dart run build_runner build --delete-conflicting-outputs
    git diff --exit-code -- lib test
+   dart run tool/validate_catalog.dart
    ```
 
 4. Confirm no signing secrets, keystores, provisioning profiles, Firebase config
@@ -216,6 +217,7 @@ git log --oneline -8
 flutter pub get
 flutter gen-l10n
 dart run build_runner build --delete-conflicting-outputs
+dart run tool/validate_catalog.dart
 git diff --check
 git diff --exit-code -- lib test
 dart format --output=none --set-exit-if-changed .

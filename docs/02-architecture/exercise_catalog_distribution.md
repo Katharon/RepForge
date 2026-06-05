@@ -43,6 +43,20 @@ remote catalog data. Parser tests verify that the manifest schema is supported
 and that `currentCatalogAsset` points to an existing bundled catalog JSON file
 under `assets/catalog/`.
 
+Slice 52 adds the repository validation command:
+
+```bash
+dart run tool/validate_catalog.dart
+```
+
+This command must pass for every catalog patch before review/merge. It validates
+the manifest path, supported manifest schema, existing bundled asset reference,
+manifest/catalog `catalogVersion` and `schemaVersion` consistency, and all
+bundled catalog JSON files under `assets/catalog/`. The manifest does not
+currently contain a checksum field; if a future schema adds one, it should be
+deterministic and validated by this command before runtime import support is
+extended.
+
 ## Exercise fields
 
 ```json
@@ -140,9 +154,30 @@ On app start or migration:
 Preferred MVP strategy:
 
 - Add/adjust catalog JSON in repository.
+- Run `dart run tool/validate_catalog.dart`.
 - Run catalog validation tests.
 - Release app update weekly or as needed.
 - App imports new bundled version after update.
+
+Weekly bundled patch workflow:
+
+1. Edit official JSON assets in `assets/catalog/`.
+2. Bump `catalogVersion` for content changes.
+3. Update `catalog_manifest.json` when the current asset, version, schema, or
+   content notes change.
+4. Keep released `catalogId` values stable. `tool/catalog_stable_ids_baseline.json`
+   pins the current released IDs and the validator fails if a released ID is
+   deleted or renamed.
+5. Validate English and German names, optional localized aliases/synonyms,
+   equipment tags, movement patterns, primary muscles, secondary muscles, and
+   manifest consistency with `dart run tool/validate_catalog.dart`.
+6. Run the normal test/analysis/build gates before release.
+
+The current bundled schema has primary/secondary muscle metadata but no
+first-class activation-weight field. The Slice 52 validator is future-ready: if
+`activationProfile`, `activationWeights`, or `muscleActivations` fields are
+added later, activation muscle IDs must be known and weights must be within
+`0.0..1.0`.
 
 Possible future strategy without cloud database:
 

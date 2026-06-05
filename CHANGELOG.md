@@ -4,6 +4,13 @@
 
 ### Added
 
+- Added Slice 52 catalog patch validation workflow with an offline
+  `dart run tool/validate_catalog.dart` command, stable released-ID baseline,
+  manifest/version/schema consistency checks, localized name and optional alias
+  validation, known equipment/movement/muscle checks, future-ready activation
+  weight validation, focused tests, and CI/script gates without cloud catalog
+  fetching, Firebase, sync, accounts, backend services, or paid runtime
+  dependencies.
 - Added Slice 51 muscle load and balance dashboard in Analytics with bounded
   local 7-day and 28-day estimated muscle load, catalog-derived activation
   estimates, focus-aware balance signals, readiness-softened explanations,
