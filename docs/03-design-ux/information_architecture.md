@@ -38,6 +38,7 @@ Contains now:
   My Exercises, Full Body, Upper Body, Lower Body, Push, Pull, Legs, and Core,
 - category drill-in to matching local catalog exercises,
 - search within the selected category,
+- exercise rows open Exercise Detail with recent history and quick logging,
 - disabled/future New workout action,
 - optional starter-group previews when local groups exist.
 
@@ -64,7 +65,7 @@ Contains now:
 - official bundled exercises imported into local storage,
 - localized catalog names,
 - search,
-- equipment, movement-pattern, and primary-muscle chips.
+- equipment, movement-pattern, and primary-muscle chips,
 - full catalog/library browsing separate from Train split navigation.
 
 Later:
@@ -72,7 +73,27 @@ Later:
 - custom exercises,
 - advanced filters by muscle/equipment/movement,
 - favorites/hidden,
-- exercise detail timeline.
+- exercise detail timeline beyond the compact recent history surface.
+
+## Exercise Detail
+
+Purpose: inspect one exercise before logging or analyzing.
+
+Contains now:
+
+- localized exercise title and metadata chips,
+- compact Analytics and 1RM entry cards as honest placeholders for the next
+  chart slice,
+- compared-to-previous-session metric summary,
+- bounded recent set history grouped by local calendar date,
+- visible Log Set action preselected to the current exercise.
+
+Later:
+
+- full charts and range interactions,
+- deeper timeline pagination,
+- custom-exercise editing once custom exercises are implemented,
+- coach/adaptive next-set UI only in its explicit later slice.
 
 ## Analytics
 

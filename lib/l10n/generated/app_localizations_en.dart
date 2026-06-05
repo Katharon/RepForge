@@ -326,6 +326,87 @@ class AppLocalizationsEn extends AppLocalizations {
       'Core-focused work when catalog metadata supports it.';
 
   @override
+  String get exerciseDetailLoading => 'Loading exercise detail';
+
+  @override
+  String get exerciseDetailErrorTitle => 'Exercise detail could not load';
+
+  @override
+  String get exerciseDetailErrorMessage =>
+      'Try again without changing local data.';
+
+  @override
+  String get exerciseDetailAnalyticsTitle => 'Analytics';
+
+  @override
+  String get exerciseDetailAnalyticsMessage =>
+      'Full charts land in the next slice.';
+
+  @override
+  String get exerciseDetailOneRepMaxTitle => '1RM';
+
+  @override
+  String get exerciseDetailOneRepMaxMessage =>
+      'Quick estimate now, full view later.';
+
+  @override
+  String get exerciseDetailComparedTitle => 'Compared to previous';
+
+  @override
+  String get exerciseDetailComparedAvailable =>
+      'Current session compared with the previous comparable session.';
+
+  @override
+  String get exerciseDetailComparedUnavailable =>
+      'Previous session unavailable';
+
+  @override
+  String get exerciseDetailUnavailable => 'Unavailable';
+
+  @override
+  String get exerciseDetailHistoryTitle => 'Set history';
+
+  @override
+  String get exerciseDetailEmptyTitle => 'No set history yet';
+
+  @override
+  String get exerciseDetailEmptyMessage =>
+      'Log a set to start this exercise history.';
+
+  @override
+  String get exerciseDetailMoreHistoryTitle => 'More history available';
+
+  @override
+  String exerciseDetailMoreHistoryMessage(int count) {
+    return 'Showing the latest $count sets for now.';
+  }
+
+  @override
+  String exerciseDetailSetLine(int repetitions, String load) {
+    return '$repetitions reps x $load';
+  }
+
+  @override
+  String exerciseDetailAnalyticsSemantics(String name) {
+    return 'Open Analytics for $name';
+  }
+
+  @override
+  String exerciseDetailOneRepMaxSemantics(String name) {
+    return 'Open 1RM for $name';
+  }
+
+  @override
+  String exerciseDetailLogSetSemantics(String name) {
+    return 'Log set for $name';
+  }
+
+  @override
+  String exerciseDetailSetSemantics(int repetitions, String load) {
+    return 'Set, $repetitions reps at $load';
+  }
+
+  @override
   String get exercisesLoading => 'Loading exercises';
 
   @override

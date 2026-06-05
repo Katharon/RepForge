@@ -392,6 +392,134 @@
   "@trainCategoryCoreDescription": {
     "description": "Beschreibung fuer Core."
   },
+  "exerciseDetailLoading": "Uebungsdetail wird geladen",
+  "@exerciseDetailLoading": {
+    "description": "Ladezustand fuer Uebungsdetail."
+  },
+  "exerciseDetailErrorTitle": "Uebungsdetail konnte nicht geladen werden",
+  "@exerciseDetailErrorTitle": {
+    "description": "Titel fuer Ladefehler im Uebungsdetail."
+  },
+  "exerciseDetailErrorMessage": "Versuche es erneut, ohne lokale Daten zu aendern.",
+  "@exerciseDetailErrorMessage": {
+    "description": "Text fuer Ladefehler im Uebungsdetail."
+  },
+  "exerciseDetailAnalyticsTitle": "Analyse",
+  "@exerciseDetailAnalyticsTitle": {
+    "description": "Titel der Analyse-Einstiegskarte im Uebungsdetail."
+  },
+  "exerciseDetailAnalyticsMessage": "Vollstaendige Diagramme kommen im naechsten Slice.",
+  "@exerciseDetailAnalyticsMessage": {
+    "description": "Platzhaltertext der Analyse-Einstiegskarte im Uebungsdetail."
+  },
+  "exerciseDetailOneRepMaxTitle": "1RM",
+  "@exerciseDetailOneRepMaxTitle": {
+    "description": "Titel der 1RM-Einstiegskarte im Uebungsdetail."
+  },
+  "exerciseDetailOneRepMaxMessage": "Kurze Schaetzung jetzt, volle Ansicht spaeter.",
+  "@exerciseDetailOneRepMaxMessage": {
+    "description": "Platzhaltertext der 1RM-Einstiegskarte im Uebungsdetail."
+  },
+  "exerciseDetailComparedTitle": "Vergleich zur vorherigen Einheit",
+  "@exerciseDetailComparedTitle": {
+    "description": "Titel fuer den Vergleich zur vorherigen Einheit."
+  },
+  "exerciseDetailComparedAvailable": "Aktuelle Einheit im Vergleich zur vorherigen vergleichbaren Einheit.",
+  "@exerciseDetailComparedAvailable": {
+    "description": "Text, wenn Vergleichsdaten vorhanden sind."
+  },
+  "exerciseDetailComparedUnavailable": "Vorherige Einheit nicht verfuegbar",
+  "@exerciseDetailComparedUnavailable": {
+    "description": "Text, wenn keine vorherige vergleichbare Einheit vorhanden ist."
+  },
+  "exerciseDetailUnavailable": "Nicht verfuegbar",
+  "@exerciseDetailUnavailable": {
+    "description": "Neutraler Text fuer nicht verfuegbare Kennzahlen."
+  },
+  "exerciseDetailHistoryTitle": "Satzverlauf",
+  "@exerciseDetailHistoryTitle": {
+    "description": "Abschnittstitel fuer den Satzverlauf im Uebungsdetail."
+  },
+  "exerciseDetailEmptyTitle": "Noch kein Satzverlauf",
+  "@exerciseDetailEmptyTitle": {
+    "description": "Titel fuer leeren Satzverlauf im Uebungsdetail."
+  },
+  "exerciseDetailEmptyMessage": "Protokolliere einen Satz, um diesen Verlauf zu starten.",
+  "@exerciseDetailEmptyMessage": {
+    "description": "Text fuer leeren Satzverlauf im Uebungsdetail."
+  },
+  "exerciseDetailMoreHistoryTitle": "Mehr Verlauf verfuegbar",
+  "@exerciseDetailMoreHistoryTitle": {
+    "description": "Titel fuer begrenzten Verlauf im Uebungsdetail."
+  },
+  "exerciseDetailMoreHistoryMessage": "Zeigt vorerst die letzten {count} Saetze.",
+  "@exerciseDetailMoreHistoryMessage": {
+    "description": "Text fuer begrenzten Verlauf im Uebungsdetail.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "30"
+      }
+    }
+  },
+  "exerciseDetailSetLine": "{repetitions} Wdh. x {load}",
+  "@exerciseDetailSetLine": {
+    "description": "Hauptzeile einer Satzzeile im Uebungsdetail.",
+    "placeholders": {
+      "repetitions": {
+        "type": "int",
+        "example": "8"
+      },
+      "load": {
+        "type": "String",
+        "example": "80 kg"
+      }
+    }
+  },
+  "exerciseDetailAnalyticsSemantics": "Analyse fuer {name} oeffnen",
+  "@exerciseDetailAnalyticsSemantics": {
+    "description": "Semantisches Label fuer Analyse-Einstieg im Uebungsdetail.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Bankdruecken"
+      }
+    }
+  },
+  "exerciseDetailOneRepMaxSemantics": "1RM fuer {name} oeffnen",
+  "@exerciseDetailOneRepMaxSemantics": {
+    "description": "Semantisches Label fuer 1RM-Einstieg im Uebungsdetail.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Bankdruecken"
+      }
+    }
+  },
+  "exerciseDetailLogSetSemantics": "Satz fuer {name} protokollieren",
+  "@exerciseDetailLogSetSemantics": {
+    "description": "Semantisches Label fuer Satz-Protokollieren im Uebungsdetail.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Bankdruecken"
+      }
+    }
+  },
+  "exerciseDetailSetSemantics": "Satz, {repetitions} Wiederholungen mit {load}",
+  "@exerciseDetailSetSemantics": {
+    "description": "Semantisches Label fuer Satzzeilen im Uebungsdetail.",
+    "placeholders": {
+      "repetitions": {
+        "type": "int",
+        "example": "8"
+      },
+      "load": {
+        "type": "String",
+        "example": "80 kg"
+      }
+    }
+  },
   "exercisesLoading": "Uebungen werden geladen",
   "@exercisesLoading": {
     "description": "Ladezustand fuer Uebungen."

@@ -146,6 +146,42 @@ void main() {
     }
   });
 
+  testWidgets('tapping an exercise in Train opens Exercise Detail', (
+    tester,
+  ) async {
+    final dependencies = _testAppDependencies();
+
+    await tester.pumpWidget(RepForgeApp(dependencies: dependencies));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Train').last);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('My Exercises'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Barbell Bench Press').first);
+    await tester.pumpAndSettle();
+
+    expect(find.text('No set history yet'), findsOneWidget);
+    expect(find.text('Compared to previous'), findsOneWidget);
+  });
+
+  testWidgets('tapping an exercise in Exercises opens Exercise Detail', (
+    tester,
+  ) async {
+    final dependencies = _testAppDependencies();
+
+    await tester.pumpWidget(RepForgeApp(dependencies: dependencies));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Exercises').last);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Barbell Bench Press').first);
+    await tester.pumpAndSettle();
+
+    expect(find.text('No set history yet'), findsOneWidget);
+    expect(find.text('Analytics'), findsWidgets);
+  });
+
   testWidgets('applies the dark RepForge theme', (tester) async {
     final dependencies = _testAppDependencies();
 
@@ -297,21 +333,18 @@ final class _FakeExerciseCatalogRepository
   @override
   Future<OfficialExercise?> findOfficialExerciseById(
     OfficialExerciseId id,
-  ) async => null;
+  ) async {
+    if (id != OfficialExerciseId('barbell_bench_press')) {
+      return null;
+    }
+    return _benchPressExercise();
+  }
 
   @override
   Future<ExerciseCatalogPage> findOfficialExercises(
     ExerciseCatalogQuery query,
   ) {
-    final exercise = OfficialExercise(
-      id: OfficialExerciseId('barbell_bench_press'),
-      catalogVersion: CatalogVersion('2026.06.0'),
-      englishName: 'Barbell Bench Press',
-      germanName: 'Bankdruecken mit Langhantel',
-      equipment: [EquipmentTag('barbell')],
-      movementPatterns: [MovementPattern('horizontal_push')],
-      primaryMuscles: [MuscleGroup('chest')],
-    );
+    final exercise = _benchPressExercise();
     return Future.value(
       ExerciseCatalogPage(
         items: [exercise],
@@ -319,6 +352,18 @@ final class _FakeExerciseCatalogRepository
         limit: query.limit,
         offset: query.offset,
       ),
+    );
+  }
+
+  OfficialExercise _benchPressExercise() {
+    return OfficialExercise(
+      id: OfficialExerciseId('barbell_bench_press'),
+      catalogVersion: CatalogVersion('2026.06.0'),
+      englishName: 'Barbell Bench Press',
+      germanName: 'Bankdruecken mit Langhantel',
+      equipment: [EquipmentTag('barbell')],
+      movementPatterns: [MovementPattern('horizontal_push')],
+      primaryMuscles: [MuscleGroup('chest')],
     );
   }
 }

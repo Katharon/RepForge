@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:repforge/src/app/localization/app_localizations.dart';
 import 'package:repforge/src/core/theme/theme.dart';
 import 'package:repforge/src/features/exercise_catalog/presentation/exercise_catalog_presentation.dart';
+import 'package:repforge/src/features/training_log/domain/training_log_domain.dart';
 import 'package:repforge/src/features/workout_groups/presentation/workout_groups_presentation.dart';
 
 void main() {
@@ -166,6 +167,30 @@ void main() {
 
     expect(find.text('Seated Cable Row'), findsOneWidget);
     expect(find.text('Barbell Bench Press'), findsNothing);
+  });
+
+  testWidgets('tapping Train exercise emits stable exercise ref', (
+    tester,
+  ) async {
+    _useLargeViewport(tester);
+    final opened = <ExerciseRef>[];
+    await tester.pumpWidget(
+      _testApp(
+        GroupsPage(
+          loader: _StaticTrainPageLoader(_trainModel()),
+          onOpenExercise: opened.add,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('My Exercises'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Barbell Bench Press'));
+    await tester.pumpAndSettle();
+
+    expect(opened.single.id, 'barbell_bench_press');
+    expect(opened.single.displayNameSnapshot, 'Barbell Bench Press');
   });
 
   testWidgets('German localization covers Train labels', (tester) async {

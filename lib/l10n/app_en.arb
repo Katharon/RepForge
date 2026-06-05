@@ -392,6 +392,134 @@
   "@trainCategoryCoreDescription": {
     "description": "Description for Core category."
   },
+  "exerciseDetailLoading": "Loading exercise detail",
+  "@exerciseDetailLoading": {
+    "description": "Loading state for Exercise Detail."
+  },
+  "exerciseDetailErrorTitle": "Exercise detail could not load",
+  "@exerciseDetailErrorTitle": {
+    "description": "Title for Exercise Detail loading failure."
+  },
+  "exerciseDetailErrorMessage": "Try again without changing local data.",
+  "@exerciseDetailErrorMessage": {
+    "description": "Message for Exercise Detail loading failure."
+  },
+  "exerciseDetailAnalyticsTitle": "Analytics",
+  "@exerciseDetailAnalyticsTitle": {
+    "description": "Exercise Detail analytics entry card title."
+  },
+  "exerciseDetailAnalyticsMessage": "Full charts land in the next slice.",
+  "@exerciseDetailAnalyticsMessage": {
+    "description": "Exercise Detail analytics entry placeholder message."
+  },
+  "exerciseDetailOneRepMaxTitle": "1RM",
+  "@exerciseDetailOneRepMaxTitle": {
+    "description": "Exercise Detail estimated one-rep max entry card title."
+  },
+  "exerciseDetailOneRepMaxMessage": "Quick estimate now, full view later.",
+  "@exerciseDetailOneRepMaxMessage": {
+    "description": "Exercise Detail estimated one-rep max entry placeholder message."
+  },
+  "exerciseDetailComparedTitle": "Compared to previous",
+  "@exerciseDetailComparedTitle": {
+    "description": "Exercise Detail previous-comparable-session summary title."
+  },
+  "exerciseDetailComparedAvailable": "Current session compared with the previous comparable session.",
+  "@exerciseDetailComparedAvailable": {
+    "description": "Exercise Detail summary text when previous comparable data exists."
+  },
+  "exerciseDetailComparedUnavailable": "Previous session unavailable",
+  "@exerciseDetailComparedUnavailable": {
+    "description": "Exercise Detail summary text when no previous comparable data exists."
+  },
+  "exerciseDetailUnavailable": "Unavailable",
+  "@exerciseDetailUnavailable": {
+    "description": "Neutral unavailable metric text."
+  },
+  "exerciseDetailHistoryTitle": "Set history",
+  "@exerciseDetailHistoryTitle": {
+    "description": "Exercise Detail set history section title."
+  },
+  "exerciseDetailEmptyTitle": "No set history yet",
+  "@exerciseDetailEmptyTitle": {
+    "description": "Exercise Detail empty history title."
+  },
+  "exerciseDetailEmptyMessage": "Log a set to start this exercise history.",
+  "@exerciseDetailEmptyMessage": {
+    "description": "Exercise Detail empty history message."
+  },
+  "exerciseDetailMoreHistoryTitle": "More history available",
+  "@exerciseDetailMoreHistoryTitle": {
+    "description": "Exercise Detail bounded history note title."
+  },
+  "exerciseDetailMoreHistoryMessage": "Showing the latest {count} sets for now.",
+  "@exerciseDetailMoreHistoryMessage": {
+    "description": "Exercise Detail bounded history note message.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "30"
+      }
+    }
+  },
+  "exerciseDetailSetLine": "{repetitions} reps x {load}",
+  "@exerciseDetailSetLine": {
+    "description": "Exercise Detail set row main line.",
+    "placeholders": {
+      "repetitions": {
+        "type": "int",
+        "example": "8"
+      },
+      "load": {
+        "type": "String",
+        "example": "80 kg"
+      }
+    }
+  },
+  "exerciseDetailAnalyticsSemantics": "Open Analytics for {name}",
+  "@exerciseDetailAnalyticsSemantics": {
+    "description": "Semantic label for Exercise Detail analytics entry.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Barbell Bench Press"
+      }
+    }
+  },
+  "exerciseDetailOneRepMaxSemantics": "Open 1RM for {name}",
+  "@exerciseDetailOneRepMaxSemantics": {
+    "description": "Semantic label for Exercise Detail 1RM entry.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Barbell Bench Press"
+      }
+    }
+  },
+  "exerciseDetailLogSetSemantics": "Log set for {name}",
+  "@exerciseDetailLogSetSemantics": {
+    "description": "Semantic label for Exercise Detail log-set action.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Barbell Bench Press"
+      }
+    }
+  },
+  "exerciseDetailSetSemantics": "Set, {repetitions} reps at {load}",
+  "@exerciseDetailSetSemantics": {
+    "description": "Semantic label for Exercise Detail history set rows.",
+    "placeholders": {
+      "repetitions": {
+        "type": "int",
+        "example": "8"
+      },
+      "load": {
+        "type": "String",
+        "example": "80 kg"
+      }
+    }
+  },
   "exercisesLoading": "Loading exercises",
   "@exercisesLoading": {
     "description": "Loading state for exercises."

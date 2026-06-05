@@ -84,6 +84,47 @@ void main() {
     expect(find.text('Bankdruecken mit Langhantel'), findsOneWidget);
     expect(find.text('Gewicht (kg)'), findsOneWidget);
   });
+
+  testWidgets('quick log can preselect the current exercise ref', (
+    tester,
+  ) async {
+    final repository = _FakeWorkoutSetRepository();
+    final controller = QuickLogSetController(
+      exerciseCatalogRepository: _FakeExerciseCatalogRepository(),
+      saveWorkoutSet: SaveWorkoutSet(repository),
+      workoutSetIdProvider: () => WorkoutSetId('quick-preselected-set'),
+      nowProvider: () => DateTime.utc(2026, 6, 5, 10),
+    );
+    final initialRef = ExerciseRef.official(
+      id: OfficialExerciseId('seated_cable_row'),
+      displayNameSnapshot: 'Seated Cable Row',
+      catalogVersionSnapshot: '2026.06.0',
+    );
+
+    await tester.pumpWidget(
+      _testApp(
+        FilledButton(
+          onPressed: () => controller.show(_capturedContext!, initialRef),
+          child: const Text('Open quick log'),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Open quick log'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Seated Cable Row'), findsOneWidget);
+    await tester.enterText(find.byKey(const Key('quick_log_load_field')), '55');
+    await tester.enterText(
+      find.byKey(const Key('quick_log_repetitions_field')),
+      '10',
+    );
+    await tester.tap(find.byKey(const Key('quick_log_save_button')));
+    await tester.pumpAndSettle();
+
+    expect(repository.savedSets.single.exerciseRef.id, 'seated_cable_row');
+  });
 }
 
 BuildContext? _capturedContext;
@@ -108,7 +149,20 @@ final class _FakeExerciseCatalogRepository
   @override
   Future<OfficialExercise?> findOfficialExerciseById(
     OfficialExerciseId id,
-  ) async => null;
+  ) async {
+    if (id == OfficialExerciseId('seated_cable_row')) {
+      return OfficialExercise(
+        id: OfficialExerciseId('seated_cable_row'),
+        catalogVersion: CatalogVersion('2026.06.0'),
+        englishName: 'Seated Cable Row',
+        germanName: 'Kabelrudern sitzend',
+        equipment: [EquipmentTag('cable_machine')],
+        movementPatterns: [MovementPattern('horizontal_pull')],
+        primaryMuscles: [MuscleGroup('lats')],
+      );
+    }
+    return null;
+  }
 
   @override
   Future<ExerciseCatalogPage> findOfficialExercises(

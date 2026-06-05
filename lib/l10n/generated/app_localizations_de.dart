@@ -330,6 +330,88 @@ class AppLocalizationsDe extends AppLocalizations {
       'Core-Arbeit, wenn die Katalogdaten sie hergeben.';
 
   @override
+  String get exerciseDetailLoading => 'Uebungsdetail wird geladen';
+
+  @override
+  String get exerciseDetailErrorTitle =>
+      'Uebungsdetail konnte nicht geladen werden';
+
+  @override
+  String get exerciseDetailErrorMessage =>
+      'Versuche es erneut, ohne lokale Daten zu aendern.';
+
+  @override
+  String get exerciseDetailAnalyticsTitle => 'Analyse';
+
+  @override
+  String get exerciseDetailAnalyticsMessage =>
+      'Vollstaendige Diagramme kommen im naechsten Slice.';
+
+  @override
+  String get exerciseDetailOneRepMaxTitle => '1RM';
+
+  @override
+  String get exerciseDetailOneRepMaxMessage =>
+      'Kurze Schaetzung jetzt, volle Ansicht spaeter.';
+
+  @override
+  String get exerciseDetailComparedTitle => 'Vergleich zur vorherigen Einheit';
+
+  @override
+  String get exerciseDetailComparedAvailable =>
+      'Aktuelle Einheit im Vergleich zur vorherigen vergleichbaren Einheit.';
+
+  @override
+  String get exerciseDetailComparedUnavailable =>
+      'Vorherige Einheit nicht verfuegbar';
+
+  @override
+  String get exerciseDetailUnavailable => 'Nicht verfuegbar';
+
+  @override
+  String get exerciseDetailHistoryTitle => 'Satzverlauf';
+
+  @override
+  String get exerciseDetailEmptyTitle => 'Noch kein Satzverlauf';
+
+  @override
+  String get exerciseDetailEmptyMessage =>
+      'Protokolliere einen Satz, um diesen Verlauf zu starten.';
+
+  @override
+  String get exerciseDetailMoreHistoryTitle => 'Mehr Verlauf verfuegbar';
+
+  @override
+  String exerciseDetailMoreHistoryMessage(int count) {
+    return 'Zeigt vorerst die letzten $count Saetze.';
+  }
+
+  @override
+  String exerciseDetailSetLine(int repetitions, String load) {
+    return '$repetitions Wdh. x $load';
+  }
+
+  @override
+  String exerciseDetailAnalyticsSemantics(String name) {
+    return 'Analyse fuer $name oeffnen';
+  }
+
+  @override
+  String exerciseDetailOneRepMaxSemantics(String name) {
+    return '1RM fuer $name oeffnen';
+  }
+
+  @override
+  String exerciseDetailLogSetSemantics(String name) {
+    return 'Satz fuer $name protokollieren';
+  }
+
+  @override
+  String exerciseDetailSetSemantics(int repetitions, String load) {
+    return 'Satz, $repetitions Wiederholungen mit $load';
+  }
+
+  @override
   String get exercisesLoading => 'Uebungen werden geladen';
 
   @override

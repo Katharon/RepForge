@@ -59,6 +59,13 @@ English/German localization, route smoke behavior, and visible navigation
 labels. Category classification remains presentation/read-model behavior and
 does not create domain coaching claims.
 
+Slice 58 extends Exercise Detail coverage: Train and Exercises tap-through to
+detail, loading/empty/error/success states, bounded history requests,
+date-grouped set history, previous-comparable metric deltas, unavailable
+previous-session copy, preselected Log Set behavior, refresh after save,
+English/German localization, and semantic labels for Analytics, 1RM, Log Set,
+and set rows.
+
 ## Integration/E2E tests
 
 Critical flow:

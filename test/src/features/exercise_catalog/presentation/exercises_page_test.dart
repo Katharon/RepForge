@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:repforge/src/app/localization/app_localizations.dart';
 import 'package:repforge/src/core/theme/theme.dart';
 import 'package:repforge/src/features/exercise_catalog/presentation/exercise_catalog_presentation.dart';
+import 'package:repforge/src/features/training_log/domain/training_log_domain.dart';
 
 void main() {
   testWidgets('loading state renders', (tester) async {
@@ -97,6 +98,45 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(loader.searches, contains('bench'));
+  });
+
+  testWidgets('tapping catalog exercise emits stable exercise ref', (
+    tester,
+  ) async {
+    _useLargeViewport(tester);
+    final opened = <ExerciseRef>[];
+
+    await tester.pumpWidget(
+      _testApp(
+        ExercisesPage(
+          loader: const _StaticExerciseCatalogListLoader(
+            ExerciseCatalogListViewModel(
+              exercises: [
+                ExerciseListItemViewModel(
+                  id: 'barbell_bench_press',
+                  name: 'Barbell Bench Press',
+                  catalogVersionSnapshot: '2026.06.0',
+                  equipment: ['barbell'],
+                  movementPatterns: ['horizontal_push'],
+                  primaryMuscles: ['chest'],
+                ),
+              ],
+              totalCount: 1,
+              hasMore: false,
+            ),
+          ),
+          onOpenExercise: opened.add,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Barbell Bench Press'));
+    await tester.pumpAndSettle();
+
+    expect(opened.single.id, 'barbell_bench_press');
+    expect(opened.single.displayNameSnapshot, 'Barbell Bench Press');
+    expect(opened.single.catalogVersionSnapshot, '2026.06.0');
   });
 }
 

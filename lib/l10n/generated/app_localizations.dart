@@ -594,6 +594,132 @@ abstract class AppLocalizations {
   /// **'Core-focused work when catalog metadata supports it.'**
   String get trainCategoryCoreDescription;
 
+  /// Loading state for Exercise Detail.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading exercise detail'**
+  String get exerciseDetailLoading;
+
+  /// Title for Exercise Detail loading failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercise detail could not load'**
+  String get exerciseDetailErrorTitle;
+
+  /// Message for Exercise Detail loading failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again without changing local data.'**
+  String get exerciseDetailErrorMessage;
+
+  /// Exercise Detail analytics entry card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Analytics'**
+  String get exerciseDetailAnalyticsTitle;
+
+  /// Exercise Detail analytics entry placeholder message.
+  ///
+  /// In en, this message translates to:
+  /// **'Full charts land in the next slice.'**
+  String get exerciseDetailAnalyticsMessage;
+
+  /// Exercise Detail estimated one-rep max entry card title.
+  ///
+  /// In en, this message translates to:
+  /// **'1RM'**
+  String get exerciseDetailOneRepMaxTitle;
+
+  /// Exercise Detail estimated one-rep max entry placeholder message.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick estimate now, full view later.'**
+  String get exerciseDetailOneRepMaxMessage;
+
+  /// Exercise Detail previous-comparable-session summary title.
+  ///
+  /// In en, this message translates to:
+  /// **'Compared to previous'**
+  String get exerciseDetailComparedTitle;
+
+  /// Exercise Detail summary text when previous comparable data exists.
+  ///
+  /// In en, this message translates to:
+  /// **'Current session compared with the previous comparable session.'**
+  String get exerciseDetailComparedAvailable;
+
+  /// Exercise Detail summary text when no previous comparable data exists.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous session unavailable'**
+  String get exerciseDetailComparedUnavailable;
+
+  /// Neutral unavailable metric text.
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get exerciseDetailUnavailable;
+
+  /// Exercise Detail set history section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Set history'**
+  String get exerciseDetailHistoryTitle;
+
+  /// Exercise Detail empty history title.
+  ///
+  /// In en, this message translates to:
+  /// **'No set history yet'**
+  String get exerciseDetailEmptyTitle;
+
+  /// Exercise Detail empty history message.
+  ///
+  /// In en, this message translates to:
+  /// **'Log a set to start this exercise history.'**
+  String get exerciseDetailEmptyMessage;
+
+  /// Exercise Detail bounded history note title.
+  ///
+  /// In en, this message translates to:
+  /// **'More history available'**
+  String get exerciseDetailMoreHistoryTitle;
+
+  /// Exercise Detail bounded history note message.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing the latest {count} sets for now.'**
+  String exerciseDetailMoreHistoryMessage(int count);
+
+  /// Exercise Detail set row main line.
+  ///
+  /// In en, this message translates to:
+  /// **'{repetitions} reps x {load}'**
+  String exerciseDetailSetLine(int repetitions, String load);
+
+  /// Semantic label for Exercise Detail analytics entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Analytics for {name}'**
+  String exerciseDetailAnalyticsSemantics(String name);
+
+  /// Semantic label for Exercise Detail 1RM entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Open 1RM for {name}'**
+  String exerciseDetailOneRepMaxSemantics(String name);
+
+  /// Semantic label for Exercise Detail log-set action.
+  ///
+  /// In en, this message translates to:
+  /// **'Log set for {name}'**
+  String exerciseDetailLogSetSemantics(String name);
+
+  /// Semantic label for Exercise Detail history set rows.
+  ///
+  /// In en, this message translates to:
+  /// **'Set, {repetitions} reps at {load}'**
+  String exerciseDetailSetSemantics(int repetitions, String load);
+
   /// Loading state for exercises.
   ///
   /// In en, this message translates to:

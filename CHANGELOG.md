@@ -15,6 +15,14 @@
 
 ### Added
 
+- Added Slice 58 Exercise Detail and set history dashboard reachable from Train
+  category rows and the full Exercises catalog, with stable exercise-reference
+  routing, localized title/tags, compact Analytics and 1RM entry cards,
+  compared-to-previous-session metrics, bounded grouped set history, preselected
+  Log Set action with refresh-after-save behavior, and widget coverage without
+  full charts, in-session coach UI, adaptive next-set UI, custom editors,
+  schema migrations, cloud services, Firebase, sync, social, wearable/health,
+  ads, or payment changes.
 - Added Slice 57 Train tab and split/folder navigation by relabeling the
   visible Groups destination to Train/Training, adding local split categories
   for My Exercises, Full Body, Upper Body, Lower Body, Push, Pull, Legs, and

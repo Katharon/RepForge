@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../app/localization/app_localizations.dart';
 import '../../../core/theme/theme.dart';
 import '../../../core/widgets/widgets.dart';
+import '../../training_log/domain/training_log_domain.dart';
 import 'exercise_catalog_loader.dart';
 
 enum ExerciseCatalogUiStatus { loading, empty, error, success }
@@ -24,9 +25,10 @@ final class ExerciseCatalogUiState {
 }
 
 class ExercisesPage extends StatefulWidget {
-  const ExercisesPage({required this.loader, super.key});
+  const ExercisesPage({required this.loader, super.key, this.onOpenExercise});
 
   final ExerciseCatalogListLoader loader;
+  final ValueChanged<ExerciseRef>? onOpenExercise;
 
   @override
   State<ExercisesPage> createState() => _ExercisesPageState();
@@ -78,7 +80,11 @@ class _ExercisesPageState extends State<ExercisesPage> {
               onSearch: () => _load(searchText: _searchController.text),
             ),
             const SizedBox(height: RepForgeSpacing.lg),
-            _ExerciseCatalogStateBody(state: _state, onRetry: _load),
+            _ExerciseCatalogStateBody(
+              state: _state,
+              onRetry: _load,
+              onOpenExercise: widget.onOpenExercise,
+            ),
           ],
         ),
       ],
@@ -167,10 +173,15 @@ class _ExerciseSearchBar extends StatelessWidget {
 }
 
 class _ExerciseCatalogStateBody extends StatelessWidget {
-  const _ExerciseCatalogStateBody({required this.state, required this.onRetry});
+  const _ExerciseCatalogStateBody({
+    required this.state,
+    required this.onRetry,
+    required this.onOpenExercise,
+  });
 
   final ExerciseCatalogUiState state;
   final VoidCallback onRetry;
+  final ValueChanged<ExerciseRef>? onOpenExercise;
 
   @override
   Widget build(BuildContext context) {
@@ -224,15 +235,19 @@ class _ExerciseCatalogStateBody extends StatelessWidget {
           ),
         );
       case ExerciseCatalogUiStatus.success:
-        return _ExerciseList(model: state.model!);
+        return _ExerciseList(
+          model: state.model!,
+          onOpenExercise: onOpenExercise,
+        );
     }
   }
 }
 
 class _ExerciseList extends StatelessWidget {
-  const _ExerciseList({required this.model});
+  const _ExerciseList({required this.model, required this.onOpenExercise});
 
   final ExerciseCatalogListViewModel model;
+  final ValueChanged<ExerciseRef>? onOpenExercise;
 
   @override
   Widget build(BuildContext context) {
@@ -249,7 +264,7 @@ class _ExerciseList extends StatelessWidget {
         ),
         const SizedBox(height: RepForgeSpacing.md),
         for (final exercise in model.exercises) ...[
-          _ExerciseCard(exercise: exercise),
+          _ExerciseCard(exercise: exercise, onOpenExercise: onOpenExercise),
           const SizedBox(height: RepForgeSpacing.md),
         ],
         if (model.hasMore)
@@ -264,37 +279,59 @@ class _ExerciseList extends StatelessWidget {
 }
 
 class _ExerciseCard extends StatelessWidget {
-  const _ExerciseCard({required this.exercise});
+  const _ExerciseCard({required this.exercise, required this.onOpenExercise});
 
   final ExerciseListItemViewModel exercise;
+  final ValueChanged<ExerciseRef>? onOpenExercise;
 
   @override
   Widget build(BuildContext context) {
     return Semantics(
       label: exercise.name,
+      button: onOpenExercise != null,
       child: AppCard(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(exercise.name, style: Theme.of(context).textTheme.titleMedium),
-            const SizedBox(height: RepForgeSpacing.sm),
-            Wrap(
-              spacing: RepForgeSpacing.sm,
-              runSpacing: RepForgeSpacing.sm,
+        child: InkWell(
+          onTap: onOpenExercise == null
+              ? null
+              : () => onOpenExercise!(_exerciseRefFor(exercise)),
+          borderRadius: BorderRadius.circular(RepForgeRadius.lg),
+          child: Padding(
+            padding: const EdgeInsets.all(RepForgeSpacing.xs),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                for (final tag in [
-                  ...exercise.equipment.take(2),
-                  ...exercise.movementPatterns.take(1),
-                  ...exercise.primaryMuscles.take(2),
-                ])
-                  InputChip(label: Text(_formatTag(tag))),
+                Text(
+                  exercise.name,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const SizedBox(height: RepForgeSpacing.sm),
+                Wrap(
+                  spacing: RepForgeSpacing.sm,
+                  runSpacing: RepForgeSpacing.sm,
+                  children: [
+                    for (final tag in [
+                      ...exercise.equipment.take(2),
+                      ...exercise.movementPatterns.take(1),
+                      ...exercise.primaryMuscles.take(2),
+                    ])
+                      InputChip(label: Text(_formatTag(tag))),
+                  ],
+                ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );
   }
+}
+
+ExerciseRef _exerciseRefFor(ExerciseListItemViewModel exercise) {
+  return ExerciseRef.official(
+    id: OfficialExerciseId(exercise.id),
+    displayNameSnapshot: exercise.name,
+    catalogVersionSnapshot: exercise.catalogVersionSnapshot,
+  );
 }
 
 class _ExerciseInfoCard extends StatelessWidget {

@@ -67,6 +67,7 @@ final class ExerciseListItemViewModel {
     required this.equipment,
     required this.movementPatterns,
     required this.primaryMuscles,
+    this.catalogVersionSnapshot,
     this.secondaryMuscles = const <String>[],
   });
 
@@ -79,6 +80,7 @@ final class ExerciseListItemViewModel {
       name: locale?.languageCode == 'de'
           ? exercise.germanName
           : exercise.englishName,
+      catalogVersionSnapshot: exercise.catalogVersion.value,
       equipment: exercise.equipment
           .map((tag) => tag.value)
           .toList(growable: false),
@@ -96,6 +98,7 @@ final class ExerciseListItemViewModel {
 
   final String id;
   final String name;
+  final String? catalogVersionSnapshot;
   final List<String> equipment;
   final List<String> movementPatterns;
   final List<String> primaryMuscles;

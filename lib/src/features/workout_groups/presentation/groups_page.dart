@@ -6,6 +6,7 @@ import '../../../app/localization/app_localizations.dart';
 import '../../../core/theme/theme.dart';
 import '../../../core/widgets/widgets.dart';
 import '../../exercise_catalog/presentation/exercise_catalog_presentation.dart';
+import '../../training_log/domain/training_log_domain.dart';
 import 'workout_group_list_loader.dart';
 
 enum TrainUiStatus { loading, empty, error, success }
@@ -19,9 +20,10 @@ final class TrainUiState {
 }
 
 class GroupsPage extends StatefulWidget {
-  const GroupsPage({required this.loader, super.key});
+  const GroupsPage({required this.loader, super.key, this.onOpenExercise});
 
   final TrainPageLoader loader;
+  final ValueChanged<ExerciseRef>? onOpenExercise;
 
   @override
   State<GroupsPage> createState() => _GroupsPageState();
@@ -84,6 +86,7 @@ class _GroupsPageState extends State<GroupsPage> {
               onOpenCategory: _openCategory,
               onBackToCategories: _backToCategories,
               onSearch: _applyCategorySearch,
+              onOpenExercise: widget.onOpenExercise,
             ),
           ],
         ),
@@ -169,6 +172,7 @@ class _TrainStateBody extends StatelessWidget {
     required this.onOpenCategory,
     required this.onBackToCategories,
     required this.onSearch,
+    required this.onOpenExercise,
   });
 
   final TrainUiState state;
@@ -179,6 +183,7 @@ class _TrainStateBody extends StatelessWidget {
   final ValueChanged<TrainCategoryId> onOpenCategory;
   final VoidCallback onBackToCategories;
   final VoidCallback onSearch;
+  final ValueChanged<ExerciseRef>? onOpenExercise;
 
   @override
   Widget build(BuildContext context) {
@@ -240,6 +245,7 @@ class _TrainStateBody extends StatelessWidget {
             searchText: searchText,
             onBack: onBackToCategories,
             onSearch: onSearch,
+            onOpenExercise: onOpenExercise,
           );
         }
         return _TrainLanding(
@@ -417,6 +423,7 @@ class _TrainCategoryExerciseList extends StatelessWidget {
     required this.searchText,
     required this.onBack,
     required this.onSearch,
+    required this.onOpenExercise,
   });
 
   final TrainCategoryViewModel category;
@@ -424,6 +431,7 @@ class _TrainCategoryExerciseList extends StatelessWidget {
   final String searchText;
   final VoidCallback onBack;
   final VoidCallback onSearch;
+  final ValueChanged<ExerciseRef>? onOpenExercise;
 
   @override
   Widget build(BuildContext context) {
@@ -481,7 +489,10 @@ class _TrainCategoryExerciseList extends StatelessWidget {
           )
         else
           for (final exercise in exercises) ...[
-            _TrainExerciseCard(exercise: exercise),
+            _TrainExerciseCard(
+              exercise: exercise,
+              onOpenExercise: onOpenExercise,
+            ),
             const SizedBox(height: RepForgeSpacing.md),
           ],
       ],
@@ -530,9 +541,13 @@ class _TrainCategorySearchBar extends StatelessWidget {
 }
 
 class _TrainExerciseCard extends StatelessWidget {
-  const _TrainExerciseCard({required this.exercise});
+  const _TrainExerciseCard({
+    required this.exercise,
+    required this.onOpenExercise,
+  });
 
   final ExerciseListItemViewModel exercise;
+  final ValueChanged<ExerciseRef>? onOpenExercise;
 
   @override
   Widget build(BuildContext context) {
@@ -540,45 +555,59 @@ class _TrainExerciseCard extends StatelessWidget {
 
     return Semantics(
       label: localizations.trainExerciseSemanticsLabel(exercise.name),
+      button: onOpenExercise != null,
       child: AppCard(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+        child: InkWell(
+          onTap: onOpenExercise == null
+              ? null
+              : () => onOpenExercise!(_exerciseRefFor(exercise)),
+          borderRadius: BorderRadius.circular(RepForgeRadius.lg),
+          child: Padding(
+            padding: const EdgeInsets.all(RepForgeSpacing.xs),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Text(
-                    exercise.name,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        exercise.name,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ),
+                    const SizedBox(width: RepForgeSpacing.md),
+                    const Icon(Icons.chevron_right),
+                  ],
                 ),
-                const SizedBox(width: RepForgeSpacing.md),
-                OutlinedButton.icon(
-                  onPressed: null,
-                  icon: const Icon(Icons.add),
-                  label: Text(localizations.todayQuickActionLogSet),
+                const SizedBox(height: RepForgeSpacing.sm),
+                Wrap(
+                  spacing: RepForgeSpacing.sm,
+                  runSpacing: RepForgeSpacing.sm,
+                  children: [
+                    for (final tag in [
+                      ...exercise.equipment.take(2),
+                      ...exercise.movementPatterns.take(1),
+                      ...exercise.primaryMuscles.take(2),
+                    ])
+                      InputChip(label: Text(_formatTag(tag))),
+                  ],
                 ),
               ],
             ),
-            const SizedBox(height: RepForgeSpacing.sm),
-            Wrap(
-              spacing: RepForgeSpacing.sm,
-              runSpacing: RepForgeSpacing.sm,
-              children: [
-                for (final tag in [
-                  ...exercise.equipment.take(2),
-                  ...exercise.movementPatterns.take(1),
-                  ...exercise.primaryMuscles.take(2),
-                ])
-                  InputChip(label: Text(_formatTag(tag))),
-              ],
-            ),
-          ],
+          ),
         ),
       ),
     );
   }
+}
+
+ExerciseRef _exerciseRefFor(ExerciseListItemViewModel exercise) {
+  return ExerciseRef.official(
+    id: OfficialExerciseId(exercise.id),
+    displayNameSnapshot: exercise.name,
+    catalogVersionSnapshot: exercise.catalogVersionSnapshot,
+  );
 }
 
 class _StarterGroupCard extends StatelessWidget {

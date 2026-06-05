@@ -27,7 +27,10 @@ final class QuickLogSetController {
   final WorkoutSetIdProvider workoutSetIdProvider;
   final QuickLogNowProvider nowProvider;
 
-  Future<bool> show(BuildContext context) async {
+  Future<bool> show(
+    BuildContext context, [
+    ExerciseRef? initialExerciseRef,
+  ]) async {
     final saved = await showDialog<bool>(
       context: context,
       builder: (context) {
@@ -37,6 +40,7 @@ final class QuickLogSetController {
           ensureCatalogImported: ensureCatalogImported,
           workoutSetIdProvider: workoutSetIdProvider,
           nowProvider: nowProvider,
+          initialExerciseRef: initialExerciseRef,
         );
       },
     );
@@ -56,6 +60,7 @@ class _QuickLogSetDialog extends StatefulWidget {
     required this.workoutSetIdProvider,
     required this.nowProvider,
     this.ensureCatalogImported,
+    this.initialExerciseRef,
   });
 
   final ExerciseCatalogRepository exerciseCatalogRepository;
@@ -63,6 +68,7 @@ class _QuickLogSetDialog extends StatefulWidget {
   final EnsureOfficialCatalogImported? ensureCatalogImported;
   final WorkoutSetIdProvider workoutSetIdProvider;
   final QuickLogNowProvider nowProvider;
+  final ExerciseRef? initialExerciseRef;
 
   @override
   State<_QuickLogSetDialog> createState() => _QuickLogSetDialogState();
@@ -292,6 +298,7 @@ class _QuickLogSetDialogState extends State<_QuickLogSetDialog> {
 
     try {
       await widget.ensureCatalogImported?.call();
+      final initialExercise = await _findInitialExercise();
       final page = await widget.exerciseCatalogRepository.findOfficialExercises(
         ExerciseCatalogQuery(
           limit: 25,
@@ -304,12 +311,10 @@ class _QuickLogSetDialogState extends State<_QuickLogSetDialog> {
       }
 
       setState(() {
-        _exercises = page.items;
-        _selectedExercise = page.items.contains(_selectedExercise)
+        _exercises = _mergeInitialExercise(initialExercise, page.items);
+        _selectedExercise = _exercises.contains(_selectedExercise)
             ? _selectedExercise
-            : page.items.isEmpty
-            ? null
-            : page.items.first;
+            : initialExercise ?? (_exercises.isEmpty ? null : _exercises.first);
         _isLoading = false;
       });
     } catch (error) {
@@ -322,6 +327,35 @@ class _QuickLogSetDialogState extends State<_QuickLogSetDialog> {
         _isLoading = false;
       });
     }
+  }
+
+  Future<OfficialExercise?> _findInitialExercise() async {
+    final initialExerciseRef = widget.initialExerciseRef;
+    if (initialExerciseRef == null ||
+        initialExerciseRef.source != ExerciseSource.official ||
+        _selectedExercise != null ||
+        _searchController.text.trim().isNotEmpty) {
+      return null;
+    }
+
+    return widget.exerciseCatalogRepository.findOfficialExerciseById(
+      OfficialExerciseId(initialExerciseRef.id),
+    );
+  }
+
+  List<OfficialExercise> _mergeInitialExercise(
+    OfficialExercise? initialExercise,
+    List<OfficialExercise> exercises,
+  ) {
+    if (initialExercise == null) {
+      return exercises;
+    }
+
+    return [
+      initialExercise,
+      for (final exercise in exercises)
+        if (exercise.id != initialExercise.id) exercise,
+    ];
   }
 
   Future<void> _save() async {
