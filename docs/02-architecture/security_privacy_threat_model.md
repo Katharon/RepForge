@@ -68,6 +68,13 @@ provides a backup JSON redactor for diagnostics. Redaction removes top-level
 training history, workout groups, assignments, settings/profile, and onboarding
 sections while retaining non-sensitive version metadata.
 
+Slice 56 hardens the local-backup test contract for readiness check-ins and
+official catalog boundaries. Readiness rows are user-owned exportable data and
+malformed readiness ratings are rejected deterministically before import. Full
+bundled official catalog rows are not exported; backups preserve stable
+exercise refs and snapshots for user history instead. This keeps backup JSON
+smaller and avoids treating release-managed catalog content as user data.
+
 ### Notification privacy
 
 Risk: rest-timer notifications displayed on a lock screen expose exercise

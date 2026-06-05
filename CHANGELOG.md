@@ -2,8 +2,24 @@
 
 ## Unreleased
 
+### Fixed
+
+- Hardened backup/import compatibility coverage for readiness check-ins, keeping
+  stable ids and timestamps preserved while retaining deterministic validation
+  for malformed readiness backup data.
+- Clarified that local backups preserve exercise references and display-name
+  snapshots but do not export the full bundled official exercise catalog; fixed
+  the recurring archive/delete policy test accordingly.
+- Updated the Today golden baseline for the existing readiness/dashboard UI so
+  visual regression tests reflect the current intended screen.
+
 ### Added
 
+- Added Slice 56 backward-compatibility and runtime resilience hardening notes
+  for local backup/import behavior, readiness round-trip coverage, official
+  catalog export boundaries, and the resolved Today golden baseline drift
+  without adding runtime features, cloud services, Firebase, sync, social,
+  wearable/health, ads, payment changes, or schema migrations.
 - Added Slice 55 legal/compliance/privacy/safety review baseline with a
   docs-only owner-review checklist for privacy policy, store data-safety forms,
   support/deletion path, screenshots/store claims, training-safety wording,

@@ -229,6 +229,12 @@ suite intentionally small; update approved baselines with:
 flutter test --update-goldens
 ```
 
+Slice 56 updates only the Today success golden baseline after confirming the
+diff reflects intentional readiness/dashboard UI content. Future golden updates
+should stay similarly isolated: reproduce the diff, inspect the generated
+master/test/diff images, update only the affected baseline, and keep failure
+artifacts out of commits.
+
 ## Catalog tests
 
 Official exercise catalog must have:
@@ -259,6 +265,21 @@ The current catalog asset schema still uses primary/secondary muscle metadata,
 not first-class activation weights. The validator rejects invalid activation
 weights when optional future activation fields are present; broader catalog
 activation semantics belong to a later catalog asset schema slice.
+
+## Backup and compatibility tests
+
+Backup/import compatibility tests must prove that user-owned local data remains
+exportable and importable without silently mutating unrelated data. Coverage
+should include workout sets with stable exercise refs and snapshots, workout
+groups and assignments, settings/profile and equipment constraints, onboarding
+status, catalog import metadata, and readiness check-ins.
+
+Backups should not include full bundled official catalog rows. Tests should
+assert stable refs/snapshots are preserved instead of expecting a fresh import
+to recreate official catalog content from backup JSON. Unsupported export or
+schema versions, malformed payloads, duplicate ids, invalid set values, invalid
+settings/equipment, and invalid readiness ratings must fail deterministically
+before import.
 
 ## Muscle activation tests
 

@@ -188,18 +188,22 @@ void main() {
       );
 
       final backup = await DriftLocalBackupRepository(database).exportBackup();
+      expect(backup.readinessCheckIns, hasLength(1));
       await database.close();
       database = RepForgeDatabase(NativeDatabase.memory());
       await DriftLocalBackupRepository(database).importBackup(backup);
 
       final latest = await DriftReadinessCheckInRepository(database).latest();
+      final importedSets = await database.select(database.workoutSets).get();
 
       expect(latest?.id, ReadinessCheckInId('readiness-1'));
-      expect(await database.select(database.workoutSets).get(), hasLength(1));
+      expect(importedSets, hasLength(1));
+      expect(importedSets.single.exerciseId, 'barbell-bench-press');
       expect(
-        await database.select(database.officialExercises).get(),
-        hasLength(1),
+        importedSets.single.exerciseDisplayNameSnapshot,
+        'Barbell Bench Press',
       );
+      expect(await database.select(database.officialExercises).get(), isEmpty);
       expect(await database.select(database.workoutGroups).get(), hasLength(1));
     },
   );

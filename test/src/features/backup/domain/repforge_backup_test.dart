@@ -61,6 +61,14 @@ void main() {
           'incrementKg': 25,
         },
       ];
+    final readinessCheckIns =
+        json['readinessCheckIns']! as List<Map<String, Object?>>;
+    readinessCheckIns.single
+      ..['soreness'] = 5
+      ..['sleepQuality'] = 0
+      ..['energy'] = 6
+      ..['stress'] = 0
+      ..['motivation'] = 6;
 
     final result = RepForgeBackup.validateJsonString(jsonEncode(json));
 
@@ -82,6 +90,11 @@ void main() {
         'settingsProfile.coachingStrictness',
         'settingsProfile.equipmentInventory',
         'settingsProfile.equipmentLoadConstraints[0].incrementKg',
+        'readinessCheckIns[0].soreness',
+        'readinessCheckIns[0].sleepQuality',
+        'readinessCheckIns[0].energy',
+        'readinessCheckIns[0].stress',
+        'readinessCheckIns[0].motivation',
       ]),
     );
   });
@@ -111,6 +124,12 @@ void main() {
       40,
     );
     expect(backup.onboardingStatus?.completion, 'completed');
+    expect(backup.readinessCheckIns.single.id, 'readiness-1');
+    expect(
+      backup.readinessCheckIns.single.checkedInAt,
+      DateTime.utc(2026, 6, 2, 8),
+    );
+    expect(backup.readinessCheckIns.single.soreness, 2);
   });
 
   test('validation messages do not echo unsupported equipment values', () {
@@ -211,6 +230,17 @@ Map<String, Object?> _validBackupJson() {
         'catalogVersion': '2026.05.0',
         'schemaVersion': 1,
         'importedAt': '2026-05-28T09:00:00.000Z',
+      },
+    ],
+    'readinessCheckIns': <Map<String, Object?>>[
+      <String, Object?>{
+        'id': 'readiness-1',
+        'checkedInAt': '2026-06-02T08:00:00.000Z',
+        'soreness': 2,
+        'sleepQuality': 4,
+        'energy': 4,
+        'stress': 2,
+        'motivation': 5,
       },
     ],
   };

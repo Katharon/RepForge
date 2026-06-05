@@ -114,6 +114,43 @@ void main() {
     },
   );
 
+  test('exports and imports readiness check-ins deterministically', () async {
+    await database
+        .into(database.readinessCheckIns)
+        .insert(
+          ReadinessCheckInsCompanion.insert(
+            readinessCheckInId: 'readiness-1',
+            checkedInAt: DateTime.utc(2026, 6, 2, 8),
+            soreness: 2,
+            sleepQuality: 4,
+            energy: 4,
+            stress: 2,
+            motivation: 5,
+          ),
+        );
+
+    final backup = await repository.exportBackup();
+    expect(backup.readinessCheckIns, hasLength(1));
+    expect(backup.readinessCheckIns.single.id, 'readiness-1');
+    expect(backup.readinessCheckIns.single.checkedInAt.isUtc, isTrue);
+
+    await database.close();
+    database = RepForgeDatabase(NativeDatabase.memory());
+    repository = DriftLocalBackupRepository(database);
+
+    await repository.importBackup(backup);
+
+    final rows = await database.select(database.readinessCheckIns).get();
+    expect(rows, hasLength(1));
+    expect(rows.single.readinessCheckInId, 'readiness-1');
+    expect(rows.single.checkedInAt.toUtc(), DateTime.utc(2026, 6, 2, 8));
+    expect(rows.single.soreness, 2);
+    expect(rows.single.sleepQuality, 4);
+    expect(rows.single.energy, 4);
+    expect(rows.single.stress, 2);
+    expect(rows.single.motivation, 5);
+  });
+
   test('import validation does not modify database', () async {
     await expectLater(
       ImportLocalBackup(repository)('{"exportVersion":99}'),

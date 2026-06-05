@@ -30,6 +30,17 @@ A data slice is done when:
 - Migrations are tested if schema changed.
 - No user data is silently lost.
 
+## Compatibility and resilience acceptance
+
+A compatibility/resilience hardening slice is done when:
+
+- Known reproducible failures are fixed or documented with current output.
+- Backup/import tests preserve user-owned data categories and stable snapshots.
+- Official bundled catalog data is not treated as full backup payload.
+- Unsupported or malformed persisted/exchange formats fail deterministically.
+- Golden baselines are updated only after an intentional visual diff is
+  inspected and isolated.
+
 ## Payment/cloud slice acceptance
 
 A payment/cloud slice is done only when security and privacy docs are updated, local-only features still work without cloud, and tests/fakes exist for offline or unavailable service states.

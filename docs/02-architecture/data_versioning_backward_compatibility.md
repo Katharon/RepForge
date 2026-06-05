@@ -112,6 +112,14 @@ The backup schema version remains compatible because older backups without the
 field continue to parse as an empty readiness list, while exported readiness
 rows preserve their stable ids and timestamps.
 
+Slice 56 hardens the backup/import tests around that contract. Readiness
+check-ins must round-trip through backup JSON and Drift import with stable ids,
+preserved timestamp instants, and bounded values. Invalid readiness backup
+ratings must fail deterministic validation before import. Official catalog rows
+remain release-managed bundled data and are not exported as full backup content;
+backup compatibility relies on stable exercise references and display-name
+snapshots in user-owned workout sets and group assignments.
+
 The app composition root owns the runtime `RepForgeDatabase` instance it
 creates through the local database factory and closes it through
 `AppDependencies.close()`. Tests may inject in-memory executors or caller-owned

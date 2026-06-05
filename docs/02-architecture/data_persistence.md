@@ -150,6 +150,25 @@ status, purchases, auth, sync metadata, or notification state. Local JSON
 backup/export includes an optional `readinessCheckIns` array. Older backups
 without that field still import because the backup shape remains additive.
 
+## Slice 56 backup/import compatibility hardening
+
+Slice 56 does not change the Drift schema. It hardens tests around the existing
+backup contract:
+
+- readiness check-ins export and import as user-owned local data with stable
+  ids, preserved timestamp instants, and bounded soreness/readiness values,
+- malformed readiness backup values fail deterministic validation before import,
+- older backups without `readinessCheckIns` still import as an empty readiness
+  list,
+- official catalog rows are not exported as a full catalog dump,
+- logged sets and workout-group assignments remain understandable after import
+  through stable exercise refs, display-name snapshots, and optional
+  catalog-version snapshots.
+
+Imports remain additive/upsert-based and transactional. They must not silently
+delete unrelated local workout history, groups, settings/profile, onboarding,
+catalog import metadata, or readiness rows.
+
 ## Slice 25 persistence hardening
 
 Drift schema remains v6. Slice 25 adds tests that pin the current table list,
