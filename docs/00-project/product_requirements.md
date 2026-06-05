@@ -256,6 +256,8 @@ Requirements:
 - Quick-session mode.
 - Body metrics and calorie estimates from age/sex/height/weight and workout duration.
 - Wearable/health platform integration for heart rate and activity data.
-- Friends/social feed to compare training activity and recovery signals.
+- Opt-in friends/social activity sharing for high-level training activity.
+  Recovery, readiness, soreness, body metrics, wearable/health data, comments,
+  notes, exact loads, and private profile details are not shared by default.
 - Optional account and sync.
 - Premium entitlements through app stores.

@@ -69,3 +69,21 @@ Future Remote Push provider work must be an explicit slice. It must add privacy
 review, consent/account rules where needed, provider-specific token handling
 outside domain, backend registration if used, and tests proving local features
 still work when Remote Push is disabled or unavailable.
+
+## Future Social Notifications
+
+Slice 54 keeps social notifications as design-only. A later social feature may
+consider remote notifications for accepted friend requests, activity comments,
+mentions, direct invitations, block/report outcomes, or moderation notices.
+
+Rules for any future social notification implementation:
+
+- no token request before explicit social/account consent,
+- no remote push registration for users who keep social disabled,
+- no private workout details, exact loads, comments, readiness, soreness,
+  wearable/health data, or body metrics in lock-screen copy,
+- block and mute settings must suppress relevant social notifications,
+- rest timers and local reminders remain local notifications,
+- remote social notifications require a backend/privacy review and tests proving
+  local features still work when remote push is disabled, denied, unavailable,
+  or failed.

@@ -135,6 +135,39 @@ background collection, local persistence for health samples, UI prompts, upload,
 sync, account requirements, Firebase, backend services, or exact calorie-burn
 claims.
 
+### Social and friends privacy
+
+Risk: future friends/activity features expose private workout details, body
+metrics, readiness, soreness, wearable/health data, comments, notes, precise
+timestamps, routine patterns, or account identifiers by default. A social feed
+also creates abuse, spam, moderation, reporting, public-profile, and deletion
+obligations that the local MVP does not have.
+
+Mitigations:
+
+- keep social disabled by default,
+- keep local tracking usable without an account, friends, social activity, sync,
+  remote push, Firebase, Firestore, or backend services,
+- require explicit opt-in before any activity leaves the device,
+- default all activity privacy to private/local-only,
+- show a first-share preview with the exact fields that would be shared,
+- share sanitized `ShareableTrainingSummary` data instead of raw workout logs,
+- exclude exact sets/reps/loads, comments, notes, body metrics, readiness,
+  soreness, injury/pain context, wearable/health data, backups, location, and
+  precise timestamps by default,
+- provide revoke, delete/unshare, block, mute, and report designs before a feed
+  ships,
+- require a later moderation, retention, export, deletion, and abuse-prevention
+  review before public profiles or public activity are enabled,
+- update store privacy/data-safety declarations and this threat model before any
+  social backend, account requirement, remote push registration, or upload is
+  introduced.
+
+Slice 54 is documentation-only for this boundary. It adds no backend, account
+requirement, social UI, friends list, feed, Firebase, Firestore, sync
+activation, remote push runtime, moderation runtime, payments changes, upload,
+public leaderboard, or social comparison behavior.
+
 ### Catalog patch corruption
 
 Risk: bundled or downloaded catalog data is malformed.

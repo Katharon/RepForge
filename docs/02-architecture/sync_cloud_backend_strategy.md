@@ -79,6 +79,30 @@ Firebase Messaging or another provider only in an explicit later slice with
 privacy review and tests proving local MVP features remain usable when Remote
 Push is disabled, denied, unavailable, or failed.
 
+## Optional social/friends boundary
+
+Slice 54 documents social/friends activity as a separate cloud concern. It does
+not add a social backend, account requirement, remote feed, sync activation,
+Firebase, Firestore, remote push runtime, moderation runtime, UI, or data
+upload.
+
+Social must not be treated as user-data sync. A future shared activity item is a
+sanitized, consented summary prepared for a social audience; it is not a raw
+workout log and must not silently upload local history.
+
+Future social implementation must keep these concerns separate:
+
+- identity/account for social relationships,
+- relationship graph and invites,
+- sanitized activity item storage,
+- moderation/reporting,
+- optional remote push for social notifications,
+- local backup/export/import.
+
+Local tracking, catalog access, groups, analytics, readiness, recommendations,
+settings, backups, purchases, and entitlements remain available without social,
+accounts, sync, Firebase, Firestore, remote push, or backend services.
+
 ## Optional sync model if implemented later
 
 Slice 37 adds only a pure-Dart sync metadata and conflict-policy boundary. It

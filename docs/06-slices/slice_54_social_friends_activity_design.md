@@ -71,6 +71,30 @@ Update these if changed by implementation:
 docs(social): define friends activity boundary
 ```
 
+## Implementation note
+
+Slice 54 was completed as a documentation-only design slice. It intentionally
+adds no backend, account requirement, social UI, friends list, feed UI,
+Firebase, Firestore, sync activation, remote push runtime, moderation runtime,
+payments changes, upload, public leaderboard, or social comparison behavior.
+
+The updated docs define:
+
+- a future social/friends bounded context,
+- strict private-by-default activity and profile privacy,
+- shareable activity categories and sensitive non-default data categories,
+- privacy/visibility levels,
+- consent, first-share preview, revoke, delete/unshare, export, and account
+  deletion expectations,
+- block, mute, report, and moderation questions,
+- relationships to auth, sync, Firebase, remote push, payments, catalog,
+  recommendations, and wearable/health boundaries,
+- backend/open questions and release/test gates for later explicit slices.
+
+Code was not added because the feature needs identity, backend, moderation,
+privacy, and store-review decisions before runtime models or adapters would be
+honest.
+
 ## Ready-to-use Codex prompt
 
 ```text

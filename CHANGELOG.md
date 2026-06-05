@@ -4,6 +4,14 @@
 
 ### Added
 
+- Added Slice 54 friends/social activity design boundary with a future social
+  bounded context, private-by-default visibility, shareable versus sensitive
+  activity data categories, consent and first-share preview expectations,
+  revoke/delete/export/account-deletion implications, moderation and safety
+  questions, backend/open questions, and release/test gates without adding
+  backend services, accounts, social UI, feed runtime, Firebase/Firestore, sync
+  activation, remote push runtime, moderation runtime, uploads, public
+  leaderboards, or social comparison behavior.
 - Added Slice 53 wearable and calorie estimation design boundary with
   opt-in-only, disabled-by-default health integration rules, local-only
   retention/deletion expectations, future provider and permission review gates,

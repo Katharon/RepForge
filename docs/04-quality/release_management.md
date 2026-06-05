@@ -75,6 +75,35 @@ Calories must be described as rough estimates in store copy, screenshots, and
 in-app text. Do not market exact calorie burn, medical diagnosis, injury
 prevention, or guaranteed outcomes.
 
+## Social release gate
+
+Slice 54 keeps friends/social activity as documentation only. RepForge must not
+ship a social backend, account requirement, friends list, feed UI, public
+profile, Firebase/Firestore social database, remote social push runtime,
+moderation runtime, public leaderboard, social comparison feature, or upload of
+private training data until a later explicit implementation slice completes a
+privacy, safety, and store review.
+
+Before any build includes social runtime behavior:
+
+1. Define the exact shared activity categories and default them to private.
+2. Add localized opt-in, first-share preview, revoke, delete/unshare, block,
+   mute, report, and account-deletion copy.
+3. Update the privacy policy, store privacy/data-safety declarations, support
+   path, and this release document.
+4. Confirm local tracking works with no account, friends, sync, Firebase,
+   Firestore, remote push, or backend.
+5. Confirm exact sets/reps/loads, comments, notes, body metrics, readiness,
+   soreness, health/wearable data, backups, location, and precise timestamps are
+   excluded by default.
+6. Define moderation, report handling, abuse prevention, rate limits, retention,
+   export, deletion, and operator-access rules.
+7. Run guardrail searches for backend/Firebase activation, upload/sync wording,
+   account-required claims, leaderboard/social-comparison language, and private
+   training-data sharing.
+
+Public leaderboards and broad social comparison are not recommended for MVP.
+
 ## Branding and store metadata
 
 Slice 40 validates the current launcher icon setup:

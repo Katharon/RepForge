@@ -178,6 +178,37 @@ Tests must not request real health permissions, use HealthKit, Health Connect,
 Google Fit, wearable SDKs, platform services, network, backend APIs, cloud
 analytics, Firebase, sync engines, accounts, or paid runtime services.
 
+## Social and friends boundary tests
+
+Slice 54 is documentation-only, so it adds no test files. Future social
+implementation slices must start with pure-Dart boundary tests and fake gateways
+before adding backend adapters or UI.
+
+Required future coverage:
+
+- social disabled by default,
+- local tracking, catalog access, analytics, settings, backup/export/import,
+  readiness, recommendations, purchases, and entitlements do not require social
+  or accounts,
+- activity privacy defaults to private/local-only,
+- user consent and first-share preview are required before any shareable summary
+  leaves the device,
+- `ShareableTrainingSummary` excludes exact sets/reps/loads, comments, notes,
+  body metrics, readiness, soreness, injury/pain context, wearable/health data,
+  backups, location, precise timestamps, purchase state, and raw local database
+  records by default,
+- selected-friends/friends-only/public visibility behavior is deterministic,
+- revoke/delete/unshare, block, mute, and report state changes are explicit,
+- fake social gateways never upload while disabled, require accounts for local
+  features, activate sync, initialize Firebase/Firestore, request remote push
+  tokens, or call backend services without explicit configuration,
+- domain imports no Flutter, Drift, platform, Firebase, Firestore, backend,
+  account-provider SDK, notification SDK, or sync-engine dependencies.
+
+Tests must not invoke real social providers, network, Firebase, Firestore,
+backend APIs, account providers, contact discovery, remote push services,
+moderation services, upload/download flows, files, or paid runtime services.
+
 ## Golden/visual tests
 
 Use for stable components after design tokens mature:
