@@ -45,4 +45,4 @@ The compliance strategy is deliberately simple:
 - `docs/08-legal-compliance/store_compliance.md`
 - `docs/04-quality/compliance_release_checklist.md`
 - `docs/04-quality/security_update_policy.md`
-- `docs/06-slices/slice_55_legal_compliance_resilience_baseline.md`
+- `docs/06-slices/slice_55_legal_compliance_privacy_safety_review.md`

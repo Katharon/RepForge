@@ -4,6 +4,11 @@
 
 ### Added
 
+- Added Slice 55 legal/compliance/privacy/safety review baseline with a
+  docs-only owner-review checklist for privacy policy, store data-safety forms,
+  support/deletion path, screenshots/store claims, training-safety wording,
+  backup/export warnings, subscription disclosures, health/social/sync/Firebase
+  future gates, and no legal-finalization claim or runtime feature activation.
 - Added Slice 54 friends/social activity design boundary with a future social
   bounded context, private-by-default visibility, shareable versus sensitive
   activity data categories, consent and first-share preview expectations,

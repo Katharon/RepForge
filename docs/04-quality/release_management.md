@@ -43,6 +43,7 @@ Update `CHANGELOG.md` for every release. Keep entries user-facing.
 Before public release:
 
 - Privacy policy.
+- Terms/safety disclaimer.
 - App icon.
 - Screenshots.
 - Store description.
@@ -51,6 +52,33 @@ Before public release:
 - Age rating/content declaration.
 - Subscription metadata if premium exists.
 - Data safety forms.
+- Support contact and deletion request path.
+- Open-source license notices.
+- Owner review of all store claims against the exact shipped binary.
+
+## Legal, privacy, and safety review gate
+
+Slice 55 adds a developer/product compliance review baseline. It is not legal
+advice and does not finalize release copy.
+
+Before public release, the release owner must confirm:
+
+1. Privacy policy drafts in English and German match the exact shipped binary.
+2. Terms/safety disclaimer avoids medical, exact-measurement,
+   injury-prevention, guaranteed-result, shaming, and coercive claims.
+3. Store privacy/data-safety declarations match actual collection, sharing,
+   permissions, SDKs, and account/backend behavior.
+4. Backup/export privacy warnings match the shipped export format.
+5. Support contact, vulnerability contact, and deletion request path are live.
+6. App category, age/content rating, screenshots, and store copy show only
+   shipped behavior.
+7. Premium/subscription disclosures are either disabled from the release or
+   reviewed with price, billing period, trial, renewal, cancellation, restore,
+   terms, and privacy links.
+8. Health/wearable, social/backend, remote push, sync, Firebase/Firestore, ads,
+   diagnostics, analytics SDK, and support-upload behavior remain future-only
+   unless later explicit slices enable them and update privacy/security/store
+   documentation.
 
 ## Health permission release gate
 

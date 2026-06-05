@@ -3,9 +3,11 @@
 ## Before MVP beta
 
 - App name selected: RepForge.
-- Trademark and store availability checked.
-- Privacy policy available in English and German.
-- Safety disclaimer available in English and German.
+- Trademark and store availability checked by the release owner.
+- Privacy policy available in English and German and reviewed against the exact
+  shipped binary.
+- Safety disclaimer available in English and German and reviewed against current
+  training guidance behavior.
 - Store listing draft available in English and German.
 - App uses supported locales and English fallback.
 - No hidden cloud data transfer.
@@ -14,6 +16,9 @@
 - Open-source licenses visible in app.
 - User can delete local data.
 - User can export local data before production release.
+- Support contact and deletion request path are available before public release.
+- Store screenshots show only shipped behavior and avoid unimplemented sync,
+  social, wearable, health, Firebase, or remote push claims.
 
 ## Before Premium release
 
@@ -35,6 +40,9 @@ Declarations must match the app exactly:
 - If analytics is later enabled, update declarations.
 - If sync is later enabled, update declarations.
 - If health/wearable data is imported or transmitted, update declarations.
+- If social sharing, remote push token registration, support upload, Firebase,
+  Firestore, backend services, or cloud diagnostics are later enabled, update
+  declarations before release.
 
 ## Screenshots and claims
 
@@ -42,3 +50,6 @@ Declarations must match the app exactly:
 - Use hedging in coaching copy.
 - Avoid medical-device language.
 - Do not imply guaranteed hypertrophy, injury prevention, diagnosis, or treatment.
+- Do not imply exact calorie burn, exact muscle fatigue measurement, mandatory
+  training/rest decisions, public social comparison, or active cloud sync unless
+  those claims match reviewed shipped behavior.

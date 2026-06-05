@@ -58,6 +58,8 @@ Each slice is an incremental Codex task. Codex should implement exactly one slic
 - [52 — Catalog patch workflow and validation tooling](slice_52_catalog_patch_workflow.md) — done
 - [53 — Wearable and calorie estimation design spike](slice_53_wearable_calorie_estimation_spike.md) — done
 - [54 — Friends and social activity design](slice_54_social_friends_activity_design.md) — done
+- [55 — Legal, compliance, privacy, and safety review](slice_55_legal_compliance_privacy_safety_review.md) — ready-to-commit
+- [56 — Data versioning and backward compatibility hardening](slice_56_data_versioning_backward_compatibility_hardening.md) — planned
 
 ## Release rhythm
 
@@ -90,9 +92,6 @@ No slice may introduce a paid cloud database for the official exercise catalog. 
 - Slice 08/11 must implement catalog import as JSON assets -> Drift, not hardcoded-only DB seed data.
 - Payment, ads, Firebase, sync, and wearables remain outside MVP unless a later slice explicitly introduces them.
 - Marketing/ASO documentation should be kept updated when UI screenshots and app store metadata become available.
-
-- [55 — Legal compliance and resilience baseline](slice_55_legal_compliance_resilience_baseline.md)
-- [56 — Data versioning and backward compatibility hardening](slice_56_data_versioning_backward_compatibility_hardening.md)
 
 ## v8 slice planning notes
 

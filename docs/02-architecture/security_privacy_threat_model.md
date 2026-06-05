@@ -31,6 +31,8 @@ Potentially sensitive:
 - Optional sync is post-MVP.
 - Wearable integration is opt-in and future-only.
 - Social features are separate and opt-in.
+- Legal/privacy/store copy remains a developer/product baseline until the
+  release owner finalizes it against the exact shipped binary.
 
 ## Risks and mitigations
 
@@ -271,6 +273,28 @@ entitlement payloads. The default verification source reports verification as
 unavailable, so store events do not become trusted entitlement proof by default.
 Only verified snapshots with `lastVerifiedAt` may enter the bounded cache, and
 stale/expired cache entries do not silently unlock Premium.
+
+### Legal and store-claim drift
+
+Risk: privacy policy drafts, store listings, screenshots, subscription copy, or
+data-safety declarations drift away from the shipped app behavior.
+
+Mitigations:
+
+- keep legal/compliance docs explicitly marked as drafts until owner review,
+- review store claims against the exact binary before public release,
+- keep local-first, no-account, no-ads, no-analytics-SDK, no-cloud-sync claims
+  scoped to the current runtime baseline,
+- update privacy/store docs before any Firebase, Firestore, backend, sync,
+  remote push, diagnostics, analytics SDK, support upload, social sharing,
+  wearable/health integration, health permissions, ads, or new payment behavior
+  ships,
+- keep training-safety wording advisory and avoid exact measurement, medical,
+  injury-prevention, guaranteed-result, shaming, or coercive claims.
+
+Slice 55 adds a documentation-only legal/compliance/privacy/safety review
+baseline. It does not finalize legal text, change runtime behavior, add
+permissions, activate cloud services, or add new data collection.
 
 ### Health claim risk
 

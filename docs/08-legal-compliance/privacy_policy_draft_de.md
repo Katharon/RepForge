@@ -28,7 +28,10 @@ Die Daten werden lokal auf dem Gerät gespeichert. Wenn die App gelöscht wird, 
 
 ## Export und Import
 
-Wenn Export-/Import-Funktionen verfügbar sind, entscheidet die Nutzerin oder der Nutzer selbst, wohin exportierte Dateien gespeichert oder weitergegeben werden.
+Export-/Import-Funktionen sind ausdrueckliche Nutzeraktionen. Die Nutzerin oder
+der Nutzer entscheidet selbst, wohin exportierte Dateien gespeichert oder
+weitergegeben werden. Exportierte Dateien koennen sensible Trainings- und
+Profildaten enthalten.
 
 ## Premium und Zahlungen
 

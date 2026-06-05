@@ -2,7 +2,14 @@
 
 ## Purpose
 
-Build a modern Flutter workout tracking app that helps users log strength training quickly and understand their progress. The MVP is intentionally focused: **tracker + workout groups + analytics**. Coaching, recovery, recommendations, premium entitlements, social features, and wearables are planned as later extensions, but the domain model must not block them.
+Build a modern Flutter workout tracking app that helps users log strength
+training quickly and understand their progress. The original MVP foundation is
+intentionally focused: **tracker + workout groups + analytics**. Later local
+slices have added bounded readiness, recommendation, quick-session, adaptive
+suggestion, and muscle-load features, all as advisory estimates that preserve
+local-first use. Premium entitlements, social features, sync, cloud services,
+and wearables remain optional/future boundaries unless an explicit later slice
+enables them.
 
 ## Product identity
 
@@ -215,11 +222,12 @@ Free forever:
 
 Premium:
 
-- coach/recommendation engine,
+- advanced coach/recommendation surfaces beyond the current local advisory
+  baseline,
 - smart exercise order,
 - adaptive alternatives,
-- muscle-balance dashboard,
-- recovery/readiness guidance,
+- advanced muscle-balance dashboard features,
+- advanced recovery/readiness guidance,
 - advanced periodization/progression suggestions,
 - quick-session generator,
 - wearable-based calorie/readiness features,

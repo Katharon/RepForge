@@ -28,7 +28,9 @@ Data is stored locally on the device. If the app is deleted, local data may be l
 
 ## Export and import
 
-When export/import features are available, the user decides where exported files are stored or shared.
+Export/import features are explicit user actions. The user decides where
+exported files are stored or shared, and exported files may contain sensitive
+training and profile data.
 
 ## Premium and payments
 

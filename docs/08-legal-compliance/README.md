@@ -32,6 +32,9 @@ Local-first reduces risk, but it does not eliminate legal duties. The app can st
 - `ai_act_position.md` — why MVP should avoid ML/LLM coach claims and stay transparent.
 - `cyber_resilience_act_position.md` — cybersecurity product-governance baseline.
 - `data_act_position.md` — connected-product and wearable-data considerations.
+- `legal_compliance_privacy_safety_review.md` — Slice 55 developer/product
+  review baseline for privacy, store claims, training-safety wording, and future
+  feature gates. It is not legal advice and does not finalize release copy.
 - `store_compliance.md` — App Store / Google Play compliance checklist.
 - `store_listing_draft.md` — English/German store metadata and privacy copy
   draft for the local-first MVP.
@@ -46,3 +49,6 @@ No public production release without:
 - app store privacy/data safety declarations
 - subscription terms if Premium is enabled
 - security contact and vulnerability handling path
+- support contact and deletion request path
+- screenshots and store claims reviewed against the exact shipped binary
+- owner review confirming this folder is still aligned with runtime behavior
