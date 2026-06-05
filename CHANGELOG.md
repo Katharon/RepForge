@@ -4,6 +4,12 @@
 
 ### Added
 
+- Added Slice 51 muscle load and balance dashboard in Analytics with bounded
+  local 7-day and 28-day estimated muscle load, catalog-derived activation
+  estimates, focus-aware balance signals, readiness-softened explanations,
+  localized constructive suggested actions, and semantic status cards without
+  body heatmaps, exact fatigue claims, medical/shaming language, cloud services,
+  Firebase, sync, accounts, wearables, payments, or social comparison.
 - Added Slice 50b MVP UI integration with a visible local Exercises catalog
   list, local Groups list and assignment previews, enabled Today quick set
   logging through the existing save-set path, Today refresh after saved sets,

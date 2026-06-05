@@ -9,6 +9,8 @@ import 'analytics_metric.dart';
 import 'analytics_range.dart';
 import 'exercise_analytics_loader.dart';
 import 'exercise_analytics_view_model.dart';
+import 'muscle_load_dashboard_loader.dart';
+import 'muscle_load_dashboard_section.dart';
 
 enum AnalyticsUiStatus { loading, empty, error, success }
 
@@ -29,9 +31,15 @@ final class AnalyticsUiState {
 }
 
 class AnalyticsPage extends StatefulWidget {
-  const AnalyticsPage({required this.loader, super.key, this.nowProvider});
+  const AnalyticsPage({
+    required this.loader,
+    super.key,
+    this.muscleLoadDashboardLoader,
+    this.nowProvider,
+  });
 
   final ExerciseAnalyticsLoader loader;
+  final MuscleLoadDashboardLoader? muscleLoadDashboardLoader;
   final AnalyticsNowProvider? nowProvider;
 
   @override
@@ -85,7 +93,12 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
               onSelected: _selectRange,
             ),
             const SizedBox(height: RepForgeSpacing.lg),
-            _AnalyticsStateBody(state: _state, onRetry: _load),
+            _AnalyticsStateBody(
+              state: _state,
+              muscleLoadDashboardLoader: widget.muscleLoadDashboardLoader,
+              nowProvider: widget.nowProvider,
+              onRetry: _load,
+            ),
           ],
         ),
       ],
@@ -242,10 +255,17 @@ class _RangeSelector extends StatelessWidget {
 }
 
 class _AnalyticsStateBody extends StatelessWidget {
-  const _AnalyticsStateBody({required this.state, required this.onRetry});
+  const _AnalyticsStateBody({
+    required this.state,
+    required this.onRetry,
+    this.muscleLoadDashboardLoader,
+    this.nowProvider,
+  });
 
   final AnalyticsUiState state;
   final VoidCallback onRetry;
+  final MuscleLoadDashboardLoader? muscleLoadDashboardLoader;
+  final AnalyticsNowProvider? nowProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -257,7 +277,11 @@ class _AnalyticsStateBody extends StatelessWidget {
       case AnalyticsUiStatus.error:
         return _AnalyticsErrorState(onRetry: onRetry);
       case AnalyticsUiStatus.success:
-        return _AnalyticsSuccessState(state: state);
+        return _AnalyticsSuccessState(
+          state: state,
+          muscleLoadDashboardLoader: muscleLoadDashboardLoader,
+          nowProvider: nowProvider,
+        );
     }
   }
 }
@@ -353,9 +377,15 @@ class _AnalyticsErrorState extends StatelessWidget {
 }
 
 class _AnalyticsSuccessState extends StatelessWidget {
-  const _AnalyticsSuccessState({required this.state});
+  const _AnalyticsSuccessState({
+    required this.state,
+    this.muscleLoadDashboardLoader,
+    this.nowProvider,
+  });
 
   final AnalyticsUiState state;
+  final MuscleLoadDashboardLoader? muscleLoadDashboardLoader;
+  final AnalyticsNowProvider? nowProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -375,6 +405,13 @@ class _AnalyticsSuccessState extends StatelessWidget {
         _SummaryMetricCards(viewModel: viewModel),
         const SizedBox(height: RepForgeSpacing.lg),
         _AnalyticsChartCard(card: viewModel.cardFor(state.selectedMetric)),
+        if (muscleLoadDashboardLoader != null) ...[
+          const SizedBox(height: RepForgeSpacing.lg),
+          MuscleLoadDashboardSection(
+            loader: muscleLoadDashboardLoader!,
+            nowProvider: nowProvider,
+          ),
+        ],
       ],
     );
   }

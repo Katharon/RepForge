@@ -77,6 +77,11 @@ GoRouter createAppRouter({required AppDependencies dependencies}) {
                   getExerciseAnalytics: dependencies.getExerciseAnalytics,
                   exerciseRef: _defaultAnalyticsExerciseRef(),
                 ),
+                muscleLoadDashboardLoader: UseCaseMuscleLoadDashboardLoader(
+                  getMuscleLoadDashboard: dependencies.getMuscleLoadDashboard,
+                  ensureCatalogImported:
+                      dependencies.ensureOfficialCatalogImported,
+                ),
               );
             },
           ),

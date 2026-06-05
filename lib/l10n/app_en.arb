@@ -472,6 +472,173 @@
   "@analyticsPreviousPeriod": {
     "description": "Label for the previous analytics chart value."
   },
+  "analyticsMuscleLoadLoading": "Loading muscle load",
+  "@analyticsMuscleLoadLoading": {
+    "description": "Loading state text for the muscle load dashboard."
+  },
+  "analyticsMuscleLoadEmptyTitle": "No muscle load yet",
+  "@analyticsMuscleLoadEmptyTitle": {
+    "description": "Title for the empty muscle load dashboard state."
+  },
+  "analyticsMuscleLoadEmptyMessage": "Log a few sets with catalog exercises to estimate weekly muscle load.",
+  "@analyticsMuscleLoadEmptyMessage": {
+    "description": "Message for the empty muscle load dashboard state."
+  },
+  "analyticsMuscleLoadErrorTitle": "Muscle load could not load",
+  "@analyticsMuscleLoadErrorTitle": {
+    "description": "Title for muscle load dashboard loading errors."
+  },
+  "analyticsMuscleLoadErrorMessage": "Try again without changing your local data.",
+  "@analyticsMuscleLoadErrorMessage": {
+    "description": "Message for muscle load dashboard loading errors."
+  },
+  "analyticsMuscleLoadTitle": "Muscle Load and Balance",
+  "@analyticsMuscleLoadTitle": {
+    "description": "Title for the muscle load dashboard section."
+  },
+  "analyticsMuscleLoadSubtitle": "Estimated from local sets and catalog activation data.",
+  "@analyticsMuscleLoadSubtitle": {
+    "description": "Subtitle for the muscle load dashboard section."
+  },
+  "analyticsMuscleLoadWeeklyMetric": "7-day estimated load",
+  "@analyticsMuscleLoadWeeklyMetric": {
+    "description": "Metric label for weekly estimated muscle load."
+  },
+  "analyticsMuscleLoadRollingMetric": "28-day estimated load",
+  "@analyticsMuscleLoadRollingMetric": {
+    "description": "Metric label for rolling estimated muscle load."
+  },
+  "analyticsMuscleLoadCoverageMetric": "Data coverage",
+  "@analyticsMuscleLoadCoverageMetric": {
+    "description": "Metric label for muscle load data coverage."
+  },
+  "analyticsMuscleLoadLoggedSets": "{count, plural, =1{1 set} other{{count} sets}}",
+  "@analyticsMuscleLoadLoggedSets": {
+    "description": "Logged set count for muscle load data coverage.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "analyticsMuscleLoadFocusTitle": "Focus-aware explanation",
+  "@analyticsMuscleLoadFocusTitle": {
+    "description": "Title for the focus-aware muscle load explanation card."
+  },
+  "analyticsMuscleLoadFocusBalanced": "Balanced focus expects broad push, pull, and lower-body coverage. The signal compares your rolling load to that target.",
+  "@analyticsMuscleLoadFocusBalanced": {
+    "description": "Focus-aware explanation for balanced focus."
+  },
+  "analyticsMuscleLoadFocusUpper": "Upper-body focus allows more upper-body load while still keeping some lower-body and pulling work in view.",
+  "@analyticsMuscleLoadFocusUpper": {
+    "description": "Focus-aware explanation for upper-body focus."
+  },
+  "analyticsMuscleLoadFocusLower": "Lower-body focus expects stronger lower-body coverage while keeping upper-back and posture-supporting work visible.",
+  "@analyticsMuscleLoadFocusLower": {
+    "description": "Focus-aware explanation for lower-body focus."
+  },
+  "analyticsMuscleLoadFocusArmsChest": "Arms and chest focus can bias pressing and isolation work, but pulling and rear-shoulder work still matter.",
+  "@analyticsMuscleLoadFocusArmsChest": {
+    "description": "Focus-aware explanation for arms and chest focus."
+  },
+  "analyticsMuscleLoadFocusStrength": "Strength basics focus looks for the main push, pull, squat, and hinge patterns rather than identical muscle load.",
+  "@analyticsMuscleLoadFocusStrength": {
+    "description": "Focus-aware explanation for strength basics focus."
+  },
+  "analyticsMuscleLoadFocusTimeEfficient": "Time-efficient focus favors useful coverage from fewer movements, so gaps matter more than perfect symmetry.",
+  "@analyticsMuscleLoadFocusTimeEfficient": {
+    "description": "Focus-aware explanation for time-efficient focus."
+  },
+  "analyticsMuscleLoadFocusBeginner": "Beginner foundation focus rewards consistent broad coverage and treats early estimates gently.",
+  "@analyticsMuscleLoadFocusBeginner": {
+    "description": "Focus-aware explanation for beginner foundation focus."
+  },
+  "analyticsMuscleLoadTopMusclesTitle": "Top estimated muscle load",
+  "@analyticsMuscleLoadTopMusclesTitle": {
+    "description": "Title for top muscle load rows."
+  },
+  "analyticsMuscleLoadStatusOnTrack": "On track",
+  "@analyticsMuscleLoadStatusOnTrack": {
+    "description": "Status label for balanced muscle load."
+  },
+  "analyticsMuscleLoadStatusUnderTarget": "Under target",
+  "@analyticsMuscleLoadStatusUnderTarget": {
+    "description": "Status label for under-target muscle load."
+  },
+  "analyticsMuscleLoadStatusOverEmphasized": "Over-emphasized",
+  "@analyticsMuscleLoadStatusOverEmphasized": {
+    "description": "Status label for over-emphasized muscle load."
+  },
+  "analyticsMuscleLoadStatusPartialData": "Partial data",
+  "@analyticsMuscleLoadStatusPartialData": {
+    "description": "Status label for partial muscle load data."
+  },
+  "analyticsMuscleLoadStatusRecoveryLimited": "Recovery-limited",
+  "@analyticsMuscleLoadStatusRecoveryLimited": {
+    "description": "Status label when readiness should soften muscle load guidance."
+  },
+  "analyticsMuscleLoadSignalSemantics": "Muscle balance signal: {status}",
+  "@analyticsMuscleLoadSignalSemantics": {
+    "description": "Accessibility label prefix for a muscle balance signal.",
+    "placeholders": {
+      "status": {
+        "type": "String",
+        "example": "Under target"
+      }
+    }
+  },
+  "analyticsMuscleLoadSuggestedAction": "Suggested action",
+  "@analyticsMuscleLoadSuggestedAction": {
+    "description": "Label before constructive muscle load actions."
+  },
+  "analyticsMuscleLoadRecoveryTitle": "Readiness may limit heavy work",
+  "analyticsMuscleLoadRecoveryExplanation": "Your latest readiness estimate is low, so treat load targets as a softer signal today.",
+  "analyticsMuscleLoadRecoveryAction": "Consider lighter work, technique practice, or another muscle group.",
+  "analyticsMuscleLoadBalancedTitle": "Load looks balanced",
+  "analyticsMuscleLoadBalancedExplanation": "Your rolling push, pull, and lower-body coverage is on track for the selected focus.",
+  "analyticsMuscleLoadBalancedAction": "Keep the split balanced this week.",
+  "analyticsMuscleLoadPushHeavyTitle": "Pushing load is ahead",
+  "analyticsMuscleLoadPushHeavyExplanation": "Pressing and push muscles are above pulling work in the rolling estimate.",
+  "analyticsMuscleLoadPushHeavyAction": "Add a pull movement before adding more pressing work.",
+  "analyticsMuscleLoadPullNeglectTitle": "Pulling work is under target",
+  "analyticsMuscleLoadPullNeglectExplanation": "Back and pulling muscles are below the current push/pull target.",
+  "analyticsMuscleLoadPullNeglectAction": "Add one back exercise such as a row or pulldown this week.",
+  "analyticsMuscleLoadLowerUnderTitle": "Lower-body work is under target",
+  "analyticsMuscleLoadLowerUnderExplanation": "Leg and posterior-chain load is below the focus-aware range.",
+  "analyticsMuscleLoadLowerUnderAction": "Include a squat, lunge, or hinge movement soon.",
+  "analyticsMuscleLoadUpperUnderTitle": "Upper-body coverage is under target",
+  "analyticsMuscleLoadUpperUnderExplanation": "Upper-body support work is below the current lower-body-focused target.",
+  "analyticsMuscleLoadUpperUnderAction": "Add an upper-back or simple push/pull movement.",
+  "analyticsMuscleLoadMovementGapTitle": "Movement pattern gap",
+  "analyticsMuscleLoadMovementGapExplanation": "One expected movement pattern is missing from the rolling estimate.",
+  "analyticsMuscleLoadMovementGapAction": "Add the missing push, pull, squat, or hinge pattern when practical.",
+  "analyticsMuscleLoadPartialTitle": "Unknown activation data",
+  "analyticsMuscleLoadPartialExplanation": "Some logged exercises do not have activation estimates yet, so the signal is incomplete.",
+  "analyticsMuscleLoadPartialAction": "Use official catalog exercises for clearer estimates.",
+  "analyticsMuscleLoadInsufficientTitle": "More logged sets needed",
+  "analyticsMuscleLoadInsufficientExplanation": "There are not enough recent sets for a confident balance signal.",
+  "analyticsMuscleLoadInsufficientAction": "Log a few more sets before changing your plan.",
+  "analyticsMuscleLoadSignalTitle": "Muscle balance signal",
+  "analyticsMuscleLoadSignalExplanation": "This signal is estimated from local training data.",
+  "analyticsMuscleLoadSignalAction": "Review your next session and keep the choice practical.",
+  "analyticsMuscleChest": "Chest",
+  "analyticsMuscleTriceps": "Triceps",
+  "analyticsMuscleFrontDeltoids": "Front delts",
+  "analyticsMuscleShoulders": "Shoulders",
+  "analyticsMuscleUpperChest": "Upper chest",
+  "analyticsMuscleLats": "Lats",
+  "analyticsMuscleUpperBack": "Upper back",
+  "analyticsMuscleRearDeltoids": "Rear delts",
+  "analyticsMuscleBiceps": "Biceps",
+  "analyticsMuscleForearms": "Forearms",
+  "analyticsMuscleTraps": "Traps",
+  "analyticsMuscleQuadriceps": "Quadriceps",
+  "analyticsMuscleHamstrings": "Hamstrings",
+  "analyticsMuscleGlutes": "Glutes",
+  "analyticsMuscleCalves": "Calves",
+  "analyticsMuscleErectorSpinae": "Erector spinae",
+  "analyticsMuscleCore": "Core",
   "settingsLoading": "Loading settings",
   "@settingsLoading": {
     "description": "Loading state text for settings."

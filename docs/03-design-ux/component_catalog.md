@@ -45,6 +45,9 @@
 - `PeriodComparisonCard`
 - `AnalyticsChartCard`
 - `OneRepMaxFormulaSelector`
+- `MuscleLoadDashboardSection` — implemented as the Slice 51 Analytics section
+  for estimated weekly/rolling muscle load, focus-aware balance signals, and
+  constructive suggested actions.
 
 ## Settings components
 

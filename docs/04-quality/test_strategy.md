@@ -47,6 +47,11 @@ refresh behavior, the compact quick-log dialog save path through `SaveWorkoutSet
 and route smoke tests that assert Groups and Exercises are no longer only
 placeholders.
 
+Slice 51 extends Analytics widget coverage for the muscle load dashboard:
+loading, empty, balanced/on-track, under-target, over-emphasized,
+partial/unknown activation, recovery-limited, English/German localization,
+semantic labels, suggested actions, and medical/shaming wording guardrails.
+
 ## Integration/E2E tests
 
 Critical flow:

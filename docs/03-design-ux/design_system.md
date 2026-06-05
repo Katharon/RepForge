@@ -125,6 +125,11 @@ buttons. Keep catalog/group lists scan-friendly and compact, and keep dialog
 fields practical for repeated set entry rather than turning quick logging into a
 full workout planner.
 
+Slice 51 adds the Analytics muscle load dashboard. Keep it in the same compact
+analytics-card family: metric cards, labeled status chips, progress rows, and
+constructive action text. Do not use anatomical heatmaps, body graphics, exact
+fatigue wording, or alarm-style medical colors for this surface.
+
 Change:
 
 - create original component shapes and spacing,

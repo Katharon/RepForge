@@ -69,12 +69,21 @@ Later:
 
 Purpose: understand progress.
 
-Contains:
+Contains now:
 
-- metrics matrix,
-- charts,
-- muscle load,
-- imbalance signals,
+- exercise metric summary cards,
+- exercise trend chart,
+- estimated 1RM card,
+- local muscle load and balance dashboard,
+- focus-aware imbalance signals with suggested actions,
+- partial-data and readiness-softened explanations.
+
+Later:
+
+- exercise selection/detail handoff,
+- richer date-bounded muscle load queries,
+- catalog-authored activation weights,
+- optional schematic visuals that are not body heatmaps unless explicitly scoped,
 - 1RM estimates,
 - time-window comparisons.
 

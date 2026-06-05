@@ -378,6 +378,272 @@ class AppLocalizationsEn extends AppLocalizations {
   String get analyticsPreviousPeriod => 'Previous';
 
   @override
+  String get analyticsMuscleLoadLoading => 'Loading muscle load';
+
+  @override
+  String get analyticsMuscleLoadEmptyTitle => 'No muscle load yet';
+
+  @override
+  String get analyticsMuscleLoadEmptyMessage =>
+      'Log a few sets with catalog exercises to estimate weekly muscle load.';
+
+  @override
+  String get analyticsMuscleLoadErrorTitle => 'Muscle load could not load';
+
+  @override
+  String get analyticsMuscleLoadErrorMessage =>
+      'Try again without changing your local data.';
+
+  @override
+  String get analyticsMuscleLoadTitle => 'Muscle Load and Balance';
+
+  @override
+  String get analyticsMuscleLoadSubtitle =>
+      'Estimated from local sets and catalog activation data.';
+
+  @override
+  String get analyticsMuscleLoadWeeklyMetric => '7-day estimated load';
+
+  @override
+  String get analyticsMuscleLoadRollingMetric => '28-day estimated load';
+
+  @override
+  String get analyticsMuscleLoadCoverageMetric => 'Data coverage';
+
+  @override
+  String analyticsMuscleLoadLoggedSets(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sets',
+      one: '1 set',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get analyticsMuscleLoadFocusTitle => 'Focus-aware explanation';
+
+  @override
+  String get analyticsMuscleLoadFocusBalanced =>
+      'Balanced focus expects broad push, pull, and lower-body coverage. The signal compares your rolling load to that target.';
+
+  @override
+  String get analyticsMuscleLoadFocusUpper =>
+      'Upper-body focus allows more upper-body load while still keeping some lower-body and pulling work in view.';
+
+  @override
+  String get analyticsMuscleLoadFocusLower =>
+      'Lower-body focus expects stronger lower-body coverage while keeping upper-back and posture-supporting work visible.';
+
+  @override
+  String get analyticsMuscleLoadFocusArmsChest =>
+      'Arms and chest focus can bias pressing and isolation work, but pulling and rear-shoulder work still matter.';
+
+  @override
+  String get analyticsMuscleLoadFocusStrength =>
+      'Strength basics focus looks for the main push, pull, squat, and hinge patterns rather than identical muscle load.';
+
+  @override
+  String get analyticsMuscleLoadFocusTimeEfficient =>
+      'Time-efficient focus favors useful coverage from fewer movements, so gaps matter more than perfect symmetry.';
+
+  @override
+  String get analyticsMuscleLoadFocusBeginner =>
+      'Beginner foundation focus rewards consistent broad coverage and treats early estimates gently.';
+
+  @override
+  String get analyticsMuscleLoadTopMusclesTitle => 'Top estimated muscle load';
+
+  @override
+  String get analyticsMuscleLoadStatusOnTrack => 'On track';
+
+  @override
+  String get analyticsMuscleLoadStatusUnderTarget => 'Under target';
+
+  @override
+  String get analyticsMuscleLoadStatusOverEmphasized => 'Over-emphasized';
+
+  @override
+  String get analyticsMuscleLoadStatusPartialData => 'Partial data';
+
+  @override
+  String get analyticsMuscleLoadStatusRecoveryLimited => 'Recovery-limited';
+
+  @override
+  String analyticsMuscleLoadSignalSemantics(String status) {
+    return 'Muscle balance signal: $status';
+  }
+
+  @override
+  String get analyticsMuscleLoadSuggestedAction => 'Suggested action';
+
+  @override
+  String get analyticsMuscleLoadRecoveryTitle =>
+      'Readiness may limit heavy work';
+
+  @override
+  String get analyticsMuscleLoadRecoveryExplanation =>
+      'Your latest readiness estimate is low, so treat load targets as a softer signal today.';
+
+  @override
+  String get analyticsMuscleLoadRecoveryAction =>
+      'Consider lighter work, technique practice, or another muscle group.';
+
+  @override
+  String get analyticsMuscleLoadBalancedTitle => 'Load looks balanced';
+
+  @override
+  String get analyticsMuscleLoadBalancedExplanation =>
+      'Your rolling push, pull, and lower-body coverage is on track for the selected focus.';
+
+  @override
+  String get analyticsMuscleLoadBalancedAction =>
+      'Keep the split balanced this week.';
+
+  @override
+  String get analyticsMuscleLoadPushHeavyTitle => 'Pushing load is ahead';
+
+  @override
+  String get analyticsMuscleLoadPushHeavyExplanation =>
+      'Pressing and push muscles are above pulling work in the rolling estimate.';
+
+  @override
+  String get analyticsMuscleLoadPushHeavyAction =>
+      'Add a pull movement before adding more pressing work.';
+
+  @override
+  String get analyticsMuscleLoadPullNeglectTitle =>
+      'Pulling work is under target';
+
+  @override
+  String get analyticsMuscleLoadPullNeglectExplanation =>
+      'Back and pulling muscles are below the current push/pull target.';
+
+  @override
+  String get analyticsMuscleLoadPullNeglectAction =>
+      'Add one back exercise such as a row or pulldown this week.';
+
+  @override
+  String get analyticsMuscleLoadLowerUnderTitle =>
+      'Lower-body work is under target';
+
+  @override
+  String get analyticsMuscleLoadLowerUnderExplanation =>
+      'Leg and posterior-chain load is below the focus-aware range.';
+
+  @override
+  String get analyticsMuscleLoadLowerUnderAction =>
+      'Include a squat, lunge, or hinge movement soon.';
+
+  @override
+  String get analyticsMuscleLoadUpperUnderTitle =>
+      'Upper-body coverage is under target';
+
+  @override
+  String get analyticsMuscleLoadUpperUnderExplanation =>
+      'Upper-body support work is below the current lower-body-focused target.';
+
+  @override
+  String get analyticsMuscleLoadUpperUnderAction =>
+      'Add an upper-back or simple push/pull movement.';
+
+  @override
+  String get analyticsMuscleLoadMovementGapTitle => 'Movement pattern gap';
+
+  @override
+  String get analyticsMuscleLoadMovementGapExplanation =>
+      'One expected movement pattern is missing from the rolling estimate.';
+
+  @override
+  String get analyticsMuscleLoadMovementGapAction =>
+      'Add the missing push, pull, squat, or hinge pattern when practical.';
+
+  @override
+  String get analyticsMuscleLoadPartialTitle => 'Unknown activation data';
+
+  @override
+  String get analyticsMuscleLoadPartialExplanation =>
+      'Some logged exercises do not have activation estimates yet, so the signal is incomplete.';
+
+  @override
+  String get analyticsMuscleLoadPartialAction =>
+      'Use official catalog exercises for clearer estimates.';
+
+  @override
+  String get analyticsMuscleLoadInsufficientTitle => 'More logged sets needed';
+
+  @override
+  String get analyticsMuscleLoadInsufficientExplanation =>
+      'There are not enough recent sets for a confident balance signal.';
+
+  @override
+  String get analyticsMuscleLoadInsufficientAction =>
+      'Log a few more sets before changing your plan.';
+
+  @override
+  String get analyticsMuscleLoadSignalTitle => 'Muscle balance signal';
+
+  @override
+  String get analyticsMuscleLoadSignalExplanation =>
+      'This signal is estimated from local training data.';
+
+  @override
+  String get analyticsMuscleLoadSignalAction =>
+      'Review your next session and keep the choice practical.';
+
+  @override
+  String get analyticsMuscleChest => 'Chest';
+
+  @override
+  String get analyticsMuscleTriceps => 'Triceps';
+
+  @override
+  String get analyticsMuscleFrontDeltoids => 'Front delts';
+
+  @override
+  String get analyticsMuscleShoulders => 'Shoulders';
+
+  @override
+  String get analyticsMuscleUpperChest => 'Upper chest';
+
+  @override
+  String get analyticsMuscleLats => 'Lats';
+
+  @override
+  String get analyticsMuscleUpperBack => 'Upper back';
+
+  @override
+  String get analyticsMuscleRearDeltoids => 'Rear delts';
+
+  @override
+  String get analyticsMuscleBiceps => 'Biceps';
+
+  @override
+  String get analyticsMuscleForearms => 'Forearms';
+
+  @override
+  String get analyticsMuscleTraps => 'Traps';
+
+  @override
+  String get analyticsMuscleQuadriceps => 'Quadriceps';
+
+  @override
+  String get analyticsMuscleHamstrings => 'Hamstrings';
+
+  @override
+  String get analyticsMuscleGlutes => 'Glutes';
+
+  @override
+  String get analyticsMuscleCalves => 'Calves';
+
+  @override
+  String get analyticsMuscleErectorSpinae => 'Erector spinae';
+
+  @override
+  String get analyticsMuscleCore => 'Core';
+
+  @override
   String get settingsLoading => 'Loading settings';
 
   @override

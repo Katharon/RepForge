@@ -32,6 +32,22 @@ Write BLoC/widget tests for loading, empty state, on-track, under-target, and re
 - Handle loading, empty, error, and success states where UI is touched.
 - Update affected docs if implementation decisions differ from the plan.
 
+## Implementation note
+
+Slice 51 adds a visible Analytics muscle load section backed by a bounded local
+application read model. The loader scans up to the newest 100 workout sets,
+filters 7-day and 28-day windows in memory, imports the bundled official catalog
+on demand, derives simple activation estimates from official catalog
+primary/secondary muscles, and runs the existing muscle balance detector with
+the saved focus profile and today's readiness estimate.
+
+The UI shows loading, empty, error, balanced/on-track, under-target,
+over-emphasized, partial/unknown-activation, and recovery-limited states using
+compact cards, progress rows, status chips, semantic labels, and constructive
+suggested actions. It intentionally avoids body graphics, heatmaps, exact
+fatigue claims, medical/shaming language, remote services, social comparison,
+and persistence of dashboard results.
+
 ## Acceptance criteria
 
 - Slice goal is implemented.

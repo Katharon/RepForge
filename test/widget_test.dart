@@ -221,6 +221,9 @@ AppDependencies _testAppDependencies({
   final purchaseVerificationSource = UnavailablePurchaseVerificationSource();
   final loadSettingsProfile = LoadSettingsProfile(settingsProfileRepository);
   final saveSettingsProfile = SaveSettingsProfile(settingsProfileRepository);
+  final getTodayReadiness = GetTodayReadiness(
+    repository: readinessCheckInRepository,
+  );
 
   return AppDependencies(
     configuration: configuration,
@@ -233,6 +236,12 @@ AppDependencies _testAppDependencies({
     workoutSetRepository: workoutSetRepository,
     saveWorkoutSet: SaveWorkoutSet(workoutSetRepository),
     getExerciseAnalytics: GetExerciseAnalytics(workoutSetRepository),
+    getMuscleLoadDashboard: GetMuscleLoadDashboard(
+      workoutSetRepository: workoutSetRepository,
+      exerciseCatalogRepository: exerciseCatalogRepository,
+      loadSettingsProfile: loadSettingsProfile,
+      getTodayReadiness: getTodayReadiness,
+    ),
     exerciseCatalogRepository: exerciseCatalogRepository,
     ensureOfficialCatalogImported: () async {},
     settingsProfileRepository: settingsProfileRepository,
@@ -257,9 +266,7 @@ AppDependencies _testAppDependencies({
     readinessCheckInRepository: readinessCheckInRepository,
     saveReadinessCheckIn: SaveReadinessCheckIn(readinessCheckInRepository),
     getLatestReadiness: GetLatestReadiness(readinessCheckInRepository),
-    getTodayReadiness: GetTodayReadiness(
-      repository: readinessCheckInRepository,
-    ),
+    getTodayReadiness: getTodayReadiness,
     authGateway: authGateway,
     getAuthStatus: GetAuthStatus(authGateway),
     signOut: SignOut(authGateway),

@@ -720,6 +720,450 @@ abstract class AppLocalizations {
   /// **'Previous'**
   String get analyticsPreviousPeriod;
 
+  /// Loading state text for the muscle load dashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading muscle load'**
+  String get analyticsMuscleLoadLoading;
+
+  /// Title for the empty muscle load dashboard state.
+  ///
+  /// In en, this message translates to:
+  /// **'No muscle load yet'**
+  String get analyticsMuscleLoadEmptyTitle;
+
+  /// Message for the empty muscle load dashboard state.
+  ///
+  /// In en, this message translates to:
+  /// **'Log a few sets with catalog exercises to estimate weekly muscle load.'**
+  String get analyticsMuscleLoadEmptyMessage;
+
+  /// Title for muscle load dashboard loading errors.
+  ///
+  /// In en, this message translates to:
+  /// **'Muscle load could not load'**
+  String get analyticsMuscleLoadErrorTitle;
+
+  /// Message for muscle load dashboard loading errors.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again without changing your local data.'**
+  String get analyticsMuscleLoadErrorMessage;
+
+  /// Title for the muscle load dashboard section.
+  ///
+  /// In en, this message translates to:
+  /// **'Muscle Load and Balance'**
+  String get analyticsMuscleLoadTitle;
+
+  /// Subtitle for the muscle load dashboard section.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated from local sets and catalog activation data.'**
+  String get analyticsMuscleLoadSubtitle;
+
+  /// Metric label for weekly estimated muscle load.
+  ///
+  /// In en, this message translates to:
+  /// **'7-day estimated load'**
+  String get analyticsMuscleLoadWeeklyMetric;
+
+  /// Metric label for rolling estimated muscle load.
+  ///
+  /// In en, this message translates to:
+  /// **'28-day estimated load'**
+  String get analyticsMuscleLoadRollingMetric;
+
+  /// Metric label for muscle load data coverage.
+  ///
+  /// In en, this message translates to:
+  /// **'Data coverage'**
+  String get analyticsMuscleLoadCoverageMetric;
+
+  /// Logged set count for muscle load data coverage.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 set} other{{count} sets}}'**
+  String analyticsMuscleLoadLoggedSets(int count);
+
+  /// Title for the focus-aware muscle load explanation card.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus-aware explanation'**
+  String get analyticsMuscleLoadFocusTitle;
+
+  /// Focus-aware explanation for balanced focus.
+  ///
+  /// In en, this message translates to:
+  /// **'Balanced focus expects broad push, pull, and lower-body coverage. The signal compares your rolling load to that target.'**
+  String get analyticsMuscleLoadFocusBalanced;
+
+  /// Focus-aware explanation for upper-body focus.
+  ///
+  /// In en, this message translates to:
+  /// **'Upper-body focus allows more upper-body load while still keeping some lower-body and pulling work in view.'**
+  String get analyticsMuscleLoadFocusUpper;
+
+  /// Focus-aware explanation for lower-body focus.
+  ///
+  /// In en, this message translates to:
+  /// **'Lower-body focus expects stronger lower-body coverage while keeping upper-back and posture-supporting work visible.'**
+  String get analyticsMuscleLoadFocusLower;
+
+  /// Focus-aware explanation for arms and chest focus.
+  ///
+  /// In en, this message translates to:
+  /// **'Arms and chest focus can bias pressing and isolation work, but pulling and rear-shoulder work still matter.'**
+  String get analyticsMuscleLoadFocusArmsChest;
+
+  /// Focus-aware explanation for strength basics focus.
+  ///
+  /// In en, this message translates to:
+  /// **'Strength basics focus looks for the main push, pull, squat, and hinge patterns rather than identical muscle load.'**
+  String get analyticsMuscleLoadFocusStrength;
+
+  /// Focus-aware explanation for time-efficient focus.
+  ///
+  /// In en, this message translates to:
+  /// **'Time-efficient focus favors useful coverage from fewer movements, so gaps matter more than perfect symmetry.'**
+  String get analyticsMuscleLoadFocusTimeEfficient;
+
+  /// Focus-aware explanation for beginner foundation focus.
+  ///
+  /// In en, this message translates to:
+  /// **'Beginner foundation focus rewards consistent broad coverage and treats early estimates gently.'**
+  String get analyticsMuscleLoadFocusBeginner;
+
+  /// Title for top muscle load rows.
+  ///
+  /// In en, this message translates to:
+  /// **'Top estimated muscle load'**
+  String get analyticsMuscleLoadTopMusclesTitle;
+
+  /// Status label for balanced muscle load.
+  ///
+  /// In en, this message translates to:
+  /// **'On track'**
+  String get analyticsMuscleLoadStatusOnTrack;
+
+  /// Status label for under-target muscle load.
+  ///
+  /// In en, this message translates to:
+  /// **'Under target'**
+  String get analyticsMuscleLoadStatusUnderTarget;
+
+  /// Status label for over-emphasized muscle load.
+  ///
+  /// In en, this message translates to:
+  /// **'Over-emphasized'**
+  String get analyticsMuscleLoadStatusOverEmphasized;
+
+  /// Status label for partial muscle load data.
+  ///
+  /// In en, this message translates to:
+  /// **'Partial data'**
+  String get analyticsMuscleLoadStatusPartialData;
+
+  /// Status label when readiness should soften muscle load guidance.
+  ///
+  /// In en, this message translates to:
+  /// **'Recovery-limited'**
+  String get analyticsMuscleLoadStatusRecoveryLimited;
+
+  /// Accessibility label prefix for a muscle balance signal.
+  ///
+  /// In en, this message translates to:
+  /// **'Muscle balance signal: {status}'**
+  String analyticsMuscleLoadSignalSemantics(String status);
+
+  /// Label before constructive muscle load actions.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested action'**
+  String get analyticsMuscleLoadSuggestedAction;
+
+  /// No description provided for @analyticsMuscleLoadRecoveryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Readiness may limit heavy work'**
+  String get analyticsMuscleLoadRecoveryTitle;
+
+  /// No description provided for @analyticsMuscleLoadRecoveryExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Your latest readiness estimate is low, so treat load targets as a softer signal today.'**
+  String get analyticsMuscleLoadRecoveryExplanation;
+
+  /// No description provided for @analyticsMuscleLoadRecoveryAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Consider lighter work, technique practice, or another muscle group.'**
+  String get analyticsMuscleLoadRecoveryAction;
+
+  /// No description provided for @analyticsMuscleLoadBalancedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Load looks balanced'**
+  String get analyticsMuscleLoadBalancedTitle;
+
+  /// No description provided for @analyticsMuscleLoadBalancedExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Your rolling push, pull, and lower-body coverage is on track for the selected focus.'**
+  String get analyticsMuscleLoadBalancedExplanation;
+
+  /// No description provided for @analyticsMuscleLoadBalancedAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the split balanced this week.'**
+  String get analyticsMuscleLoadBalancedAction;
+
+  /// No description provided for @analyticsMuscleLoadPushHeavyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pushing load is ahead'**
+  String get analyticsMuscleLoadPushHeavyTitle;
+
+  /// No description provided for @analyticsMuscleLoadPushHeavyExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Pressing and push muscles are above pulling work in the rolling estimate.'**
+  String get analyticsMuscleLoadPushHeavyExplanation;
+
+  /// No description provided for @analyticsMuscleLoadPushHeavyAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a pull movement before adding more pressing work.'**
+  String get analyticsMuscleLoadPushHeavyAction;
+
+  /// No description provided for @analyticsMuscleLoadPullNeglectTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pulling work is under target'**
+  String get analyticsMuscleLoadPullNeglectTitle;
+
+  /// No description provided for @analyticsMuscleLoadPullNeglectExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Back and pulling muscles are below the current push/pull target.'**
+  String get analyticsMuscleLoadPullNeglectExplanation;
+
+  /// No description provided for @analyticsMuscleLoadPullNeglectAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Add one back exercise such as a row or pulldown this week.'**
+  String get analyticsMuscleLoadPullNeglectAction;
+
+  /// No description provided for @analyticsMuscleLoadLowerUnderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Lower-body work is under target'**
+  String get analyticsMuscleLoadLowerUnderTitle;
+
+  /// No description provided for @analyticsMuscleLoadLowerUnderExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Leg and posterior-chain load is below the focus-aware range.'**
+  String get analyticsMuscleLoadLowerUnderExplanation;
+
+  /// No description provided for @analyticsMuscleLoadLowerUnderAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Include a squat, lunge, or hinge movement soon.'**
+  String get analyticsMuscleLoadLowerUnderAction;
+
+  /// No description provided for @analyticsMuscleLoadUpperUnderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Upper-body coverage is under target'**
+  String get analyticsMuscleLoadUpperUnderTitle;
+
+  /// No description provided for @analyticsMuscleLoadUpperUnderExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Upper-body support work is below the current lower-body-focused target.'**
+  String get analyticsMuscleLoadUpperUnderExplanation;
+
+  /// No description provided for @analyticsMuscleLoadUpperUnderAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Add an upper-back or simple push/pull movement.'**
+  String get analyticsMuscleLoadUpperUnderAction;
+
+  /// No description provided for @analyticsMuscleLoadMovementGapTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Movement pattern gap'**
+  String get analyticsMuscleLoadMovementGapTitle;
+
+  /// No description provided for @analyticsMuscleLoadMovementGapExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'One expected movement pattern is missing from the rolling estimate.'**
+  String get analyticsMuscleLoadMovementGapExplanation;
+
+  /// No description provided for @analyticsMuscleLoadMovementGapAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Add the missing push, pull, squat, or hinge pattern when practical.'**
+  String get analyticsMuscleLoadMovementGapAction;
+
+  /// No description provided for @analyticsMuscleLoadPartialTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown activation data'**
+  String get analyticsMuscleLoadPartialTitle;
+
+  /// No description provided for @analyticsMuscleLoadPartialExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Some logged exercises do not have activation estimates yet, so the signal is incomplete.'**
+  String get analyticsMuscleLoadPartialExplanation;
+
+  /// No description provided for @analyticsMuscleLoadPartialAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Use official catalog exercises for clearer estimates.'**
+  String get analyticsMuscleLoadPartialAction;
+
+  /// No description provided for @analyticsMuscleLoadInsufficientTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'More logged sets needed'**
+  String get analyticsMuscleLoadInsufficientTitle;
+
+  /// No description provided for @analyticsMuscleLoadInsufficientExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'There are not enough recent sets for a confident balance signal.'**
+  String get analyticsMuscleLoadInsufficientExplanation;
+
+  /// No description provided for @analyticsMuscleLoadInsufficientAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Log a few more sets before changing your plan.'**
+  String get analyticsMuscleLoadInsufficientAction;
+
+  /// No description provided for @analyticsMuscleLoadSignalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Muscle balance signal'**
+  String get analyticsMuscleLoadSignalTitle;
+
+  /// No description provided for @analyticsMuscleLoadSignalExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'This signal is estimated from local training data.'**
+  String get analyticsMuscleLoadSignalExplanation;
+
+  /// No description provided for @analyticsMuscleLoadSignalAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Review your next session and keep the choice practical.'**
+  String get analyticsMuscleLoadSignalAction;
+
+  /// No description provided for @analyticsMuscleChest.
+  ///
+  /// In en, this message translates to:
+  /// **'Chest'**
+  String get analyticsMuscleChest;
+
+  /// No description provided for @analyticsMuscleTriceps.
+  ///
+  /// In en, this message translates to:
+  /// **'Triceps'**
+  String get analyticsMuscleTriceps;
+
+  /// No description provided for @analyticsMuscleFrontDeltoids.
+  ///
+  /// In en, this message translates to:
+  /// **'Front delts'**
+  String get analyticsMuscleFrontDeltoids;
+
+  /// No description provided for @analyticsMuscleShoulders.
+  ///
+  /// In en, this message translates to:
+  /// **'Shoulders'**
+  String get analyticsMuscleShoulders;
+
+  /// No description provided for @analyticsMuscleUpperChest.
+  ///
+  /// In en, this message translates to:
+  /// **'Upper chest'**
+  String get analyticsMuscleUpperChest;
+
+  /// No description provided for @analyticsMuscleLats.
+  ///
+  /// In en, this message translates to:
+  /// **'Lats'**
+  String get analyticsMuscleLats;
+
+  /// No description provided for @analyticsMuscleUpperBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Upper back'**
+  String get analyticsMuscleUpperBack;
+
+  /// No description provided for @analyticsMuscleRearDeltoids.
+  ///
+  /// In en, this message translates to:
+  /// **'Rear delts'**
+  String get analyticsMuscleRearDeltoids;
+
+  /// No description provided for @analyticsMuscleBiceps.
+  ///
+  /// In en, this message translates to:
+  /// **'Biceps'**
+  String get analyticsMuscleBiceps;
+
+  /// No description provided for @analyticsMuscleForearms.
+  ///
+  /// In en, this message translates to:
+  /// **'Forearms'**
+  String get analyticsMuscleForearms;
+
+  /// No description provided for @analyticsMuscleTraps.
+  ///
+  /// In en, this message translates to:
+  /// **'Traps'**
+  String get analyticsMuscleTraps;
+
+  /// No description provided for @analyticsMuscleQuadriceps.
+  ///
+  /// In en, this message translates to:
+  /// **'Quadriceps'**
+  String get analyticsMuscleQuadriceps;
+
+  /// No description provided for @analyticsMuscleHamstrings.
+  ///
+  /// In en, this message translates to:
+  /// **'Hamstrings'**
+  String get analyticsMuscleHamstrings;
+
+  /// No description provided for @analyticsMuscleGlutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Glutes'**
+  String get analyticsMuscleGlutes;
+
+  /// No description provided for @analyticsMuscleCalves.
+  ///
+  /// In en, this message translates to:
+  /// **'Calves'**
+  String get analyticsMuscleCalves;
+
+  /// No description provided for @analyticsMuscleErectorSpinae.
+  ///
+  /// In en, this message translates to:
+  /// **'Erector spinae'**
+  String get analyticsMuscleErectorSpinae;
+
+  /// No description provided for @analyticsMuscleCore.
+  ///
+  /// In en, this message translates to:
+  /// **'Core'**
+  String get analyticsMuscleCore;
+
   /// Loading state text for settings.
   ///
   /// In en, this message translates to:

@@ -3,3 +3,6 @@ export 'analytics_page.dart';
 export 'analytics_range.dart';
 export 'exercise_analytics_loader.dart';
 export 'exercise_analytics_view_model.dart';
+export 'muscle_load_dashboard_loader.dart';
+export 'muscle_load_dashboard_section.dart';
+export 'muscle_load_dashboard_view_model.dart';

@@ -58,6 +58,7 @@ final class AppDependencies {
     required this.workoutSetRepository,
     required this.saveWorkoutSet,
     required this.getExerciseAnalytics,
+    required this.getMuscleLoadDashboard,
     required this.exerciseCatalogRepository,
     required this.ensureOfficialCatalogImported,
     required this.readinessCheckInRepository,
@@ -103,6 +104,7 @@ final class AppDependencies {
     required this.workoutSetRepository,
     required this.saveWorkoutSet,
     required this.getExerciseAnalytics,
+    required this.getMuscleLoadDashboard,
     required this.exerciseCatalogRepository,
     required this.ensureOfficialCatalogImported,
     required this.readinessCheckInRepository,
@@ -148,6 +150,7 @@ final class AppDependencies {
   final WorkoutSetRepository workoutSetRepository;
   final SaveWorkoutSet saveWorkoutSet;
   final GetExerciseAnalytics getExerciseAnalytics;
+  final GetMuscleLoadDashboard getMuscleLoadDashboard;
   final ExerciseCatalogRepository exerciseCatalogRepository;
   final Future<void> Function() ensureOfficialCatalogImported;
   final ReadinessCheckInRepository readinessCheckInRepository;
@@ -279,6 +282,13 @@ final class CompositionRoot {
     final getTodayReadiness = GetTodayReadiness(
       repository: readinessCheckInRepository,
     );
+    final loadSettingsProfile = LoadSettingsProfile(settingsProfileRepository);
+    final getMuscleLoadDashboard = GetMuscleLoadDashboard(
+      workoutSetRepository: workoutSetRepository,
+      exerciseCatalogRepository: exerciseCatalogRepository,
+      loadSettingsProfile: loadSettingsProfile,
+      getTodayReadiness: getTodayReadiness,
+    );
     final restTimerNotifications = RestTimerNotificationCoordinator(
       timerController: RestTimerController(
         timeProvider: const SystemTimeProvider(),
@@ -287,7 +297,6 @@ final class CompositionRoot {
           restTimerNotificationGateway ??
           FlutterLocalRestTimerNotificationGateway(),
     );
-    final loadSettingsProfile = LoadSettingsProfile(settingsProfileRepository);
     final saveSettingsProfile = SaveSettingsProfile(settingsProfileRepository);
     final resetSettingsProfile = ResetSettingsProfile(
       settingsProfileRepository,
@@ -344,6 +353,7 @@ final class CompositionRoot {
         workoutSetRepository: workoutSetRepository,
         saveWorkoutSet: saveWorkoutSet,
         getExerciseAnalytics: getExerciseAnalytics,
+        getMuscleLoadDashboard: getMuscleLoadDashboard,
         exerciseCatalogRepository: exerciseCatalogRepository,
         ensureOfficialCatalogImported: ensureOfficialCatalogImported.call,
         readinessCheckInRepository: readinessCheckInRepository,
@@ -390,6 +400,7 @@ final class CompositionRoot {
       workoutSetRepository: workoutSetRepository,
       saveWorkoutSet: saveWorkoutSet,
       getExerciseAnalytics: getExerciseAnalytics,
+      getMuscleLoadDashboard: getMuscleLoadDashboard,
       exerciseCatalogRepository: exerciseCatalogRepository,
       ensureOfficialCatalogImported: ensureOfficialCatalogImported.call,
       readinessCheckInRepository: readinessCheckInRepository,
