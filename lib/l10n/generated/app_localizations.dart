@@ -122,10 +122,10 @@ abstract class AppLocalizations {
   /// **'Today'**
   String get navToday;
 
-  /// Bottom navigation label for workout groups.
+  /// Bottom navigation label for the training entry point.
   ///
   /// In en, this message translates to:
-  /// **'Groups'**
+  /// **'Train'**
   String get navGroups;
 
   /// Bottom navigation label for exercises.
@@ -395,6 +395,204 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Recommendations can use local groups, readiness, equipment, and balance signals when enough inputs are available.'**
   String get groupsCoachPreviewMessage;
+
+  /// Loading state for the Train tab.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading training'**
+  String get trainLoading;
+
+  /// Title for empty Train tab state.
+  ///
+  /// In en, this message translates to:
+  /// **'No training categories ready'**
+  String get trainEmptyTitle;
+
+  /// Message for empty Train tab state.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete catalog import and try again.'**
+  String get trainEmptyMessage;
+
+  /// Title for Train tab loading error.
+  ///
+  /// In en, this message translates to:
+  /// **'Training could not load'**
+  String get trainErrorTitle;
+
+  /// Message for Train tab loading error.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again without changing local data.'**
+  String get trainErrorMessage;
+
+  /// Disabled future action label for starting a new workout.
+  ///
+  /// In en, this message translates to:
+  /// **'New workout'**
+  String get trainNewWorkout;
+
+  /// Helper text explaining that the full workout session flow is not implemented yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Full session flow lands later. For now, choose a split below or log a set from Today.'**
+  String get trainNewWorkoutUnavailable;
+
+  /// Section title for Train split/category rows.
+  ///
+  /// In en, this message translates to:
+  /// **'Training splits'**
+  String get trainSplitsTitle;
+
+  /// Section title for existing starter workout groups on Train.
+  ///
+  /// In en, this message translates to:
+  /// **'Starter groups'**
+  String get trainStarterGroupsTitle;
+
+  /// Exercise count for a Train category.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 exercise} other{{count} exercises}}'**
+  String trainExerciseCount(int count);
+
+  /// Semantic summary for a Train category row.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, {count, plural, =0{no exercises} =1{1 exercise} other{{count} exercises}}'**
+  String trainCategorySemanticsLabel(String name, int count);
+
+  /// Semantic label for an exercise row inside a Train category.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercise {name}'**
+  String trainExerciseSemanticsLabel(String name);
+
+  /// Back button from category exercise list to Train splits.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to splits'**
+  String get trainBackToSplits;
+
+  /// Search field label inside a Train category.
+  ///
+  /// In en, this message translates to:
+  /// **'Search this split'**
+  String get trainSearchLabel;
+
+  /// Tooltip for Train category search button.
+  ///
+  /// In en, this message translates to:
+  /// **'Search split'**
+  String get trainSearchTooltip;
+
+  /// Title when a Train category has no matching exercises.
+  ///
+  /// In en, this message translates to:
+  /// **'No exercises in this split'**
+  String get trainCategoryEmptyTitle;
+
+  /// Message when a Train category has no matching exercises.
+  ///
+  /// In en, this message translates to:
+  /// **'Try a different search or use My Exercises.'**
+  String get trainCategoryEmptyMessage;
+
+  /// Train category title for all available exercises.
+  ///
+  /// In en, this message translates to:
+  /// **'My Exercises'**
+  String get trainCategoryMyExercises;
+
+  /// Train category title for full-body exercises.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Body'**
+  String get trainCategoryFullBody;
+
+  /// Train category title for upper-body exercises.
+  ///
+  /// In en, this message translates to:
+  /// **'Upper Body'**
+  String get trainCategoryUpperBody;
+
+  /// Train category title for lower-body exercises.
+  ///
+  /// In en, this message translates to:
+  /// **'Lower Body'**
+  String get trainCategoryLowerBody;
+
+  /// Train category title for push exercises.
+  ///
+  /// In en, this message translates to:
+  /// **'Push'**
+  String get trainCategoryPush;
+
+  /// Train category title for pull exercises.
+  ///
+  /// In en, this message translates to:
+  /// **'Pull'**
+  String get trainCategoryPull;
+
+  /// Train category title for leg exercises.
+  ///
+  /// In en, this message translates to:
+  /// **'Legs'**
+  String get trainCategoryLegs;
+
+  /// Train category title for core exercises.
+  ///
+  /// In en, this message translates to:
+  /// **'Core'**
+  String get trainCategoryCore;
+
+  /// Description for My Exercises category.
+  ///
+  /// In en, this message translates to:
+  /// **'All available local catalog exercises.'**
+  String get trainCategoryMyExercisesDescription;
+
+  /// Description for Full Body category.
+  ///
+  /// In en, this message translates to:
+  /// **'Broad compound patterns for whole-session coverage.'**
+  String get trainCategoryFullBodyDescription;
+
+  /// Description for Upper Body category.
+  ///
+  /// In en, this message translates to:
+  /// **'Pressing, pulling, shoulders, chest, back, and arms.'**
+  String get trainCategoryUpperBodyDescription;
+
+  /// Description for Lower Body category.
+  ///
+  /// In en, this message translates to:
+  /// **'Squat, hinge, glute, quad, and hamstring work.'**
+  String get trainCategoryLowerBodyDescription;
+
+  /// Description for Push category.
+  ///
+  /// In en, this message translates to:
+  /// **'Chest, shoulder, triceps, and push-pattern work.'**
+  String get trainCategoryPushDescription;
+
+  /// Description for Pull category.
+  ///
+  /// In en, this message translates to:
+  /// **'Back, lats, biceps, rear delts, and pull patterns.'**
+  String get trainCategoryPullDescription;
+
+  /// Description for Legs category.
+  ///
+  /// In en, this message translates to:
+  /// **'Lower-body squat, lunge, and hinge exercises.'**
+  String get trainCategoryLegsDescription;
+
+  /// Description for Core category.
+  ///
+  /// In en, this message translates to:
+  /// **'Core-focused work when catalog metadata supports it.'**
+  String get trainCategoryCoreDescription;
 
   /// Loading state for exercises.
   ///

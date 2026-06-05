@@ -60,6 +60,7 @@ Each slice is an incremental Codex task. Codex should implement exactly one slic
 - [54 — Friends and social activity design](slice_54_social_friends_activity_design.md) — done
 - [55 — Legal, compliance, privacy, and safety review](slice_55_legal_compliance_privacy_safety_review.md) — done
 - [56 — Backward compatibility and runtime resilience hardening](slice_56_backward_compatibility_and_runtime_resilience_hardening.md) — done
+- [57 — Train tab and split/folder navigation](slice_57_train_tab_and_split_navigation.md) — done
 
 ## Release rhythm
 

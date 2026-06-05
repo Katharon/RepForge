@@ -52,6 +52,13 @@ loading, empty, balanced/on-track, under-target, over-emphasized,
 partial/unknown activation, recovery-limited, English/German localization,
 semantic labels, suggested actions, and medical/shaming wording guardrails.
 
+Slice 57 extends Train/Groups widget coverage for the relabeled Train entry
+point: loading, empty, error, split landing, deterministic category counts,
+semantic category summaries, category drill-in, category-scoped search,
+English/German localization, route smoke behavior, and visible navigation
+labels. Category classification remains presentation/read-model behavior and
+does not create domain coaching claims.
+
 ## Integration/E2E tests
 
 Critical flow:

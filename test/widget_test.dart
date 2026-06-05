@@ -60,7 +60,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Today'), findsWidgets);
-    expect(find.text('Groups'), findsWidgets);
+    expect(find.text('Train'), findsWidgets);
     expect(find.text('Exercises'), findsWidgets);
     expect(find.text('Analytics'), findsWidgets);
     expect(find.text('Settings'), findsWidgets);
@@ -84,7 +84,7 @@ void main() {
 
     expect(
       iconLabels,
-      containsAll(['Today', 'Groups', 'Exercises', 'Analytics', 'Settings']),
+      containsAll(['Today', 'Train', 'Exercises', 'Analytics', 'Settings']),
     );
   });
 
@@ -116,7 +116,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Heute'), findsWidgets);
-    expect(find.text('Gruppen'), findsWidgets);
+    expect(find.text('Training'), findsWidgets);
     expect(find.text('Uebungen'), findsWidgets);
     expect(find.text('Analyse'), findsWidgets);
     expect(find.text('Einstellungen'), findsWidgets);
@@ -131,7 +131,7 @@ void main() {
     await tester.pumpWidget(RepForgeApp(dependencies: dependencies));
 
     const destinations = <String, String>{
-      'Groups': 'No groups yet',
+      'Train': 'My Exercises',
       'Exercises': 'Search exercises',
       'Analytics': 'No sets in this range',
       'Settings': 'Using local defaults',

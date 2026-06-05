@@ -67,6 +67,7 @@ final class ExerciseListItemViewModel {
     required this.equipment,
     required this.movementPatterns,
     required this.primaryMuscles,
+    this.secondaryMuscles = const <String>[],
   });
 
   factory ExerciseListItemViewModel.fromExercise(
@@ -87,6 +88,9 @@ final class ExerciseListItemViewModel {
       primaryMuscles: exercise.primaryMuscles
           .map((muscle) => muscle.value)
           .toList(growable: false),
+      secondaryMuscles: exercise.secondaryMuscles
+          .map((muscle) => muscle.value)
+          .toList(growable: false),
     );
   }
 
@@ -95,4 +99,5 @@ final class ExerciseListItemViewModel {
   final List<String> equipment;
   final List<String> movementPatterns;
   final List<String> primaryMuscles;
+  final List<String> secondaryMuscles;
 }

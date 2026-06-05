@@ -22,7 +22,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navToday => 'Today';
 
   @override
-  String get navGroups => 'Groups';
+  String get navGroups => 'Train';
 
   @override
   String get navExercises => 'Exercises';
@@ -196,6 +196,134 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get groupsCoachPreviewMessage =>
       'Recommendations can use local groups, readiness, equipment, and balance signals when enough inputs are available.';
+
+  @override
+  String get trainLoading => 'Loading training';
+
+  @override
+  String get trainEmptyTitle => 'No training categories ready';
+
+  @override
+  String get trainEmptyMessage => 'Complete catalog import and try again.';
+
+  @override
+  String get trainErrorTitle => 'Training could not load';
+
+  @override
+  String get trainErrorMessage => 'Try again without changing local data.';
+
+  @override
+  String get trainNewWorkout => 'New workout';
+
+  @override
+  String get trainNewWorkoutUnavailable =>
+      'Full session flow lands later. For now, choose a split below or log a set from Today.';
+
+  @override
+  String get trainSplitsTitle => 'Training splits';
+
+  @override
+  String get trainStarterGroupsTitle => 'Starter groups';
+
+  @override
+  String trainExerciseCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count exercises',
+      one: '1 exercise',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String trainCategorySemanticsLabel(String name, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count exercises',
+      one: '1 exercise',
+      zero: 'no exercises',
+    );
+    return '$name, $_temp0';
+  }
+
+  @override
+  String trainExerciseSemanticsLabel(String name) {
+    return 'Exercise $name';
+  }
+
+  @override
+  String get trainBackToSplits => 'Back to splits';
+
+  @override
+  String get trainSearchLabel => 'Search this split';
+
+  @override
+  String get trainSearchTooltip => 'Search split';
+
+  @override
+  String get trainCategoryEmptyTitle => 'No exercises in this split';
+
+  @override
+  String get trainCategoryEmptyMessage =>
+      'Try a different search or use My Exercises.';
+
+  @override
+  String get trainCategoryMyExercises => 'My Exercises';
+
+  @override
+  String get trainCategoryFullBody => 'Full Body';
+
+  @override
+  String get trainCategoryUpperBody => 'Upper Body';
+
+  @override
+  String get trainCategoryLowerBody => 'Lower Body';
+
+  @override
+  String get trainCategoryPush => 'Push';
+
+  @override
+  String get trainCategoryPull => 'Pull';
+
+  @override
+  String get trainCategoryLegs => 'Legs';
+
+  @override
+  String get trainCategoryCore => 'Core';
+
+  @override
+  String get trainCategoryMyExercisesDescription =>
+      'All available local catalog exercises.';
+
+  @override
+  String get trainCategoryFullBodyDescription =>
+      'Broad compound patterns for whole-session coverage.';
+
+  @override
+  String get trainCategoryUpperBodyDescription =>
+      'Pressing, pulling, shoulders, chest, back, and arms.';
+
+  @override
+  String get trainCategoryLowerBodyDescription =>
+      'Squat, hinge, glute, quad, and hamstring work.';
+
+  @override
+  String get trainCategoryPushDescription =>
+      'Chest, shoulder, triceps, and push-pattern work.';
+
+  @override
+  String get trainCategoryPullDescription =>
+      'Back, lats, biceps, rear delts, and pull patterns.';
+
+  @override
+  String get trainCategoryLegsDescription =>
+      'Lower-body squat, lunge, and hinge exercises.';
+
+  @override
+  String get trainCategoryCoreDescription =>
+      'Core-focused work when catalog metadata supports it.';
 
   @override
   String get exercisesLoading => 'Loading exercises';

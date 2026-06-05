@@ -16,9 +16,9 @@
   "@navToday": {
     "description": "Bottom navigation label for the Today destination."
   },
-  "navGroups": "Groups",
+  "navGroups": "Train",
   "@navGroups": {
-    "description": "Bottom navigation label for workout groups."
+    "description": "Bottom navigation label for the training entry point."
   },
   "navExercises": "Exercises",
   "@navExercises": {
@@ -237,6 +237,160 @@
   "groupsCoachPreviewMessage": "Recommendations can use local groups, readiness, equipment, and balance signals when enough inputs are available.",
   "@groupsCoachPreviewMessage": {
     "description": "Careful coach preview message for workout groups."
+  },
+  "trainLoading": "Loading training",
+  "@trainLoading": {
+    "description": "Loading state for the Train tab."
+  },
+  "trainEmptyTitle": "No training categories ready",
+  "@trainEmptyTitle": {
+    "description": "Title for empty Train tab state."
+  },
+  "trainEmptyMessage": "Complete catalog import and try again.",
+  "@trainEmptyMessage": {
+    "description": "Message for empty Train tab state."
+  },
+  "trainErrorTitle": "Training could not load",
+  "@trainErrorTitle": {
+    "description": "Title for Train tab loading error."
+  },
+  "trainErrorMessage": "Try again without changing local data.",
+  "@trainErrorMessage": {
+    "description": "Message for Train tab loading error."
+  },
+  "trainNewWorkout": "New workout",
+  "@trainNewWorkout": {
+    "description": "Disabled future action label for starting a new workout."
+  },
+  "trainNewWorkoutUnavailable": "Full session flow lands later. For now, choose a split below or log a set from Today.",
+  "@trainNewWorkoutUnavailable": {
+    "description": "Helper text explaining that the full workout session flow is not implemented yet."
+  },
+  "trainSplitsTitle": "Training splits",
+  "@trainSplitsTitle": {
+    "description": "Section title for Train split/category rows."
+  },
+  "trainStarterGroupsTitle": "Starter groups",
+  "@trainStarterGroupsTitle": {
+    "description": "Section title for existing starter workout groups on Train."
+  },
+  "trainExerciseCount": "{count, plural, =1{1 exercise} other{{count} exercises}}",
+  "@trainExerciseCount": {
+    "description": "Exercise count for a Train category.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "trainCategorySemanticsLabel": "{name}, {count, plural, =0{no exercises} =1{1 exercise} other{{count} exercises}}",
+  "@trainCategorySemanticsLabel": {
+    "description": "Semantic summary for a Train category row.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Push"
+      },
+      "count": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "trainExerciseSemanticsLabel": "Exercise {name}",
+  "@trainExerciseSemanticsLabel": {
+    "description": "Semantic label for an exercise row inside a Train category.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Barbell Bench Press"
+      }
+    }
+  },
+  "trainBackToSplits": "Back to splits",
+  "@trainBackToSplits": {
+    "description": "Back button from category exercise list to Train splits."
+  },
+  "trainSearchLabel": "Search this split",
+  "@trainSearchLabel": {
+    "description": "Search field label inside a Train category."
+  },
+  "trainSearchTooltip": "Search split",
+  "@trainSearchTooltip": {
+    "description": "Tooltip for Train category search button."
+  },
+  "trainCategoryEmptyTitle": "No exercises in this split",
+  "@trainCategoryEmptyTitle": {
+    "description": "Title when a Train category has no matching exercises."
+  },
+  "trainCategoryEmptyMessage": "Try a different search or use My Exercises.",
+  "@trainCategoryEmptyMessage": {
+    "description": "Message when a Train category has no matching exercises."
+  },
+  "trainCategoryMyExercises": "My Exercises",
+  "@trainCategoryMyExercises": {
+    "description": "Train category title for all available exercises."
+  },
+  "trainCategoryFullBody": "Full Body",
+  "@trainCategoryFullBody": {
+    "description": "Train category title for full-body exercises."
+  },
+  "trainCategoryUpperBody": "Upper Body",
+  "@trainCategoryUpperBody": {
+    "description": "Train category title for upper-body exercises."
+  },
+  "trainCategoryLowerBody": "Lower Body",
+  "@trainCategoryLowerBody": {
+    "description": "Train category title for lower-body exercises."
+  },
+  "trainCategoryPush": "Push",
+  "@trainCategoryPush": {
+    "description": "Train category title for push exercises."
+  },
+  "trainCategoryPull": "Pull",
+  "@trainCategoryPull": {
+    "description": "Train category title for pull exercises."
+  },
+  "trainCategoryLegs": "Legs",
+  "@trainCategoryLegs": {
+    "description": "Train category title for leg exercises."
+  },
+  "trainCategoryCore": "Core",
+  "@trainCategoryCore": {
+    "description": "Train category title for core exercises."
+  },
+  "trainCategoryMyExercisesDescription": "All available local catalog exercises.",
+  "@trainCategoryMyExercisesDescription": {
+    "description": "Description for My Exercises category."
+  },
+  "trainCategoryFullBodyDescription": "Broad compound patterns for whole-session coverage.",
+  "@trainCategoryFullBodyDescription": {
+    "description": "Description for Full Body category."
+  },
+  "trainCategoryUpperBodyDescription": "Pressing, pulling, shoulders, chest, back, and arms.",
+  "@trainCategoryUpperBodyDescription": {
+    "description": "Description for Upper Body category."
+  },
+  "trainCategoryLowerBodyDescription": "Squat, hinge, glute, quad, and hamstring work.",
+  "@trainCategoryLowerBodyDescription": {
+    "description": "Description for Lower Body category."
+  },
+  "trainCategoryPushDescription": "Chest, shoulder, triceps, and push-pattern work.",
+  "@trainCategoryPushDescription": {
+    "description": "Description for Push category."
+  },
+  "trainCategoryPullDescription": "Back, lats, biceps, rear delts, and pull patterns.",
+  "@trainCategoryPullDescription": {
+    "description": "Description for Pull category."
+  },
+  "trainCategoryLegsDescription": "Lower-body squat, lunge, and hinge exercises.",
+  "@trainCategoryLegsDescription": {
+    "description": "Description for Legs category."
+  },
+  "trainCategoryCoreDescription": "Core-focused work when catalog metadata supports it.",
+  "@trainCategoryCoreDescription": {
+    "description": "Description for Core category."
   },
   "exercisesLoading": "Loading exercises",
   "@exercisesLoading": {

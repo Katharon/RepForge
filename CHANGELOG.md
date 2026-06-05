@@ -15,6 +15,14 @@
 
 ### Added
 
+- Added Slice 57 Train tab and split/folder navigation by relabeling the
+  visible Groups destination to Train/Training, adding local split categories
+  for My Exercises, Full Body, Upper Body, Lower Body, Push, Pull, Legs, and
+  Core, category drill-in with split-scoped search, disabled future New workout
+  affordance, localized English/German copy, and widget coverage without adding
+  session engine, custom split editing, exercise detail dashboards, coach UI,
+  cloud services, Firebase, sync, social, wearable/health, ads, payment changes,
+  or schema migrations.
 - Added Slice 56 backward-compatibility and runtime resilience hardening notes
   for local backup/import behavior, readiness round-trip coverage, official
   catalog export boundaries, and the resolved Today golden baseline drift

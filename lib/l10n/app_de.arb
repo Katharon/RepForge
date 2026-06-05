@@ -16,9 +16,9 @@
   "@navToday": {
     "description": "Label in der unteren Navigation fuer Heute."
   },
-  "navGroups": "Gruppen",
+  "navGroups": "Training",
   "@navGroups": {
-    "description": "Label in der unteren Navigation fuer Workout-Gruppen."
+    "description": "Label in der unteren Navigation fuer den Trainingseinstieg."
   },
   "navExercises": "Uebungen",
   "@navExercises": {
@@ -237,6 +237,160 @@
   "groupsCoachPreviewMessage": "Empfehlungen koennen lokale Gruppen, Readiness, Equipment und Balance-Signale nutzen, sobald genug Eingaben vorhanden sind.",
   "@groupsCoachPreviewMessage": {
     "description": "Vorsichtiger Coach-Vorschautext fuer Workout-Gruppen."
+  },
+  "trainLoading": "Training wird geladen",
+  "@trainLoading": {
+    "description": "Ladezustand fuer den Training-Tab."
+  },
+  "trainEmptyTitle": "Keine Trainingskategorien bereit",
+  "@trainEmptyTitle": {
+    "description": "Titel fuer leeren Training-Tab."
+  },
+  "trainEmptyMessage": "Importiere den Katalog vollstaendig und versuche es erneut.",
+  "@trainEmptyMessage": {
+    "description": "Text fuer leeren Training-Tab."
+  },
+  "trainErrorTitle": "Training konnte nicht geladen werden",
+  "@trainErrorTitle": {
+    "description": "Titel fuer Ladefehler im Training-Tab."
+  },
+  "trainErrorMessage": "Versuche es erneut, ohne lokale Daten zu aendern.",
+  "@trainErrorMessage": {
+    "description": "Text fuer Ladefehler im Training-Tab."
+  },
+  "trainNewWorkout": "Neues Workout",
+  "@trainNewWorkout": {
+    "description": "Deaktivierter spaeterer Start fuer ein neues Workout."
+  },
+  "trainNewWorkoutUnavailable": "Der komplette Session-Flow kommt spaeter. Waehle jetzt einen Split unten oder protokolliere einen Satz ueber Heute.",
+  "@trainNewWorkoutUnavailable": {
+    "description": "Hilfetext, dass der komplette Workout-Flow noch nicht umgesetzt ist."
+  },
+  "trainSplitsTitle": "Trainingssplits",
+  "@trainSplitsTitle": {
+    "description": "Abschnittstitel fuer Split-/Kategoriezeilen."
+  },
+  "trainStarterGroupsTitle": "Startgruppen",
+  "@trainStarterGroupsTitle": {
+    "description": "Abschnittstitel fuer bestehende Startgruppen im Training-Tab."
+  },
+  "trainExerciseCount": "{count, plural, =1{1 Uebung} other{{count} Uebungen}}",
+  "@trainExerciseCount": {
+    "description": "Uebungsanzahl fuer eine Trainingskategorie.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "trainCategorySemanticsLabel": "{name}, {count, plural, =0{keine Uebungen} =1{1 Uebung} other{{count} Uebungen}}",
+  "@trainCategorySemanticsLabel": {
+    "description": "Semantische Zusammenfassung fuer eine Trainingskategorie.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Push"
+      },
+      "count": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "trainExerciseSemanticsLabel": "Uebung {name}",
+  "@trainExerciseSemanticsLabel": {
+    "description": "Semantisches Label fuer eine Uebungszeile in einer Trainingskategorie.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Bankdruecken"
+      }
+    }
+  },
+  "trainBackToSplits": "Zurueck zu Splits",
+  "@trainBackToSplits": {
+    "description": "Zurueck-Button von Kategorie-Uebungen zu Trainingssplits."
+  },
+  "trainSearchLabel": "Diesen Split suchen",
+  "@trainSearchLabel": {
+    "description": "Suchfeldlabel innerhalb einer Trainingskategorie."
+  },
+  "trainSearchTooltip": "Split suchen",
+  "@trainSearchTooltip": {
+    "description": "Tooltip fuer die Suche in einer Trainingskategorie."
+  },
+  "trainCategoryEmptyTitle": "Keine Uebungen in diesem Split",
+  "@trainCategoryEmptyTitle": {
+    "description": "Titel, wenn eine Trainingskategorie keine passenden Uebungen hat."
+  },
+  "trainCategoryEmptyMessage": "Probiere eine andere Suche oder nutze Meine Uebungen.",
+  "@trainCategoryEmptyMessage": {
+    "description": "Text, wenn eine Trainingskategorie keine passenden Uebungen hat."
+  },
+  "trainCategoryMyExercises": "Meine Uebungen",
+  "@trainCategoryMyExercises": {
+    "description": "Training-Kategorie fuer alle verfuegbaren Uebungen."
+  },
+  "trainCategoryFullBody": "Ganzkoerper",
+  "@trainCategoryFullBody": {
+    "description": "Training-Kategorie fuer Ganzkoerper-Uebungen."
+  },
+  "trainCategoryUpperBody": "Oberkoerper",
+  "@trainCategoryUpperBody": {
+    "description": "Training-Kategorie fuer Oberkoerper-Uebungen."
+  },
+  "trainCategoryLowerBody": "Unterkoerper",
+  "@trainCategoryLowerBody": {
+    "description": "Training-Kategorie fuer Unterkoerper-Uebungen."
+  },
+  "trainCategoryPush": "Push",
+  "@trainCategoryPush": {
+    "description": "Training-Kategorie fuer Push-Uebungen."
+  },
+  "trainCategoryPull": "Pull",
+  "@trainCategoryPull": {
+    "description": "Training-Kategorie fuer Pull-Uebungen."
+  },
+  "trainCategoryLegs": "Beine",
+  "@trainCategoryLegs": {
+    "description": "Training-Kategorie fuer Bein-Uebungen."
+  },
+  "trainCategoryCore": "Core",
+  "@trainCategoryCore": {
+    "description": "Training-Kategorie fuer Core-Uebungen."
+  },
+  "trainCategoryMyExercisesDescription": "Alle verfuegbaren lokalen Kataloguebungen.",
+  "@trainCategoryMyExercisesDescription": {
+    "description": "Beschreibung fuer Meine Uebungen."
+  },
+  "trainCategoryFullBodyDescription": "Breite Grundmuster fuer eine ganze Trainingseinheit.",
+  "@trainCategoryFullBodyDescription": {
+    "description": "Beschreibung fuer Ganzkoerper."
+  },
+  "trainCategoryUpperBodyDescription": "Druecken, Ziehen, Schultern, Brust, Ruecken und Arme.",
+  "@trainCategoryUpperBodyDescription": {
+    "description": "Beschreibung fuer Oberkoerper."
+  },
+  "trainCategoryLowerBodyDescription": "Kniebeugen-, Hinge-, Gesaess-, Quad- und Beinbeuger-Arbeit.",
+  "@trainCategoryLowerBodyDescription": {
+    "description": "Beschreibung fuer Unterkoerper."
+  },
+  "trainCategoryPushDescription": "Brust, Schultern, Trizeps und Push-Muster.",
+  "@trainCategoryPushDescription": {
+    "description": "Beschreibung fuer Push."
+  },
+  "trainCategoryPullDescription": "Ruecken, Lats, Bizeps, hintere Schulter und Pull-Muster.",
+  "@trainCategoryPullDescription": {
+    "description": "Beschreibung fuer Pull."
+  },
+  "trainCategoryLegsDescription": "Unterkoerper-Uebungen fuer Kniebeuge, Ausfallschritt und Hinge.",
+  "@trainCategoryLegsDescription": {
+    "description": "Beschreibung fuer Beine."
+  },
+  "trainCategoryCoreDescription": "Core-Arbeit, wenn die Katalogdaten sie hergeben.",
+  "@trainCategoryCoreDescription": {
+    "description": "Beschreibung fuer Core."
   },
   "exercisesLoading": "Uebungen werden geladen",
   "@exercisesLoading": {

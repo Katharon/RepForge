@@ -22,7 +22,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get navToday => 'Heute';
 
   @override
-  String get navGroups => 'Gruppen';
+  String get navGroups => 'Training';
 
   @override
   String get navExercises => 'Uebungen';
@@ -198,6 +198,136 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get groupsCoachPreviewMessage =>
       'Empfehlungen koennen lokale Gruppen, Readiness, Equipment und Balance-Signale nutzen, sobald genug Eingaben vorhanden sind.';
+
+  @override
+  String get trainLoading => 'Training wird geladen';
+
+  @override
+  String get trainEmptyTitle => 'Keine Trainingskategorien bereit';
+
+  @override
+  String get trainEmptyMessage =>
+      'Importiere den Katalog vollstaendig und versuche es erneut.';
+
+  @override
+  String get trainErrorTitle => 'Training konnte nicht geladen werden';
+
+  @override
+  String get trainErrorMessage =>
+      'Versuche es erneut, ohne lokale Daten zu aendern.';
+
+  @override
+  String get trainNewWorkout => 'Neues Workout';
+
+  @override
+  String get trainNewWorkoutUnavailable =>
+      'Der komplette Session-Flow kommt spaeter. Waehle jetzt einen Split unten oder protokolliere einen Satz ueber Heute.';
+
+  @override
+  String get trainSplitsTitle => 'Trainingssplits';
+
+  @override
+  String get trainStarterGroupsTitle => 'Startgruppen';
+
+  @override
+  String trainExerciseCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Uebungen',
+      one: '1 Uebung',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String trainCategorySemanticsLabel(String name, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Uebungen',
+      one: '1 Uebung',
+      zero: 'keine Uebungen',
+    );
+    return '$name, $_temp0';
+  }
+
+  @override
+  String trainExerciseSemanticsLabel(String name) {
+    return 'Uebung $name';
+  }
+
+  @override
+  String get trainBackToSplits => 'Zurueck zu Splits';
+
+  @override
+  String get trainSearchLabel => 'Diesen Split suchen';
+
+  @override
+  String get trainSearchTooltip => 'Split suchen';
+
+  @override
+  String get trainCategoryEmptyTitle => 'Keine Uebungen in diesem Split';
+
+  @override
+  String get trainCategoryEmptyMessage =>
+      'Probiere eine andere Suche oder nutze Meine Uebungen.';
+
+  @override
+  String get trainCategoryMyExercises => 'Meine Uebungen';
+
+  @override
+  String get trainCategoryFullBody => 'Ganzkoerper';
+
+  @override
+  String get trainCategoryUpperBody => 'Oberkoerper';
+
+  @override
+  String get trainCategoryLowerBody => 'Unterkoerper';
+
+  @override
+  String get trainCategoryPush => 'Push';
+
+  @override
+  String get trainCategoryPull => 'Pull';
+
+  @override
+  String get trainCategoryLegs => 'Beine';
+
+  @override
+  String get trainCategoryCore => 'Core';
+
+  @override
+  String get trainCategoryMyExercisesDescription =>
+      'Alle verfuegbaren lokalen Kataloguebungen.';
+
+  @override
+  String get trainCategoryFullBodyDescription =>
+      'Breite Grundmuster fuer eine ganze Trainingseinheit.';
+
+  @override
+  String get trainCategoryUpperBodyDescription =>
+      'Druecken, Ziehen, Schultern, Brust, Ruecken und Arme.';
+
+  @override
+  String get trainCategoryLowerBodyDescription =>
+      'Kniebeugen-, Hinge-, Gesaess-, Quad- und Beinbeuger-Arbeit.';
+
+  @override
+  String get trainCategoryPushDescription =>
+      'Brust, Schultern, Trizeps und Push-Muster.';
+
+  @override
+  String get trainCategoryPullDescription =>
+      'Ruecken, Lats, Bizeps, hintere Schulter und Pull-Muster.';
+
+  @override
+  String get trainCategoryLegsDescription =>
+      'Unterkoerper-Uebungen fuer Kniebeuge, Ausfallschritt und Hinge.';
+
+  @override
+  String get trainCategoryCoreDescription =>
+      'Core-Arbeit, wenn die Katalogdaten sie hergeben.';
 
   @override
   String get exercisesLoading => 'Uebungen werden geladen';

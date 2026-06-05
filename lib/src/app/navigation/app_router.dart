@@ -51,8 +51,15 @@ GoRouter createAppRouter({required AppDependencies dependencies}) {
             route: AppRoute.groups,
             builder: (context, state) {
               return GroupsPage(
-                loader: RepositoryWorkoutGroupListLoader(
-                  repository: dependencies.workoutGroupRepository,
+                loader: RepositoryTrainPageLoader(
+                  groupLoader: RepositoryWorkoutGroupListLoader(
+                    repository: dependencies.workoutGroupRepository,
+                  ),
+                  exerciseLoader: RepositoryExerciseCatalogListLoader(
+                    repository: dependencies.exerciseCatalogRepository,
+                    ensureCatalogImported:
+                        dependencies.ensureOfficialCatalogImported,
+                  ),
                 ),
               );
             },

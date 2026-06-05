@@ -5,7 +5,7 @@
 Suggested main areas:
 
 1. Today
-2. Groups
+2. Train
 3. Exercises
 4. Analytics
 5. Settings
@@ -28,24 +28,32 @@ Slice 50b wires Today to a compact `Log set` dialog. The dialog selects an
 official exercise from the bundled catalog, captures load, repetitions, label,
 and comment, saves locally, and refreshes the existing Today summary.
 
-## Groups
+## Train
 
-Purpose: organize training.
+Purpose: fastest path into a workout plan or training split.
 
 Contains now:
 
-- local workout groups,
-- exercise assignment count,
-- compact assigned-exercise preview,
-- careful coach preview when enough local inputs exist later.
+- Setgraph-inspired split/folder categories:
+  My Exercises, Full Body, Upper Body, Lower Body, Push, Pull, Legs, and Core,
+- category drill-in to matching local catalog exercises,
+- search within the selected category,
+- disabled/future New workout action,
+- optional starter-group previews when local groups exist.
 
 Later:
 
-- create/edit/archive groups,
-- assign/reorder exercises,
 - start session,
+- create/edit/archive groups,
+- create/edit custom splits,
+- assign/reorder exercises,
 - recommended exercise order,
 - group analytics.
+
+Implementation note: Slice 57 relabels the visible Groups destination to
+Train/Training while keeping the internal `groups` route stable. Category
+filtering is a deterministic presentation/read-model helper based on existing
+catalog metadata, not coaching guidance.
 
 ## Exercises
 
@@ -57,6 +65,7 @@ Contains now:
 - localized catalog names,
 - search,
 - equipment, movement-pattern, and primary-muscle chips.
+- full catalog/library browsing separate from Train split navigation.
 
 Later:
 
