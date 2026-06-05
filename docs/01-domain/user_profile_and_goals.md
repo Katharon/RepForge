@@ -140,3 +140,24 @@ set suggestions, but they do not reinterpret existing logged sets. Slice 50 uses
 max-load and increment constraints to avoid suggesting unavailable load jumps.
 Wearables, calorie estimation, and muscle-load algorithms remain outside this
 profile model.
+
+## Slice 53 wearable/calorie boundary
+
+The existing profile fields may become optional inputs to a future rough calorie
+estimator:
+
+- body weight in kg,
+- birth year or derived age,
+- sex/gender preference if the selected formula requires it,
+- typical session duration only as a fallback hint, never as a replacement for
+  an actual logged workout duration.
+
+These fields remain optional. Missing body metrics must keep RepForge usable and
+must either make calorie estimates unavailable or lower confidence. Sex/gender
+preference remains user-declared context, not a training stereotype or a
+required identity field.
+
+Slice 53 does not add new profile fields, health permissions, wearable SDKs,
+health-data storage, or calorie UI. Future calorie work must explain which
+profile fields are used, label outputs as rough estimates, and keep local
+tracking available when profile data is skipped.

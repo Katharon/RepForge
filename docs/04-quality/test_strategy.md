@@ -150,6 +150,34 @@ Tests must not invoke real Firebase Messaging, FCM/APNS token APIs, platform
 push services, network, backend registration, accounts, upload/download flows,
 remote message handlers, or notification SDKs for Remote Push.
 
+## Wearable and calorie boundary tests
+
+Slice 53 is documentation-only, so it adds no test files. Future wearable or
+calorie implementation slices must keep tests pure Dart until a production
+provider adapter is explicitly scoped.
+
+Required future coverage:
+
+- default wearable status is disabled/unavailable/not requested,
+- fake wearable gateways never upload data, require accounts, start sync, or
+  call backend/Firebase/cloud services,
+- missing duration or required formula inputs make calorie estimates
+  unavailable,
+- incomplete profile or heart-rate inputs produce low-confidence rough
+  estimates rather than exact claims,
+- deterministic formula output for valid fixture inputs,
+- invalid or negative duration is rejected,
+- invalid heart-rate samples are rejected,
+- normalized wearable sample mapping is deterministic and strips provider
+  payloads,
+- disconnect/delete/export behavior is explicit before health data is persisted,
+- domain imports no Flutter, Drift, platform, HealthKit, Health Connect, Google
+  Fit, wearable SDK, backend, Firebase, or account dependencies.
+
+Tests must not request real health permissions, use HealthKit, Health Connect,
+Google Fit, wearable SDKs, platform services, network, backend APIs, cloud
+analytics, Firebase, sync engines, accounts, or paid runtime services.
+
 ## Golden/visual tests
 
 Use for stable components after design tokens mature:

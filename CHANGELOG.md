@@ -4,6 +4,13 @@
 
 ### Added
 
+- Added Slice 53 wearable and calorie estimation design boundary with
+  opt-in-only, disabled-by-default health integration rules, local-only
+  retention/deletion expectations, future provider and permission review gates,
+  rough calorie-estimate semantics, heart-rate normalization constraints, and
+  fakeable future test expectations without adding health permissions, wearable
+  SDKs, UI prompts, upload, sync, Firebase, backend services, accounts, or exact
+  calorie-burn claims.
 - Added Slice 52 catalog patch validation workflow with an offline
   `dart run tool/validate_catalog.dart` command, stable released-ID baseline,
   manifest/version/schema consistency checks, localized name and optional alias

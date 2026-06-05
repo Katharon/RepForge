@@ -34,6 +34,18 @@ measurements, and they must not be used to block workout logging.
 - Frequency of hard sessions.
 - Missed deload intervals.
 
+### Future wearable context
+
+Slice 53 documents heart-rate and wearable data as future optional context only.
+No wearable input is required for the current readiness score, and no runtime
+health permissions are requested.
+
+If future normalized heart-rate samples are used, they may only add cautious
+context to readiness explanations. They must not diagnose health status,
+overtraining, arrhythmia, sleep quality, recovery state, or injury risk. Missing
+wearable data must never reduce local tracking functionality or block workout
+logging.
+
 ## Readiness levels
 
 - High: normal progression allowed.

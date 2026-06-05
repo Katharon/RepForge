@@ -104,6 +104,37 @@ disabled/unavailable default registration path. It does not add Firebase
 Messaging, token requests, token upload, backend APIs, account requirements,
 sync activation, UI, or changes to local rest-timer notifications.
 
+### Wearable and health-data privacy
+
+Risk: future wearable or platform health integrations request broad health
+permissions, collect heart-rate/body/activity data in the background, expose
+provider identifiers, include health data in backups without clear wording, or
+make calorie/readiness outputs look like exact medical measurements.
+
+Mitigations:
+
+- keep wearable access disabled by default and opt-in only,
+- request read-only provider permissions only after explicit user action,
+- document exactly which categories are read and why before the platform prompt,
+- normalize provider samples into minimal local fields and avoid storing raw
+  provider payloads or device/account identifiers,
+- keep imported health data local-only by default with no upload, cloud sync,
+  remote analytics, Firebase, backend transfer, or account requirement,
+- provide disconnect and local deletion behavior before any production provider
+  ships,
+- keep backup/export behavior explicit: either exclude wearable data or describe
+  inclusion before export,
+- label calorie outputs as rough estimates and readiness/heart-rate context as
+  signals only,
+- update store privacy/data-safety declarations and this threat model before any
+  Android/iOS health permission is added.
+
+Slice 53 is documentation-only for this boundary. It does not add HealthKit,
+Health Connect, Google Fit, wearable SDK packages, production permissions,
+background collection, local persistence for health samples, UI prompts, upload,
+sync, account requirements, Firebase, backend services, or exact calorie-burn
+claims.
+
 ### Catalog patch corruption
 
 Risk: bundled or downloaded catalog data is malformed.

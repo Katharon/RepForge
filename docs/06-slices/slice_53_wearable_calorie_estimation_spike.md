@@ -71,6 +71,32 @@ Update these if changed by implementation:
 docs(wearables): define calorie and wearable boundary
 ```
 
+## Implementation note
+
+Slice 53 was completed as a documentation-first design spike. It intentionally
+adds no runtime health permissions, HealthKit/Health Connect/Google Fit or
+wearable SDK dependencies, platform adapters, background collection, UI prompts,
+local health-sample persistence, upload, sync, Firebase, backend services,
+account requirement, or exact calorie-burn claim.
+
+The updated architecture and privacy docs define:
+
+- opt-in-only, disabled-by-default wearable access,
+- pure-Dart future boundary vocabulary for wearable status, permission state,
+  normalized samples, fakeable gateways, calorie estimate inputs/results, and
+  confidence,
+- local-only data retention, disconnect, deletion, backup/export expectations,
+- future provider strategy and platform permission review gates,
+- rough-calorie estimate semantics, missing-input behavior, and confidence
+  language,
+- heart-rate normalization and readiness-use constraints,
+- future test expectations for fakeable gateways, invalid samples, no upload,
+  and domain import purity.
+
+Code was not added because a docs-only boundary better matches the current
+product state and avoids creating fake certainty around calories or wearable
+collection before a real opt-in provider slice exists.
+
 ## Ready-to-use Codex prompt
 
 ```text

@@ -56,7 +56,7 @@ Each slice is an incremental Codex task. Codex should implement exactly one slic
 - [50b — MVP UI integration pass](slice_50b_mvp_ui_integration_pass.md) — done
 - [51 — Muscle load and balance dashboard](slice_51_muscle_load_dashboard.md) — done
 - [52 — Catalog patch workflow and validation tooling](slice_52_catalog_patch_workflow.md) — done
-- [53 — Wearable and calorie estimation design spike](slice_53_wearable_calorie_estimation_spike.md)
+- [53 — Wearable and calorie estimation design spike](slice_53_wearable_calorie_estimation_spike.md) — done
 - [54 — Friends and social activity design](slice_54_social_friends_activity_design.md)
 
 ## Release rhythm

@@ -52,6 +52,29 @@ Before public release:
 - Subscription metadata if premium exists.
 - Data safety forms.
 
+## Health permission release gate
+
+Slice 53 keeps wearable and calorie work as documentation only. RepForge must
+not ship Android/iOS health permissions, HealthKit entitlements, Health Connect
+permissions, Google Fit scopes, wearable SDK integrations, or health-data upload
+until a later explicit implementation slice completes a store/privacy review.
+
+Before any build requests health or wearable permissions:
+
+1. Define the exact data categories to read and why.
+2. Add localized user-facing opt-in and disconnect/delete copy.
+3. Update the privacy policy, store privacy/data-safety declarations, and this
+   release document.
+4. Confirm no account, sync, Firebase, backend, cloud analytics, or upload is
+   required for local tracking.
+5. Confirm backup/export behavior for imported health data is explicit.
+6. Run guardrail searches for health permissions, provider SDKs, upload/sync
+   language, and exact calorie-burn claims.
+
+Calories must be described as rough estimates in store copy, screenshots, and
+in-app text. Do not market exact calorie burn, medical diagnosis, injury
+prevention, or guaranteed outcomes.
+
 ## Branding and store metadata
 
 Slice 40 validates the current launcher icon setup:

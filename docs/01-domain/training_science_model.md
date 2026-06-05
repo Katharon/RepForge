@@ -165,6 +165,47 @@ The score is an estimate only. It can explain future training guidance and can
 appear on Today, but it does not diagnose recovery state and never blocks set
 logging.
 
+## Calorie estimates
+
+Calories are optional rough estimates only. They can be useful as a broad trend
+or session-context signal, but RepForge must not present them as exact calorie
+burn, metabolic truth, medical advice, or a competitive score.
+
+Slice 53 defines the design boundary without implementing a calorie formula.
+Future formula work must stay deterministic, pure Dart at the domain boundary,
+and explicit about formula identity/version, required inputs, missing-input
+behavior, and confidence.
+
+Allowed future input categories:
+
+- workout duration,
+- user-entered body weight,
+- age or birth year if available,
+- sex/gender preference if available and only as an optional formula input,
+- training type or intensity estimate,
+- optional normalized heart-rate summary,
+- optional provider-reported active energy, still labeled as provider-reported
+  and rough in RepForge copy.
+
+Confidence semantics:
+
+- `unavailable`: duration or another required formula input is missing/invalid.
+- `low`: estimate uses broad assumptions, missing profile context, missing
+  heart-rate data, or user-entered intensity only.
+- `medium`: estimate has duration plus enough profile/context inputs for the
+  chosen deterministic formula.
+- `high`: estimate has the best available local inputs for the chosen formula,
+  but is still only high confidence for a rough estimate, not exact burn.
+
+Presentation rules:
+
+- use wording such as `rough estimate`, `estimated`, `trend`, and `based on
+  available inputs`,
+- prefer rounded values or ranges over precise decimals,
+- show missing-input reasons when useful,
+- never claim guaranteed fat loss, metabolic accuracy, injury prevention, or
+  medical certainty.
+
 ## Progressive overload policy
 
 Progression can happen via:
