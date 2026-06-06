@@ -6,6 +6,7 @@ import 'package:repforge/src/app/localization/app_localizations.dart';
 import 'package:repforge/src/core/theme/theme.dart';
 import 'package:repforge/src/features/analytics/presentation/analytics_presentation.dart';
 import 'package:repforge/src/features/exercise_catalog/presentation/exercise_catalog_presentation.dart';
+import 'package:repforge/src/features/recommendations/domain/recommendations_domain.dart';
 import 'package:repforge/src/features/training_log/domain/training_log_domain.dart';
 
 void main() {
@@ -149,6 +150,161 @@ void main() {
     },
   );
 
+  testWidgets(
+    'adaptive suggestion appears and updates after logging from detail',
+    (tester) async {
+      _useLargeViewport(tester);
+      final loader = _RecordingExerciseDetailLoader([
+        _detailModel(historyGroups: []),
+        _detailModel(),
+        _detailModel(),
+      ]);
+      final suggestionLoader = _RecordingAdaptiveSuggestionLoader([
+        _suggestion(
+          direction: AdaptiveSetDirection.addWeight,
+          suggestedLoadKg: 82.5,
+          suggestedRepetitions: 8,
+          reasons: const [
+            AdaptiveSetReasonCode.baselineExceeded,
+            AdaptiveSetReasonCode.loadIncrementApplied,
+          ],
+        ),
+        _suggestion(
+          direction: AdaptiveSetDirection.addReps,
+          suggestedLoadKg: 80,
+          suggestedRepetitions: 9,
+          reasons: const [AdaptiveSetReasonCode.repProgressionAvailable],
+        ),
+      ]);
+
+      await tester.pumpWidget(
+        _testApp(
+          ExerciseDetailPage(
+            exerciseRef: _benchRef,
+            loader: loader,
+            adaptiveSuggestionLoader: suggestionLoader,
+            onLogSet: (_) async => true,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(const Key('exercise_detail_log_set_button')));
+      await tester.pumpAndSettle();
+
+      expect(loader.loadCount, 2);
+      expect(suggestionLoader.loadCount, 1);
+      expect(find.text('Next set signal'), findsOneWidget);
+      expect(find.text('Add weight'), findsOneWidget);
+      expect(
+        find.text('Estimated next set: 8 reps x 82.5 kg.'),
+        findsOneWidget,
+      );
+      expect(find.text('You beat the prior comparable set.'), findsOneWidget);
+      expect(find.text('8 reps x 80 kg'), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('exercise_detail_log_set_button')));
+      await tester.pumpAndSettle();
+
+      expect(loader.loadCount, 3);
+      expect(suggestionLoader.loadCount, 2);
+      expect(find.text('Add reps'), findsOneWidget);
+      expect(find.text('Estimated next set: 9 reps x 80 kg.'), findsOneWidget);
+    },
+  );
+
+  testWidgets('adaptive suggestion handles insufficient history safely', (
+    tester,
+  ) async {
+    _useLargeViewport(tester);
+    await tester.pumpWidget(
+      _testApp(
+        ExerciseDetailPage(
+          exerciseRef: _benchRef,
+          loader: _RecordingExerciseDetailLoader([
+            _detailModel(historyGroups: []),
+            _detailModel(),
+          ]),
+          adaptiveSuggestionLoader: _StaticAdaptiveSuggestionLoader(
+            _suggestion(
+              direction: AdaptiveSetDirection.maintain,
+              hasComparableBaseline: false,
+              reasons: const [AdaptiveSetReasonCode.noBaseline],
+            ),
+          ),
+          onLogSet: (_) async => true,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('exercise_detail_log_set_button')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Maintain'), findsOneWidget);
+    expect(
+      find.text('Keep this target for the next set: 8 reps x 80 kg.'),
+      findsOneWidget,
+    );
+    expect(
+      find.text('Limited local history, so this is a light suggestion.'),
+      findsOneWidget,
+    );
+    expect(find.byType(AlertDialog), findsNothing);
+  });
+
+  testWidgets('backoff suggestion remains advisory and dismissible', (
+    tester,
+  ) async {
+    _useLargeViewport(tester);
+    var logCount = 0;
+    final suggestionLoader = _StaticAdaptiveSuggestionLoader(
+      _suggestion(
+        direction: AdaptiveSetDirection.backoff,
+        suggestedLoadKg: 72.5,
+        suggestedRepetitions: 6,
+        reasons: const [AdaptiveSetReasonCode.lowReadiness],
+      ),
+    );
+
+    await tester.pumpWidget(
+      _testApp(
+        ExerciseDetailPage(
+          exerciseRef: _benchRef,
+          loader: _RecordingExerciseDetailLoader([
+            _detailModel(),
+            _detailModel(),
+            _detailModel(),
+          ]),
+          adaptiveSuggestionLoader: suggestionLoader,
+          onLogSet: (_) async {
+            logCount += 1;
+            return true;
+          },
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('exercise_detail_log_set_button')));
+    await tester.pumpAndSettle();
+    expect(find.text('Ease back'), findsOneWidget);
+    expect(
+      find.text('A conservative next set could be 6 reps x 72.5 kg.'),
+      findsOneWidget,
+    );
+
+    await tester.tap(find.byTooltip('Ignore'));
+    await tester.pumpAndSettle();
+    expect(find.text('Ease back'), findsNothing);
+
+    await tester.tap(find.byKey(const Key('exercise_detail_log_set_button')));
+    await tester.pumpAndSettle();
+    expect(logCount, 2);
+    expect(suggestionLoader.loadCount, 2);
+    expect(find.byType(AlertDialog), findsNothing);
+  });
+
   testWidgets('Analytics and 1RM cards open chart callbacks', (tester) async {
     _useLargeViewport(tester);
     final openedMetrics = <AnalyticsMetric>[];
@@ -204,6 +360,48 @@ void main() {
     expect(find.text('Satzverlauf'), findsOneWidget);
   });
 
+  testWidgets('German localization covers adaptive suggestion labels', (
+    tester,
+  ) async {
+    _useLargeViewport(tester);
+    await tester.pumpWidget(
+      _testApp(
+        ExerciseDetailPage(
+          exerciseRef: _benchRef,
+          loader: _RecordingExerciseDetailLoader([
+            _detailModel(title: 'Bankdruecken mit Langhantel'),
+            _detailModel(title: 'Bankdruecken mit Langhantel'),
+          ]),
+          adaptiveSuggestionLoader: _StaticAdaptiveSuggestionLoader(
+            _suggestion(
+              direction: AdaptiveSetDirection.addWeight,
+              suggestedLoadKg: 82.5,
+              suggestedRepetitions: 8,
+              reasons: const [
+                AdaptiveSetReasonCode.baselineExceeded,
+                AdaptiveSetReasonCode.loadIncrementApplied,
+              ],
+            ),
+          ),
+          onLogSet: (_) async => true,
+        ),
+        locale: const Locale('de'),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('exercise_detail_log_set_button')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Naechster Satz'), findsOneWidget);
+    expect(find.text('Gewicht erhoehen'), findsOneWidget);
+    expect(
+      find.text('Geschaetzter naechster Satz: 8 Wdh. x 82,5 kg.'),
+      findsOneWidget,
+    );
+    expect(find.byTooltip('Ignorieren'), findsOneWidget);
+  });
+
   testWidgets('semantic labels exist for actions and set rows', (tester) async {
     _useLargeViewport(tester);
     await tester.pumpWidget(
@@ -224,6 +422,40 @@ void main() {
     expect(_semanticsLabel('Open 1RM for Barbell Bench Press'), findsOneWidget);
     expect(_semanticsLabel('Log set for Barbell Bench Press'), findsOneWidget);
     expect(_semanticsLabel('Set, 8 reps at 80 kg'), findsOneWidget);
+  });
+
+  testWidgets('adaptive suggestion has semantic label', (tester) async {
+    _useLargeViewport(tester);
+    await tester.pumpWidget(
+      _testApp(
+        ExerciseDetailPage(
+          exerciseRef: _benchRef,
+          loader: _RecordingExerciseDetailLoader([
+            _detailModel(),
+            _detailModel(),
+          ]),
+          adaptiveSuggestionLoader: _StaticAdaptiveSuggestionLoader(
+            _suggestion(
+              direction: AdaptiveSetDirection.addWeight,
+              suggestedLoadKg: 82.5,
+              suggestedRepetitions: 8,
+            ),
+          ),
+          onLogSet: (_) async => true,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('exercise_detail_log_set_button')));
+    await tester.pumpAndSettle();
+
+    expect(
+      _semanticsLabel(
+        'Next set signal: Add weight. Estimated next set: 8 reps x 82.5 kg.',
+      ),
+      findsOneWidget,
+    );
   });
 
   testWidgets('loader requests bounded history', (tester) async {
@@ -382,5 +614,69 @@ final class _FailingExerciseDetailLoader implements ExerciseDetailLoader {
     int historyLimit = 30,
   }) {
     return Future<ExerciseDetailViewModel>.error(StateError('boom'));
+  }
+}
+
+ExerciseDetailAdaptiveSuggestionViewModel _suggestion({
+  required AdaptiveSetDirection direction,
+  double currentLoadKg = 80,
+  int currentRepetitions = 8,
+  double? suggestedLoadKg,
+  int? suggestedRepetitions,
+  bool hasComparableBaseline = true,
+  List<AdaptiveSetReasonCode> reasons = const <AdaptiveSetReasonCode>[
+    AdaptiveSetReasonCode.baselineMatched,
+  ],
+}) {
+  return ExerciseDetailAdaptiveSuggestionViewModel(
+    direction: direction,
+    inputQuality: hasComparableBaseline
+        ? AdaptiveSetInputQuality.ready
+        : AdaptiveSetInputQuality.partial,
+    currentLoadKg: currentLoadKg,
+    currentRepetitions: currentRepetitions,
+    suggestedLoadKg: suggestedLoadKg ?? currentLoadKg,
+    suggestedRepetitions: suggestedRepetitions ?? currentRepetitions,
+    hasComparableBaseline: hasComparableBaseline,
+    allowsWorkoutLogging: true,
+    userOverrideAllowed: true,
+    reasons: reasons,
+  );
+}
+
+final class _StaticAdaptiveSuggestionLoader
+    implements ExerciseDetailAdaptiveSuggestionLoader {
+  _StaticAdaptiveSuggestionLoader(this.suggestion);
+
+  final ExerciseDetailAdaptiveSuggestionViewModel? suggestion;
+  int loadCount = 0;
+
+  @override
+  Future<ExerciseDetailAdaptiveSuggestionViewModel?> load(
+    ExerciseRef exerciseRef, {
+    Locale? locale,
+  }) async {
+    loadCount += 1;
+    return suggestion;
+  }
+}
+
+final class _RecordingAdaptiveSuggestionLoader
+    implements ExerciseDetailAdaptiveSuggestionLoader {
+  _RecordingAdaptiveSuggestionLoader(this.suggestions);
+
+  final List<ExerciseDetailAdaptiveSuggestionViewModel?> suggestions;
+  int loadCount = 0;
+
+  @override
+  Future<ExerciseDetailAdaptiveSuggestionViewModel?> load(
+    ExerciseRef exerciseRef, {
+    Locale? locale,
+  }) async {
+    final index = loadCount >= suggestions.length
+        ? suggestions.length - 1
+        : loadCount;
+    loadCount += 1;
+    return suggestions[index];
   }
 }

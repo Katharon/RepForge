@@ -363,6 +363,110 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exerciseDetailUnavailable => 'Unavailable';
 
   @override
+  String get exerciseDetailAdaptiveSuggestionTitle => 'Next set signal';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionAddWeight => 'Add weight';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionAddReps => 'Add reps';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionMaintain => 'Maintain';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionBackoff => 'Ease back';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionStop => 'Pause sets';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionAlternative =>
+      'Consider another option';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionNone => 'No suggestion';
+
+  @override
+  String exerciseDetailAdaptiveSuggestionNextTarget(
+    int repetitions,
+    String load,
+  ) {
+    return 'Estimated next set: $repetitions reps x $load.';
+  }
+
+  @override
+  String exerciseDetailAdaptiveSuggestionMaintainTarget(
+    int repetitions,
+    String load,
+  ) {
+    return 'Keep this target for the next set: $repetitions reps x $load.';
+  }
+
+  @override
+  String exerciseDetailAdaptiveSuggestionBackoffTarget(
+    int repetitions,
+    String load,
+  ) {
+    return 'A conservative next set could be $repetitions reps x $load.';
+  }
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionStopDetail =>
+      'Readiness signals are low; finishing this exercise here is a reasonable option.';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionAlternativeDetail =>
+      'Readiness signals are low; choosing a nearby exercise can be reasonable.';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionNoSignalDetail =>
+      'There is not enough local context for a useful next-set signal yet.';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionReasonLimitedHistory =>
+      'Limited local history, so this is a light suggestion.';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionReasonReadiness =>
+      'Readiness or soreness signals suggest a conservative next set.';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionReasonProgress =>
+      'You beat the prior comparable set.';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionReasonReps =>
+      'Load may be capped, so reps are the next progression signal.';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionReasonConservative =>
+      'This set trailed the prior comparable one.';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionReasonMatched =>
+      'You matched the prior comparable set.';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionReasonLocalHistory =>
+      'Based on local set history.';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionAdvisory =>
+      'Suggestion only. You can keep logging sets as planned.';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionIgnore => 'Ignore';
+
+  @override
+  String exerciseDetailAdaptiveSuggestionSemantics(
+    String direction,
+    String detail,
+  ) {
+    return 'Next set signal: $direction. $detail';
+  }
+
+  @override
   String get exerciseDetailHistoryTitle => 'Set history';
 
   @override

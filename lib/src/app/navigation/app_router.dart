@@ -140,6 +140,14 @@ GoRoute _exerciseDetailRoute(
           getExerciseAnalytics: dependencies.getExerciseAnalytics,
           ensureCatalogImported: dependencies.ensureOfficialCatalogImported,
         ),
+        adaptiveSuggestionLoader:
+            RepositoryExerciseDetailAdaptiveSuggestionLoader(
+              workoutSetRepository: dependencies.workoutSetRepository,
+              exerciseCatalogRepository: dependencies.exerciseCatalogRepository,
+              loadTodayReadiness: dependencies.getTodayReadiness.call,
+              loadSettingsProfile: dependencies.loadSettingsProfile.call,
+              ensureCatalogImported: dependencies.ensureOfficialCatalogImported,
+            ),
         onLogSet: (exerciseRef) {
           return _quickLogController(dependencies).show(context, exerciseRef);
         },

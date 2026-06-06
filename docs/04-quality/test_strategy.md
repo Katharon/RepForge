@@ -74,6 +74,12 @@ unavailable copy, English/German localization, selector/chart/summary
 semantics, and proof that the UI uses bounded timeline loading instead of
 unbounded exercise history.
 
+Slice 60 extends Exercise Detail post-logging coverage: after a successful Log
+Set save, history still refreshes and a compact adaptive next-set signal can
+appear. Tests cover bounded two-set adapter inputs, insufficient-history copy,
+add-weight, add-rep, maintain, low-readiness backoff, dismiss behavior, no
+blocking modal, English/German localization, and semantics.
+
 ## Integration/E2E tests
 
 Critical flow:

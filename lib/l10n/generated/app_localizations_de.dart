@@ -369,6 +369,110 @@ class AppLocalizationsDe extends AppLocalizations {
   String get exerciseDetailUnavailable => 'Nicht verfuegbar';
 
   @override
+  String get exerciseDetailAdaptiveSuggestionTitle => 'Naechster Satz';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionAddWeight => 'Gewicht erhoehen';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionAddReps => 'Wdh. erhoehen';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionMaintain => 'Beibehalten';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionBackoff => 'Etwas reduzieren';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionStop => 'Saetze pausieren';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionAlternative =>
+      'Andere Option pruefen';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionNone => 'Kein Vorschlag';
+
+  @override
+  String exerciseDetailAdaptiveSuggestionNextTarget(
+    int repetitions,
+    String load,
+  ) {
+    return 'Geschaetzter naechster Satz: $repetitions Wdh. x $load.';
+  }
+
+  @override
+  String exerciseDetailAdaptiveSuggestionMaintainTarget(
+    int repetitions,
+    String load,
+  ) {
+    return 'Dieses Ziel fuer den naechsten Satz beibehalten: $repetitions Wdh. x $load.';
+  }
+
+  @override
+  String exerciseDetailAdaptiveSuggestionBackoffTarget(
+    int repetitions,
+    String load,
+  ) {
+    return 'Ein konservativer naechster Satz koennte $repetitions Wdh. x $load sein.';
+  }
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionStopDetail =>
+      'Readiness-Signale sind niedrig; diese Uebung hier zu beenden ist eine plausible Option.';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionAlternativeDetail =>
+      'Readiness-Signale sind niedrig; eine nahe Alternative kann sinnvoll sein.';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionNoSignalDetail =>
+      'Es gibt noch nicht genug lokalen Kontext fuer ein nuetzliches Naechster-Satz-Signal.';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionReasonLimitedHistory =>
+      'Begrenzter lokaler Verlauf, daher ist dies ein leichter Vorschlag.';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionReasonReadiness =>
+      'Readiness- oder Muskelkater-Signale sprechen fuer einen konservativen naechsten Satz.';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionReasonProgress =>
+      'Du hast den vorherigen vergleichbaren Satz uebertroffen.';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionReasonReps =>
+      'Das Gewicht koennte begrenzt sein, daher sind Wdh. das naechste Progressionssignal.';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionReasonConservative =>
+      'Dieser Satz lag unter dem vorherigen vergleichbaren Satz.';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionReasonMatched =>
+      'Du hast den vorherigen vergleichbaren Satz erreicht.';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionReasonLocalHistory =>
+      'Basierend auf lokalem Satzverlauf.';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionAdvisory =>
+      'Nur ein Vorschlag. Du kannst weiter Saetze wie geplant protokollieren.';
+
+  @override
+  String get exerciseDetailAdaptiveSuggestionIgnore => 'Ignorieren';
+
+  @override
+  String exerciseDetailAdaptiveSuggestionSemantics(
+    String direction,
+    String detail,
+  ) {
+    return 'Naechster-Satz-Signal: $direction. $detail';
+  }
+
+  @override
   String get exerciseDetailHistoryTitle => 'Satzverlauf';
 
   @override

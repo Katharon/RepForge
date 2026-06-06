@@ -112,6 +112,10 @@ Implementation note: Slice 59 keeps the chart local-first and bounded. The All
 range uses the latest 100 local sets loaded through the timeline API and shows a
 limited-history notice when more sets exist.
 
+Implementation note: Slice 60 adds a compact next-set signal inside Exercise
+Detail only after a set is saved. It stays advisory, dismissible, and non-modal;
+logging remains available regardless of the signal.
+
 ## Analytics
 
 Purpose: understand progress.

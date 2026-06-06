@@ -660,6 +660,162 @@ abstract class AppLocalizations {
   /// **'Unavailable'**
   String get exerciseDetailUnavailable;
 
+  /// Title for the in-session adaptive suggestion card on Exercise Detail.
+  ///
+  /// In en, this message translates to:
+  /// **'Next set signal'**
+  String get exerciseDetailAdaptiveSuggestionTitle;
+
+  /// Adaptive next-set direction to add load.
+  ///
+  /// In en, this message translates to:
+  /// **'Add weight'**
+  String get exerciseDetailAdaptiveSuggestionAddWeight;
+
+  /// Adaptive next-set direction to add repetitions.
+  ///
+  /// In en, this message translates to:
+  /// **'Add reps'**
+  String get exerciseDetailAdaptiveSuggestionAddReps;
+
+  /// Adaptive next-set direction to maintain the latest target.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintain'**
+  String get exerciseDetailAdaptiveSuggestionMaintain;
+
+  /// Adaptive next-set direction to reduce the next target.
+  ///
+  /// In en, this message translates to:
+  /// **'Ease back'**
+  String get exerciseDetailAdaptiveSuggestionBackoff;
+
+  /// Adaptive next-set direction to stop the current exercise for now.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause sets'**
+  String get exerciseDetailAdaptiveSuggestionStop;
+
+  /// Adaptive next-set direction to consider another exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Consider another option'**
+  String get exerciseDetailAdaptiveSuggestionAlternative;
+
+  /// Adaptive state when no next-set suggestion is available.
+  ///
+  /// In en, this message translates to:
+  /// **'No suggestion'**
+  String get exerciseDetailAdaptiveSuggestionNone;
+
+  /// Next-set target detail for add-weight or add-rep suggestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated next set: {repetitions} reps x {load}.'**
+  String exerciseDetailAdaptiveSuggestionNextTarget(
+    int repetitions,
+    String load,
+  );
+
+  /// Next-set target detail for maintain suggestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep this target for the next set: {repetitions} reps x {load}.'**
+  String exerciseDetailAdaptiveSuggestionMaintainTarget(
+    int repetitions,
+    String load,
+  );
+
+  /// Next-set target detail for conservative backoff suggestions.
+  ///
+  /// In en, this message translates to:
+  /// **'A conservative next set could be {repetitions} reps x {load}.'**
+  String exerciseDetailAdaptiveSuggestionBackoffTarget(
+    int repetitions,
+    String load,
+  );
+
+  /// Detail text for a conservative stop suggestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Readiness signals are low; finishing this exercise here is a reasonable option.'**
+  String get exerciseDetailAdaptiveSuggestionStopDetail;
+
+  /// Detail text for an alternative-exercise suggestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Readiness signals are low; choosing a nearby exercise can be reasonable.'**
+  String get exerciseDetailAdaptiveSuggestionAlternativeDetail;
+
+  /// Detail text when no adaptive suggestion is available.
+  ///
+  /// In en, this message translates to:
+  /// **'There is not enough local context for a useful next-set signal yet.'**
+  String get exerciseDetailAdaptiveSuggestionNoSignalDetail;
+
+  /// Reason text when the suggestion has no comparable baseline.
+  ///
+  /// In en, this message translates to:
+  /// **'Limited local history, so this is a light suggestion.'**
+  String get exerciseDetailAdaptiveSuggestionReasonLimitedHistory;
+
+  /// Reason text for readiness-influenced adaptive suggestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Readiness or soreness signals suggest a conservative next set.'**
+  String get exerciseDetailAdaptiveSuggestionReasonReadiness;
+
+  /// Reason text when current performance exceeded baseline.
+  ///
+  /// In en, this message translates to:
+  /// **'You beat the prior comparable set.'**
+  String get exerciseDetailAdaptiveSuggestionReasonProgress;
+
+  /// Reason text when repetition progression is suggested.
+  ///
+  /// In en, this message translates to:
+  /// **'Load may be capped, so reps are the next progression signal.'**
+  String get exerciseDetailAdaptiveSuggestionReasonReps;
+
+  /// Reason text for conservative baseline-below suggestions.
+  ///
+  /// In en, this message translates to:
+  /// **'This set trailed the prior comparable one.'**
+  String get exerciseDetailAdaptiveSuggestionReasonConservative;
+
+  /// Reason text when current set matched baseline.
+  ///
+  /// In en, this message translates to:
+  /// **'You matched the prior comparable set.'**
+  String get exerciseDetailAdaptiveSuggestionReasonMatched;
+
+  /// Fallback reason text for adaptive suggestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Based on local set history.'**
+  String get exerciseDetailAdaptiveSuggestionReasonLocalHistory;
+
+  /// Advisory note that the in-session suggestion is optional.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggestion only. You can keep logging sets as planned.'**
+  String get exerciseDetailAdaptiveSuggestionAdvisory;
+
+  /// Button tooltip for dismissing the adaptive suggestion card.
+  ///
+  /// In en, this message translates to:
+  /// **'Ignore'**
+  String get exerciseDetailAdaptiveSuggestionIgnore;
+
+  /// Semantic label for the adaptive suggestion card.
+  ///
+  /// In en, this message translates to:
+  /// **'Next set signal: {direction}. {detail}'**
+  String exerciseDetailAdaptiveSuggestionSemantics(
+    String direction,
+    String detail,
+  );
+
   /// Exercise Detail set history section title.
   ///
   /// In en, this message translates to:

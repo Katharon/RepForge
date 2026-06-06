@@ -15,6 +15,12 @@
 
 ### Added
 
+- Added Slice 60 in-session adaptive next-set signal on Exercise Detail after a
+  successful Log Set save, with bounded local history, optional readiness and
+  equipment inputs, dismissible advisory copy, English/German localization,
+  semantics, and focused coverage without blocking logging, adding session
+  engine behavior, custom editors, schema migrations, cloud services, Firebase,
+  sync, social, wearable/health, ads, or payment changes.
 - Added Slice 59 Exercise Analytics chart screen reachable from Exercise Detail
   Analytics and 1RM entry cards, with localized metric and range selectors,
   selected point summaries, loading/empty/error/one-point/multi-point states,

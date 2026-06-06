@@ -7,7 +7,9 @@ import '../../../app/localization/app_localizations.dart';
 import '../../../core/theme/theme.dart';
 import '../../../core/widgets/widgets.dart';
 import '../../analytics/presentation/analytics_presentation.dart';
+import '../../recommendations/domain/recommendations_domain.dart';
 import '../../training_log/domain/training_log_domain.dart';
+import 'exercise_detail_adaptive_suggestion_loader.dart';
 import 'exercise_detail_loader.dart';
 
 typedef ExerciseDetailLogSetAction =
@@ -32,12 +34,14 @@ class ExerciseDetailPage extends StatefulWidget {
     required this.onLogSet,
     super.key,
     this.onOpenAnalytics,
+    this.adaptiveSuggestionLoader,
   });
 
   final ExerciseRef exerciseRef;
   final ExerciseDetailLoader loader;
   final ExerciseDetailLogSetAction onLogSet;
   final ExerciseDetailAnalyticsAction? onOpenAnalytics;
+  final ExerciseDetailAdaptiveSuggestionLoader? adaptiveSuggestionLoader;
 
   @override
   State<ExerciseDetailPage> createState() => _ExerciseDetailPageState();
@@ -45,6 +49,7 @@ class ExerciseDetailPage extends StatefulWidget {
 
 class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
   var _requestVersion = 0;
+  ExerciseDetailAdaptiveSuggestionViewModel? _adaptiveSuggestion;
   ExerciseDetailUiState _state = const ExerciseDetailUiState(
     status: ExerciseDetailUiStatus.loading,
   );
@@ -64,6 +69,7 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.loader != widget.loader ||
         oldWidget.exerciseRef != widget.exerciseRef) {
+      _adaptiveSuggestion = null;
       unawaited(_load());
     }
   }
@@ -94,8 +100,10 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
             children: [
               _ExerciseDetailStateBody(
                 state: _state,
+                adaptiveSuggestion: _adaptiveSuggestion,
                 onRetry: _load,
                 onOpenAnalytics: _openAnalytics,
+                onDismissAdaptiveSuggestion: _dismissAdaptiveSuggestion,
               ),
             ],
           ),
@@ -150,24 +158,64 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
       return;
     }
     await _load();
+    final refreshedExerciseRef = _state.model?.exerciseRef ?? exerciseRef;
+    await _loadAdaptiveSuggestion(refreshedExerciseRef);
+  }
+
+  Future<void> _loadAdaptiveSuggestion(ExerciseRef exerciseRef) async {
+    final loader = widget.adaptiveSuggestionLoader;
+    if (loader == null) {
+      return;
+    }
+
+    final requestVersion = _requestVersion;
+    try {
+      final suggestion = await loader.load(
+        exerciseRef,
+        locale: Localizations.localeOf(context),
+      );
+      if (!mounted || requestVersion != _requestVersion) {
+        return;
+      }
+      setState(() {
+        _adaptiveSuggestion = suggestion;
+      });
+    } catch (_) {
+      if (!mounted || requestVersion != _requestVersion) {
+        return;
+      }
+      setState(() {
+        _adaptiveSuggestion = null;
+      });
+    }
   }
 
   void _openAnalytics(AnalyticsMetric initialMetric) {
     final exerciseRef = _state.model?.exerciseRef ?? widget.exerciseRef;
     widget.onOpenAnalytics?.call(exerciseRef, initialMetric);
   }
+
+  void _dismissAdaptiveSuggestion() {
+    setState(() {
+      _adaptiveSuggestion = null;
+    });
+  }
 }
 
 class _ExerciseDetailStateBody extends StatelessWidget {
   const _ExerciseDetailStateBody({
     required this.state,
+    required this.adaptiveSuggestion,
     required this.onRetry,
     required this.onOpenAnalytics,
+    required this.onDismissAdaptiveSuggestion,
   });
 
   final ExerciseDetailUiState state;
+  final ExerciseDetailAdaptiveSuggestionViewModel? adaptiveSuggestion;
   final VoidCallback onRetry;
   final ValueChanged<AnalyticsMetric> onOpenAnalytics;
+  final VoidCallback onDismissAdaptiveSuggestion;
 
   @override
   Widget build(BuildContext context) {
@@ -219,7 +267,9 @@ class _ExerciseDetailStateBody extends StatelessWidget {
         final model = state.model!;
         return _ExerciseDetailContent(
           model: model,
+          adaptiveSuggestion: adaptiveSuggestion,
           onOpenAnalytics: onOpenAnalytics,
+          onDismissAdaptiveSuggestion: onDismissAdaptiveSuggestion,
         );
     }
   }
@@ -228,11 +278,15 @@ class _ExerciseDetailStateBody extends StatelessWidget {
 class _ExerciseDetailContent extends StatelessWidget {
   const _ExerciseDetailContent({
     required this.model,
+    required this.adaptiveSuggestion,
     required this.onOpenAnalytics,
+    required this.onDismissAdaptiveSuggestion,
   });
 
   final ExerciseDetailViewModel model;
+  final ExerciseDetailAdaptiveSuggestionViewModel? adaptiveSuggestion;
   final ValueChanged<AnalyticsMetric> onOpenAnalytics;
+  final VoidCallback onDismissAdaptiveSuggestion;
 
   @override
   Widget build(BuildContext context) {
@@ -247,6 +301,13 @@ class _ExerciseDetailContent extends StatelessWidget {
           title: model.title,
           onOpenAnalytics: onOpenAnalytics,
         ),
+        if (adaptiveSuggestion != null) ...[
+          const SizedBox(height: RepForgeSpacing.md),
+          _AdaptiveSuggestionCard(
+            suggestion: adaptiveSuggestion!,
+            onDismiss: onDismissAdaptiveSuggestion,
+          ),
+        ],
         const SizedBox(height: RepForgeSpacing.md),
         _ExerciseSummaryCard(model: model.summary),
         const SizedBox(height: RepForgeSpacing.md),
@@ -392,6 +453,92 @@ class _EntryCard extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _AdaptiveSuggestionCard extends StatelessWidget {
+  const _AdaptiveSuggestionCard({
+    required this.suggestion,
+    required this.onDismiss,
+  });
+
+  final ExerciseDetailAdaptiveSuggestionViewModel suggestion;
+  final VoidCallback onDismiss;
+
+  @override
+  Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+    final localeName = Localizations.localeOf(context).toLanguageTag();
+    final directionText = _adaptiveDirectionText(localizations, suggestion);
+    final detailText = _adaptiveDetailText(
+      localizations,
+      suggestion,
+      localeName,
+    );
+    final reasonText = _adaptiveReasonText(localizations, suggestion);
+
+    return Semantics(
+      label: localizations.exerciseDetailAdaptiveSuggestionSemantics(
+        directionText,
+        detailText,
+      ),
+      child: AppCard(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  _adaptiveIcon(suggestion.direction),
+                  color: _adaptiveColor(suggestion.direction),
+                ),
+                const SizedBox(width: RepForgeSpacing.md),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        localizations.exerciseDetailAdaptiveSuggestionTitle,
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: RepForgeColorTokens.textSecondary,
+                        ),
+                      ),
+                      const SizedBox(height: RepForgeSpacing.xs),
+                      Text(
+                        directionText,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  tooltip: localizations.exerciseDetailAdaptiveSuggestionIgnore,
+                  onPressed: onDismiss,
+                  icon: const Icon(Icons.close),
+                ),
+              ],
+            ),
+            const SizedBox(height: RepForgeSpacing.md),
+            Text(detailText, style: Theme.of(context).textTheme.bodyMedium),
+            const SizedBox(height: RepForgeSpacing.sm),
+            Text(
+              reasonText,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: RepForgeColorTokens.textSecondary,
+              ),
+            ),
+            const SizedBox(height: RepForgeSpacing.sm),
+            Text(
+              localizations.exerciseDetailAdaptiveSuggestionAdvisory,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: RepForgeColorTokens.textSecondary,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -641,5 +788,122 @@ String _metricLabel(AppLocalizations localizations, String label) {
     'kg/rep' => localizations.analyticsMetricKgPerRep,
     'Estimated 1RM' => localizations.analyticsEstimatedOneRepMaxTitle,
     _ => label,
+  };
+}
+
+String _adaptiveDirectionText(
+  AppLocalizations localizations,
+  ExerciseDetailAdaptiveSuggestionViewModel suggestion,
+) {
+  return switch (suggestion.direction) {
+    AdaptiveSetDirection.addWeight =>
+      localizations.exerciseDetailAdaptiveSuggestionAddWeight,
+    AdaptiveSetDirection.addReps =>
+      localizations.exerciseDetailAdaptiveSuggestionAddReps,
+    AdaptiveSetDirection.maintain =>
+      localizations.exerciseDetailAdaptiveSuggestionMaintain,
+    AdaptiveSetDirection.backoff =>
+      localizations.exerciseDetailAdaptiveSuggestionBackoff,
+    AdaptiveSetDirection.stop =>
+      localizations.exerciseDetailAdaptiveSuggestionStop,
+    AdaptiveSetDirection.chooseAlternative =>
+      localizations.exerciseDetailAdaptiveSuggestionAlternative,
+    AdaptiveSetDirection.noSuggestion =>
+      localizations.exerciseDetailAdaptiveSuggestionNone,
+  };
+}
+
+String _adaptiveDetailText(
+  AppLocalizations localizations,
+  ExerciseDetailAdaptiveSuggestionViewModel suggestion,
+  String localeName,
+) {
+  final load = _formatKg(
+    suggestion.suggestedLoadKg ?? suggestion.currentLoadKg,
+    localeName,
+  );
+  final repetitions =
+      suggestion.suggestedRepetitions ?? suggestion.currentRepetitions;
+
+  return switch (suggestion.direction) {
+    AdaptiveSetDirection.addWeight || AdaptiveSetDirection.addReps =>
+      localizations.exerciseDetailAdaptiveSuggestionNextTarget(
+        repetitions,
+        load,
+      ),
+    AdaptiveSetDirection.maintain =>
+      localizations.exerciseDetailAdaptiveSuggestionMaintainTarget(
+        repetitions,
+        load,
+      ),
+    AdaptiveSetDirection.backoff =>
+      localizations.exerciseDetailAdaptiveSuggestionBackoffTarget(
+        repetitions,
+        load,
+      ),
+    AdaptiveSetDirection.stop =>
+      localizations.exerciseDetailAdaptiveSuggestionStopDetail,
+    AdaptiveSetDirection.chooseAlternative =>
+      localizations.exerciseDetailAdaptiveSuggestionAlternativeDetail,
+    AdaptiveSetDirection.noSuggestion =>
+      localizations.exerciseDetailAdaptiveSuggestionNoSignalDetail,
+  };
+}
+
+String _adaptiveReasonText(
+  AppLocalizations localizations,
+  ExerciseDetailAdaptiveSuggestionViewModel suggestion,
+) {
+  final reasons = suggestion.reasons;
+  if (!suggestion.hasComparableBaseline ||
+      suggestion.inputQuality == AdaptiveSetInputQuality.partial ||
+      reasons.contains(AdaptiveSetReasonCode.noBaseline)) {
+    return localizations.exerciseDetailAdaptiveSuggestionReasonLimitedHistory;
+  }
+  if (reasons.contains(AdaptiveSetReasonCode.veryLowReadiness) ||
+      reasons.contains(AdaptiveSetReasonCode.lowReadiness) ||
+      reasons.contains(AdaptiveSetReasonCode.highSoreness)) {
+    return localizations.exerciseDetailAdaptiveSuggestionReasonReadiness;
+  }
+  if (reasons.contains(AdaptiveSetReasonCode.baselineExceeded) ||
+      reasons.contains(AdaptiveSetReasonCode.loadIncrementApplied)) {
+    return localizations.exerciseDetailAdaptiveSuggestionReasonProgress;
+  }
+  if (reasons.contains(AdaptiveSetReasonCode.repProgressionAvailable) ||
+      reasons.contains(AdaptiveSetReasonCode.loadIncreaseUnavailable) ||
+      reasons.contains(AdaptiveSetReasonCode.equipmentMaxLoadReached)) {
+    return localizations.exerciseDetailAdaptiveSuggestionReasonReps;
+  }
+  if (reasons.contains(AdaptiveSetReasonCode.strengthDown) ||
+      reasons.contains(AdaptiveSetReasonCode.baselineBelow)) {
+    return localizations.exerciseDetailAdaptiveSuggestionReasonConservative;
+  }
+  if (reasons.contains(AdaptiveSetReasonCode.baselineMatched)) {
+    return localizations.exerciseDetailAdaptiveSuggestionReasonMatched;
+  }
+  return localizations.exerciseDetailAdaptiveSuggestionReasonLocalHistory;
+}
+
+IconData _adaptiveIcon(AdaptiveSetDirection direction) {
+  return switch (direction) {
+    AdaptiveSetDirection.addWeight => Icons.fitness_center,
+    AdaptiveSetDirection.addReps => Icons.add_chart,
+    AdaptiveSetDirection.maintain => Icons.trending_flat,
+    AdaptiveSetDirection.backoff => Icons.south_west,
+    AdaptiveSetDirection.stop => Icons.pause_circle_outline,
+    AdaptiveSetDirection.chooseAlternative => Icons.swap_horiz,
+    AdaptiveSetDirection.noSuggestion => Icons.info_outline,
+  };
+}
+
+Color _adaptiveColor(AdaptiveSetDirection direction) {
+  return switch (direction) {
+    AdaptiveSetDirection.addWeight ||
+    AdaptiveSetDirection.addReps => RepForgeColorTokens.accentPrimaryGreen,
+    AdaptiveSetDirection.maintain ||
+    AdaptiveSetDirection.noSuggestion => RepForgeColorTokens.metricVolumeBlue,
+    AdaptiveSetDirection.backoff ||
+    AdaptiveSetDirection.stop ||
+    AdaptiveSetDirection.chooseAlternative => RepForgeColorTokens.warning,
   };
 }

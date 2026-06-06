@@ -436,6 +436,142 @@
   "@exerciseDetailUnavailable": {
     "description": "Neutral unavailable metric text."
   },
+  "exerciseDetailAdaptiveSuggestionTitle": "Next set signal",
+  "@exerciseDetailAdaptiveSuggestionTitle": {
+    "description": "Title for the in-session adaptive suggestion card on Exercise Detail."
+  },
+  "exerciseDetailAdaptiveSuggestionAddWeight": "Add weight",
+  "@exerciseDetailAdaptiveSuggestionAddWeight": {
+    "description": "Adaptive next-set direction to add load."
+  },
+  "exerciseDetailAdaptiveSuggestionAddReps": "Add reps",
+  "@exerciseDetailAdaptiveSuggestionAddReps": {
+    "description": "Adaptive next-set direction to add repetitions."
+  },
+  "exerciseDetailAdaptiveSuggestionMaintain": "Maintain",
+  "@exerciseDetailAdaptiveSuggestionMaintain": {
+    "description": "Adaptive next-set direction to maintain the latest target."
+  },
+  "exerciseDetailAdaptiveSuggestionBackoff": "Ease back",
+  "@exerciseDetailAdaptiveSuggestionBackoff": {
+    "description": "Adaptive next-set direction to reduce the next target."
+  },
+  "exerciseDetailAdaptiveSuggestionStop": "Pause sets",
+  "@exerciseDetailAdaptiveSuggestionStop": {
+    "description": "Adaptive next-set direction to stop the current exercise for now."
+  },
+  "exerciseDetailAdaptiveSuggestionAlternative": "Consider another option",
+  "@exerciseDetailAdaptiveSuggestionAlternative": {
+    "description": "Adaptive next-set direction to consider another exercise."
+  },
+  "exerciseDetailAdaptiveSuggestionNone": "No suggestion",
+  "@exerciseDetailAdaptiveSuggestionNone": {
+    "description": "Adaptive state when no next-set suggestion is available."
+  },
+  "exerciseDetailAdaptiveSuggestionNextTarget": "Estimated next set: {repetitions} reps x {load}.",
+  "@exerciseDetailAdaptiveSuggestionNextTarget": {
+    "description": "Next-set target detail for add-weight or add-rep suggestions.",
+    "placeholders": {
+      "repetitions": {
+        "type": "int",
+        "example": "8"
+      },
+      "load": {
+        "type": "String",
+        "example": "82.5 kg"
+      }
+    }
+  },
+  "exerciseDetailAdaptiveSuggestionMaintainTarget": "Keep this target for the next set: {repetitions} reps x {load}.",
+  "@exerciseDetailAdaptiveSuggestionMaintainTarget": {
+    "description": "Next-set target detail for maintain suggestions.",
+    "placeholders": {
+      "repetitions": {
+        "type": "int",
+        "example": "8"
+      },
+      "load": {
+        "type": "String",
+        "example": "80 kg"
+      }
+    }
+  },
+  "exerciseDetailAdaptiveSuggestionBackoffTarget": "A conservative next set could be {repetitions} reps x {load}.",
+  "@exerciseDetailAdaptiveSuggestionBackoffTarget": {
+    "description": "Next-set target detail for conservative backoff suggestions.",
+    "placeholders": {
+      "repetitions": {
+        "type": "int",
+        "example": "6"
+      },
+      "load": {
+        "type": "String",
+        "example": "72.5 kg"
+      }
+    }
+  },
+  "exerciseDetailAdaptiveSuggestionStopDetail": "Readiness signals are low; finishing this exercise here is a reasonable option.",
+  "@exerciseDetailAdaptiveSuggestionStopDetail": {
+    "description": "Detail text for a conservative stop suggestion."
+  },
+  "exerciseDetailAdaptiveSuggestionAlternativeDetail": "Readiness signals are low; choosing a nearby exercise can be reasonable.",
+  "@exerciseDetailAdaptiveSuggestionAlternativeDetail": {
+    "description": "Detail text for an alternative-exercise suggestion."
+  },
+  "exerciseDetailAdaptiveSuggestionNoSignalDetail": "There is not enough local context for a useful next-set signal yet.",
+  "@exerciseDetailAdaptiveSuggestionNoSignalDetail": {
+    "description": "Detail text when no adaptive suggestion is available."
+  },
+  "exerciseDetailAdaptiveSuggestionReasonLimitedHistory": "Limited local history, so this is a light suggestion.",
+  "@exerciseDetailAdaptiveSuggestionReasonLimitedHistory": {
+    "description": "Reason text when the suggestion has no comparable baseline."
+  },
+  "exerciseDetailAdaptiveSuggestionReasonReadiness": "Readiness or soreness signals suggest a conservative next set.",
+  "@exerciseDetailAdaptiveSuggestionReasonReadiness": {
+    "description": "Reason text for readiness-influenced adaptive suggestions."
+  },
+  "exerciseDetailAdaptiveSuggestionReasonProgress": "You beat the prior comparable set.",
+  "@exerciseDetailAdaptiveSuggestionReasonProgress": {
+    "description": "Reason text when current performance exceeded baseline."
+  },
+  "exerciseDetailAdaptiveSuggestionReasonReps": "Load may be capped, so reps are the next progression signal.",
+  "@exerciseDetailAdaptiveSuggestionReasonReps": {
+    "description": "Reason text when repetition progression is suggested."
+  },
+  "exerciseDetailAdaptiveSuggestionReasonConservative": "This set trailed the prior comparable one.",
+  "@exerciseDetailAdaptiveSuggestionReasonConservative": {
+    "description": "Reason text for conservative baseline-below suggestions."
+  },
+  "exerciseDetailAdaptiveSuggestionReasonMatched": "You matched the prior comparable set.",
+  "@exerciseDetailAdaptiveSuggestionReasonMatched": {
+    "description": "Reason text when current set matched baseline."
+  },
+  "exerciseDetailAdaptiveSuggestionReasonLocalHistory": "Based on local set history.",
+  "@exerciseDetailAdaptiveSuggestionReasonLocalHistory": {
+    "description": "Fallback reason text for adaptive suggestions."
+  },
+  "exerciseDetailAdaptiveSuggestionAdvisory": "Suggestion only. You can keep logging sets as planned.",
+  "@exerciseDetailAdaptiveSuggestionAdvisory": {
+    "description": "Advisory note that the in-session suggestion is optional."
+  },
+  "exerciseDetailAdaptiveSuggestionIgnore": "Ignore",
+  "@exerciseDetailAdaptiveSuggestionIgnore": {
+    "description": "Button tooltip for dismissing the adaptive suggestion card."
+  },
+  "exerciseDetailAdaptiveSuggestionSemantics": "Next set signal: {direction}. {detail}",
+  "@exerciseDetailAdaptiveSuggestionSemantics": {
+    "description": "Semantic label for the adaptive suggestion card.",
+    "placeholders": {
+      "direction": {
+        "type": "String",
+        "example": "Add weight"
+      },
+      "detail": {
+        "type": "String",
+        "example": "Estimated next set: 8 reps x 82.5 kg."
+      }
+    }
+  },
   "exerciseDetailHistoryTitle": "Set history",
   "@exerciseDetailHistoryTitle": {
     "description": "Exercise Detail set history section title."

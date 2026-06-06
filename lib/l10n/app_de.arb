@@ -436,6 +436,142 @@
   "@exerciseDetailUnavailable": {
     "description": "Neutraler Text fuer nicht verfuegbare Kennzahlen."
   },
+  "exerciseDetailAdaptiveSuggestionTitle": "Naechster Satz",
+  "@exerciseDetailAdaptiveSuggestionTitle": {
+    "description": "Titel fuer die adaptive Vorschlagskarte im Uebungsdetail."
+  },
+  "exerciseDetailAdaptiveSuggestionAddWeight": "Gewicht erhoehen",
+  "@exerciseDetailAdaptiveSuggestionAddWeight": {
+    "description": "Adaptive Richtung zum Erhoehen des Gewichts."
+  },
+  "exerciseDetailAdaptiveSuggestionAddReps": "Wdh. erhoehen",
+  "@exerciseDetailAdaptiveSuggestionAddReps": {
+    "description": "Adaptive Richtung zum Erhoehen der Wiederholungen."
+  },
+  "exerciseDetailAdaptiveSuggestionMaintain": "Beibehalten",
+  "@exerciseDetailAdaptiveSuggestionMaintain": {
+    "description": "Adaptive Richtung zum Beibehalten des letzten Ziels."
+  },
+  "exerciseDetailAdaptiveSuggestionBackoff": "Etwas reduzieren",
+  "@exerciseDetailAdaptiveSuggestionBackoff": {
+    "description": "Adaptive Richtung zum Reduzieren des naechsten Ziels."
+  },
+  "exerciseDetailAdaptiveSuggestionStop": "Saetze pausieren",
+  "@exerciseDetailAdaptiveSuggestionStop": {
+    "description": "Adaptive Richtung, die aktuelle Uebung fuer jetzt zu beenden."
+  },
+  "exerciseDetailAdaptiveSuggestionAlternative": "Andere Option pruefen",
+  "@exerciseDetailAdaptiveSuggestionAlternative": {
+    "description": "Adaptive Richtung, eine andere Uebung zu pruefen."
+  },
+  "exerciseDetailAdaptiveSuggestionNone": "Kein Vorschlag",
+  "@exerciseDetailAdaptiveSuggestionNone": {
+    "description": "Adaptiver Zustand ohne naechsten Vorschlag."
+  },
+  "exerciseDetailAdaptiveSuggestionNextTarget": "Geschaetzter naechster Satz: {repetitions} Wdh. x {load}.",
+  "@exerciseDetailAdaptiveSuggestionNextTarget": {
+    "description": "Zieltext fuer Gewicht- oder Wiederholungssteigerungen.",
+    "placeholders": {
+      "repetitions": {
+        "type": "int",
+        "example": "8"
+      },
+      "load": {
+        "type": "String",
+        "example": "82,5 kg"
+      }
+    }
+  },
+  "exerciseDetailAdaptiveSuggestionMaintainTarget": "Dieses Ziel fuer den naechsten Satz beibehalten: {repetitions} Wdh. x {load}.",
+  "@exerciseDetailAdaptiveSuggestionMaintainTarget": {
+    "description": "Zieltext fuer Beibehalten-Vorschlaege.",
+    "placeholders": {
+      "repetitions": {
+        "type": "int",
+        "example": "8"
+      },
+      "load": {
+        "type": "String",
+        "example": "80 kg"
+      }
+    }
+  },
+  "exerciseDetailAdaptiveSuggestionBackoffTarget": "Ein konservativer naechster Satz koennte {repetitions} Wdh. x {load} sein.",
+  "@exerciseDetailAdaptiveSuggestionBackoffTarget": {
+    "description": "Zieltext fuer konservative Reduktionsvorschlaege.",
+    "placeholders": {
+      "repetitions": {
+        "type": "int",
+        "example": "6"
+      },
+      "load": {
+        "type": "String",
+        "example": "72,5 kg"
+      }
+    }
+  },
+  "exerciseDetailAdaptiveSuggestionStopDetail": "Readiness-Signale sind niedrig; diese Uebung hier zu beenden ist eine plausible Option.",
+  "@exerciseDetailAdaptiveSuggestionStopDetail": {
+    "description": "Detailtext fuer einen konservativen Stop-Vorschlag."
+  },
+  "exerciseDetailAdaptiveSuggestionAlternativeDetail": "Readiness-Signale sind niedrig; eine nahe Alternative kann sinnvoll sein.",
+  "@exerciseDetailAdaptiveSuggestionAlternativeDetail": {
+    "description": "Detailtext fuer einen Alternativvorschlag."
+  },
+  "exerciseDetailAdaptiveSuggestionNoSignalDetail": "Es gibt noch nicht genug lokalen Kontext fuer ein nuetzliches Naechster-Satz-Signal.",
+  "@exerciseDetailAdaptiveSuggestionNoSignalDetail": {
+    "description": "Detailtext, wenn kein adaptiver Vorschlag verfuegbar ist."
+  },
+  "exerciseDetailAdaptiveSuggestionReasonLimitedHistory": "Begrenzter lokaler Verlauf, daher ist dies ein leichter Vorschlag.",
+  "@exerciseDetailAdaptiveSuggestionReasonLimitedHistory": {
+    "description": "Begruendung, wenn keine vergleichbare Basis vorhanden ist."
+  },
+  "exerciseDetailAdaptiveSuggestionReasonReadiness": "Readiness- oder Muskelkater-Signale sprechen fuer einen konservativen naechsten Satz.",
+  "@exerciseDetailAdaptiveSuggestionReasonReadiness": {
+    "description": "Begruendung fuer Readiness-beeinflusste Vorschlaege."
+  },
+  "exerciseDetailAdaptiveSuggestionReasonProgress": "Du hast den vorherigen vergleichbaren Satz uebertroffen.",
+  "@exerciseDetailAdaptiveSuggestionReasonProgress": {
+    "description": "Begruendung, wenn aktuelle Leistung die Basis uebertrifft."
+  },
+  "exerciseDetailAdaptiveSuggestionReasonReps": "Das Gewicht koennte begrenzt sein, daher sind Wdh. das naechste Progressionssignal.",
+  "@exerciseDetailAdaptiveSuggestionReasonReps": {
+    "description": "Begruendung, wenn Wiederholungsprogression vorgeschlagen wird."
+  },
+  "exerciseDetailAdaptiveSuggestionReasonConservative": "Dieser Satz lag unter dem vorherigen vergleichbaren Satz.",
+  "@exerciseDetailAdaptiveSuggestionReasonConservative": {
+    "description": "Begruendung fuer konservative Vorschlaege unter der Basis."
+  },
+  "exerciseDetailAdaptiveSuggestionReasonMatched": "Du hast den vorherigen vergleichbaren Satz erreicht.",
+  "@exerciseDetailAdaptiveSuggestionReasonMatched": {
+    "description": "Begruendung, wenn aktueller Satz die Basis erreicht."
+  },
+  "exerciseDetailAdaptiveSuggestionReasonLocalHistory": "Basierend auf lokalem Satzverlauf.",
+  "@exerciseDetailAdaptiveSuggestionReasonLocalHistory": {
+    "description": "Fallback-Begruendung fuer adaptive Vorschlaege."
+  },
+  "exerciseDetailAdaptiveSuggestionAdvisory": "Nur ein Vorschlag. Du kannst weiter Saetze wie geplant protokollieren.",
+  "@exerciseDetailAdaptiveSuggestionAdvisory": {
+    "description": "Hinweis, dass der In-Session-Vorschlag optional ist."
+  },
+  "exerciseDetailAdaptiveSuggestionIgnore": "Ignorieren",
+  "@exerciseDetailAdaptiveSuggestionIgnore": {
+    "description": "Button-Tooltip zum Ausblenden der adaptiven Vorschlagskarte."
+  },
+  "exerciseDetailAdaptiveSuggestionSemantics": "Naechster-Satz-Signal: {direction}. {detail}",
+  "@exerciseDetailAdaptiveSuggestionSemantics": {
+    "description": "Semantisches Label fuer die adaptive Vorschlagskarte.",
+    "placeholders": {
+      "direction": {
+        "type": "String",
+        "example": "Gewicht erhoehen"
+      },
+      "detail": {
+        "type": "String",
+        "example": "Geschaetzter naechster Satz: 8 Wdh. x 82,5 kg."
+      }
+    }
+  },
   "exerciseDetailHistoryTitle": "Satzverlauf",
   "@exerciseDetailHistoryTitle": {
     "description": "Abschnittstitel fuer den Satzverlauf im Uebungsdetail."
