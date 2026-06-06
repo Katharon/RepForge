@@ -2562,6 +2562,90 @@ abstract class AppLocalizations {
   /// **'Edit the folder to add official or custom exercises.'**
   String get customFolderEmptyMessage;
 
+  /// Title for suspicious workout set input confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Check logged values'**
+  String get quickLogUnusuallyHighTitle;
+
+  /// Message asking users to confirm suspicious but valid set input.
+  ///
+  /// In en, this message translates to:
+  /// **'These values look unusually high. Save them anyway?'**
+  String get quickLogUnusuallyHighMessage;
+
+  /// Semantic label for the suspicious set confirmation dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Unusually high set values confirmation'**
+  String get quickLogUnusuallyHighSemantics;
+
+  /// Cancel action for suspicious set confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Review values'**
+  String get quickLogUnusuallyHighCancel;
+
+  /// Confirm action for suspicious set confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Save anyway'**
+  String get quickLogUnusuallyHighConfirm;
+
+  /// Reason shown when repetitions exceed the soft warning threshold.
+  ///
+  /// In en, this message translates to:
+  /// **'Repetitions are unusually high.'**
+  String get quickLogUnusuallyHighRepsReason;
+
+  /// Reason shown when load exceeds the soft warning threshold.
+  ///
+  /// In en, this message translates to:
+  /// **'Load is unusually high.'**
+  String get quickLogUnusuallyHighLoadReason;
+
+  /// Reason shown when single-set volume exceeds the soft warning threshold.
+  ///
+  /// In en, this message translates to:
+  /// **'Set volume is unusually high.'**
+  String get quickLogUnusuallyHighSetVolumeReason;
+
+  /// Reason shown when daily volume exceeds the soft warning threshold.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily volume is unusually high.'**
+  String get quickLogUnusuallyHighDailyVolumeReason;
+
+  /// Snackbar text after saving a workout set.
+  ///
+  /// In en, this message translates to:
+  /// **'Set saved.'**
+  String get quickLogSavedSnackBar;
+
+  /// Snackbar action that deletes the just-saved set.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get quickLogUndoAction;
+
+  /// Small warning label for unusually high logged values.
+  ///
+  /// In en, this message translates to:
+  /// **'Check logged values'**
+  String get inputGuardWarningBadge;
+
+  /// Semantic label for unusually high logged value warning badges.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning, unusually high logged value. Check logged values.'**
+  String get inputGuardWarningSemantics;
+
+  /// Warning copy for unusually high Today volume.
+  ///
+  /// In en, this message translates to:
+  /// **'Unusually high daily volume. Check logged values.'**
+  String get todayHighVolumeWarning;
+
   /// Placeholder message for the settings destination.
   ///
   /// In en, this message translates to:

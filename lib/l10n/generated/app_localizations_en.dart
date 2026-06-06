@@ -1466,6 +1466,55 @@ class AppLocalizationsEn extends AppLocalizations {
       'Edit the folder to add official or custom exercises.';
 
   @override
+  String get quickLogUnusuallyHighTitle => 'Check logged values';
+
+  @override
+  String get quickLogUnusuallyHighMessage =>
+      'These values look unusually high. Save them anyway?';
+
+  @override
+  String get quickLogUnusuallyHighSemantics =>
+      'Unusually high set values confirmation';
+
+  @override
+  String get quickLogUnusuallyHighCancel => 'Review values';
+
+  @override
+  String get quickLogUnusuallyHighConfirm => 'Save anyway';
+
+  @override
+  String get quickLogUnusuallyHighRepsReason =>
+      'Repetitions are unusually high.';
+
+  @override
+  String get quickLogUnusuallyHighLoadReason => 'Load is unusually high.';
+
+  @override
+  String get quickLogUnusuallyHighSetVolumeReason =>
+      'Set volume is unusually high.';
+
+  @override
+  String get quickLogUnusuallyHighDailyVolumeReason =>
+      'Daily volume is unusually high.';
+
+  @override
+  String get quickLogSavedSnackBar => 'Set saved.';
+
+  @override
+  String get quickLogUndoAction => 'Undo';
+
+  @override
+  String get inputGuardWarningBadge => 'Check logged values';
+
+  @override
+  String get inputGuardWarningSemantics =>
+      'Warning, unusually high logged value. Check logged values.';
+
+  @override
+  String get todayHighVolumeWarning =>
+      'Unusually high daily volume. Check logged values.';
+
+  @override
   String get settingsPlaceholderMessage =>
       'Settings will stay local-first when implemented.';
 }

@@ -15,7 +15,10 @@ void main() {
 
   test('high repetitions trigger a soft warning', () {
     final result = guard.evaluate(
-      WorkoutSetInputGuardInput(repetitions: Repetitions(101), load: LoadKg(40)),
+      WorkoutSetInputGuardInput(
+        repetitions: Repetitions(101),
+        load: LoadKg(40),
+      ),
     );
 
     expect(result.hasWarning, isTrue);

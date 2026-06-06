@@ -235,7 +235,10 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('Unusually high daily volume. Check logged values.'), findsOneWidget);
+    expect(
+      find.text('Unusually high daily volume. Check logged values.'),
+      findsOneWidget,
+    );
     expect(
       _semanticsLabelContaining(
         'Volume today, 100001 kg. Unusually high daily volume.',

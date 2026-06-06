@@ -235,9 +235,7 @@ void main() {
           title: 'Barbell Bench Press',
           loader: _StaticExerciseAnalyticsChartLoader(
             _chartModel(
-              points: [
-                _point(id: 'set-1', repetitions: 101, loadKg: 80),
-              ],
+              points: [_point(id: 'set-1', repetitions: 101, loadKg: 80)],
             ),
           ),
         ),

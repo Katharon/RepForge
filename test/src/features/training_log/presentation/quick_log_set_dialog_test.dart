@@ -142,7 +142,10 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(repository.savedSets.single.id, WorkoutSetId('quick-high-load-volume'));
+    expect(
+      repository.savedSets.single.id,
+      WorkoutSetId('quick-high-load-volume'),
+    );
     expect(repository.savedSets.single.load, LoadKg(501));
     expect(repository.savedSets.single.repetitions, Repetitions(41));
   });
@@ -177,7 +180,10 @@ void main() {
     await tester.tap(find.byKey(const Key('quick_log_save_button')));
     await tester.pumpAndSettle();
 
-    expect(find.text('Set could not be saved. Check the values.'), findsOneWidget);
+    expect(
+      find.text('Set could not be saved. Check the values.'),
+      findsOneWidget,
+    );
     expect(find.text('Check logged values'), findsNothing);
     expect(repository.savedSets, isEmpty);
   });
@@ -288,7 +294,9 @@ void main() {
     expect(saved.exerciseRef.catalogVersionSnapshot, isNull);
   });
 
-  testWidgets('custom exercise logging uses the same guard path', (tester) async {
+  testWidgets('custom exercise logging uses the same guard path', (
+    tester,
+  ) async {
     final repository = _FakeWorkoutSetRepository();
     final controller = QuickLogSetController(
       exerciseCatalogRepository: _FakeExerciseCatalogRepository(),
@@ -328,7 +336,10 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(repository.savedSets.single.exerciseRef.source, ExerciseSource.custom);
+    expect(
+      repository.savedSets.single.exerciseRef.source,
+      ExerciseSource.custom,
+    );
   });
 
   testWidgets('quick log attaches saved sets to the active workout session', (
@@ -386,7 +397,9 @@ void main() {
     await workoutSessionController.dispose();
   });
 
-  testWidgets('active-session logging uses the same guard path', (tester) async {
+  testWidgets('active-session logging uses the same guard path', (
+    tester,
+  ) async {
     final repository = _FakeWorkoutSetRepository();
     final workoutSessionController = WorkoutSessionController(
       workoutSetRepository: repository,
@@ -434,7 +447,10 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(repository.savedSets.single.workoutSessionId, WorkoutSessionId('guarded-session'));
+    expect(
+      repository.savedSets.single.workoutSessionId,
+      WorkoutSessionId('guarded-session'),
+    );
     expect(workoutSessionController.snapshot.activeSummary?.setCount, 1);
 
     await workoutSessionController.dispose();

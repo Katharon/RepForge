@@ -731,10 +731,7 @@ class _HistorySetCard extends StatelessWidget {
 
     return Semantics(
       label:
-          localizations.exerciseDetailSetSemantics(
-            set.repetitions,
-            loadText,
-          ) +
+          localizations.exerciseDetailSetSemantics(set.repetitions, loadText) +
           (set.hasInputWarning
               ? '. ${localizations.inputGuardWarningSemantics}'
               : ''),

@@ -1481,6 +1481,56 @@ class AppLocalizationsDe extends AppLocalizations {
       'Bearbeite den Ordner, um offizielle oder eigene Uebungen hinzuzufuegen.';
 
   @override
+  String get quickLogUnusuallyHighTitle => 'Werte pruefen';
+
+  @override
+  String get quickLogUnusuallyHighMessage =>
+      'Diese Werte wirken ungewoehnlich hoch. Trotzdem speichern?';
+
+  @override
+  String get quickLogUnusuallyHighSemantics =>
+      'Bestaetigung fuer ungewoehnlich hohe Satzwerte';
+
+  @override
+  String get quickLogUnusuallyHighCancel => 'Werte pruefen';
+
+  @override
+  String get quickLogUnusuallyHighConfirm => 'Trotzdem speichern';
+
+  @override
+  String get quickLogUnusuallyHighRepsReason =>
+      'Wiederholungen sind ungewoehnlich hoch.';
+
+  @override
+  String get quickLogUnusuallyHighLoadReason =>
+      'Gewicht ist ungewoehnlich hoch.';
+
+  @override
+  String get quickLogUnusuallyHighSetVolumeReason =>
+      'Satzvolumen ist ungewoehnlich hoch.';
+
+  @override
+  String get quickLogUnusuallyHighDailyVolumeReason =>
+      'Tagesvolumen ist ungewoehnlich hoch.';
+
+  @override
+  String get quickLogSavedSnackBar => 'Satz gespeichert.';
+
+  @override
+  String get quickLogUndoAction => 'Rueckgaengig';
+
+  @override
+  String get inputGuardWarningBadge => 'Werte pruefen';
+
+  @override
+  String get inputGuardWarningSemantics =>
+      'Warnung, ungewoehnlich hoher protokollierter Wert. Werte pruefen.';
+
+  @override
+  String get todayHighVolumeWarning =>
+      'Ungewoehnlich hohes Tagesvolumen. Werte pruefen.';
+
+  @override
   String get settingsPlaceholderMessage =>
       'Einstellungen bleiben bei der Umsetzung lokal-first.';
 }
