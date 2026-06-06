@@ -1342,6 +1342,145 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get exercisesCreateCustom => 'Eigene Uebung erstellen';
+
+  @override
+  String get exercisesCustomBadge => 'Eigen';
+
+  @override
+  String get exercisesOfficialBadge => 'Offiziell';
+
+  @override
+  String get exercisesCustomActionsTooltip => 'Aktionen fuer eigene Uebung';
+
+  @override
+  String get exercisesEditCustom => 'Uebung bearbeiten';
+
+  @override
+  String get exercisesArchiveCustom => 'Uebung archivieren';
+
+  @override
+  String exercisesCustomSemantics(String name) {
+    return 'Eigene Uebung, $name';
+  }
+
+  @override
+  String exercisesOfficialSemantics(String name) {
+    return 'Offizielle Uebung, $name';
+  }
+
+  @override
+  String get customExerciseCreateTitle => 'Eigene Uebung erstellen';
+
+  @override
+  String get customExerciseEditTitle => 'Eigene Uebung bearbeiten';
+
+  @override
+  String get customExerciseNameLabel => 'Name';
+
+  @override
+  String get customExerciseNotesLabel => 'Notizen';
+
+  @override
+  String get customExercisePrimaryMusclesLabel => 'Primaere Muskeln';
+
+  @override
+  String get customExerciseSecondaryMusclesLabel => 'Sekundaere Muskeln';
+
+  @override
+  String get customExerciseEquipmentLabel => 'Equipment';
+
+  @override
+  String get customExerciseMovementPatternsLabel => 'Bewegungsmuster';
+
+  @override
+  String get customExerciseCommaHelper => 'Tags mit Kommas trennen';
+
+  @override
+  String get customExerciseCancel => 'Abbrechen';
+
+  @override
+  String get customExerciseSave => 'Speichern';
+
+  @override
+  String get customExerciseNameRequired => 'Fuege einen Namen hinzu.';
+
+  @override
+  String get customExercisePrimaryMusclesRequired =>
+      'Fuege mindestens einen primaeren Muskel hinzu.';
+
+  @override
+  String get customExerciseArchiveTitle => 'Eigene Uebung archivieren';
+
+  @override
+  String customExerciseArchiveMessage(String name) {
+    return '$name archivieren? Historische Satz-Snapshots bleiben lesbar.';
+  }
+
+  @override
+  String get customExerciseArchiveConfirm => 'Archivieren';
+
+  @override
+  String get customFolderCreateButton => 'Ordner erstellen';
+
+  @override
+  String get customFolderCreateMessage =>
+      'Erstelle einen lokalen Ordner aus offiziellen oder eigenen Uebungen.';
+
+  @override
+  String get customFolderCreateTitle => 'Trainingsordner erstellen';
+
+  @override
+  String get customFolderEditTitle => 'Trainingsordner bearbeiten';
+
+  @override
+  String get customFolderNameLabel => 'Ordnername';
+
+  @override
+  String get customFolderAssignmentsTitle => 'Zugewiesene Uebungen';
+
+  @override
+  String get customFolderCancel => 'Abbrechen';
+
+  @override
+  String get customFolderSave => 'Speichern';
+
+  @override
+  String get customFolderNameRequired => 'Fuege einen Ordnernamen hinzu.';
+
+  @override
+  String get customFolderActionsTooltip => 'Ordneraktionen';
+
+  @override
+  String get customFolderEdit => 'Ordner bearbeiten';
+
+  @override
+  String get customFolderArchive => 'Ordner archivieren';
+
+  @override
+  String get customFolderArchiveTitle => 'Trainingsordner archivieren';
+
+  @override
+  String customFolderArchiveMessage(String name) {
+    return '$name archivieren? Protokollierte Trainingshistorie bleibt unberuehrt.';
+  }
+
+  @override
+  String get customFolderArchiveConfirm => 'Archivieren';
+
+  @override
+  String customFolderSemantics(String name, int count) {
+    return 'Trainingsordner, $name, $count Uebungen';
+  }
+
+  @override
+  String get customFolderEmptyTitle => 'Keine Uebungen zugewiesen';
+
+  @override
+  String get customFolderEmptyMessage =>
+      'Bearbeite den Ordner, um offizielle oder eigene Uebungen hinzuzufuegen.';
+
+  @override
   String get settingsPlaceholderMessage =>
       'Einstellungen bleiben bei der Umsetzung lokal-first.';
 }

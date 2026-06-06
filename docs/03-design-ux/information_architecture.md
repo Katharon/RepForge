@@ -43,13 +43,11 @@ Contains now:
   selected category,
 - search within the selected category,
 - exercise rows open Exercise Detail with recent history and quick logging,
-- disabled/future New workout action,
-- optional starter-group previews when local groups exist.
+- create/edit/archive custom training folders backed by local workout groups,
+- custom folder previews when local groups exist.
 
 Later:
 
-- create/edit/archive groups,
-- create/edit custom splits,
 - assign/reorder exercises,
 - recommended exercise order,
 - group analytics.
@@ -64,6 +62,11 @@ a session from a Train category creates an in-memory active session, logs future
 sets with the existing optional session ID, and shows compact active/completed
 summary cards without adding a full planner.
 
+Implementation note: Slice 62 turns the previous future workout action into a
+localized create-folder action. Custom folders can contain official or custom
+exercises, use existing workout-group persistence, and archive locally without
+deleting historical snapshots.
+
 ## Exercises
 
 Purpose: find and manage exercises.
@@ -71,14 +74,16 @@ Purpose: find and manage exercises.
 Contains now:
 
 - official bundled exercises imported into local storage,
+- custom local exercises beside official exercises,
+- visible official/custom badges,
 - localized catalog names,
 - search,
 - equipment, movement-pattern, and primary-muscle chips,
+- create/edit/archive actions for custom exercises only,
 - full catalog/library browsing separate from Train split navigation.
 
 Later:
 
-- custom exercises,
 - advanced filters by muscle/equipment/movement,
 - favorites/hidden,
 - exercise detail timeline beyond the compact recent history surface.
@@ -101,7 +106,6 @@ Contains now:
 Later:
 
 - deeper timeline pagination,
-- custom-exercise editing once custom exercises are implemented,
 - coach/adaptive next-set UI only in its explicit later slice.
 
 ## Exercise Analytics

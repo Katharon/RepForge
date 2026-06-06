@@ -108,6 +108,12 @@ Bundled JSON catalog assets
 
 Do **not** hardcode the official catalog only as Dart seed statements or SQL inserts. That would make content updates harder to review, harder to translate, and harder to patch safely.
 
+User-created custom exercises are not official catalog content. They are stored
+as local user-owned Drift rows, can be edited or archived by the user, and are
+never overwritten by bundled official catalog imports. Logged sets keep
+exercise-source/id and display-name snapshots so custom exercise history remains
+readable after later edits.
+
 ## First-launch behavior
 
 On first launch:

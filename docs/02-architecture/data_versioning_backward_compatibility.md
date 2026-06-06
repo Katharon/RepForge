@@ -107,6 +107,13 @@ index. The migration creates only the new table and must not rewrite workout
 history, catalog rows, workout groups, settings/profile data, onboarding
 status, purchases, auth, sync metadata, or notification state.
 
+Schema version 10 additively adds `custom_exercises`. Custom exercise rows are
+user-owned local data with stable `customExerciseId` values, user-editable
+metadata, UTC timestamps, and soft archive state. The migration creates only
+the new table and must not rewrite official catalog rows, workout sets, workout
+groups, settings/profile data, onboarding status, purchases, auth, sync
+metadata, readiness check-ins, or notification state.
+
 Slice 47 also adds an optional `readinessCheckIns` array to local backup JSON.
 The backup schema version remains compatible because older backups without the
 field continue to parse as an empty readiness list, while exported readiness
@@ -135,6 +142,11 @@ Workout-group assignment mapper code follows the same rule: official assignment
 rows may carry catalog-version snapshots, while custom assignment rows with
 catalog-version snapshots are invalid persisted data and must fail
 deterministically.
+
+Archiving a custom exercise or custom folder must not delete historical logged
+sets or assignment snapshots. Old workout history remains understandable through
+`ExerciseRef.custom` stable IDs and display-name snapshots even if the custom
+exercise is later renamed or archived.
 
 Drift schema changes must be backward-compatible where possible:
 

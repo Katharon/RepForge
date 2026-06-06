@@ -64,6 +64,13 @@ final class RepositoryWorkoutGroupListLoader implements WorkoutGroupListLoader {
           id: group.id.value,
           name: group.name.value,
           exerciseCount: assignments.totalCount,
+          exercises: assignments.items
+              .map(
+                (assignment) => ExerciseListItemViewModel.fromExerciseRef(
+                  assignment.exerciseRef,
+                ),
+              )
+              .toList(growable: false),
           exerciseNames: assignments.items
               .map((assignment) => assignment.exerciseRef.displayNameSnapshot)
               .toList(growable: false),
@@ -97,12 +104,14 @@ final class WorkoutGroupListItemViewModel {
     required this.name,
     required this.exerciseCount,
     required this.exerciseNames,
+    this.exercises = const <ExerciseListItemViewModel>[],
   });
 
   final String id;
   final String name;
   final int exerciseCount;
   final List<String> exerciseNames;
+  final List<ExerciseListItemViewModel> exercises;
 }
 
 enum TrainCategoryId {

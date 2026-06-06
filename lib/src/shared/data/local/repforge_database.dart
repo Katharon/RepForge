@@ -165,6 +165,44 @@ class CatalogImports extends Table {
   Set<Column<Object>> get primaryKey => <Column<Object>>{catalogVersion};
 }
 
+@DataClassName('CustomExerciseRow')
+class CustomExercises extends Table {
+  TextColumn get customExerciseId => text().customConstraint(
+    'NOT NULL CHECK (length(custom_exercise_id) > 0)',
+  )();
+
+  TextColumn get name =>
+      text().customConstraint('NOT NULL CHECK (length(name) > 0)')();
+
+  TextColumn get notes => text().nullable().customConstraint(
+    'NULL CHECK (notes IS NULL OR length(notes) > 0)',
+  )();
+
+  TextColumn get primaryMusclesJson => text().customConstraint(
+    'NOT NULL CHECK (length(primary_muscles_json) > 2)',
+  )();
+
+  TextColumn get secondaryMusclesJson => text().customConstraint(
+    'NOT NULL CHECK (length(secondary_muscles_json) >= 2)',
+  )();
+
+  TextColumn get equipmentJson =>
+      text().customConstraint('NOT NULL CHECK (length(equipment_json) >= 2)')();
+
+  TextColumn get movementPatternsJson => text().customConstraint(
+    'NOT NULL CHECK (length(movement_patterns_json) >= 2)',
+  )();
+
+  DateTimeColumn get archivedAt => dateTime().nullable()();
+
+  DateTimeColumn get createdAt => dateTime().customConstraint('NOT NULL')();
+
+  DateTimeColumn get updatedAt => dateTime().customConstraint('NOT NULL')();
+
+  @override
+  Set<Column<Object>> get primaryKey => <Column<Object>>{customExerciseId};
+}
+
 @DataClassName('WorkoutGroupRow')
 class WorkoutGroups extends Table {
   TextColumn get workoutGroupId => text().customConstraint(
@@ -449,6 +487,7 @@ class ReadinessCheckIns extends Table {
     OfficialExerciseMovementPatterns,
     OfficialExerciseMuscleGroups,
     CatalogImports,
+    CustomExercises,
     WorkoutGroups,
     WorkoutGroupExerciseAssignments,
     SettingsProfiles,
@@ -462,7 +501,7 @@ class RepForgeDatabase extends _$RepForgeDatabase {
   RepForgeDatabase(super.executor);
 
   @override
-  int get schemaVersion => 9;
+  int get schemaVersion => 10;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -519,6 +558,9 @@ class RepForgeDatabase extends _$RepForgeDatabase {
       if (from < 9) {
         await migrator.createTable(readinessCheckIns);
         await _createReadinessIndexes();
+      }
+      if (from < 10) {
+        await migrator.createTable(customExercises);
       }
     },
     // Future migrations must preserve logged set history and prefer additive

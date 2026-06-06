@@ -210,6 +210,24 @@ If a future slice persists session headers, resumes sessions after process
 death, or adds templates/planning, that migration must be additive and preserve
 all existing `workout_session_id` links on logged sets.
 
+## Slice 62 custom exercises
+
+Drift schema v10 adds `custom_exercises` additively. Each row stores a stable
+local custom exercise id, name, optional notes, JSON-encoded primary and
+secondary muscle tags, equipment tags, movement-pattern tags, UTC created and
+updated timestamps, and an optional UTC archive timestamp.
+
+Official catalog imports still write only official catalog tables and import
+metadata. They must never edit, replace, or archive user-created custom
+exercises. Logged workout sets and workout-group assignments continue to store
+stable exercise source/id plus display-name snapshots, so archived or renamed
+custom exercises do not erase historical training context.
+
+Slice 62 custom training folders reuse the existing `workout_groups` and
+`workout_group_exercise_assignments` tables. Folder edits replace that folder's
+assignment rows with fresh stable snapshots for the selected official and custom
+exercises; folder archive remains a soft archive.
+
 ## Slice 37 optional sync metadata boundary
 
 Slice 37 does not change the Drift schema. It adds only pure-Dart sync metadata

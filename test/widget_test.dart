@@ -158,6 +158,11 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('My Exercises'));
     await tester.pumpAndSettle();
+    await tester.drag(
+      find.byType(CustomScrollView).first,
+      const Offset(0, -300),
+    );
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Barbell Bench Press').first);
     await tester.pumpAndSettle();
 
@@ -297,6 +302,7 @@ AppDependencies _testAppDependencies({
       getTodayReadiness: getTodayReadiness,
     ),
     exerciseCatalogRepository: exerciseCatalogRepository,
+    customExerciseRepository: _FakeCustomExerciseRepository(),
     ensureOfficialCatalogImported: () async {},
     settingsProfileRepository: settingsProfileRepository,
     loadSettingsProfile: loadSettingsProfile,
@@ -384,6 +390,34 @@ final class _FakeExerciseCatalogRepository
       primaryMuscles: [MuscleGroup('chest')],
     );
   }
+}
+
+final class _FakeCustomExerciseRepository implements CustomExerciseRepository {
+  @override
+  Future<void> saveCustomExercise(CustomExercise exercise) async {}
+
+  @override
+  Future<CustomExercise?> findCustomExerciseById(CustomExerciseId id) async {
+    return null;
+  }
+
+  @override
+  Future<CustomExercisePage> listCustomExercises(
+    CustomExerciseQuery query,
+  ) async {
+    return CustomExercisePage(
+      items: const [],
+      totalCount: 0,
+      limit: query.limit,
+      offset: query.offset,
+    );
+  }
+
+  @override
+  Future<void> archiveCustomExercise(
+    CustomExerciseId id,
+    DateTime archivedAt,
+  ) async {}
 }
 
 final class _FakeReadinessCheckInRepository

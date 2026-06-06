@@ -24,64 +24,70 @@ void main() {
     await controller.dispose();
   });
 
-  test('refreshes active summary from sets saved with the session id', () async {
-    final repository = _InMemoryWorkoutSetRepository();
-    var now = DateTime.utc(2026, 6, 6, 9);
-    final controller = WorkoutSessionController(
-      workoutSetRepository: repository,
-      workoutSessionIdProvider: () => WorkoutSessionId('session-1'),
-      nowProvider: () => now,
-    );
-    await controller.start(sourceName: 'Push', exerciseRefs: [_benchRef]);
-    await repository.save(
-      _set(id: 'set-1', sessionId: 'session-1', exerciseRef: _benchRef),
-    );
-    await repository.save(
-      _set(
-        id: 'set-2',
-        sessionId: 'session-1',
-        exerciseRef: _pressRef,
-        loadKg: 24,
-        repetitions: 10,
-      ),
-    );
-    await repository.save(_set(id: 'standalone'));
-    now = DateTime.utc(2026, 6, 6, 9, 30);
+  test(
+    'refreshes active summary from sets saved with the session id',
+    () async {
+      final repository = _InMemoryWorkoutSetRepository();
+      var now = DateTime.utc(2026, 6, 6, 9);
+      final controller = WorkoutSessionController(
+        workoutSetRepository: repository,
+        workoutSessionIdProvider: () => WorkoutSessionId('session-1'),
+        nowProvider: () => now,
+      );
+      await controller.start(sourceName: 'Push', exerciseRefs: [_benchRef]);
+      await repository.save(
+        _set(id: 'set-1', sessionId: 'session-1', exerciseRef: _benchRef),
+      );
+      await repository.save(
+        _set(
+          id: 'set-2',
+          sessionId: 'session-1',
+          exerciseRef: _pressRef,
+          loadKg: 24,
+          repetitions: 10,
+        ),
+      );
+      await repository.save(_set(id: 'standalone'));
+      now = DateTime.utc(2026, 6, 6, 9, 30);
 
-    await controller.refreshActiveSummary();
+      await controller.refreshActiveSummary();
 
-    final summary = controller.snapshot.activeSummary!;
-    expect(summary.setCount, 2);
-    expect(summary.exerciseCount, 2);
-    expect(summary.totalVolumeKg, 880);
-    expect(summary.duration, const Duration(minutes: 30));
-    await controller.dispose();
-  });
+      final summary = controller.snapshot.activeSummary!;
+      expect(summary.setCount, 2);
+      expect(summary.exerciseCount, 2);
+      expect(summary.totalVolumeKg, 880);
+      expect(summary.duration, const Duration(minutes: 30));
+      await controller.dispose();
+    },
+  );
 
-  test('completes session with compact summary and clears active session', () async {
-    final repository = _InMemoryWorkoutSetRepository();
-    var now = DateTime.utc(2026, 6, 6, 9);
-    final controller = WorkoutSessionController(
-      workoutSetRepository: repository,
-      workoutSessionIdProvider: () => WorkoutSessionId('session-1'),
-      nowProvider: () => now,
-    );
-    await controller.start(sourceName: 'Pull');
-    await repository.save(
-      _set(id: 'set-1', sessionId: 'session-1', exerciseRef: _benchRef),
-    );
-    now = DateTime.utc(2026, 6, 6, 10, 5);
+  test(
+    'completes session with compact summary and clears active session',
+    () async {
+      final repository = _InMemoryWorkoutSetRepository();
+      var now = DateTime.utc(2026, 6, 6, 9);
+      final controller = WorkoutSessionController(
+        workoutSetRepository: repository,
+        workoutSessionIdProvider: () => WorkoutSessionId('session-1'),
+        nowProvider: () => now,
+      );
+      await controller.start(sourceName: 'Pull');
+      await repository.save(
+        _set(id: 'set-1', sessionId: 'session-1', exerciseRef: _benchRef),
+      );
+      now = DateTime.utc(2026, 6, 6, 10, 5);
 
-    final completed = await controller.complete();
+      final completed = await controller.complete();
 
-    expect(completed, isNotNull);
-    expect(controller.snapshot.active, isNull);
-    expect(controller.snapshot.completedSummary, completed);
-    expect(completed!.status, WorkoutSessionStatus.completed);
-    expect(completed.duration, const Duration(hours: 1, minutes: 5));
-    expect(completed.topExercise?.exerciseRef, _benchRef);
-    await controller.dispose();
-  });
+      expect(completed, isNotNull);
+      expect(controller.snapshot.active, isNull);
+      expect(controller.snapshot.completedSummary, completed);
+      expect(completed!.status, WorkoutSessionStatus.completed);
+      expect(completed.duration, const Duration(hours: 1, minutes: 5));
+      expect(completed.topExercise?.exerciseRef, _benchRef);
+      await controller.dispose();
+    },
+  );
 
   test('emits snapshots for UI listeners', () async {
     final repository = _InMemoryWorkoutSetRepository();
@@ -98,7 +104,10 @@ void main() {
 
     expect(snapshots, hasLength(2));
     expect(snapshots.first.hasActiveSession, isTrue);
-    expect(snapshots.last.completedSummary?.status, WorkoutSessionStatus.completed);
+    expect(
+      snapshots.last.completedSummary?.status,
+      WorkoutSessionStatus.completed,
+    );
     await subscription.cancel();
     await controller.dispose();
   });

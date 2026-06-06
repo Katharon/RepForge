@@ -26,6 +26,10 @@
 - `WorkoutSessionStatusCard` — implemented in the training-log presentation
   layer for reusable active/completed local session summaries on Train, Today,
   and Exercise Detail.
+- `CustomExerciseDialog` — implemented in the exercise-catalog presentation
+  layer for local custom exercise create/edit metadata entry.
+- `WorkoutGroupDialog` — implemented in the workout-groups presentation layer
+  for local custom training folder create/edit and exercise assignment.
 
 ## Timer components
 

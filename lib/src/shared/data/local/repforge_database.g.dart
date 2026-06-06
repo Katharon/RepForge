@@ -2199,6 +2199,669 @@ class CatalogImportsCompanion extends UpdateCompanion<CatalogImportRow> {
   }
 }
 
+class $CustomExercisesTable extends CustomExercises
+    with TableInfo<$CustomExercisesTable, CustomExerciseRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $CustomExercisesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _customExerciseIdMeta = const VerificationMeta(
+    'customExerciseId',
+  );
+  @override
+  late final GeneratedColumn<String> customExerciseId = GeneratedColumn<String>(
+    'custom_exercise_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL CHECK (length(custom_exercise_id) > 0)',
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL CHECK (length(name) > 0)',
+  );
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+    'notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL CHECK (notes IS NULL OR length(notes) > 0)',
+  );
+  static const VerificationMeta _primaryMusclesJsonMeta =
+      const VerificationMeta('primaryMusclesJson');
+  @override
+  late final GeneratedColumn<String> primaryMusclesJson =
+      GeneratedColumn<String>(
+        'primary_muscles_json',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+        $customConstraints: 'NOT NULL CHECK (length(primary_muscles_json) > 2)',
+      );
+  static const VerificationMeta _secondaryMusclesJsonMeta =
+      const VerificationMeta('secondaryMusclesJson');
+  @override
+  late final GeneratedColumn<String> secondaryMusclesJson =
+      GeneratedColumn<String>(
+        'secondary_muscles_json',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+        $customConstraints:
+            'NOT NULL CHECK (length(secondary_muscles_json) >= 2)',
+      );
+  static const VerificationMeta _equipmentJsonMeta = const VerificationMeta(
+    'equipmentJson',
+  );
+  @override
+  late final GeneratedColumn<String> equipmentJson = GeneratedColumn<String>(
+    'equipment_json',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL CHECK (length(equipment_json) >= 2)',
+  );
+  static const VerificationMeta _movementPatternsJsonMeta =
+      const VerificationMeta('movementPatternsJson');
+  @override
+  late final GeneratedColumn<String> movementPatternsJson =
+      GeneratedColumn<String>(
+        'movement_patterns_json',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+        $customConstraints:
+            'NOT NULL CHECK (length(movement_patterns_json) >= 2)',
+      );
+  static const VerificationMeta _archivedAtMeta = const VerificationMeta(
+    'archivedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> archivedAt = GeneratedColumn<DateTime>(
+    'archived_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    customExerciseId,
+    name,
+    notes,
+    primaryMusclesJson,
+    secondaryMusclesJson,
+    equipmentJson,
+    movementPatternsJson,
+    archivedAt,
+    createdAt,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'custom_exercises';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<CustomExerciseRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('custom_exercise_id')) {
+      context.handle(
+        _customExerciseIdMeta,
+        customExerciseId.isAcceptableOrUnknown(
+          data['custom_exercise_id']!,
+          _customExerciseIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_customExerciseIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+        _notesMeta,
+        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+      );
+    }
+    if (data.containsKey('primary_muscles_json')) {
+      context.handle(
+        _primaryMusclesJsonMeta,
+        primaryMusclesJson.isAcceptableOrUnknown(
+          data['primary_muscles_json']!,
+          _primaryMusclesJsonMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_primaryMusclesJsonMeta);
+    }
+    if (data.containsKey('secondary_muscles_json')) {
+      context.handle(
+        _secondaryMusclesJsonMeta,
+        secondaryMusclesJson.isAcceptableOrUnknown(
+          data['secondary_muscles_json']!,
+          _secondaryMusclesJsonMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_secondaryMusclesJsonMeta);
+    }
+    if (data.containsKey('equipment_json')) {
+      context.handle(
+        _equipmentJsonMeta,
+        equipmentJson.isAcceptableOrUnknown(
+          data['equipment_json']!,
+          _equipmentJsonMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_equipmentJsonMeta);
+    }
+    if (data.containsKey('movement_patterns_json')) {
+      context.handle(
+        _movementPatternsJsonMeta,
+        movementPatternsJson.isAcceptableOrUnknown(
+          data['movement_patterns_json']!,
+          _movementPatternsJsonMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_movementPatternsJsonMeta);
+    }
+    if (data.containsKey('archived_at')) {
+      context.handle(
+        _archivedAtMeta,
+        archivedAt.isAcceptableOrUnknown(data['archived_at']!, _archivedAtMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {customExerciseId};
+  @override
+  CustomExerciseRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return CustomExerciseRow(
+      customExerciseId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}custom_exercise_id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      notes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notes'],
+      ),
+      primaryMusclesJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}primary_muscles_json'],
+      )!,
+      secondaryMusclesJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}secondary_muscles_json'],
+      )!,
+      equipmentJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}equipment_json'],
+      )!,
+      movementPatternsJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}movement_patterns_json'],
+      )!,
+      archivedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}archived_at'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+    );
+  }
+
+  @override
+  $CustomExercisesTable createAlias(String alias) {
+    return $CustomExercisesTable(attachedDatabase, alias);
+  }
+}
+
+class CustomExerciseRow extends DataClass
+    implements Insertable<CustomExerciseRow> {
+  final String customExerciseId;
+  final String name;
+  final String? notes;
+  final String primaryMusclesJson;
+  final String secondaryMusclesJson;
+  final String equipmentJson;
+  final String movementPatternsJson;
+  final DateTime? archivedAt;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  const CustomExerciseRow({
+    required this.customExerciseId,
+    required this.name,
+    this.notes,
+    required this.primaryMusclesJson,
+    required this.secondaryMusclesJson,
+    required this.equipmentJson,
+    required this.movementPatternsJson,
+    this.archivedAt,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['custom_exercise_id'] = Variable<String>(customExerciseId);
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
+    map['primary_muscles_json'] = Variable<String>(primaryMusclesJson);
+    map['secondary_muscles_json'] = Variable<String>(secondaryMusclesJson);
+    map['equipment_json'] = Variable<String>(equipmentJson);
+    map['movement_patterns_json'] = Variable<String>(movementPatternsJson);
+    if (!nullToAbsent || archivedAt != null) {
+      map['archived_at'] = Variable<DateTime>(archivedAt);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  CustomExercisesCompanion toCompanion(bool nullToAbsent) {
+    return CustomExercisesCompanion(
+      customExerciseId: Value(customExerciseId),
+      name: Value(name),
+      notes: notes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(notes),
+      primaryMusclesJson: Value(primaryMusclesJson),
+      secondaryMusclesJson: Value(secondaryMusclesJson),
+      equipmentJson: Value(equipmentJson),
+      movementPatternsJson: Value(movementPatternsJson),
+      archivedAt: archivedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(archivedAt),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory CustomExerciseRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return CustomExerciseRow(
+      customExerciseId: serializer.fromJson<String>(json['customExerciseId']),
+      name: serializer.fromJson<String>(json['name']),
+      notes: serializer.fromJson<String?>(json['notes']),
+      primaryMusclesJson: serializer.fromJson<String>(
+        json['primaryMusclesJson'],
+      ),
+      secondaryMusclesJson: serializer.fromJson<String>(
+        json['secondaryMusclesJson'],
+      ),
+      equipmentJson: serializer.fromJson<String>(json['equipmentJson']),
+      movementPatternsJson: serializer.fromJson<String>(
+        json['movementPatternsJson'],
+      ),
+      archivedAt: serializer.fromJson<DateTime?>(json['archivedAt']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'customExerciseId': serializer.toJson<String>(customExerciseId),
+      'name': serializer.toJson<String>(name),
+      'notes': serializer.toJson<String?>(notes),
+      'primaryMusclesJson': serializer.toJson<String>(primaryMusclesJson),
+      'secondaryMusclesJson': serializer.toJson<String>(secondaryMusclesJson),
+      'equipmentJson': serializer.toJson<String>(equipmentJson),
+      'movementPatternsJson': serializer.toJson<String>(movementPatternsJson),
+      'archivedAt': serializer.toJson<DateTime?>(archivedAt),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  CustomExerciseRow copyWith({
+    String? customExerciseId,
+    String? name,
+    Value<String?> notes = const Value.absent(),
+    String? primaryMusclesJson,
+    String? secondaryMusclesJson,
+    String? equipmentJson,
+    String? movementPatternsJson,
+    Value<DateTime?> archivedAt = const Value.absent(),
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) => CustomExerciseRow(
+    customExerciseId: customExerciseId ?? this.customExerciseId,
+    name: name ?? this.name,
+    notes: notes.present ? notes.value : this.notes,
+    primaryMusclesJson: primaryMusclesJson ?? this.primaryMusclesJson,
+    secondaryMusclesJson: secondaryMusclesJson ?? this.secondaryMusclesJson,
+    equipmentJson: equipmentJson ?? this.equipmentJson,
+    movementPatternsJson: movementPatternsJson ?? this.movementPatternsJson,
+    archivedAt: archivedAt.present ? archivedAt.value : this.archivedAt,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  CustomExerciseRow copyWithCompanion(CustomExercisesCompanion data) {
+    return CustomExerciseRow(
+      customExerciseId: data.customExerciseId.present
+          ? data.customExerciseId.value
+          : this.customExerciseId,
+      name: data.name.present ? data.name.value : this.name,
+      notes: data.notes.present ? data.notes.value : this.notes,
+      primaryMusclesJson: data.primaryMusclesJson.present
+          ? data.primaryMusclesJson.value
+          : this.primaryMusclesJson,
+      secondaryMusclesJson: data.secondaryMusclesJson.present
+          ? data.secondaryMusclesJson.value
+          : this.secondaryMusclesJson,
+      equipmentJson: data.equipmentJson.present
+          ? data.equipmentJson.value
+          : this.equipmentJson,
+      movementPatternsJson: data.movementPatternsJson.present
+          ? data.movementPatternsJson.value
+          : this.movementPatternsJson,
+      archivedAt: data.archivedAt.present
+          ? data.archivedAt.value
+          : this.archivedAt,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CustomExerciseRow(')
+          ..write('customExerciseId: $customExerciseId, ')
+          ..write('name: $name, ')
+          ..write('notes: $notes, ')
+          ..write('primaryMusclesJson: $primaryMusclesJson, ')
+          ..write('secondaryMusclesJson: $secondaryMusclesJson, ')
+          ..write('equipmentJson: $equipmentJson, ')
+          ..write('movementPatternsJson: $movementPatternsJson, ')
+          ..write('archivedAt: $archivedAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    customExerciseId,
+    name,
+    notes,
+    primaryMusclesJson,
+    secondaryMusclesJson,
+    equipmentJson,
+    movementPatternsJson,
+    archivedAt,
+    createdAt,
+    updatedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is CustomExerciseRow &&
+          other.customExerciseId == this.customExerciseId &&
+          other.name == this.name &&
+          other.notes == this.notes &&
+          other.primaryMusclesJson == this.primaryMusclesJson &&
+          other.secondaryMusclesJson == this.secondaryMusclesJson &&
+          other.equipmentJson == this.equipmentJson &&
+          other.movementPatternsJson == this.movementPatternsJson &&
+          other.archivedAt == this.archivedAt &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class CustomExercisesCompanion extends UpdateCompanion<CustomExerciseRow> {
+  final Value<String> customExerciseId;
+  final Value<String> name;
+  final Value<String?> notes;
+  final Value<String> primaryMusclesJson;
+  final Value<String> secondaryMusclesJson;
+  final Value<String> equipmentJson;
+  final Value<String> movementPatternsJson;
+  final Value<DateTime?> archivedAt;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<int> rowid;
+  const CustomExercisesCompanion({
+    this.customExerciseId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.primaryMusclesJson = const Value.absent(),
+    this.secondaryMusclesJson = const Value.absent(),
+    this.equipmentJson = const Value.absent(),
+    this.movementPatternsJson = const Value.absent(),
+    this.archivedAt = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  CustomExercisesCompanion.insert({
+    required String customExerciseId,
+    required String name,
+    this.notes = const Value.absent(),
+    required String primaryMusclesJson,
+    required String secondaryMusclesJson,
+    required String equipmentJson,
+    required String movementPatternsJson,
+    this.archivedAt = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.rowid = const Value.absent(),
+  }) : customExerciseId = Value(customExerciseId),
+       name = Value(name),
+       primaryMusclesJson = Value(primaryMusclesJson),
+       secondaryMusclesJson = Value(secondaryMusclesJson),
+       equipmentJson = Value(equipmentJson),
+       movementPatternsJson = Value(movementPatternsJson),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt);
+  static Insertable<CustomExerciseRow> custom({
+    Expression<String>? customExerciseId,
+    Expression<String>? name,
+    Expression<String>? notes,
+    Expression<String>? primaryMusclesJson,
+    Expression<String>? secondaryMusclesJson,
+    Expression<String>? equipmentJson,
+    Expression<String>? movementPatternsJson,
+    Expression<DateTime>? archivedAt,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (customExerciseId != null) 'custom_exercise_id': customExerciseId,
+      if (name != null) 'name': name,
+      if (notes != null) 'notes': notes,
+      if (primaryMusclesJson != null)
+        'primary_muscles_json': primaryMusclesJson,
+      if (secondaryMusclesJson != null)
+        'secondary_muscles_json': secondaryMusclesJson,
+      if (equipmentJson != null) 'equipment_json': equipmentJson,
+      if (movementPatternsJson != null)
+        'movement_patterns_json': movementPatternsJson,
+      if (archivedAt != null) 'archived_at': archivedAt,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  CustomExercisesCompanion copyWith({
+    Value<String>? customExerciseId,
+    Value<String>? name,
+    Value<String?>? notes,
+    Value<String>? primaryMusclesJson,
+    Value<String>? secondaryMusclesJson,
+    Value<String>? equipmentJson,
+    Value<String>? movementPatternsJson,
+    Value<DateTime?>? archivedAt,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<int>? rowid,
+  }) {
+    return CustomExercisesCompanion(
+      customExerciseId: customExerciseId ?? this.customExerciseId,
+      name: name ?? this.name,
+      notes: notes ?? this.notes,
+      primaryMusclesJson: primaryMusclesJson ?? this.primaryMusclesJson,
+      secondaryMusclesJson: secondaryMusclesJson ?? this.secondaryMusclesJson,
+      equipmentJson: equipmentJson ?? this.equipmentJson,
+      movementPatternsJson: movementPatternsJson ?? this.movementPatternsJson,
+      archivedAt: archivedAt ?? this.archivedAt,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (customExerciseId.present) {
+      map['custom_exercise_id'] = Variable<String>(customExerciseId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    if (primaryMusclesJson.present) {
+      map['primary_muscles_json'] = Variable<String>(primaryMusclesJson.value);
+    }
+    if (secondaryMusclesJson.present) {
+      map['secondary_muscles_json'] = Variable<String>(
+        secondaryMusclesJson.value,
+      );
+    }
+    if (equipmentJson.present) {
+      map['equipment_json'] = Variable<String>(equipmentJson.value);
+    }
+    if (movementPatternsJson.present) {
+      map['movement_patterns_json'] = Variable<String>(
+        movementPatternsJson.value,
+      );
+    }
+    if (archivedAt.present) {
+      map['archived_at'] = Variable<DateTime>(archivedAt.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CustomExercisesCompanion(')
+          ..write('customExerciseId: $customExerciseId, ')
+          ..write('name: $name, ')
+          ..write('notes: $notes, ')
+          ..write('primaryMusclesJson: $primaryMusclesJson, ')
+          ..write('secondaryMusclesJson: $secondaryMusclesJson, ')
+          ..write('equipmentJson: $equipmentJson, ')
+          ..write('movementPatternsJson: $movementPatternsJson, ')
+          ..write('archivedAt: $archivedAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $WorkoutGroupsTable extends WorkoutGroups
     with TableInfo<$WorkoutGroupsTable, WorkoutGroupRow> {
   @override
@@ -5433,6 +6096,9 @@ abstract class _$RepForgeDatabase extends GeneratedDatabase {
   late final $OfficialExerciseMuscleGroupsTable officialExerciseMuscleGroups =
       $OfficialExerciseMuscleGroupsTable(this);
   late final $CatalogImportsTable catalogImports = $CatalogImportsTable(this);
+  late final $CustomExercisesTable customExercises = $CustomExercisesTable(
+    this,
+  );
   late final $WorkoutGroupsTable workoutGroups = $WorkoutGroupsTable(this);
   late final $WorkoutGroupExerciseAssignmentsTable
   workoutGroupExerciseAssignments = $WorkoutGroupExerciseAssignmentsTable(this);
@@ -5474,6 +6140,7 @@ abstract class _$RepForgeDatabase extends GeneratedDatabase {
     officialExerciseMovementPatterns,
     officialExerciseMuscleGroups,
     catalogImports,
+    customExercises,
     workoutGroups,
     workoutGroupExerciseAssignments,
     settingsProfiles,
@@ -6734,6 +7401,323 @@ typedef $$CatalogImportsTableProcessedTableManager =
         >,
       ),
       CatalogImportRow,
+      PrefetchHooks Function()
+    >;
+typedef $$CustomExercisesTableCreateCompanionBuilder =
+    CustomExercisesCompanion Function({
+      required String customExerciseId,
+      required String name,
+      Value<String?> notes,
+      required String primaryMusclesJson,
+      required String secondaryMusclesJson,
+      required String equipmentJson,
+      required String movementPatternsJson,
+      Value<DateTime?> archivedAt,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<int> rowid,
+    });
+typedef $$CustomExercisesTableUpdateCompanionBuilder =
+    CustomExercisesCompanion Function({
+      Value<String> customExerciseId,
+      Value<String> name,
+      Value<String?> notes,
+      Value<String> primaryMusclesJson,
+      Value<String> secondaryMusclesJson,
+      Value<String> equipmentJson,
+      Value<String> movementPatternsJson,
+      Value<DateTime?> archivedAt,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<int> rowid,
+    });
+
+class $$CustomExercisesTableFilterComposer
+    extends Composer<_$RepForgeDatabase, $CustomExercisesTable> {
+  $$CustomExercisesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get customExerciseId => $composableBuilder(
+    column: $table.customExerciseId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get primaryMusclesJson => $composableBuilder(
+    column: $table.primaryMusclesJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get secondaryMusclesJson => $composableBuilder(
+    column: $table.secondaryMusclesJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get equipmentJson => $composableBuilder(
+    column: $table.equipmentJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get movementPatternsJson => $composableBuilder(
+    column: $table.movementPatternsJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get archivedAt => $composableBuilder(
+    column: $table.archivedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$CustomExercisesTableOrderingComposer
+    extends Composer<_$RepForgeDatabase, $CustomExercisesTable> {
+  $$CustomExercisesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get customExerciseId => $composableBuilder(
+    column: $table.customExerciseId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get primaryMusclesJson => $composableBuilder(
+    column: $table.primaryMusclesJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get secondaryMusclesJson => $composableBuilder(
+    column: $table.secondaryMusclesJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get equipmentJson => $composableBuilder(
+    column: $table.equipmentJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get movementPatternsJson => $composableBuilder(
+    column: $table.movementPatternsJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get archivedAt => $composableBuilder(
+    column: $table.archivedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$CustomExercisesTableAnnotationComposer
+    extends Composer<_$RepForgeDatabase, $CustomExercisesTable> {
+  $$CustomExercisesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get customExerciseId => $composableBuilder(
+    column: $table.customExerciseId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  GeneratedColumn<String> get primaryMusclesJson => $composableBuilder(
+    column: $table.primaryMusclesJson,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get secondaryMusclesJson => $composableBuilder(
+    column: $table.secondaryMusclesJson,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get equipmentJson => $composableBuilder(
+    column: $table.equipmentJson,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get movementPatternsJson => $composableBuilder(
+    column: $table.movementPatternsJson,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get archivedAt => $composableBuilder(
+    column: $table.archivedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$CustomExercisesTableTableManager
+    extends
+        RootTableManager<
+          _$RepForgeDatabase,
+          $CustomExercisesTable,
+          CustomExerciseRow,
+          $$CustomExercisesTableFilterComposer,
+          $$CustomExercisesTableOrderingComposer,
+          $$CustomExercisesTableAnnotationComposer,
+          $$CustomExercisesTableCreateCompanionBuilder,
+          $$CustomExercisesTableUpdateCompanionBuilder,
+          (
+            CustomExerciseRow,
+            BaseReferences<
+              _$RepForgeDatabase,
+              $CustomExercisesTable,
+              CustomExerciseRow
+            >,
+          ),
+          CustomExerciseRow,
+          PrefetchHooks Function()
+        > {
+  $$CustomExercisesTableTableManager(
+    _$RepForgeDatabase db,
+    $CustomExercisesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$CustomExercisesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$CustomExercisesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$CustomExercisesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> customExerciseId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<String> primaryMusclesJson = const Value.absent(),
+                Value<String> secondaryMusclesJson = const Value.absent(),
+                Value<String> equipmentJson = const Value.absent(),
+                Value<String> movementPatternsJson = const Value.absent(),
+                Value<DateTime?> archivedAt = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => CustomExercisesCompanion(
+                customExerciseId: customExerciseId,
+                name: name,
+                notes: notes,
+                primaryMusclesJson: primaryMusclesJson,
+                secondaryMusclesJson: secondaryMusclesJson,
+                equipmentJson: equipmentJson,
+                movementPatternsJson: movementPatternsJson,
+                archivedAt: archivedAt,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String customExerciseId,
+                required String name,
+                Value<String?> notes = const Value.absent(),
+                required String primaryMusclesJson,
+                required String secondaryMusclesJson,
+                required String equipmentJson,
+                required String movementPatternsJson,
+                Value<DateTime?> archivedAt = const Value.absent(),
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => CustomExercisesCompanion.insert(
+                customExerciseId: customExerciseId,
+                name: name,
+                notes: notes,
+                primaryMusclesJson: primaryMusclesJson,
+                secondaryMusclesJson: secondaryMusclesJson,
+                equipmentJson: equipmentJson,
+                movementPatternsJson: movementPatternsJson,
+                archivedAt: archivedAt,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$CustomExercisesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$RepForgeDatabase,
+      $CustomExercisesTable,
+      CustomExerciseRow,
+      $$CustomExercisesTableFilterComposer,
+      $$CustomExercisesTableOrderingComposer,
+      $$CustomExercisesTableAnnotationComposer,
+      $$CustomExercisesTableCreateCompanionBuilder,
+      $$CustomExercisesTableUpdateCompanionBuilder,
+      (
+        CustomExerciseRow,
+        BaseReferences<
+          _$RepForgeDatabase,
+          $CustomExercisesTable,
+          CustomExerciseRow
+        >,
+      ),
+      CustomExerciseRow,
       PrefetchHooks Function()
     >;
 typedef $$WorkoutGroupsTableCreateCompanionBuilder =
@@ -8475,6 +9459,8 @@ class $RepForgeDatabaseManager {
       );
   $$CatalogImportsTableTableManager get catalogImports =>
       $$CatalogImportsTableTableManager(_db, _db.catalogImports);
+  $$CustomExercisesTableTableManager get customExercises =>
+      $$CustomExercisesTableTableManager(_db, _db.customExercises);
   $$WorkoutGroupsTableTableManager get workoutGroups =>
       $$WorkoutGroupsTableTableManager(_db, _db.workoutGroups);
   $$WorkoutGroupExerciseAssignmentsTableTableManager

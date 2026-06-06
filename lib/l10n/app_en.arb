@@ -1605,6 +1605,208 @@
       }
     }
   },
+  "exercisesCreateCustom": "Create custom exercise",
+  "@exercisesCreateCustom": {
+    "description": "Button label to create a local custom exercise."
+  },
+  "exercisesCustomBadge": "Custom",
+  "@exercisesCustomBadge": {
+    "description": "Badge for user-owned custom exercises."
+  },
+  "exercisesOfficialBadge": "Official",
+  "@exercisesOfficialBadge": {
+    "description": "Badge for bundled official exercises."
+  },
+  "exercisesCustomActionsTooltip": "Custom exercise actions",
+  "@exercisesCustomActionsTooltip": {
+    "description": "Tooltip for custom exercise edit/archive menu."
+  },
+  "exercisesEditCustom": "Edit exercise",
+  "@exercisesEditCustom": {
+    "description": "Popup action label to edit a custom exercise."
+  },
+  "exercisesArchiveCustom": "Archive exercise",
+  "@exercisesArchiveCustom": {
+    "description": "Popup action label to archive a custom exercise."
+  },
+  "exercisesCustomSemantics": "Custom exercise, {name}",
+  "@exercisesCustomSemantics": {
+    "description": "Semantic label for a custom exercise row.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Cable Fly"
+      }
+    }
+  },
+  "exercisesOfficialSemantics": "Official exercise, {name}",
+  "@exercisesOfficialSemantics": {
+    "description": "Semantic label for an official exercise row.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Barbell Bench Press"
+      }
+    }
+  },
+  "customExerciseCreateTitle": "Create custom exercise",
+  "@customExerciseCreateTitle": {
+    "description": "Dialog title for creating a custom exercise."
+  },
+  "customExerciseEditTitle": "Edit custom exercise",
+  "@customExerciseEditTitle": {
+    "description": "Dialog title for editing a custom exercise."
+  },
+  "customExerciseNameLabel": "Name",
+  "@customExerciseNameLabel": {
+    "description": "Custom exercise name field label."
+  },
+  "customExerciseNotesLabel": "Notes",
+  "@customExerciseNotesLabel": {
+    "description": "Custom exercise notes field label."
+  },
+  "customExercisePrimaryMusclesLabel": "Primary muscles",
+  "@customExercisePrimaryMusclesLabel": {
+    "description": "Custom exercise primary muscles field label."
+  },
+  "customExerciseSecondaryMusclesLabel": "Secondary muscles",
+  "@customExerciseSecondaryMusclesLabel": {
+    "description": "Custom exercise secondary muscles field label."
+  },
+  "customExerciseEquipmentLabel": "Equipment",
+  "@customExerciseEquipmentLabel": {
+    "description": "Custom exercise equipment field label."
+  },
+  "customExerciseMovementPatternsLabel": "Movement patterns",
+  "@customExerciseMovementPatternsLabel": {
+    "description": "Custom exercise movement patterns field label."
+  },
+  "customExerciseCommaHelper": "Comma-separated tags",
+  "@customExerciseCommaHelper": {
+    "description": "Helper text for comma-separated custom exercise tag fields."
+  },
+  "customExerciseCancel": "Cancel",
+  "@customExerciseCancel": {
+    "description": "Cancel action in custom exercise dialogs."
+  },
+  "customExerciseSave": "Save",
+  "@customExerciseSave": {
+    "description": "Save action in custom exercise dialogs."
+  },
+  "customExerciseNameRequired": "Add a name.",
+  "@customExerciseNameRequired": {
+    "description": "Validation message when custom exercise name is missing."
+  },
+  "customExercisePrimaryMusclesRequired": "Add at least one primary muscle.",
+  "@customExercisePrimaryMusclesRequired": {
+    "description": "Validation message when custom exercise primary muscles are missing."
+  },
+  "customExerciseArchiveTitle": "Archive custom exercise",
+  "@customExerciseArchiveTitle": {
+    "description": "Confirmation title for archiving a custom exercise."
+  },
+  "customExerciseArchiveMessage": "Archive {name}? Historical set snapshots stay readable.",
+  "@customExerciseArchiveMessage": {
+    "description": "Confirmation message for archiving a custom exercise.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Cable Fly"
+      }
+    }
+  },
+  "customExerciseArchiveConfirm": "Archive",
+  "@customExerciseArchiveConfirm": {
+    "description": "Confirm button for archiving a custom exercise."
+  },
+  "customFolderCreateButton": "Create folder",
+  "@customFolderCreateButton": {
+    "description": "Button label for creating a custom training folder."
+  },
+  "customFolderCreateMessage": "Build a local folder from official or custom exercises.",
+  "@customFolderCreateMessage": {
+    "description": "Helper text for creating custom training folders."
+  },
+  "customFolderCreateTitle": "Create training folder",
+  "@customFolderCreateTitle": {
+    "description": "Dialog title for creating a custom training folder."
+  },
+  "customFolderEditTitle": "Edit training folder",
+  "@customFolderEditTitle": {
+    "description": "Dialog title for editing a custom training folder."
+  },
+  "customFolderNameLabel": "Folder name",
+  "@customFolderNameLabel": {
+    "description": "Custom training folder name field label."
+  },
+  "customFolderAssignmentsTitle": "Assigned exercises",
+  "@customFolderAssignmentsTitle": {
+    "description": "Title for custom folder exercise assignment checklist."
+  },
+  "customFolderCancel": "Cancel",
+  "@customFolderCancel": {
+    "description": "Cancel action in custom folder dialogs."
+  },
+  "customFolderSave": "Save",
+  "@customFolderSave": {
+    "description": "Save action in custom folder dialogs."
+  },
+  "customFolderNameRequired": "Add a folder name.",
+  "@customFolderNameRequired": {
+    "description": "Validation message when custom folder name is missing."
+  },
+  "customFolderActionsTooltip": "Folder actions",
+  "@customFolderActionsTooltip": {
+    "description": "Tooltip for custom folder action menu."
+  },
+  "customFolderEdit": "Edit folder",
+  "@customFolderEdit": {
+    "description": "Menu action to edit a custom folder."
+  },
+  "customFolderArchive": "Archive folder",
+  "@customFolderArchive": {
+    "description": "Menu action to archive a custom folder."
+  },
+  "customFolderArchiveTitle": "Archive training folder",
+  "@customFolderArchiveTitle": {
+    "description": "Confirmation title for archiving a custom folder."
+  },
+  "customFolderArchiveMessage": "Archive {name}? Logged workout history stays untouched.",
+  "@customFolderArchiveMessage": {
+    "description": "Confirmation message for archiving a custom folder.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Push Day"
+      }
+    }
+  },
+  "customFolderArchiveConfirm": "Archive",
+  "@customFolderArchiveConfirm": {
+    "description": "Confirm button for archiving a custom folder."
+  },
+  "customFolderSemantics": "Training folder, {name}, {count} exercises",
+  "@customFolderSemantics": {
+    "description": "Semantic label for a custom training folder row.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Push Day"
+      },
+      "count": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "customFolderEmptyTitle": "No assigned exercises",
+  "@customFolderEmptyTitle": {
+    "description": "Empty title for a custom folder with no assigned exercises."
+  },
+  "customFolderEmptyMessage": "Edit the folder to add official or custom exercises.",
+  "@customFolderEmptyMessage": {
+    "description": "Empty message for a custom folder with no assigned exercises."
+  },
   "settingsPlaceholderMessage": "Settings will stay local-first when implemented.",
   "@settingsPlaceholderMessage": {
     "description": "Placeholder message for the settings destination."

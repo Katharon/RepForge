@@ -11,6 +11,14 @@ import '../../training_log/domain/training_log_domain.dart';
 import '../../training_log/presentation/training_log_presentation.dart';
 import 'workout_group_list_loader.dart';
 
+typedef WorkoutGroupCreateAction =
+    Future<bool> Function(List<ExerciseListItemViewModel> availableExercises);
+typedef WorkoutGroupItemAction =
+    Future<bool> Function(
+      WorkoutGroupListItemViewModel group,
+      List<ExerciseListItemViewModel> availableExercises,
+    );
+
 enum TrainUiStatus { loading, empty, error, success }
 
 final class TrainUiState {
@@ -27,11 +35,17 @@ class GroupsPage extends StatefulWidget {
     super.key,
     this.workoutSessionController,
     this.onOpenExercise,
+    this.onCreateWorkoutGroup,
+    this.onEditWorkoutGroup,
+    this.onArchiveWorkoutGroup,
   });
 
   final TrainPageLoader loader;
   final WorkoutSessionController? workoutSessionController;
   final ValueChanged<ExerciseRef>? onOpenExercise;
+  final WorkoutGroupCreateAction? onCreateWorkoutGroup;
+  final WorkoutGroupItemAction? onEditWorkoutGroup;
+  final WorkoutGroupItemAction? onArchiveWorkoutGroup;
 
   @override
   State<GroupsPage> createState() => _GroupsPageState();
@@ -41,6 +55,7 @@ class _GroupsPageState extends State<GroupsPage> {
   final TextEditingController _searchController = TextEditingController();
   var _requestVersion = 0;
   TrainCategoryId? _selectedCategoryId;
+  String? _selectedGroupId;
   String _categorySearchText = '';
   TrainUiState _state = const TrainUiState(status: TrainUiStatus.loading);
 
@@ -72,14 +87,15 @@ class _GroupsPageState extends State<GroupsPage> {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context);
     final selectedCategory = _selectedCategory(_state.model);
+    final selectedGroup = _selectedGroup(_state.model);
 
     return CustomScrollView(
       slivers: [
         SliverAppBar.large(
           title: Text(
-            selectedCategory == null
-                ? localizations.navGroups
-                : _categoryTitle(context, selectedCategory.id),
+            selectedCategory != null
+                ? _categoryTitle(context, selectedCategory.id)
+                : selectedGroup?.name ?? localizations.navGroups,
           ),
         ),
         AppResponsiveSliverList(
@@ -88,15 +104,20 @@ class _GroupsPageState extends State<GroupsPage> {
             _TrainStateBody(
               state: _state,
               selectedCategory: selectedCategory,
+              selectedGroup: selectedGroup,
               searchController: _searchController,
               searchText: _categorySearchText,
               onRetry: _load,
               onOpenCategory: _openCategory,
+              onOpenGroup: _openGroup,
               onBackToCategories: _backToCategories,
               onSearch: _applyCategorySearch,
               workoutSessionController: widget.workoutSessionController,
               onStartSession: _startSession,
               onOpenExercise: widget.onOpenExercise,
+              onCreateWorkoutGroup: _createWorkoutGroup,
+              onEditWorkoutGroup: _editWorkoutGroup,
+              onArchiveWorkoutGroup: _archiveWorkoutGroup,
             ),
           ],
         ),
@@ -138,6 +159,7 @@ class _GroupsPageState extends State<GroupsPage> {
   void _openCategory(TrainCategoryId id) {
     setState(() {
       _selectedCategoryId = id;
+      _selectedGroupId = null;
       _categorySearchText = '';
       _searchController.clear();
     });
@@ -145,6 +167,16 @@ class _GroupsPageState extends State<GroupsPage> {
 
   void _backToCategories() {
     setState(() {
+      _selectedCategoryId = null;
+      _selectedGroupId = null;
+      _categorySearchText = '';
+      _searchController.clear();
+    });
+  }
+
+  void _openGroup(String id) {
+    setState(() {
+      _selectedGroupId = id;
       _selectedCategoryId = null;
       _categorySearchText = '';
       _searchController.clear();
@@ -171,6 +203,57 @@ class _GroupsPageState extends State<GroupsPage> {
     return null;
   }
 
+  WorkoutGroupListItemViewModel? _selectedGroup(TrainLandingViewModel? model) {
+    final selectedGroupId = _selectedGroupId;
+    if (model == null || selectedGroupId == null) {
+      return null;
+    }
+    for (final group in model.groups) {
+      if (group.id == selectedGroupId) {
+        return group;
+      }
+    }
+    return null;
+  }
+
+  Future<bool> _createWorkoutGroup(
+    List<ExerciseListItemViewModel> availableExercises,
+  ) async {
+    final changed =
+        await widget.onCreateWorkoutGroup?.call(availableExercises) ?? false;
+    if (changed) {
+      await _load();
+    }
+    return changed;
+  }
+
+  Future<bool> _editWorkoutGroup(
+    WorkoutGroupListItemViewModel group,
+    List<ExerciseListItemViewModel> availableExercises,
+  ) async {
+    final changed =
+        await widget.onEditWorkoutGroup?.call(group, availableExercises) ??
+        false;
+    if (changed) {
+      await _load();
+    }
+    return changed;
+  }
+
+  Future<bool> _archiveWorkoutGroup(
+    WorkoutGroupListItemViewModel group,
+    List<ExerciseListItemViewModel> availableExercises,
+  ) async {
+    final changed =
+        await widget.onArchiveWorkoutGroup?.call(group, availableExercises) ??
+        false;
+    if (changed) {
+      _backToCategories();
+      await _load();
+    }
+    return changed;
+  }
+
   Future<void> _startSession(TrainCategoryViewModel category) async {
     final controller = widget.workoutSessionController;
     if (controller == null) {
@@ -178,37 +261,55 @@ class _GroupsPageState extends State<GroupsPage> {
     }
     await controller.start(
       sourceName: _categoryTitle(context, category.id),
-      exerciseRefs: category.exercises.map(_exerciseRefFor),
+      exerciseRefs: category.exercises.map(
+        (exercise) => exercise.toExerciseRef(),
+      ),
     );
   }
+}
+
+List<ExerciseListItemViewModel> _allExercises(TrainLandingViewModel model) {
+  return model.categories
+      .firstWhere((category) => category.id == TrainCategoryId.myExercises)
+      .exercises;
 }
 
 class _TrainStateBody extends StatelessWidget {
   const _TrainStateBody({
     required this.state,
     required this.selectedCategory,
+    required this.selectedGroup,
     required this.searchController,
     required this.searchText,
     required this.onRetry,
     required this.onOpenCategory,
+    required this.onOpenGroup,
     required this.onBackToCategories,
     required this.onSearch,
     required this.workoutSessionController,
     required this.onStartSession,
     required this.onOpenExercise,
+    required this.onCreateWorkoutGroup,
+    required this.onEditWorkoutGroup,
+    required this.onArchiveWorkoutGroup,
   });
 
   final TrainUiState state;
   final TrainCategoryViewModel? selectedCategory;
+  final WorkoutGroupListItemViewModel? selectedGroup;
   final TextEditingController searchController;
   final String searchText;
   final VoidCallback onRetry;
   final ValueChanged<TrainCategoryId> onOpenCategory;
+  final ValueChanged<String> onOpenGroup;
   final VoidCallback onBackToCategories;
   final VoidCallback onSearch;
   final WorkoutSessionController? workoutSessionController;
   final ValueChanged<TrainCategoryViewModel> onStartSession;
   final ValueChanged<ExerciseRef>? onOpenExercise;
+  final WorkoutGroupCreateAction onCreateWorkoutGroup;
+  final WorkoutGroupItemAction onEditWorkoutGroup;
+  final WorkoutGroupItemAction onArchiveWorkoutGroup;
 
   @override
   Widget build(BuildContext context) {
@@ -275,19 +376,48 @@ class _TrainStateBody extends StatelessWidget {
             onOpenExercise: onOpenExercise,
           );
         }
+        final group = selectedGroup;
+        if (group != null) {
+          return _TrainGroupExerciseList(
+            group: group,
+            searchController: searchController,
+            searchText: searchText,
+            onBack: onBackToCategories,
+            onSearch: onSearch,
+            onOpenExercise: onOpenExercise,
+            onEditGroup: onEditWorkoutGroup,
+            onArchiveGroup: onArchiveWorkoutGroup,
+            availableExercises: _allExercises(state.model!),
+          );
+        }
         return _TrainLanding(
           model: state.model!,
           onOpenCategory: onOpenCategory,
+          onOpenGroup: onOpenGroup,
+          onCreateWorkoutGroup: onCreateWorkoutGroup,
+          onEditWorkoutGroup: onEditWorkoutGroup,
+          onArchiveWorkoutGroup: onArchiveWorkoutGroup,
         );
     }
   }
 }
 
 class _TrainLanding extends StatelessWidget {
-  const _TrainLanding({required this.model, required this.onOpenCategory});
+  const _TrainLanding({
+    required this.model,
+    required this.onOpenCategory,
+    required this.onOpenGroup,
+    required this.onCreateWorkoutGroup,
+    required this.onEditWorkoutGroup,
+    required this.onArchiveWorkoutGroup,
+  });
 
   final TrainLandingViewModel model;
   final ValueChanged<TrainCategoryId> onOpenCategory;
+  final ValueChanged<String> onOpenGroup;
+  final WorkoutGroupCreateAction onCreateWorkoutGroup;
+  final WorkoutGroupItemAction onEditWorkoutGroup;
+  final WorkoutGroupItemAction onArchiveWorkoutGroup;
 
   @override
   Widget build(BuildContext context) {
@@ -296,7 +426,9 @@ class _TrainLanding extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _NewWorkoutCard(),
+        _NewWorkoutCard(
+          onCreate: () => onCreateWorkoutGroup(_allExercises(model)),
+        ),
         const SizedBox(height: RepForgeSpacing.lg),
         Text(
           localizations.trainSplitsTitle,
@@ -318,7 +450,13 @@ class _TrainLanding extends StatelessWidget {
           ),
           const SizedBox(height: RepForgeSpacing.md),
           for (final group in model.groups.take(4)) ...[
-            _StarterGroupCard(group: group),
+            _StarterGroupCard(
+              group: group,
+              availableExercises: _allExercises(model),
+              onOpen: () => onOpenGroup(group.id),
+              onEdit: onEditWorkoutGroup,
+              onArchive: onArchiveWorkoutGroup,
+            ),
             const SizedBox(height: RepForgeSpacing.md),
           ],
         ],
@@ -328,6 +466,10 @@ class _TrainLanding extends StatelessWidget {
 }
 
 class _NewWorkoutCard extends StatelessWidget {
+  const _NewWorkoutCard({required this.onCreate});
+
+  final Future<bool> Function() onCreate;
+
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context);
@@ -337,13 +479,16 @@ class _NewWorkoutCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           FilledButton.icon(
-            onPressed: null,
+            key: const Key('train_create_folder_button'),
+            onPressed: () {
+              unawaited(onCreate());
+            },
             icon: const Icon(Icons.add),
-            label: Text(localizations.trainNewWorkout),
+            label: Text(localizations.customFolderCreateButton),
           ),
           const SizedBox(height: RepForgeSpacing.sm),
           Text(
-            localizations.trainNewWorkoutUnavailable,
+            localizations.customFolderCreateMessage,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: RepForgeColorTokens.textSecondary,
             ),
@@ -539,6 +684,111 @@ class _TrainCategoryExerciseList extends StatelessWidget {
   }
 }
 
+class _TrainGroupExerciseList extends StatelessWidget {
+  const _TrainGroupExerciseList({
+    required this.group,
+    required this.searchController,
+    required this.searchText,
+    required this.onBack,
+    required this.onSearch,
+    required this.onOpenExercise,
+    required this.onEditGroup,
+    required this.onArchiveGroup,
+    required this.availableExercises,
+  });
+
+  final WorkoutGroupListItemViewModel group;
+  final TextEditingController searchController;
+  final String searchText;
+  final VoidCallback onBack;
+  final VoidCallback onSearch;
+  final ValueChanged<ExerciseRef>? onOpenExercise;
+  final WorkoutGroupItemAction onEditGroup;
+  final WorkoutGroupItemAction onArchiveGroup;
+  final List<ExerciseListItemViewModel> availableExercises;
+
+  @override
+  Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+    final normalizedSearch = searchText.toLowerCase();
+    final exercises = normalizedSearch.isEmpty
+        ? group.exercises
+        : group.exercises
+              .where((exercise) {
+                return exercise.name.toLowerCase().contains(normalizedSearch);
+              })
+              .toList(growable: false);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          children: [
+            TextButton.icon(
+              onPressed: onBack,
+              icon: const Icon(Icons.arrow_back),
+              label: Text(localizations.trainBackToSplits),
+            ),
+            const Spacer(),
+            PopupMenuButton<_WorkoutGroupAction>(
+              tooltip: localizations.customFolderActionsTooltip,
+              onSelected: (action) {
+                switch (action) {
+                  case _WorkoutGroupAction.edit:
+                    unawaited(onEditGroup(group, availableExercises));
+                  case _WorkoutGroupAction.archive:
+                    unawaited(onArchiveGroup(group, availableExercises));
+                }
+              },
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem<_WorkoutGroupAction>(
+                    value: _WorkoutGroupAction.edit,
+                    child: Text(localizations.customFolderEdit),
+                  ),
+                  PopupMenuItem<_WorkoutGroupAction>(
+                    value: _WorkoutGroupAction.archive,
+                    child: Text(localizations.customFolderArchive),
+                  ),
+                ];
+              },
+            ),
+          ],
+        ),
+        const SizedBox(height: RepForgeSpacing.md),
+        _TrainCategorySearchBar(
+          controller: searchController,
+          onSearch: onSearch,
+        ),
+        const SizedBox(height: RepForgeSpacing.lg),
+        Text(
+          localizations.trainExerciseCount(exercises.length),
+          style: Theme.of(context).textTheme.labelLarge?.copyWith(
+            color: RepForgeColorTokens.textSecondary,
+          ),
+        ),
+        const SizedBox(height: RepForgeSpacing.md),
+        if (exercises.isEmpty)
+          _TrainInfoCard(
+            icon: Icons.folder_open_outlined,
+            title: localizations.customFolderEmptyTitle,
+            message: localizations.customFolderEmptyMessage,
+          )
+        else
+          for (final exercise in exercises) ...[
+            _TrainExerciseCard(
+              exercise: exercise,
+              onOpenExercise: onOpenExercise,
+            ),
+            const SizedBox(height: RepForgeSpacing.md),
+          ],
+      ],
+    );
+  }
+}
+
+enum _WorkoutGroupAction { edit, archive }
+
 class _TrainSessionCard extends StatelessWidget {
   const _TrainSessionCard({
     required this.category,
@@ -661,7 +911,7 @@ class _TrainExerciseCard extends StatelessWidget {
         child: InkWell(
           onTap: onOpenExercise == null
               ? null
-              : () => onOpenExercise!(_exerciseRefFor(exercise)),
+              : () => onOpenExercise!(exercise.toExerciseRef()),
           borderRadius: BorderRadius.circular(RepForgeRadius.lg),
           child: Padding(
             padding: const EdgeInsets.all(RepForgeSpacing.xs),
@@ -703,41 +953,92 @@ class _TrainExerciseCard extends StatelessWidget {
   }
 }
 
-ExerciseRef _exerciseRefFor(ExerciseListItemViewModel exercise) {
-  return ExerciseRef.official(
-    id: OfficialExerciseId(exercise.id),
-    displayNameSnapshot: exercise.name,
-    catalogVersionSnapshot: exercise.catalogVersionSnapshot,
-  );
-}
-
 class _StarterGroupCard extends StatelessWidget {
-  const _StarterGroupCard({required this.group});
+  const _StarterGroupCard({
+    required this.group,
+    required this.availableExercises,
+    required this.onOpen,
+    required this.onEdit,
+    required this.onArchive,
+  });
 
   final WorkoutGroupListItemViewModel group;
+  final List<ExerciseListItemViewModel> availableExercises;
+  final VoidCallback onOpen;
+  final WorkoutGroupItemAction onEdit;
+  final WorkoutGroupItemAction onArchive;
 
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context);
     final preview = group.exerciseNames.take(3).join(', ');
 
-    return AppCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(group.name, style: Theme.of(context).textTheme.titleMedium),
-          const SizedBox(height: RepForgeSpacing.xs),
-          Text(
-            localizations.groupsExerciseCount(group.exerciseCount),
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: RepForgeColorTokens.textSecondary,
+    return Semantics(
+      button: true,
+      label: localizations.customFolderSemantics(
+        group.name,
+        group.exerciseCount,
+      ),
+      child: AppCard(
+        child: InkWell(
+          key: Key('train_custom_folder_${group.id}'),
+          onTap: onOpen,
+          borderRadius: BorderRadius.circular(RepForgeRadius.lg),
+          child: Padding(
+            padding: const EdgeInsets.all(RepForgeSpacing.xs),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        group.name,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ),
+                    PopupMenuButton<_WorkoutGroupAction>(
+                      key: Key('train_custom_folder_actions_${group.id}'),
+                      tooltip: localizations.customFolderActionsTooltip,
+                      onSelected: (action) {
+                        switch (action) {
+                          case _WorkoutGroupAction.edit:
+                            unawaited(onEdit(group, availableExercises));
+                          case _WorkoutGroupAction.archive:
+                            unawaited(onArchive(group, availableExercises));
+                        }
+                      },
+                      itemBuilder: (context) {
+                        return [
+                          PopupMenuItem<_WorkoutGroupAction>(
+                            value: _WorkoutGroupAction.edit,
+                            child: Text(localizations.customFolderEdit),
+                          ),
+                          PopupMenuItem<_WorkoutGroupAction>(
+                            value: _WorkoutGroupAction.archive,
+                            child: Text(localizations.customFolderArchive),
+                          ),
+                        ];
+                      },
+                    ),
+                  ],
+                ),
+                const SizedBox(height: RepForgeSpacing.xs),
+                Text(
+                  localizations.groupsExerciseCount(group.exerciseCount),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: RepForgeColorTokens.textSecondary,
+                  ),
+                ),
+                if (preview.isNotEmpty) ...[
+                  const SizedBox(height: RepForgeSpacing.sm),
+                  Text(preview, style: Theme.of(context).textTheme.bodyMedium),
+                ],
+              ],
             ),
           ),
-          if (preview.isNotEmpty) ...[
-            const SizedBox(height: RepForgeSpacing.sm),
-            Text(preview, style: Theme.of(context).textTheme.bodyMedium),
-          ],
-        ],
+        ),
       ),
     );
   }

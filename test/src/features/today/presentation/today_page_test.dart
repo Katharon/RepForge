@@ -133,7 +133,10 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.byKey(const Key('workout_session_active_card')), findsOneWidget);
+    expect(
+      find.byKey(const Key('workout_session_active_card')),
+      findsOneWidget,
+    );
     expect(find.text('Active session'), findsOneWidget);
     expect(find.text('Push'), findsOneWidget);
     expect(

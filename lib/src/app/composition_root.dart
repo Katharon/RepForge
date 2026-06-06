@@ -61,6 +61,7 @@ final class AppDependencies {
     required this.getExerciseAnalytics,
     required this.getMuscleLoadDashboard,
     required this.exerciseCatalogRepository,
+    required this.customExerciseRepository,
     required this.ensureOfficialCatalogImported,
     required this.readinessCheckInRepository,
     required this.saveReadinessCheckIn,
@@ -108,6 +109,7 @@ final class AppDependencies {
     required this.getExerciseAnalytics,
     required this.getMuscleLoadDashboard,
     required this.exerciseCatalogRepository,
+    required this.customExerciseRepository,
     required this.ensureOfficialCatalogImported,
     required this.readinessCheckInRepository,
     required this.saveReadinessCheckIn,
@@ -155,6 +157,7 @@ final class AppDependencies {
   final GetExerciseAnalytics getExerciseAnalytics;
   final GetMuscleLoadDashboard getMuscleLoadDashboard;
   final ExerciseCatalogRepository exerciseCatalogRepository;
+  final CustomExerciseRepository customExerciseRepository;
   final Future<void> Function() ensureOfficialCatalogImported;
   final ReadinessCheckInRepository readinessCheckInRepository;
   final SaveReadinessCheckIn saveReadinessCheckIn;
@@ -362,6 +365,7 @@ final class CompositionRoot {
         getExerciseAnalytics: getExerciseAnalytics,
         getMuscleLoadDashboard: getMuscleLoadDashboard,
         exerciseCatalogRepository: exerciseCatalogRepository,
+        customExerciseRepository: exerciseCatalogRepository,
         ensureOfficialCatalogImported: ensureOfficialCatalogImported.call,
         readinessCheckInRepository: readinessCheckInRepository,
         saveReadinessCheckIn: saveReadinessCheckIn,
@@ -410,6 +414,7 @@ final class CompositionRoot {
       getExerciseAnalytics: getExerciseAnalytics,
       getMuscleLoadDashboard: getMuscleLoadDashboard,
       exerciseCatalogRepository: exerciseCatalogRepository,
+      customExerciseRepository: exerciseCatalogRepository,
       ensureOfficialCatalogImported: ensureOfficialCatalogImported.call,
       readinessCheckInRepository: readinessCheckInRepository,
       saveReadinessCheckIn: saveReadinessCheckIn,

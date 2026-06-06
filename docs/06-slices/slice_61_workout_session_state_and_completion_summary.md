@@ -48,33 +48,8 @@ Out of scope:
   persisted set session IDs for summary lookup but does not persist an active
   session record.
 
-## Validation Status
+## Completion
 
-Blocked in this run:
+Feature commit: `1b135cc feat(training): add workout session state`
 
-- `flutter gen-l10n` failed because Flutter attempted to write SDK cache files
-  under `/home/luki/flutter/bin/cache` in the sandbox.
-- `dart format ...` failed for the same SDK-cache reason.
-- Required escalations were auto-rejected by the session usage limit, so
-  generated localization files, formatting, analyzer, tests, scripts/check, APK,
-  and commit are still pending.
-
-Once Flutter SDK-cache access is available, run the normal slice validation:
-
-```bash
-flutter pub get
-flutter gen-l10n
-dart run build_runner build --delete-conflicting-outputs
-dart run tool/validate_catalog.dart
-dart format --output=none --set-exit-if-changed .
-flutter analyze
-flutter test
-scripts/check.sh
-flutter build apk --debug
-```
-
-Expected commit message after validation:
-
-```text
-feat(training): add workout session state
-```
+Follow-up build/localization fix: `46e304d fix(training): complete workout session build`

@@ -1327,6 +1327,145 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get exercisesCreateCustom => 'Create custom exercise';
+
+  @override
+  String get exercisesCustomBadge => 'Custom';
+
+  @override
+  String get exercisesOfficialBadge => 'Official';
+
+  @override
+  String get exercisesCustomActionsTooltip => 'Custom exercise actions';
+
+  @override
+  String get exercisesEditCustom => 'Edit exercise';
+
+  @override
+  String get exercisesArchiveCustom => 'Archive exercise';
+
+  @override
+  String exercisesCustomSemantics(String name) {
+    return 'Custom exercise, $name';
+  }
+
+  @override
+  String exercisesOfficialSemantics(String name) {
+    return 'Official exercise, $name';
+  }
+
+  @override
+  String get customExerciseCreateTitle => 'Create custom exercise';
+
+  @override
+  String get customExerciseEditTitle => 'Edit custom exercise';
+
+  @override
+  String get customExerciseNameLabel => 'Name';
+
+  @override
+  String get customExerciseNotesLabel => 'Notes';
+
+  @override
+  String get customExercisePrimaryMusclesLabel => 'Primary muscles';
+
+  @override
+  String get customExerciseSecondaryMusclesLabel => 'Secondary muscles';
+
+  @override
+  String get customExerciseEquipmentLabel => 'Equipment';
+
+  @override
+  String get customExerciseMovementPatternsLabel => 'Movement patterns';
+
+  @override
+  String get customExerciseCommaHelper => 'Comma-separated tags';
+
+  @override
+  String get customExerciseCancel => 'Cancel';
+
+  @override
+  String get customExerciseSave => 'Save';
+
+  @override
+  String get customExerciseNameRequired => 'Add a name.';
+
+  @override
+  String get customExercisePrimaryMusclesRequired =>
+      'Add at least one primary muscle.';
+
+  @override
+  String get customExerciseArchiveTitle => 'Archive custom exercise';
+
+  @override
+  String customExerciseArchiveMessage(String name) {
+    return 'Archive $name? Historical set snapshots stay readable.';
+  }
+
+  @override
+  String get customExerciseArchiveConfirm => 'Archive';
+
+  @override
+  String get customFolderCreateButton => 'Create folder';
+
+  @override
+  String get customFolderCreateMessage =>
+      'Build a local folder from official or custom exercises.';
+
+  @override
+  String get customFolderCreateTitle => 'Create training folder';
+
+  @override
+  String get customFolderEditTitle => 'Edit training folder';
+
+  @override
+  String get customFolderNameLabel => 'Folder name';
+
+  @override
+  String get customFolderAssignmentsTitle => 'Assigned exercises';
+
+  @override
+  String get customFolderCancel => 'Cancel';
+
+  @override
+  String get customFolderSave => 'Save';
+
+  @override
+  String get customFolderNameRequired => 'Add a folder name.';
+
+  @override
+  String get customFolderActionsTooltip => 'Folder actions';
+
+  @override
+  String get customFolderEdit => 'Edit folder';
+
+  @override
+  String get customFolderArchive => 'Archive folder';
+
+  @override
+  String get customFolderArchiveTitle => 'Archive training folder';
+
+  @override
+  String customFolderArchiveMessage(String name) {
+    return 'Archive $name? Logged workout history stays untouched.';
+  }
+
+  @override
+  String get customFolderArchiveConfirm => 'Archive';
+
+  @override
+  String customFolderSemantics(String name, int count) {
+    return 'Training folder, $name, $count exercises';
+  }
+
+  @override
+  String get customFolderEmptyTitle => 'No assigned exercises';
+
+  @override
+  String get customFolderEmptyMessage =>
+      'Edit the folder to add official or custom exercises.';
+
+  @override
   String get settingsPlaceholderMessage =>
       'Settings will stay local-first when implemented.';
 }

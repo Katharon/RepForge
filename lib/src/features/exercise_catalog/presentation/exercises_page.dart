@@ -8,6 +8,10 @@ import '../../../core/widgets/widgets.dart';
 import '../../training_log/domain/training_log_domain.dart';
 import 'exercise_catalog_loader.dart';
 
+typedef CustomExerciseCreateAction = Future<bool> Function();
+typedef CustomExerciseItemAction =
+    Future<bool> Function(ExerciseListItemViewModel exercise);
+
 enum ExerciseCatalogUiStatus { loading, empty, error, success }
 
 final class ExerciseCatalogUiState {
@@ -25,10 +29,20 @@ final class ExerciseCatalogUiState {
 }
 
 class ExercisesPage extends StatefulWidget {
-  const ExercisesPage({required this.loader, super.key, this.onOpenExercise});
+  const ExercisesPage({
+    required this.loader,
+    super.key,
+    this.onOpenExercise,
+    this.onCreateCustomExercise,
+    this.onEditCustomExercise,
+    this.onArchiveCustomExercise,
+  });
 
   final ExerciseCatalogListLoader loader;
   final ValueChanged<ExerciseRef>? onOpenExercise;
+  final CustomExerciseCreateAction? onCreateCustomExercise;
+  final CustomExerciseItemAction? onEditCustomExercise;
+  final CustomExerciseItemAction? onArchiveCustomExercise;
 
   @override
   State<ExercisesPage> createState() => _ExercisesPageState();
@@ -75,6 +89,18 @@ class _ExercisesPageState extends State<ExercisesPage> {
         AppResponsiveSliverList(
           maxWidth: 840,
           children: [
+            if (widget.onCreateCustomExercise != null) ...[
+              Align(
+                alignment: Alignment.centerLeft,
+                child: FilledButton.icon(
+                  key: const Key('create_custom_exercise_button'),
+                  onPressed: _createCustomExercise,
+                  icon: const Icon(Icons.add),
+                  label: Text(localizations.exercisesCreateCustom),
+                ),
+              ),
+              const SizedBox(height: RepForgeSpacing.md),
+            ],
             _ExerciseSearchBar(
               controller: _searchController,
               onSearch: () => _load(searchText: _searchController.text),
@@ -84,6 +110,8 @@ class _ExercisesPageState extends State<ExercisesPage> {
               state: _state,
               onRetry: _load,
               onOpenExercise: widget.onOpenExercise,
+              onEditCustomExercise: _editCustomExercise,
+              onArchiveCustomExercise: _archiveCustomExercise,
             ),
           ],
         ),
@@ -133,6 +161,32 @@ class _ExercisesPageState extends State<ExercisesPage> {
       });
     }
   }
+
+  Future<void> _createCustomExercise() async {
+    final changed = await widget.onCreateCustomExercise?.call() ?? false;
+    if (changed) {
+      await _load(searchText: _searchController.text);
+    }
+  }
+
+  Future<bool> _editCustomExercise(ExerciseListItemViewModel exercise) async {
+    final changed = await widget.onEditCustomExercise?.call(exercise) ?? false;
+    if (changed) {
+      await _load(searchText: _searchController.text);
+    }
+    return changed;
+  }
+
+  Future<bool> _archiveCustomExercise(
+    ExerciseListItemViewModel exercise,
+  ) async {
+    final changed =
+        await widget.onArchiveCustomExercise?.call(exercise) ?? false;
+    if (changed) {
+      await _load(searchText: _searchController.text);
+    }
+    return changed;
+  }
 }
 
 class _ExerciseSearchBar extends StatelessWidget {
@@ -177,11 +231,15 @@ class _ExerciseCatalogStateBody extends StatelessWidget {
     required this.state,
     required this.onRetry,
     required this.onOpenExercise,
+    required this.onEditCustomExercise,
+    required this.onArchiveCustomExercise,
   });
 
   final ExerciseCatalogUiState state;
   final VoidCallback onRetry;
   final ValueChanged<ExerciseRef>? onOpenExercise;
+  final CustomExerciseItemAction? onEditCustomExercise;
+  final CustomExerciseItemAction? onArchiveCustomExercise;
 
   @override
   Widget build(BuildContext context) {
@@ -238,16 +296,25 @@ class _ExerciseCatalogStateBody extends StatelessWidget {
         return _ExerciseList(
           model: state.model!,
           onOpenExercise: onOpenExercise,
+          onEditCustomExercise: onEditCustomExercise,
+          onArchiveCustomExercise: onArchiveCustomExercise,
         );
     }
   }
 }
 
 class _ExerciseList extends StatelessWidget {
-  const _ExerciseList({required this.model, required this.onOpenExercise});
+  const _ExerciseList({
+    required this.model,
+    required this.onOpenExercise,
+    required this.onEditCustomExercise,
+    required this.onArchiveCustomExercise,
+  });
 
   final ExerciseCatalogListViewModel model;
   final ValueChanged<ExerciseRef>? onOpenExercise;
+  final CustomExerciseItemAction? onEditCustomExercise;
+  final CustomExerciseItemAction? onArchiveCustomExercise;
 
   @override
   Widget build(BuildContext context) {
@@ -264,7 +331,12 @@ class _ExerciseList extends StatelessWidget {
         ),
         const SizedBox(height: RepForgeSpacing.md),
         for (final exercise in model.exercises) ...[
-          _ExerciseCard(exercise: exercise, onOpenExercise: onOpenExercise),
+          _ExerciseCard(
+            exercise: exercise,
+            onOpenExercise: onOpenExercise,
+            onEditCustomExercise: onEditCustomExercise,
+            onArchiveCustomExercise: onArchiveCustomExercise,
+          ),
           const SizedBox(height: RepForgeSpacing.md),
         ],
         if (model.hasMore)
@@ -279,32 +351,104 @@ class _ExerciseList extends StatelessWidget {
 }
 
 class _ExerciseCard extends StatelessWidget {
-  const _ExerciseCard({required this.exercise, required this.onOpenExercise});
+  const _ExerciseCard({
+    required this.exercise,
+    required this.onOpenExercise,
+    required this.onEditCustomExercise,
+    required this.onArchiveCustomExercise,
+  });
 
   final ExerciseListItemViewModel exercise;
   final ValueChanged<ExerciseRef>? onOpenExercise;
+  final CustomExerciseItemAction? onEditCustomExercise;
+  final CustomExerciseItemAction? onArchiveCustomExercise;
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
     return Semantics(
-      label: exercise.name,
+      label: exercise.isCustom
+          ? localizations.exercisesCustomSemantics(exercise.name)
+          : localizations.exercisesOfficialSemantics(exercise.name),
       button: onOpenExercise != null,
       child: AppCard(
         child: InkWell(
           onTap: onOpenExercise == null
               ? null
-              : () => onOpenExercise!(_exerciseRefFor(exercise)),
+              : () => onOpenExercise!(exercise.toExerciseRef()),
           borderRadius: BorderRadius.circular(RepForgeRadius.lg),
           child: Padding(
             padding: const EdgeInsets.all(RepForgeSpacing.xs),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  exercise.name,
-                  style: Theme.of(context).textTheme.titleMedium,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        exercise.name,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ),
+                    const SizedBox(width: RepForgeSpacing.sm),
+                    if (exercise.isCustom)
+                      InputChip(label: Text(localizations.exercisesCustomBadge))
+                    else
+                      InputChip(
+                        label: Text(localizations.exercisesOfficialBadge),
+                      ),
+                    if (exercise.isCustom &&
+                        (onEditCustomExercise != null ||
+                            onArchiveCustomExercise != null)) ...[
+                      const SizedBox(width: RepForgeSpacing.xs),
+                      PopupMenuButton<_ExerciseAction>(
+                        tooltip: localizations.exercisesCustomActionsTooltip,
+                        onSelected: (action) {
+                          switch (action) {
+                            case _ExerciseAction.edit:
+                              unawaited(
+                                onEditCustomExercise?.call(exercise) ??
+                                    Future<bool>.value(false),
+                              );
+                            case _ExerciseAction.archive:
+                              unawaited(
+                                onArchiveCustomExercise?.call(exercise) ??
+                                    Future<bool>.value(false),
+                              );
+                          }
+                        },
+                        itemBuilder: (context) {
+                          return [
+                            if (onEditCustomExercise != null)
+                              PopupMenuItem<_ExerciseAction>(
+                                value: _ExerciseAction.edit,
+                                child: Text(localizations.exercisesEditCustom),
+                              ),
+                            if (onArchiveCustomExercise != null)
+                              PopupMenuItem<_ExerciseAction>(
+                                value: _ExerciseAction.archive,
+                                child: Text(
+                                  localizations.exercisesArchiveCustom,
+                                ),
+                              ),
+                          ];
+                        },
+                      ),
+                    ],
+                  ],
                 ),
                 const SizedBox(height: RepForgeSpacing.sm),
+                if (exercise.notes != null) ...[
+                  Text(
+                    exercise.notes!,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: RepForgeColorTokens.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(height: RepForgeSpacing.sm),
+                ],
                 Wrap(
                   spacing: RepForgeSpacing.sm,
                   runSpacing: RepForgeSpacing.sm,
@@ -326,13 +470,7 @@ class _ExerciseCard extends StatelessWidget {
   }
 }
 
-ExerciseRef _exerciseRefFor(ExerciseListItemViewModel exercise) {
-  return ExerciseRef.official(
-    id: OfficialExerciseId(exercise.id),
-    displayNameSnapshot: exercise.name,
-    catalogVersionSnapshot: exercise.catalogVersionSnapshot,
-  );
-}
+enum _ExerciseAction { edit, archive }
 
 class _ExerciseInfoCard extends StatelessWidget {
   const _ExerciseInfoCard({

@@ -62,7 +62,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Train'), findsWidgets);
-    expect(find.text('New workout'), findsOneWidget);
+    expect(find.text('Create folder'), findsOneWidget);
     expect(find.text('My Exercises'), findsOneWidget);
     expect(find.text('Full Body'), findsOneWidget);
     expect(find.text('Upper Body'), findsOneWidget);
@@ -73,6 +73,106 @@ void main() {
     expect(find.text('Core'), findsOneWidget);
     expect(find.text('6 exercises'), findsOneWidget);
     expect(find.text('1 exercise'), findsWidgets);
+  });
+
+  testWidgets('create folder action receives official and custom exercises', (
+    tester,
+  ) async {
+    _useLargeViewport(tester);
+    final received = <ExerciseListItemViewModel>[];
+
+    await tester.pumpWidget(
+      _testApp(
+        GroupsPage(
+          loader: _StaticTrainPageLoader(_trainModelWithCustomGroup()),
+          onCreateWorkoutGroup: (availableExercises) async {
+            received.addAll(availableExercises);
+            return false;
+          },
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('train_create_folder_button')));
+    await tester.pumpAndSettle();
+
+    expect(received.map((exercise) => exercise.name), contains('Cable Fly'));
+    expect(
+      received.singleWhere((exercise) => exercise.name == 'Cable Fly').isCustom,
+      isTrue,
+    );
+  });
+
+  testWidgets('custom folder appears on Train landing and opens assignments', (
+    tester,
+  ) async {
+    _useLargeViewport(tester);
+    await tester.pumpWidget(
+      _testApp(
+        GroupsPage(
+          loader: _StaticTrainPageLoader(_trainModelWithCustomGroup()),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Push Accessories'), findsOneWidget);
+    final folderCard = find.byKey(
+      const Key('train_custom_folder_push_accessories'),
+    );
+    await tester.drag(find.byType(CustomScrollView), const Offset(0, -500));
+    await tester.pumpAndSettle();
+    await tester.tap(folderCard);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Cable Fly'), findsOneWidget);
+    expect(find.text('Barbell Bench Press'), findsOneWidget);
+    expect(find.text('Seated Cable Row'), findsNothing);
+  });
+
+  testWidgets('custom folder edit and archive actions are exposed', (
+    tester,
+  ) async {
+    _useLargeViewport(tester);
+    final edited = <WorkoutGroupListItemViewModel>[];
+    final archived = <WorkoutGroupListItemViewModel>[];
+
+    await tester.pumpWidget(
+      _testApp(
+        GroupsPage(
+          loader: _StaticTrainPageLoader(_trainModelWithCustomGroup()),
+          onEditWorkoutGroup: (group, _) async {
+            edited.add(group);
+            return false;
+          },
+          onArchiveWorkoutGroup: (group, _) async {
+            archived.add(group);
+            return false;
+          },
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final folderActions = find.byKey(
+      const Key('train_custom_folder_actions_push_accessories'),
+    );
+    await tester.drag(find.byType(CustomScrollView), const Offset(0, -500));
+    await tester.pumpAndSettle();
+    await tester.tap(folderActions);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Edit folder'));
+    await tester.pumpAndSettle();
+    await tester.drag(find.byType(CustomScrollView), const Offset(0, -500));
+    await tester.pumpAndSettle();
+    await tester.tap(folderActions);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Archive folder'));
+    await tester.pumpAndSettle();
+
+    expect(edited.single.name, 'Push Accessories');
+    expect(archived.single.name, 'Push Accessories');
   });
 
   testWidgets('category rows expose semantic summaries', (tester) async {
@@ -127,15 +227,24 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('No active session'), findsOneWidget);
-    expect(find.text('Start a Push session with 2 planned exercises.'), findsOneWidget);
+    expect(
+      find.text('Start a Push session with 2 planned exercises.'),
+      findsOneWidget,
+    );
 
     await tester.tap(find.byKey(const Key('train_start_workout_button')));
     await tester.pumpAndSettle();
 
-    expect(workoutSessionController.snapshot.active?.id, WorkoutSessionId('push-session'));
-    expect(find.byKey(const Key('workout_session_active_card')), findsOneWidget);
+    expect(
+      workoutSessionController.snapshot.active?.id,
+      WorkoutSessionId('push-session'),
+    );
+    expect(
+      find.byKey(const Key('workout_session_active_card')),
+      findsOneWidget,
+    );
     expect(find.text('Active session'), findsOneWidget);
-    expect(find.text('Push'), findsOneWidget);
+    expect(find.text('Push'), findsWidgets);
     expect(find.text('0m'), findsOneWidget);
     expect(find.text('0 kg'), findsOneWidget);
   });
@@ -181,7 +290,10 @@ void main() {
     await tester.tap(find.byKey(const Key('workout_session_complete_button')));
     await tester.pumpAndSettle();
 
-    expect(find.byKey(const Key('workout_session_completed_card')), findsOneWidget);
+    expect(
+      find.byKey(const Key('workout_session_completed_card')),
+      findsOneWidget,
+    );
     expect(find.text('Workout complete'), findsOneWidget);
     expect(find.text('Top exercise: Barbell Bench Press'), findsOneWidget);
   });
@@ -290,7 +402,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Training'), findsWidgets);
-    expect(find.text('Neues Workout'), findsOneWidget);
+    expect(find.text('Ordner erstellen'), findsOneWidget);
     expect(find.text('Meine Uebungen'), findsOneWidget);
     expect(find.text('Ganzkoerper'), findsOneWidget);
     expect(find.text('Oberkoerper'), findsOneWidget);
@@ -384,6 +496,47 @@ TrainLandingViewModel _trainModel() {
   );
 }
 
+TrainLandingViewModel _trainModelWithCustomGroup() {
+  final base = _trainModel();
+  const customExercise = ExerciseListItemViewModel(
+    id: 'custom_cable_fly',
+    name: 'Cable Fly',
+    source: ExerciseSource.custom,
+    equipment: ['cable'],
+    movementPatterns: ['horizontal_push'],
+    primaryMuscles: ['chest'],
+  );
+  final allExercises = [
+    ...base.categories
+        .firstWhere((category) => category.id == TrainCategoryId.myExercises)
+        .exercises,
+    customExercise,
+  ];
+  return TrainLandingViewModel.fromExercises(
+    exercises: allExercises,
+    groups: const [
+      WorkoutGroupListItemViewModel(
+        id: 'push_accessories',
+        name: 'Push Accessories',
+        exerciseCount: 2,
+        exerciseNames: ['Cable Fly', 'Barbell Bench Press'],
+        exercises: [
+          customExercise,
+          ExerciseListItemViewModel(
+            id: 'barbell_bench_press',
+            name: 'Barbell Bench Press',
+            catalogVersionSnapshot: '2026.06.0',
+            equipment: ['barbell'],
+            movementPatterns: ['horizontal_push'],
+            primaryMuscles: ['chest'],
+          ),
+        ],
+      ),
+    ],
+    totalGroupCount: 1,
+  );
+}
+
 final class _PendingTrainPageLoader implements TrainPageLoader {
   @override
   Future<TrainLandingViewModel> load({Locale? locale}) {
@@ -409,10 +562,7 @@ final class _FailingTrainPageLoader implements TrainPageLoader {
   }
 }
 
-WorkoutSet _set({
-  required String id,
-  WorkoutSessionId? workoutSessionId,
-}) {
+WorkoutSet _set({required String id, WorkoutSessionId? workoutSessionId}) {
   return WorkoutSet(
     id: WorkoutSetId(id),
     exerciseRef: ExerciseRef.official(

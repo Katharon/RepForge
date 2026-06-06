@@ -221,11 +221,156 @@ void main() {
       throwsA(isA<CatalogValidationException>()),
     );
   });
+
+  test('custom exercise can be created locally and queried', () async {
+    final exercise = _customExercise(id: 'custom-cable-fly');
+
+    await repository.saveCustomExercise(exercise);
+
+    final found = await repository.findCustomExerciseById(
+      CustomExerciseId('custom-cable-fly'),
+    );
+    final page = await repository.listCustomExercises(
+      CustomExerciseQuery(limit: 10, offset: 0),
+    );
+
+    expect(found, exercise);
+    expect(page.items.single.name, 'Cable Fly');
+    expect(page.items.single.primaryMuscles.single.value, 'chest');
+  });
+
+  test('custom exercise can be edited without changing stable id', () async {
+    await repository.saveCustomExercise(_customExercise(id: 'custom-row'));
+
+    await repository.saveCustomExercise(
+      _customExercise(
+        id: 'custom-row',
+        name: 'Cable Fly Updated',
+        notes: 'Lower cable angle',
+        updatedAt: DateTime.utc(2026, 6, 6, 12),
+      ),
+    );
+
+    final found = await repository.findCustomExerciseById(
+      CustomExerciseId('custom-row'),
+    );
+
+    expect(found?.id, CustomExerciseId('custom-row'));
+    expect(found?.name, 'Cable Fly Updated');
+    expect(found?.notes, 'Lower cable angle');
+  });
+
+  test(
+    'custom exercise can be archived without deleting workout snapshots',
+    () async {
+      await repository.saveCustomExercise(_customExercise(id: 'custom-row'));
+      await database
+          .into(database.workoutSets)
+          .insert(
+            WorkoutSetsCompanion.insert(
+              workoutSetId: 'set-custom',
+              exerciseSource: 'custom',
+              exerciseId: 'custom-row',
+              exerciseDisplayNameSnapshot: 'Cable Fly Snapshot',
+              repetitions: 12,
+              loadKg: 25,
+              performedAt: DateTime.utc(2026, 6, 6, 9),
+            ),
+          );
+
+      await repository.archiveCustomExercise(
+        CustomExerciseId('custom-row'),
+        DateTime.utc(2026, 6, 6, 13),
+      );
+
+      final activePage = await repository.listCustomExercises(
+        CustomExerciseQuery(limit: 10, offset: 0),
+      );
+      final archivedPage = await repository.listCustomExercises(
+        CustomExerciseQuery(limit: 10, offset: 0, includeArchived: true),
+      );
+      final workoutSets = await database.select(database.workoutSets).get();
+
+      expect(activePage.items, isEmpty);
+      expect(
+        archivedPage.items.single.archivedAt,
+        DateTime.utc(2026, 6, 6, 13),
+      );
+      expect(
+        workoutSets.single.exerciseDisplayNameSnapshot,
+        'Cable Fly Snapshot',
+      );
+    },
+  );
+
+  test('custom exercise search includes metadata tags', () async {
+    await repository.saveCustomExercise(
+      _customExercise(
+        id: 'custom-hinge',
+        name: 'Banded Good Morning',
+        primaryMuscles: <MuscleGroup>[MuscleGroup('hamstrings')],
+        movementPatterns: <MovementPattern>[MovementPattern('hinge')],
+      ),
+    );
+
+    final page = await repository.listCustomExercises(
+      CustomExerciseQuery(limit: 10, offset: 0, searchText: 'hinge'),
+    );
+
+    expect(page.items.single.id, CustomExerciseId('custom-hinge'));
+  });
+
+  test('saving custom exercises does not edit official catalog rows', () async {
+    await importer.importCatalog(_singleExerciseCatalog(version: '2026.06.0'));
+    final before = await repository.findOfficialExerciseById(
+      OfficialExerciseId('barbell_bench_press'),
+    );
+
+    await repository.saveCustomExercise(
+      _customExercise(id: 'barbell_bench_press', name: 'My Bench Variant'),
+    );
+
+    final after = await repository.findOfficialExerciseById(
+      OfficialExerciseId('barbell_bench_press'),
+    );
+    final custom = await repository.findCustomExerciseById(
+      CustomExerciseId('barbell_bench_press'),
+    );
+
+    expect(after, before);
+    expect(custom?.name, 'My Bench Variant');
+  });
 }
 
 OfficialExerciseCatalog _bundledCatalog() {
   return const OfficialExerciseCatalogParser().parseString(
     File('assets/catalog/official_exercises_v1.json').readAsStringSync(),
+  );
+}
+
+CustomExercise _customExercise({
+  required String id,
+  String name = 'Cable Fly',
+  String? notes = 'Slow tempo',
+  List<MuscleGroup>? primaryMuscles,
+  List<MuscleGroup>? secondaryMuscles,
+  List<EquipmentTag>? equipment,
+  List<MovementPattern>? movementPatterns,
+  DateTime? updatedAt,
+}) {
+  return CustomExercise(
+    id: CustomExerciseId(id),
+    name: name,
+    notes: notes,
+    primaryMuscles: primaryMuscles ?? <MuscleGroup>[MuscleGroup('chest')],
+    secondaryMuscles:
+        secondaryMuscles ?? <MuscleGroup>[MuscleGroup('front_deltoids')],
+    equipment: equipment ?? <EquipmentTag>[EquipmentTag('cable')],
+    movementPatterns:
+        movementPatterns ??
+        <MovementPattern>[MovementPattern('horizontal_push')],
+    createdAt: DateTime.utc(2026, 6, 6, 10),
+    updatedAt: updatedAt ?? DateTime.utc(2026, 6, 6, 10),
   );
 }
 

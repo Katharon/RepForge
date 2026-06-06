@@ -15,6 +15,19 @@
 
 ### Added
 
+- Added Slice 62 custom exercises and custom training folders MVP with local
+  custom exercise create/edit/archive, additive Drift schema v10 persistence,
+  official/custom exercise list badges, custom quick-log refs, local Train
+  folder create/edit/archive backed by workout groups, mixed official/custom
+  folder assignments, English/German localization, semantics, and focused
+  data/widget coverage without editing official exercises, cloud services,
+  Firebase, sync, social, wearable/health, ads, or payment changes.
+- Added Slice 61 lightweight workout session state with Train start flow,
+  active/completed session summaries, quick-log session attachment, Today and
+  Exercise Detail session banners, English/German localization, and focused
+  application/widget coverage without schema changes, persisted session headers,
+  cloud services, Firebase, sync, social, wearable/health, ads, or payment
+  changes.
 - Added Slice 60 in-session adaptive next-set signal on Exercise Detail after a
   successful Log Set save, with bounded local history, optional readiness and
   equipment inputs, dismissible advisory copy, English/German localization,

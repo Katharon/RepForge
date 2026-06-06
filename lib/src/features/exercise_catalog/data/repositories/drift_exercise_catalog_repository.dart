@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:drift/drift.dart';
 import 'package:repforge/src/features/exercise_catalog/data/mappers/official_exercise_mapper.dart';
 import 'package:repforge/src/features/exercise_catalog/domain/exercise_catalog_domain.dart';
@@ -5,7 +7,7 @@ import 'package:repforge/src/features/training_log/domain/value_objects/stable_i
 import 'package:repforge/src/shared/data/local/repforge_database.dart';
 
 final class DriftExerciseCatalogRepository
-    implements ExerciseCatalogRepository {
+    implements ExerciseCatalogRepository, CustomExerciseRepository {
   const DriftExerciseCatalogRepository(this._database);
 
   final RepForgeDatabase _database;
@@ -45,6 +47,65 @@ final class DriftExerciseCatalogRepository
     return row == null ? null : _toDomain(row);
   }
 
+  @override
+  Future<void> saveCustomExercise(CustomExercise exercise) async {
+    await _database
+        .into(_database.customExercises)
+        .insertOnConflictUpdate(_toCustomCompanion(exercise));
+  }
+
+  @override
+  Future<CustomExercise?> findCustomExerciseById(CustomExerciseId id) async {
+    final row =
+        await (_database.select(_database.customExercises)
+              ..where(($CustomExercisesTable table) {
+                return table.customExerciseId.equals(id.value);
+              }))
+            .getSingleOrNull();
+
+    return row == null ? null : _toCustomDomain(row);
+  }
+
+  @override
+  Future<CustomExercisePage> listCustomExercises(
+    CustomExerciseQuery query,
+  ) async {
+    final filter = _CustomExerciseSqlFilter.fromQuery(query);
+    final count = await _countCustomExercises(filter);
+    final rows =
+        await (_database.select(_database.customExercises)
+              ..where(($CustomExercisesTable table) {
+                return filter.expression(table);
+              })
+              ..orderBy(_customExerciseOrder(query.sort))
+              ..limit(query.limit, offset: query.offset))
+            .get();
+
+    return CustomExercisePage(
+      items: rows.map(_toCustomDomain).toList(growable: false),
+      totalCount: count,
+      limit: query.limit,
+      offset: query.offset,
+    );
+  }
+
+  @override
+  Future<void> archiveCustomExercise(
+    CustomExerciseId id,
+    DateTime archivedAt,
+  ) async {
+    await (_database.update(_database.customExercises)
+          ..where(($CustomExercisesTable table) {
+            return table.customExerciseId.equals(id.value);
+          }))
+        .write(
+          CustomExercisesCompanion(
+            archivedAt: Value<DateTime?>(archivedAt.toUtc()),
+            updatedAt: Value<DateTime>(archivedAt.toUtc()),
+          ),
+        );
+  }
+
   Future<int> _countMatchingExercises(_CatalogSqlFilter filter) async {
     final row = await _database
         .customSelect(
@@ -58,6 +119,24 @@ ${filter.whereSql}
             _database.officialExercises,
             _database.officialExerciseEquipmentTags,
             _database.officialExerciseMuscleGroups,
+          },
+        )
+        .getSingle();
+
+    return row.read<int>('total_count');
+  }
+
+  Future<int> _countCustomExercises(_CustomExerciseSqlFilter filter) async {
+    final row = await _database
+        .customSelect(
+          '''
+SELECT COUNT(*) AS total_count
+FROM custom_exercises
+${filter.whereSql}
+''',
+          variables: filter.variables,
+          readsFrom: <ResultSetImplementation<Table, Object?>>{
+            _database.customExercises,
           },
         )
         .getSingle();
@@ -160,6 +239,52 @@ LIMIT ? OFFSET ?
       muscleGroups: muscles,
     );
   }
+
+  CustomExercisesCompanion _toCustomCompanion(CustomExercise exercise) {
+    return CustomExercisesCompanion(
+      customExerciseId: Value<String>(exercise.id.value),
+      name: Value<String>(exercise.name),
+      notes: Value<String?>(exercise.notes),
+      primaryMusclesJson: Value<String>(
+        _encodeValues(exercise.primaryMuscles.map((muscle) => muscle.value)),
+      ),
+      secondaryMusclesJson: Value<String>(
+        _encodeValues(exercise.secondaryMuscles.map((muscle) => muscle.value)),
+      ),
+      equipmentJson: Value<String>(
+        _encodeValues(exercise.equipment.map((tag) => tag.value)),
+      ),
+      movementPatternsJson: Value<String>(
+        _encodeValues(
+          exercise.movementPatterns.map((pattern) => pattern.value),
+        ),
+      ),
+      archivedAt: Value<DateTime?>(exercise.archivedAt),
+      createdAt: Value<DateTime>(exercise.createdAt),
+      updatedAt: Value<DateTime>(exercise.updatedAt),
+    );
+  }
+
+  CustomExercise _toCustomDomain(CustomExerciseRow row) {
+    return CustomExercise(
+      id: CustomExerciseId(row.customExerciseId),
+      name: row.name,
+      notes: row.notes,
+      primaryMuscles: _decodeValues(
+        row.primaryMusclesJson,
+      ).map(MuscleGroup.new),
+      secondaryMuscles: _decodeValues(
+        row.secondaryMusclesJson,
+      ).map(MuscleGroup.new),
+      equipment: _decodeValues(row.equipmentJson).map(EquipmentTag.new),
+      movementPatterns: _decodeValues(
+        row.movementPatternsJson,
+      ).map(MovementPattern.new),
+      archivedAt: row.archivedAt,
+      createdAt: row.createdAt,
+      updatedAt: row.updatedAt,
+    );
+  }
 }
 
 final class _CatalogSqlFilter {
@@ -213,4 +338,119 @@ final class _CatalogSqlFilter {
 
   final String whereSql;
   final List<Variable<Object>> variables;
+}
+
+List<OrderingTerm Function($CustomExercisesTable)> _customExerciseOrder(
+  CustomExerciseListSort sort,
+) {
+  return switch (sort) {
+    CustomExerciseListSort.name =>
+      <OrderingTerm Function($CustomExercisesTable)>[
+        ($CustomExercisesTable table) => OrderingTerm.asc(table.name),
+        ($CustomExercisesTable table) {
+          return OrderingTerm.asc(table.customExerciseId);
+        },
+      ],
+    CustomExerciseListSort.updatedAt =>
+      <OrderingTerm Function($CustomExercisesTable)>[
+        ($CustomExercisesTable table) {
+          return OrderingTerm.desc(table.updatedAt);
+        },
+        ($CustomExercisesTable table) {
+          return OrderingTerm.asc(table.customExerciseId);
+        },
+      ],
+  };
+}
+
+final class _CustomExerciseSqlFilter {
+  const _CustomExerciseSqlFilter({
+    required this.includeArchived,
+    required this.searchText,
+  });
+
+  factory _CustomExerciseSqlFilter.fromQuery(CustomExerciseQuery query) {
+    return _CustomExerciseSqlFilter(
+      includeArchived: query.includeArchived,
+      searchText: query.searchText,
+    );
+  }
+
+  final bool includeArchived;
+  final String? searchText;
+
+  Expression<bool> expression($CustomExercisesTable table) {
+    Expression<bool>? expression;
+
+    if (!includeArchived) {
+      expression = table.archivedAt.isNull();
+    }
+
+    final searchText = this.searchText;
+    if (searchText != null) {
+      final normalized = searchText.toLowerCase();
+      final searchExpression =
+          table.customExerciseId.lower().contains(normalized) |
+          table.name.lower().contains(normalized) |
+          table.notes.lower().contains(normalized) |
+          table.primaryMusclesJson.lower().contains(normalized) |
+          table.secondaryMusclesJson.lower().contains(normalized) |
+          table.equipmentJson.lower().contains(normalized) |
+          table.movementPatternsJson.lower().contains(normalized);
+      expression = expression == null
+          ? searchExpression
+          : expression & searchExpression;
+    }
+
+    return expression ?? const Constant<bool>(true);
+  }
+
+  String get whereSql {
+    final clauses = <String>[];
+
+    if (!includeArchived) {
+      clauses.add('archived_at IS NULL');
+    }
+    if (searchText != null) {
+      clauses.add(
+        '('
+        'lower(custom_exercise_id) LIKE ? OR '
+        'lower(name) LIKE ? OR '
+        'lower(notes) LIKE ? OR '
+        'lower(primary_muscles_json) LIKE ? OR '
+        'lower(secondary_muscles_json) LIKE ? OR '
+        'lower(equipment_json) LIKE ? OR '
+        'lower(movement_patterns_json) LIKE ?'
+        ')',
+      );
+    }
+
+    return clauses.isEmpty ? '' : 'WHERE ${clauses.join(' AND ')}';
+  }
+
+  List<Variable<Object>> get variables {
+    final searchText = this.searchText;
+    if (searchText == null) {
+      return const <Variable<Object>>[];
+    }
+    final pattern = '%${searchText.toLowerCase()}%';
+    return <Variable<Object>>[
+      for (var index = 0; index < 7; index += 1) Variable<String>(pattern),
+    ];
+  }
+}
+
+String _encodeValues(Iterable<String> values) {
+  return jsonEncode(values.toList(growable: false));
+}
+
+List<String> _decodeValues(String value) {
+  final decoded = jsonDecode(value);
+  if (decoded is! List) {
+    throw const CatalogValidationException(
+      'customExercise.tags',
+      'Custom exercise tag storage must be a list.',
+    );
+  }
+  return decoded.cast<String>();
 }

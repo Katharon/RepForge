@@ -27,8 +27,8 @@ void main() {
     expect(tables.map((row) => row.read<String>('name')), _expectedTableNames);
   });
 
-  test('uses schema version 9', () {
-    expect(database.schemaVersion, 9);
+  test('uses schema version 10', () {
+    expect(database.schemaVersion, 10);
   });
 
   test('current schema validates against Drift metadata', () async {
@@ -76,7 +76,7 @@ void main() {
     expect(migratedSet.exerciseDisplayNameSnapshot, 'Legacy Bench');
     expect(migratedSet.setLabel, isNull);
     expect(tables.map((row) => row.read<String>('name')), _expectedTableNames);
-    expect(userVersion.read<int>('user_version'), 9);
+    expect(userVersion.read<int>('user_version'), 10);
     await expectLater(database.validateDatabaseSchema(), completes);
   });
 
@@ -333,6 +333,7 @@ void main() {
 
 const List<String> _expectedTableNames = <String>[
   'catalog_imports',
+  'custom_exercises',
   'equipment_inventory_items',
   'equipment_load_constraints',
   'official_exercise_equipment_tags',

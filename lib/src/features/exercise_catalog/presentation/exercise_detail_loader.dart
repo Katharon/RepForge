@@ -19,11 +19,13 @@ final class RepositoryExerciseDetailLoader implements ExerciseDetailLoader {
     required this.exerciseCatalogRepository,
     required this.workoutSetRepository,
     required this.getExerciseAnalytics,
+    this.customExerciseRepository,
     this.ensureCatalogImported,
     this.nowProvider = DateTime.now,
   });
 
   final ExerciseCatalogRepository exerciseCatalogRepository;
+  final CustomExerciseRepository? customExerciseRepository;
   final WorkoutSetRepository workoutSetRepository;
   final GetExerciseAnalytics getExerciseAnalytics;
   final EnsureOfficialCatalogImported? ensureCatalogImported;
@@ -75,6 +77,23 @@ final class RepositoryExerciseDetailLoader implements ExerciseDetailLoader {
     Locale? locale,
   }) async {
     if (exerciseRef.source != ExerciseSource.official) {
+      final custom = await customExerciseRepository?.findCustomExerciseById(
+        CustomExerciseId(exerciseRef.id),
+      );
+      if (custom != null) {
+        return _ResolvedExercise(
+          exerciseRef: ExerciseRef.custom(
+            id: custom.id,
+            displayNameSnapshot: custom.name,
+          ),
+          title: custom.name,
+          tags: [
+            ...custom.equipment.map((tag) => tag.value).take(2),
+            ...custom.movementPatterns.map((pattern) => pattern.value).take(1),
+            ...custom.primaryMuscles.map((muscle) => muscle.value).take(2),
+          ],
+        );
+      }
       return _ResolvedExercise(
         exerciseRef: exerciseRef,
         title: exerciseRef.displayNameSnapshot,

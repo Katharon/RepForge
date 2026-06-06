@@ -80,13 +80,20 @@ appear. Tests cover bounded two-set adapter inputs, insufficient-history copy,
 add-weight, add-rep, maintain, low-readiness backoff, dismiss behavior, no
 blocking modal, English/German localization, and semantics.
 
-Slice 61 adds pending focused coverage for lightweight workout-session state:
+Slice 61 adds focused coverage for lightweight workout-session state:
 application tests for starting, refreshing, streaming, and completing a session;
 quick-log widget tests for standalone logging and active-session attachment;
 Train tests for no-active, start, active metrics, and completion summary; Today
 and Exercise Detail tests for the shared active-session banner and existing
-refresh/adaptive behavior. These tests still require generated localization
-files and Flutter validation once SDK-cache access is available.
+refresh/adaptive behavior.
+
+Slice 62 extends custom-exercise and Train-folder coverage: Drift repository
+tests cover local custom exercise create/edit/archive/search behavior and
+snapshot preservation; Exercises widget tests cover custom rows, badges,
+official action guardrails, and edit/archive reloads; Train widget tests cover
+custom-folder create/edit/archive affordances and mixed official/custom
+assignments; quick-log widget tests prove custom exercise refs save without
+official catalog versions.
 
 ## Integration/E2E tests
 

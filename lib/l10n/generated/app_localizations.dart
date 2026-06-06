@@ -2310,6 +2310,258 @@ abstract class AppLocalizations {
   /// **'Top exercise: {exercise}'**
   String workoutSessionTopExercise(String exercise);
 
+  /// Button label to create a local custom exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Create custom exercise'**
+  String get exercisesCreateCustom;
+
+  /// Badge for user-owned custom exercises.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get exercisesCustomBadge;
+
+  /// Badge for bundled official exercises.
+  ///
+  /// In en, this message translates to:
+  /// **'Official'**
+  String get exercisesOfficialBadge;
+
+  /// Tooltip for custom exercise edit/archive menu.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom exercise actions'**
+  String get exercisesCustomActionsTooltip;
+
+  /// Popup action label to edit a custom exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit exercise'**
+  String get exercisesEditCustom;
+
+  /// Popup action label to archive a custom exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive exercise'**
+  String get exercisesArchiveCustom;
+
+  /// Semantic label for a custom exercise row.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom exercise, {name}'**
+  String exercisesCustomSemantics(String name);
+
+  /// Semantic label for an official exercise row.
+  ///
+  /// In en, this message translates to:
+  /// **'Official exercise, {name}'**
+  String exercisesOfficialSemantics(String name);
+
+  /// Dialog title for creating a custom exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Create custom exercise'**
+  String get customExerciseCreateTitle;
+
+  /// Dialog title for editing a custom exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit custom exercise'**
+  String get customExerciseEditTitle;
+
+  /// Custom exercise name field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get customExerciseNameLabel;
+
+  /// Custom exercise notes field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get customExerciseNotesLabel;
+
+  /// Custom exercise primary muscles field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary muscles'**
+  String get customExercisePrimaryMusclesLabel;
+
+  /// Custom exercise secondary muscles field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Secondary muscles'**
+  String get customExerciseSecondaryMusclesLabel;
+
+  /// Custom exercise equipment field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Equipment'**
+  String get customExerciseEquipmentLabel;
+
+  /// Custom exercise movement patterns field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Movement patterns'**
+  String get customExerciseMovementPatternsLabel;
+
+  /// Helper text for comma-separated custom exercise tag fields.
+  ///
+  /// In en, this message translates to:
+  /// **'Comma-separated tags'**
+  String get customExerciseCommaHelper;
+
+  /// Cancel action in custom exercise dialogs.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get customExerciseCancel;
+
+  /// Save action in custom exercise dialogs.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get customExerciseSave;
+
+  /// Validation message when custom exercise name is missing.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a name.'**
+  String get customExerciseNameRequired;
+
+  /// Validation message when custom exercise primary muscles are missing.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one primary muscle.'**
+  String get customExercisePrimaryMusclesRequired;
+
+  /// Confirmation title for archiving a custom exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive custom exercise'**
+  String get customExerciseArchiveTitle;
+
+  /// Confirmation message for archiving a custom exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive {name}? Historical set snapshots stay readable.'**
+  String customExerciseArchiveMessage(String name);
+
+  /// Confirm button for archiving a custom exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive'**
+  String get customExerciseArchiveConfirm;
+
+  /// Button label for creating a custom training folder.
+  ///
+  /// In en, this message translates to:
+  /// **'Create folder'**
+  String get customFolderCreateButton;
+
+  /// Helper text for creating custom training folders.
+  ///
+  /// In en, this message translates to:
+  /// **'Build a local folder from official or custom exercises.'**
+  String get customFolderCreateMessage;
+
+  /// Dialog title for creating a custom training folder.
+  ///
+  /// In en, this message translates to:
+  /// **'Create training folder'**
+  String get customFolderCreateTitle;
+
+  /// Dialog title for editing a custom training folder.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit training folder'**
+  String get customFolderEditTitle;
+
+  /// Custom training folder name field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Folder name'**
+  String get customFolderNameLabel;
+
+  /// Title for custom folder exercise assignment checklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned exercises'**
+  String get customFolderAssignmentsTitle;
+
+  /// Cancel action in custom folder dialogs.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get customFolderCancel;
+
+  /// Save action in custom folder dialogs.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get customFolderSave;
+
+  /// Validation message when custom folder name is missing.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a folder name.'**
+  String get customFolderNameRequired;
+
+  /// Tooltip for custom folder action menu.
+  ///
+  /// In en, this message translates to:
+  /// **'Folder actions'**
+  String get customFolderActionsTooltip;
+
+  /// Menu action to edit a custom folder.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit folder'**
+  String get customFolderEdit;
+
+  /// Menu action to archive a custom folder.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive folder'**
+  String get customFolderArchive;
+
+  /// Confirmation title for archiving a custom folder.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive training folder'**
+  String get customFolderArchiveTitle;
+
+  /// Confirmation message for archiving a custom folder.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive {name}? Logged workout history stays untouched.'**
+  String customFolderArchiveMessage(String name);
+
+  /// Confirm button for archiving a custom folder.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive'**
+  String get customFolderArchiveConfirm;
+
+  /// Semantic label for a custom training folder row.
+  ///
+  /// In en, this message translates to:
+  /// **'Training folder, {name}, {count} exercises'**
+  String customFolderSemantics(String name, int count);
+
+  /// Empty title for a custom folder with no assigned exercises.
+  ///
+  /// In en, this message translates to:
+  /// **'No assigned exercises'**
+  String get customFolderEmptyTitle;
+
+  /// Empty message for a custom folder with no assigned exercises.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit the folder to add official or custom exercises.'**
+  String get customFolderEmptyMessage;
+
   /// Placeholder message for the settings destination.
   ///
   /// In en, this message translates to:

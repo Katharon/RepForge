@@ -127,6 +127,44 @@ void main() {
     expect(repository.savedSets.single.exerciseRef.id, 'seated_cable_row');
   });
 
+  testWidgets('quick log can save a custom exercise ref', (tester) async {
+    final repository = _FakeWorkoutSetRepository();
+    final controller = QuickLogSetController(
+      exerciseCatalogRepository: _FakeExerciseCatalogRepository(),
+      customExerciseRepository: _FakeCustomExerciseRepository(),
+      saveWorkoutSet: SaveWorkoutSet(repository),
+      workoutSetIdProvider: () => WorkoutSetId('quick-custom-set'),
+      nowProvider: () => DateTime.utc(2026, 6, 5, 10, 30),
+    );
+
+    await tester.pumpWidget(
+      _testApp(
+        FilledButton(
+          onPressed: () => controller.show(_capturedContext!),
+          child: const Text('Open quick log'),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Open quick log'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Cable Fly'));
+    await tester.enterText(find.byKey(const Key('quick_log_load_field')), '30');
+    await tester.enterText(
+      find.byKey(const Key('quick_log_repetitions_field')),
+      '12',
+    );
+    await tester.tap(find.byKey(const Key('quick_log_save_button')));
+    await tester.pumpAndSettle();
+
+    final saved = repository.savedSets.single;
+    expect(saved.exerciseRef.source, ExerciseSource.custom);
+    expect(saved.exerciseRef.id, 'custom_cable_fly');
+    expect(saved.exerciseRef.displayNameSnapshot, 'Cable Fly');
+    expect(saved.exerciseRef.catalogVersionSnapshot, isNull);
+  });
+
   testWidgets('quick log attaches saved sets to the active workout session', (
     tester,
   ) async {
@@ -242,6 +280,48 @@ final class _FakeExerciseCatalogRepository
       offset: query.offset,
     );
   }
+}
+
+final class _FakeCustomExerciseRepository implements CustomExerciseRepository {
+  final custom = CustomExercise(
+    id: CustomExerciseId('custom_cable_fly'),
+    name: 'Cable Fly',
+    primaryMuscles: [MuscleGroup('chest')],
+    equipment: [EquipmentTag('cable')],
+    movementPatterns: [MovementPattern('horizontal_push')],
+    createdAt: DateTime.utc(2026, 6, 5),
+    updatedAt: DateTime.utc(2026, 6, 5),
+  );
+
+  @override
+  Future<void> saveCustomExercise(CustomExercise exercise) async {}
+
+  @override
+  Future<CustomExercise?> findCustomExerciseById(CustomExerciseId id) async {
+    return id == custom.id ? custom : null;
+  }
+
+  @override
+  Future<CustomExercisePage> listCustomExercises(
+    CustomExerciseQuery query,
+  ) async {
+    final matches =
+        query.searchText == null ||
+        custom.name.toLowerCase().contains(query.searchText!.toLowerCase());
+    final items = matches ? [custom] : const <CustomExercise>[];
+    return CustomExercisePage(
+      items: items,
+      totalCount: items.length,
+      limit: query.limit,
+      offset: query.offset,
+    );
+  }
+
+  @override
+  Future<void> archiveCustomExercise(
+    CustomExerciseId id,
+    DateTime archivedAt,
+  ) async {}
 }
 
 final class _FakeWorkoutSetRepository implements WorkoutSetRepository {

@@ -1,8 +1,12 @@
+export 'entities/custom_exercise.dart';
 export 'entities/official_exercise.dart';
 export 'entities/official_exercise_catalog.dart';
 export 'exceptions/catalog_validation_exception.dart';
+export 'repositories/custom_exercise_repository.dart';
 export 'repositories/exercise_catalog_repository.dart';
 export 'value_objects/catalog_tags.dart';
 export 'value_objects/catalog_version.dart';
+export 'value_objects/custom_exercise_page.dart';
+export 'value_objects/custom_exercise_query.dart';
 export 'value_objects/exercise_catalog_page.dart';
 export 'value_objects/exercise_catalog_query.dart';

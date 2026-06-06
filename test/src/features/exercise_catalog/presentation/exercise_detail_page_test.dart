@@ -254,7 +254,10 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.byKey(const Key('workout_session_active_card')), findsOneWidget);
+    expect(
+      find.byKey(const Key('workout_session_active_card')),
+      findsOneWidget,
+    );
     expect(find.text('Active session'), findsOneWidget);
 
     await tester.tap(find.byKey(const Key('exercise_detail_log_set_button')));
@@ -263,7 +266,10 @@ void main() {
     expect(loader.loadCount, 2);
     expect(suggestionLoader.loadCount, 1);
     expect(find.text('Next set signal'), findsOneWidget);
-    expect(find.byKey(const Key('workout_session_active_card')), findsOneWidget);
+    expect(
+      find.byKey(const Key('workout_session_active_card')),
+      findsOneWidget,
+    );
   });
 
   testWidgets('adaptive suggestion handles insufficient history safely', (

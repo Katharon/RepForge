@@ -1530,6 +1530,208 @@
       }
     }
   },
+  "exercisesCreateCustom": "Eigene Uebung erstellen",
+  "@exercisesCreateCustom": {
+    "description": "Buttonlabel zum Erstellen einer eigenen Uebung."
+  },
+  "exercisesCustomBadge": "Eigen",
+  "@exercisesCustomBadge": {
+    "description": "Badge fuer eigene Uebungen."
+  },
+  "exercisesOfficialBadge": "Offiziell",
+  "@exercisesOfficialBadge": {
+    "description": "Badge fuer offizielle Uebungen."
+  },
+  "exercisesCustomActionsTooltip": "Aktionen fuer eigene Uebung",
+  "@exercisesCustomActionsTooltip": {
+    "description": "Tooltip fuer Bearbeiten/Archivieren eigener Uebungen."
+  },
+  "exercisesEditCustom": "Uebung bearbeiten",
+  "@exercisesEditCustom": {
+    "description": "Menueaktion zum Bearbeiten eigener Uebung."
+  },
+  "exercisesArchiveCustom": "Uebung archivieren",
+  "@exercisesArchiveCustom": {
+    "description": "Menueaktion zum Archivieren eigener Uebung."
+  },
+  "exercisesCustomSemantics": "Eigene Uebung, {name}",
+  "@exercisesCustomSemantics": {
+    "description": "Semantiklabel fuer eigene Uebung.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Cable Fly"
+      }
+    }
+  },
+  "exercisesOfficialSemantics": "Offizielle Uebung, {name}",
+  "@exercisesOfficialSemantics": {
+    "description": "Semantiklabel fuer offizielle Uebung.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Bankdruecken mit Langhantel"
+      }
+    }
+  },
+  "customExerciseCreateTitle": "Eigene Uebung erstellen",
+  "@customExerciseCreateTitle": {
+    "description": "Dialogtitel zum Erstellen eigener Uebung."
+  },
+  "customExerciseEditTitle": "Eigene Uebung bearbeiten",
+  "@customExerciseEditTitle": {
+    "description": "Dialogtitel zum Bearbeiten eigener Uebung."
+  },
+  "customExerciseNameLabel": "Name",
+  "@customExerciseNameLabel": {
+    "description": "Feldlabel fuer Uebungsname."
+  },
+  "customExerciseNotesLabel": "Notizen",
+  "@customExerciseNotesLabel": {
+    "description": "Feldlabel fuer Uebungsnotizen."
+  },
+  "customExercisePrimaryMusclesLabel": "Primaere Muskeln",
+  "@customExercisePrimaryMusclesLabel": {
+    "description": "Feldlabel fuer primaere Muskeln."
+  },
+  "customExerciseSecondaryMusclesLabel": "Sekundaere Muskeln",
+  "@customExerciseSecondaryMusclesLabel": {
+    "description": "Feldlabel fuer sekundaere Muskeln."
+  },
+  "customExerciseEquipmentLabel": "Equipment",
+  "@customExerciseEquipmentLabel": {
+    "description": "Feldlabel fuer Equipment."
+  },
+  "customExerciseMovementPatternsLabel": "Bewegungsmuster",
+  "@customExerciseMovementPatternsLabel": {
+    "description": "Feldlabel fuer Bewegungsmuster."
+  },
+  "customExerciseCommaHelper": "Tags mit Kommas trennen",
+  "@customExerciseCommaHelper": {
+    "description": "Hilfstext fuer kommaseparierte Tags."
+  },
+  "customExerciseCancel": "Abbrechen",
+  "@customExerciseCancel": {
+    "description": "Abbrechen-Aktion in Eigene-Uebung-Dialogen."
+  },
+  "customExerciseSave": "Speichern",
+  "@customExerciseSave": {
+    "description": "Speichern-Aktion in Eigene-Uebung-Dialogen."
+  },
+  "customExerciseNameRequired": "Fuege einen Namen hinzu.",
+  "@customExerciseNameRequired": {
+    "description": "Validierungstext fuer fehlenden Uebungsnamen."
+  },
+  "customExercisePrimaryMusclesRequired": "Fuege mindestens einen primaeren Muskel hinzu.",
+  "@customExercisePrimaryMusclesRequired": {
+    "description": "Validierungstext fuer fehlende primaere Muskeln."
+  },
+  "customExerciseArchiveTitle": "Eigene Uebung archivieren",
+  "@customExerciseArchiveTitle": {
+    "description": "Bestaetigungstitel zum Archivieren eigener Uebung."
+  },
+  "customExerciseArchiveMessage": "{name} archivieren? Historische Satz-Snapshots bleiben lesbar.",
+  "@customExerciseArchiveMessage": {
+    "description": "Bestaetigungstext zum Archivieren eigener Uebung.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Cable Fly"
+      }
+    }
+  },
+  "customExerciseArchiveConfirm": "Archivieren",
+  "@customExerciseArchiveConfirm": {
+    "description": "Bestaetigungsbutton zum Archivieren eigener Uebung."
+  },
+  "customFolderCreateButton": "Ordner erstellen",
+  "@customFolderCreateButton": {
+    "description": "Buttonlabel zum Erstellen eines Trainingsordners."
+  },
+  "customFolderCreateMessage": "Erstelle einen lokalen Ordner aus offiziellen oder eigenen Uebungen.",
+  "@customFolderCreateMessage": {
+    "description": "Hilfstext fuer eigene Trainingsordner."
+  },
+  "customFolderCreateTitle": "Trainingsordner erstellen",
+  "@customFolderCreateTitle": {
+    "description": "Dialogtitel fuer neuen Trainingsordner."
+  },
+  "customFolderEditTitle": "Trainingsordner bearbeiten",
+  "@customFolderEditTitle": {
+    "description": "Dialogtitel zum Bearbeiten eines Trainingsordners."
+  },
+  "customFolderNameLabel": "Ordnername",
+  "@customFolderNameLabel": {
+    "description": "Feldlabel fuer Ordnername."
+  },
+  "customFolderAssignmentsTitle": "Zugewiesene Uebungen",
+  "@customFolderAssignmentsTitle": {
+    "description": "Titel fuer Uebungszuweisung."
+  },
+  "customFolderCancel": "Abbrechen",
+  "@customFolderCancel": {
+    "description": "Abbrechen-Aktion in Trainingsordner-Dialogen."
+  },
+  "customFolderSave": "Speichern",
+  "@customFolderSave": {
+    "description": "Speichern-Aktion in Trainingsordner-Dialogen."
+  },
+  "customFolderNameRequired": "Fuege einen Ordnernamen hinzu.",
+  "@customFolderNameRequired": {
+    "description": "Validierungstext fuer fehlenden Ordnernamen."
+  },
+  "customFolderActionsTooltip": "Ordneraktionen",
+  "@customFolderActionsTooltip": {
+    "description": "Tooltip fuer Trainingsordner-Menue."
+  },
+  "customFolderEdit": "Ordner bearbeiten",
+  "@customFolderEdit": {
+    "description": "Menueaktion zum Bearbeiten eines Trainingsordners."
+  },
+  "customFolderArchive": "Ordner archivieren",
+  "@customFolderArchive": {
+    "description": "Menueaktion zum Archivieren eines Trainingsordners."
+  },
+  "customFolderArchiveTitle": "Trainingsordner archivieren",
+  "@customFolderArchiveTitle": {
+    "description": "Bestaetigungstitel zum Archivieren eines Trainingsordners."
+  },
+  "customFolderArchiveMessage": "{name} archivieren? Protokollierte Trainingshistorie bleibt unberuehrt.",
+  "@customFolderArchiveMessage": {
+    "description": "Bestaetigungstext zum Archivieren eines Trainingsordners.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Push Day"
+      }
+    }
+  },
+  "customFolderArchiveConfirm": "Archivieren",
+  "@customFolderArchiveConfirm": {
+    "description": "Bestaetigungsbutton zum Archivieren eines Trainingsordners."
+  },
+  "customFolderSemantics": "Trainingsordner, {name}, {count} Uebungen",
+  "@customFolderSemantics": {
+    "description": "Semantiklabel fuer Trainingsordner.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Push Day"
+      },
+      "count": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "customFolderEmptyTitle": "Keine Uebungen zugewiesen",
+  "@customFolderEmptyTitle": {
+    "description": "Leerzustandstitel fuer Ordner ohne Uebungen."
+  },
+  "customFolderEmptyMessage": "Bearbeite den Ordner, um offizielle oder eigene Uebungen hinzuzufuegen.",
+  "@customFolderEmptyMessage": {
+    "description": "Leerzustandstext fuer Ordner ohne Uebungen."
+  },
   "settingsPlaceholderMessage": "Einstellungen bleiben bei der Umsetzung lokal-first.",
   "@settingsPlaceholderMessage": {
     "description": "Platzhaltertext fuer Einstellungen."

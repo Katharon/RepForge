@@ -16,6 +16,7 @@ final class QuickLogSetController {
   const QuickLogSetController({
     required this.exerciseCatalogRepository,
     required this.saveWorkoutSet,
+    this.customExerciseRepository,
     this.ensureCatalogImported,
     this.workoutSessionController,
     this.workoutSetIdProvider = _defaultWorkoutSetId,
@@ -23,6 +24,7 @@ final class QuickLogSetController {
   });
 
   final ExerciseCatalogRepository exerciseCatalogRepository;
+  final CustomExerciseRepository? customExerciseRepository;
   final SaveWorkoutSet saveWorkoutSet;
   final EnsureOfficialCatalogImported? ensureCatalogImported;
   final WorkoutSessionController? workoutSessionController;
@@ -38,6 +40,7 @@ final class QuickLogSetController {
       builder: (context) {
         return _QuickLogSetDialog(
           exerciseCatalogRepository: exerciseCatalogRepository,
+          customExerciseRepository: customExerciseRepository,
           saveWorkoutSet: saveWorkoutSet,
           ensureCatalogImported: ensureCatalogImported,
           workoutSessionController: workoutSessionController,
@@ -59,6 +62,7 @@ WorkoutSetId _defaultWorkoutSetId() {
 class _QuickLogSetDialog extends StatefulWidget {
   const _QuickLogSetDialog({
     required this.exerciseCatalogRepository,
+    required this.customExerciseRepository,
     required this.saveWorkoutSet,
     required this.workoutSetIdProvider,
     required this.nowProvider,
@@ -68,6 +72,7 @@ class _QuickLogSetDialog extends StatefulWidget {
   });
 
   final ExerciseCatalogRepository exerciseCatalogRepository;
+  final CustomExerciseRepository? customExerciseRepository;
   final SaveWorkoutSet saveWorkoutSet;
   final EnsureOfficialCatalogImported? ensureCatalogImported;
   final WorkoutSetIdProvider workoutSetIdProvider;
@@ -88,13 +93,18 @@ class _QuickLogSetDialogState extends State<_QuickLogSetDialog> {
   var _isLoading = true;
   var _isSaving = false;
   Object? _error;
-  List<OfficialExercise> _exercises = const <OfficialExercise>[];
-  OfficialExercise? _selectedExercise;
+  List<ExerciseListItemViewModel> _exercises =
+      const <ExerciseListItemViewModel>[];
+  ExerciseListItemViewModel? _selectedExercise;
 
   @override
   void initState() {
     super.initState();
-    unawaited(_loadExercises());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        unawaited(_loadExercises());
+      }
+    });
   }
 
   @override
@@ -266,21 +276,19 @@ class _QuickLogSetDialogState extends State<_QuickLogSetDialog> {
           itemCount: _exercises.length,
           itemBuilder: (context, index) {
             final exercise = _exercises[index];
-            final name = _exerciseName(context, exercise);
             final selected = exercise == _selectedExercise;
             return ListTile(
-              key: Key('quick_log_exercise_${exercise.id.value}'),
+              key: Key(
+                'quick_log_exercise_${exercise.source.name}_${exercise.id}',
+              ),
               onTap: () {
                 setState(() {
                   _selectedExercise = exercise;
                 });
               },
-              title: Text(name),
+              title: Text(exercise.name),
               subtitle: Text(
-                exercise.primaryMuscles
-                    .map((muscle) => _formatTag(muscle.value))
-                    .take(2)
-                    .join(', '),
+                exercise.primaryMuscles.map(_formatTag).take(2).join(', '),
               ),
               trailing: Icon(
                 selected ? Icons.radio_button_checked : Icons.circle_outlined,
@@ -302,21 +310,24 @@ class _QuickLogSetDialogState extends State<_QuickLogSetDialog> {
     });
 
     try {
+      final locale = Localizations.localeOf(context);
       await widget.ensureCatalogImported?.call();
-      final initialExercise = await _findInitialExercise();
-      final page = await widget.exerciseCatalogRepository.findOfficialExercises(
-        ExerciseCatalogQuery(
-          limit: 25,
-          offset: 0,
-          searchText: _searchController.text,
-        ),
+      final initialExercise = await _findInitialExercise(locale);
+      final loader = RepositoryExerciseCatalogListLoader(
+        repository: widget.exerciseCatalogRepository,
+        customExerciseRepository: widget.customExerciseRepository,
+        limit: 25,
+      );
+      final page = await loader.load(
+        searchText: _searchController.text,
+        locale: locale,
       );
       if (!mounted) {
         return;
       }
 
       setState(() {
-        _exercises = _mergeInitialExercise(initialExercise, page.items);
+        _exercises = _mergeInitialExercise(initialExercise, page.exercises);
         _selectedExercise = _exercises.contains(_selectedExercise)
             ? _selectedExercise
             : initialExercise ?? (_exercises.isEmpty ? null : _exercises.first);
@@ -334,23 +345,39 @@ class _QuickLogSetDialogState extends State<_QuickLogSetDialog> {
     }
   }
 
-  Future<OfficialExercise?> _findInitialExercise() async {
+  Future<ExerciseListItemViewModel?> _findInitialExercise(Locale locale) async {
     final initialExerciseRef = widget.initialExerciseRef;
     if (initialExerciseRef == null ||
-        initialExerciseRef.source != ExerciseSource.official ||
         _selectedExercise != null ||
         _searchController.text.trim().isNotEmpty) {
       return null;
     }
 
-    return widget.exerciseCatalogRepository.findOfficialExerciseById(
-      OfficialExerciseId(initialExerciseRef.id),
-    );
+    if (initialExerciseRef.source == ExerciseSource.custom) {
+      final custom = await widget.customExerciseRepository
+          ?.findCustomExerciseById(CustomExerciseId(initialExerciseRef.id));
+      return custom == null
+          ? ExerciseListItemViewModel(
+              id: initialExerciseRef.id,
+              name: initialExerciseRef.displayNameSnapshot,
+              source: ExerciseSource.custom,
+              equipment: const <String>[],
+              movementPatterns: const <String>[],
+              primaryMuscles: const <String>[],
+            )
+          : ExerciseListItemViewModel.fromCustomExercise(custom);
+    }
+
+    final official = await widget.exerciseCatalogRepository
+        .findOfficialExerciseById(OfficialExerciseId(initialExerciseRef.id));
+    return official == null
+        ? null
+        : ExerciseListItemViewModel.fromExercise(official, locale: locale);
   }
 
-  List<OfficialExercise> _mergeInitialExercise(
-    OfficialExercise? initialExercise,
-    List<OfficialExercise> exercises,
+  List<ExerciseListItemViewModel> _mergeInitialExercise(
+    ExerciseListItemViewModel? initialExercise,
+    List<ExerciseListItemViewModel> exercises,
   ) {
     if (initialExercise == null) {
       return exercises;
@@ -359,7 +386,9 @@ class _QuickLogSetDialogState extends State<_QuickLogSetDialog> {
     return [
       initialExercise,
       for (final exercise in exercises)
-        if (exercise.id != initialExercise.id) exercise,
+        if (exercise.source != initialExercise.source ||
+            exercise.id != initialExercise.id)
+          exercise,
     ];
   }
 
@@ -375,18 +404,11 @@ class _QuickLogSetDialogState extends State<_QuickLogSetDialog> {
     });
 
     try {
-      final workoutSessionId = widget
-          .workoutSessionController
-          ?.snapshot
-          .active
-          ?.id;
+      final workoutSessionId =
+          widget.workoutSessionController?.snapshot.active?.id;
       await widget.saveWorkoutSet(
         WorkoutSetForm(
-          targetExerciseRef: ExerciseRef.official(
-            id: exercise.id,
-            displayNameSnapshot: _exerciseName(context, exercise),
-            catalogVersionSnapshot: exercise.catalogVersion.value,
-          ),
+          targetExerciseRef: exercise.toExerciseRef(),
           loadKgInput: _loadController.text,
           repetitionsInput: _repetitionsController.text,
           performedAt: widget.nowProvider(),
@@ -415,12 +437,6 @@ class _QuickLogSetDialogState extends State<_QuickLogSetDialog> {
       });
     }
   }
-}
-
-String _exerciseName(BuildContext context, OfficialExercise exercise) {
-  return Localizations.localeOf(context).languageCode == 'de'
-      ? exercise.germanName
-      : exercise.englishName;
 }
 
 String _labelText(AppLocalizations localizations, WorkoutSetLabel label) {

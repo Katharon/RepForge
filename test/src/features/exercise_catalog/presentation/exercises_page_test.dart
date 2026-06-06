@@ -138,6 +138,120 @@ void main() {
     expect(opened.single.displayNameSnapshot, 'Barbell Bench Press');
     expect(opened.single.catalogVersionSnapshot, '2026.06.0');
   });
+
+  testWidgets('custom exercise appears in list and search with custom badge', (
+    tester,
+  ) async {
+    _useLargeViewport(tester);
+    final loader = _RecordingExerciseCatalogListLoader(
+      exercise: const ExerciseListItemViewModel(
+        id: 'custom_cable_fly',
+        name: 'Cable Fly',
+        source: ExerciseSource.custom,
+        notes: 'Slow tempo',
+        equipment: ['cable'],
+        movementPatterns: ['horizontal_push'],
+        primaryMuscles: ['chest'],
+      ),
+    );
+
+    await tester.pumpWidget(_testApp(ExercisesPage(loader: loader)));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Cable Fly'), findsOneWidget);
+    expect(find.text('Custom'), findsOneWidget);
+    expect(find.text('Slow tempo'), findsOneWidget);
+
+    await tester.enterText(
+      find.byKey(const Key('exercise_catalog_search_field')),
+      'cable',
+    );
+    await tester.tap(find.byKey(const Key('exercise_catalog_search_button')));
+    await tester.pumpAndSettle();
+
+    expect(loader.searches, contains('cable'));
+  });
+
+  testWidgets('official exercise does not expose custom edit actions', (
+    tester,
+  ) async {
+    _useLargeViewport(tester);
+    await tester.pumpWidget(
+      _testApp(
+        ExercisesPage(
+          loader: const _StaticExerciseCatalogListLoader(
+            ExerciseCatalogListViewModel(
+              exercises: [
+                ExerciseListItemViewModel(
+                  id: 'barbell_bench_press',
+                  name: 'Barbell Bench Press',
+                  equipment: ['barbell'],
+                  movementPatterns: ['horizontal_push'],
+                  primaryMuscles: ['chest'],
+                ),
+              ],
+              totalCount: 1,
+              hasMore: false,
+            ),
+          ),
+          onEditCustomExercise: (_) async => true,
+          onArchiveCustomExercise: (_) async => true,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Official'), findsOneWidget);
+    expect(find.byTooltip('Custom exercise actions'), findsNothing);
+  });
+
+  testWidgets('custom exercise edit and archive callbacks reload list', (
+    tester,
+  ) async {
+    _useLargeViewport(tester);
+    final loader = _RecordingExerciseCatalogListLoader(
+      exercise: const ExerciseListItemViewModel(
+        id: 'custom_cable_fly',
+        name: 'Cable Fly',
+        source: ExerciseSource.custom,
+        equipment: ['cable'],
+        movementPatterns: ['horizontal_push'],
+        primaryMuscles: ['chest'],
+      ),
+    );
+    final edited = <ExerciseListItemViewModel>[];
+    final archived = <ExerciseListItemViewModel>[];
+
+    await tester.pumpWidget(
+      _testApp(
+        ExercisesPage(
+          loader: loader,
+          onEditCustomExercise: (exercise) async {
+            edited.add(exercise);
+            return true;
+          },
+          onArchiveCustomExercise: (exercise) async {
+            archived.add(exercise);
+            return true;
+          },
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byTooltip('Custom exercise actions'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Edit exercise'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Custom exercise actions'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Archive exercise'));
+    await tester.pumpAndSettle();
+
+    expect(edited.single.id, 'custom_cable_fly');
+    expect(archived.single.id, 'custom_cable_fly');
+    expect(loader.searches, hasLength(greaterThanOrEqualTo(3)));
+  });
 }
 
 void _useLargeViewport(WidgetTester tester) {
@@ -184,6 +298,17 @@ final class _StaticExerciseCatalogListLoader
 
 final class _RecordingExerciseCatalogListLoader
     implements ExerciseCatalogListLoader {
+  _RecordingExerciseCatalogListLoader({
+    this.exercise = const ExerciseListItemViewModel(
+      id: 'barbell_bench_press',
+      name: 'Barbell Bench Press',
+      equipment: ['barbell'],
+      movementPatterns: ['horizontal_push'],
+      primaryMuscles: ['chest'],
+    ),
+  });
+
+  final ExerciseListItemViewModel exercise;
   final List<String?> searches = [];
 
   @override
@@ -192,16 +317,8 @@ final class _RecordingExerciseCatalogListLoader
     Locale? locale,
   }) async {
     searches.add(searchText);
-    return const ExerciseCatalogListViewModel(
-      exercises: [
-        ExerciseListItemViewModel(
-          id: 'barbell_bench_press',
-          name: 'Barbell Bench Press',
-          equipment: ['barbell'],
-          movementPatterns: ['horizontal_push'],
-          primaryMuscles: ['chest'],
-        ),
-      ],
+    return ExerciseCatalogListViewModel(
+      exercises: [exercise],
       totalCount: 1,
       hasMore: false,
     );
