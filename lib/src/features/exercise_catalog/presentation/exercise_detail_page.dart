@@ -8,7 +8,9 @@ import '../../../core/theme/theme.dart';
 import '../../../core/widgets/widgets.dart';
 import '../../analytics/presentation/analytics_presentation.dart';
 import '../../recommendations/domain/recommendations_domain.dart';
+import '../../training_log/application/training_log_application.dart';
 import '../../training_log/domain/training_log_domain.dart';
+import '../../training_log/presentation/training_log_presentation.dart';
 import 'exercise_detail_adaptive_suggestion_loader.dart';
 import 'exercise_detail_loader.dart';
 
@@ -35,6 +37,7 @@ class ExerciseDetailPage extends StatefulWidget {
     super.key,
     this.onOpenAnalytics,
     this.adaptiveSuggestionLoader,
+    this.workoutSessionController,
   });
 
   final ExerciseRef exerciseRef;
@@ -42,6 +45,7 @@ class ExerciseDetailPage extends StatefulWidget {
   final ExerciseDetailLogSetAction onLogSet;
   final ExerciseDetailAnalyticsAction? onOpenAnalytics;
   final ExerciseDetailAdaptiveSuggestionLoader? adaptiveSuggestionLoader;
+  final WorkoutSessionController? workoutSessionController;
 
   @override
   State<ExerciseDetailPage> createState() => _ExerciseDetailPageState();
@@ -104,6 +108,7 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
                 onRetry: _load,
                 onOpenAnalytics: _openAnalytics,
                 onDismissAdaptiveSuggestion: _dismissAdaptiveSuggestion,
+                workoutSessionController: widget.workoutSessionController,
               ),
             ],
           ),
@@ -209,6 +214,7 @@ class _ExerciseDetailStateBody extends StatelessWidget {
     required this.onRetry,
     required this.onOpenAnalytics,
     required this.onDismissAdaptiveSuggestion,
+    required this.workoutSessionController,
   });
 
   final ExerciseDetailUiState state;
@@ -216,6 +222,7 @@ class _ExerciseDetailStateBody extends StatelessWidget {
   final VoidCallback onRetry;
   final ValueChanged<AnalyticsMetric> onOpenAnalytics;
   final VoidCallback onDismissAdaptiveSuggestion;
+  final WorkoutSessionController? workoutSessionController;
 
   @override
   Widget build(BuildContext context) {
@@ -270,6 +277,7 @@ class _ExerciseDetailStateBody extends StatelessWidget {
           adaptiveSuggestion: adaptiveSuggestion,
           onOpenAnalytics: onOpenAnalytics,
           onDismissAdaptiveSuggestion: onDismissAdaptiveSuggestion,
+          workoutSessionController: workoutSessionController,
         );
     }
   }
@@ -281,12 +289,14 @@ class _ExerciseDetailContent extends StatelessWidget {
     required this.adaptiveSuggestion,
     required this.onOpenAnalytics,
     required this.onDismissAdaptiveSuggestion,
+    required this.workoutSessionController,
   });
 
   final ExerciseDetailViewModel model;
   final ExerciseDetailAdaptiveSuggestionViewModel? adaptiveSuggestion;
   final ValueChanged<AnalyticsMetric> onOpenAnalytics;
   final VoidCallback onDismissAdaptiveSuggestion;
+  final WorkoutSessionController? workoutSessionController;
 
   @override
   Widget build(BuildContext context) {
@@ -301,6 +311,7 @@ class _ExerciseDetailContent extends StatelessWidget {
           title: model.title,
           onOpenAnalytics: onOpenAnalytics,
         ),
+        _WorkoutSessionSection(controller: workoutSessionController),
         if (adaptiveSuggestion != null) ...[
           const SizedBox(height: RepForgeSpacing.md),
           _AdaptiveSuggestionCard(
@@ -338,6 +349,40 @@ class _ExerciseDetailContent extends StatelessWidget {
         ],
         const SizedBox(height: 96),
       ],
+    );
+  }
+}
+
+class _WorkoutSessionSection extends StatelessWidget {
+  const _WorkoutSessionSection({required this.controller});
+
+  final WorkoutSessionController? controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = this.controller;
+    if (controller == null) {
+      return const SizedBox.shrink();
+    }
+
+    return StreamBuilder<WorkoutSessionSnapshot>(
+      stream: controller.changes,
+      initialData: controller.snapshot,
+      builder: (context, snapshot) {
+        final sessionState = snapshot.data ?? const WorkoutSessionSnapshot();
+        if (sessionState.active == null &&
+            sessionState.completedSummary == null) {
+          return const SizedBox.shrink();
+        }
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: RepForgeSpacing.md),
+            WorkoutSessionStatusCard(controller: controller),
+          ],
+        );
+      },
     );
   }
 }

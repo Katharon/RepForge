@@ -8,3 +8,4 @@ export 'value_objects/stable_ids.dart';
 export 'value_objects/workout_set_daily_summary.dart';
 export 'value_objects/workout_set_history_query.dart';
 export 'value_objects/workout_set_timeline.dart';
+export 'value_objects/workout_session_models.dart';

@@ -23,6 +23,9 @@
 - `SetLabelChip`
 - `ExerciseSearchField`
 - `ProgramCard`
+- `WorkoutSessionStatusCard` — implemented in the training-log presentation
+  layer for reusable active/completed local session summaries on Train, Today,
+  and Exercise Detail.
 
 ## Timer components
 

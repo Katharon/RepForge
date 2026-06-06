@@ -64,6 +64,7 @@ Each slice is an incremental Codex task. Codex should implement exactly one slic
 - [58 — Exercise detail and set history dashboard](slice_58_exercise_detail_and_set_history_dashboard.md) — done
 - [59 — Exercise analytics chart screen](slice_59_exercise_analytics_chart_screen.md) — done
 - [60 — In-session logging and adaptive coach UI](slice_60_in_session_logging_and_adaptive_coach_ui.md) — done
+- [61 — Workout session state and completion summary](slice_61_workout_session_state_and_completion_summary.md) — blocked
 
 ## Release rhythm
 

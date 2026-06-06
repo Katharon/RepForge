@@ -1390,6 +1390,146 @@
       }
     }
   },
+  "workoutSessionNoActiveTitle": "Keine aktive Einheit",
+  "@workoutSessionNoActiveTitle": {
+    "description": "Titel fuer Session-Start in einer Trainingskategorie."
+  },
+  "workoutSessionStartMessage": "Starte eine {source}-Einheit mit {count} geplanten Uebungen.",
+  "@workoutSessionStartMessage": {
+    "description": "Text fuer Start einer Workout-Session aus einer Trainingskategorie.",
+    "placeholders": {
+      "source": {
+        "type": "String",
+        "example": "Push"
+      },
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "workoutSessionStart": "Workout starten",
+  "@workoutSessionStart": {
+    "description": "Buttonlabel zum Starten einer Workout-Session."
+  },
+  "workoutSessionStartSemantics": "{source}-Workout starten",
+  "@workoutSessionStartSemantics": {
+    "description": "Semantiklabel zum Starten einer Workout-Session.",
+    "placeholders": {
+      "source": {
+        "type": "String",
+        "example": "Push"
+      }
+    }
+  },
+  "workoutSessionActiveTitle": "Aktive Einheit",
+  "@workoutSessionActiveTitle": {
+    "description": "Titel fuer aktive Workout-Session."
+  },
+  "workoutSessionCompletedTitle": "Workout abgeschlossen",
+  "@workoutSessionCompletedTitle": {
+    "description": "Titel fuer abgeschlossene Workout-Session."
+  },
+  "workoutSessionActiveSemantics": "Aktive Einheit, {source}, {duration}, {sets} Saetze, {exercises} Uebungen, {volume}.",
+  "@workoutSessionActiveSemantics": {
+    "description": "Semantiklabel fuer aktive Workout-Session.",
+    "placeholders": {
+      "source": {
+        "type": "String",
+        "example": "Push"
+      },
+      "duration": {
+        "type": "String",
+        "example": "42m"
+      },
+      "sets": {
+        "type": "int",
+        "example": "8"
+      },
+      "exercises": {
+        "type": "int",
+        "example": "3"
+      },
+      "volume": {
+        "type": "String",
+        "example": "3200 kg"
+      }
+    }
+  },
+  "workoutSessionCompletedSemantics": "Abgeschlossenes Workout, {source}, {duration}, {sets} Saetze, {exercises} Uebungen, {volume}.",
+  "@workoutSessionCompletedSemantics": {
+    "description": "Semantiklabel fuer abgeschlossene Workout-Session.",
+    "placeholders": {
+      "source": {
+        "type": "String",
+        "example": "Push"
+      },
+      "duration": {
+        "type": "String",
+        "example": "42m"
+      },
+      "sets": {
+        "type": "int",
+        "example": "8"
+      },
+      "exercises": {
+        "type": "int",
+        "example": "3"
+      },
+      "volume": {
+        "type": "String",
+        "example": "3200 kg"
+      }
+    }
+  },
+  "workoutSessionSource": "{source}",
+  "@workoutSessionSource": {
+    "description": "Sichtbares Label fuer Session-Quelle oder Kategorie.",
+    "placeholders": {
+      "source": {
+        "type": "String",
+        "example": "Push"
+      }
+    }
+  },
+  "workoutSessionCompleting": "Wird abgeschlossen",
+  "@workoutSessionCompleting": {
+    "description": "Buttonlabel waehrend Abschluss einer Workout-Session."
+  },
+  "workoutSessionComplete": "Abschliessen",
+  "@workoutSessionComplete": {
+    "description": "Buttonlabel zum Abschliessen einer Workout-Session."
+  },
+  "workoutSessionDuration": "Dauer",
+  "@workoutSessionDuration": {
+    "description": "Metriklabel fuer Sessiondauer."
+  },
+  "workoutSessionSets": "Saetze",
+  "@workoutSessionSets": {
+    "description": "Metriklabel fuer Satzanzahl."
+  },
+  "workoutSessionExercises": "Uebungen",
+  "@workoutSessionExercises": {
+    "description": "Metriklabel fuer Uebungsanzahl."
+  },
+  "workoutSessionVolume": "Volumen",
+  "@workoutSessionVolume": {
+    "description": "Metriklabel fuer Sessionvolumen."
+  },
+  "workoutSessionNoSets": "Keine Saetze in dieser Einheit protokolliert.",
+  "@workoutSessionNoSets": {
+    "description": "Zusammenfassung fuer abgeschlossene Session ohne Saetze."
+  },
+  "workoutSessionTopExercise": "Top-Uebung: {exercise}",
+  "@workoutSessionTopExercise": {
+    "description": "Zusammenfassung der Uebung mit dem hoechsten Volumen.",
+    "placeholders": {
+      "exercise": {
+        "type": "String",
+        "example": "Bankdruecken mit Langhantel"
+      }
+    }
+  },
   "settingsPlaceholderMessage": "Einstellungen bleiben bei der Umsetzung lokal-first.",
   "@settingsPlaceholderMessage": {
     "description": "Platzhaltertext fuer Einstellungen."

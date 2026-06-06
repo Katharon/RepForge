@@ -6,7 +6,9 @@ import '../../../app/localization/app_localizations.dart';
 import '../../../core/theme/theme.dart';
 import '../../../core/widgets/widgets.dart';
 import '../../exercise_catalog/presentation/exercise_catalog_presentation.dart';
+import '../../training_log/application/training_log_application.dart';
 import '../../training_log/domain/training_log_domain.dart';
+import '../../training_log/presentation/training_log_presentation.dart';
 import 'workout_group_list_loader.dart';
 
 enum TrainUiStatus { loading, empty, error, success }
@@ -20,9 +22,15 @@ final class TrainUiState {
 }
 
 class GroupsPage extends StatefulWidget {
-  const GroupsPage({required this.loader, super.key, this.onOpenExercise});
+  const GroupsPage({
+    required this.loader,
+    super.key,
+    this.workoutSessionController,
+    this.onOpenExercise,
+  });
 
   final TrainPageLoader loader;
+  final WorkoutSessionController? workoutSessionController;
   final ValueChanged<ExerciseRef>? onOpenExercise;
 
   @override
@@ -86,6 +94,8 @@ class _GroupsPageState extends State<GroupsPage> {
               onOpenCategory: _openCategory,
               onBackToCategories: _backToCategories,
               onSearch: _applyCategorySearch,
+              workoutSessionController: widget.workoutSessionController,
+              onStartSession: _startSession,
               onOpenExercise: widget.onOpenExercise,
             ),
           ],
@@ -160,6 +170,17 @@ class _GroupsPageState extends State<GroupsPage> {
     }
     return null;
   }
+
+  Future<void> _startSession(TrainCategoryViewModel category) async {
+    final controller = widget.workoutSessionController;
+    if (controller == null) {
+      return;
+    }
+    await controller.start(
+      sourceName: _categoryTitle(context, category.id),
+      exerciseRefs: category.exercises.map(_exerciseRefFor),
+    );
+  }
 }
 
 class _TrainStateBody extends StatelessWidget {
@@ -172,6 +193,8 @@ class _TrainStateBody extends StatelessWidget {
     required this.onOpenCategory,
     required this.onBackToCategories,
     required this.onSearch,
+    required this.workoutSessionController,
+    required this.onStartSession,
     required this.onOpenExercise,
   });
 
@@ -183,6 +206,8 @@ class _TrainStateBody extends StatelessWidget {
   final ValueChanged<TrainCategoryId> onOpenCategory;
   final VoidCallback onBackToCategories;
   final VoidCallback onSearch;
+  final WorkoutSessionController? workoutSessionController;
+  final ValueChanged<TrainCategoryViewModel> onStartSession;
   final ValueChanged<ExerciseRef>? onOpenExercise;
 
   @override
@@ -245,6 +270,8 @@ class _TrainStateBody extends StatelessWidget {
             searchText: searchText,
             onBack: onBackToCategories,
             onSearch: onSearch,
+            workoutSessionController: workoutSessionController,
+            onStartSession: onStartSession,
             onOpenExercise: onOpenExercise,
           );
         }
@@ -423,6 +450,8 @@ class _TrainCategoryExerciseList extends StatelessWidget {
     required this.searchText,
     required this.onBack,
     required this.onSearch,
+    required this.workoutSessionController,
+    required this.onStartSession,
     required this.onOpenExercise,
   });
 
@@ -431,6 +460,8 @@ class _TrainCategoryExerciseList extends StatelessWidget {
   final String searchText;
   final VoidCallback onBack;
   final VoidCallback onSearch;
+  final WorkoutSessionController? workoutSessionController;
+  final ValueChanged<TrainCategoryViewModel> onStartSession;
   final ValueChanged<ExerciseRef>? onOpenExercise;
 
   @override
@@ -469,6 +500,14 @@ class _TrainCategoryExerciseList extends StatelessWidget {
           ),
         ),
         const SizedBox(height: RepForgeSpacing.md),
+        if (workoutSessionController != null) ...[
+          _TrainSessionCard(
+            category: category,
+            controller: workoutSessionController!,
+            onStart: () => onStartSession(category),
+          ),
+          const SizedBox(height: RepForgeSpacing.md),
+        ],
         _TrainCategorySearchBar(
           controller: searchController,
           onSearch: onSearch,
@@ -496,6 +535,68 @@ class _TrainCategoryExerciseList extends StatelessWidget {
             const SizedBox(height: RepForgeSpacing.md),
           ],
       ],
+    );
+  }
+}
+
+class _TrainSessionCard extends StatelessWidget {
+  const _TrainSessionCard({
+    required this.category,
+    required this.controller,
+    required this.onStart,
+  });
+
+  final TrainCategoryViewModel category;
+  final WorkoutSessionController controller;
+  final VoidCallback onStart;
+
+  @override
+  Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
+    return StreamBuilder<WorkoutSessionSnapshot>(
+      stream: controller.changes,
+      initialData: controller.snapshot,
+      builder: (context, snapshot) {
+        final sessionState = snapshot.data ?? const WorkoutSessionSnapshot();
+        if (sessionState.active != null ||
+            sessionState.completedSummary != null) {
+          return WorkoutSessionStatusCard(controller: controller);
+        }
+
+        final title = _categoryTitle(context, category.id);
+        return Semantics(
+          label: localizations.workoutSessionStartSemantics(title),
+          child: AppCard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  localizations.workoutSessionNoActiveTitle,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const SizedBox(height: RepForgeSpacing.xs),
+                Text(
+                  localizations.workoutSessionStartMessage(
+                    title,
+                    category.exerciseCount,
+                  ),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: RepForgeColorTokens.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: RepForgeSpacing.md),
+                FilledButton.icon(
+                  key: const Key('train_start_workout_button'),
+                  onPressed: onStart,
+                  icon: const Icon(Icons.play_arrow),
+                  label: Text(localizations.workoutSessionStart),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

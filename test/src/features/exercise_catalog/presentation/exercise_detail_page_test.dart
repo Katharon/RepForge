@@ -7,6 +7,7 @@ import 'package:repforge/src/core/theme/theme.dart';
 import 'package:repforge/src/features/analytics/presentation/analytics_presentation.dart';
 import 'package:repforge/src/features/exercise_catalog/presentation/exercise_catalog_presentation.dart';
 import 'package:repforge/src/features/recommendations/domain/recommendations_domain.dart';
+import 'package:repforge/src/features/training_log/application/training_log_application.dart';
 import 'package:repforge/src/features/training_log/domain/training_log_domain.dart';
 
 void main() {
@@ -212,6 +213,58 @@ void main() {
       expect(find.text('Estimated next set: 9 reps x 80 kg.'), findsOneWidget);
     },
   );
+
+  testWidgets('active session card coexists with adaptive detail refresh', (
+    tester,
+  ) async {
+    _useLargeViewport(tester);
+    final repository = _FakeWorkoutSetRepository();
+    final workoutSessionController = WorkoutSessionController(
+      workoutSetRepository: repository,
+      workoutSessionIdProvider: () => WorkoutSessionId('detail-session'),
+      nowProvider: () => DateTime.utc(2026, 6, 5, 9),
+    );
+    addTearDown(workoutSessionController.dispose);
+    await workoutSessionController.start(
+      sourceName: 'Push',
+      exerciseRefs: [_benchRef],
+    );
+    final loader = _RecordingExerciseDetailLoader([
+      _detailModel(historyGroups: []),
+      _detailModel(),
+    ]);
+    final suggestionLoader = _StaticAdaptiveSuggestionLoader(
+      _suggestion(
+        direction: AdaptiveSetDirection.addWeight,
+        suggestedLoadKg: 82.5,
+        suggestedRepetitions: 8,
+      ),
+    );
+
+    await tester.pumpWidget(
+      _testApp(
+        ExerciseDetailPage(
+          exerciseRef: _benchRef,
+          loader: loader,
+          adaptiveSuggestionLoader: suggestionLoader,
+          workoutSessionController: workoutSessionController,
+          onLogSet: (_) async => true,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('workout_session_active_card')), findsOneWidget);
+    expect(find.text('Active session'), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('exercise_detail_log_set_button')));
+    await tester.pumpAndSettle();
+
+    expect(loader.loadCount, 2);
+    expect(suggestionLoader.loadCount, 1);
+    expect(find.text('Next set signal'), findsOneWidget);
+    expect(find.byKey(const Key('workout_session_active_card')), findsOneWidget);
+  });
 
   testWidgets('adaptive suggestion handles insufficient history safely', (
     tester,
@@ -678,5 +731,62 @@ final class _RecordingAdaptiveSuggestionLoader
         : loadCount;
     loadCount += 1;
     return suggestions[index];
+  }
+}
+
+final class _FakeWorkoutSetRepository implements WorkoutSetRepository {
+  @override
+  Future<void> save(WorkoutSet set) async {}
+
+  @override
+  Future<void> deleteById(WorkoutSetId id) async {}
+
+  @override
+  Future<WorkoutSet?> findById(WorkoutSetId id) async => null;
+
+  @override
+  Future<List<WorkoutSet>> historyForExercise(ExerciseRef exerciseRef) async {
+    return const [];
+  }
+
+  @override
+  Future<WorkoutSetDailySummary> dailySummary(
+    WorkoutSetDailySummaryQuery query,
+  ) async {
+    return const WorkoutSetDailySummary(
+      setCount: 0,
+      totalVolumeKg: 0,
+      lastLoggedSet: null,
+    );
+  }
+
+  @override
+  Future<WorkoutSetHistoryPage> searchHistory(
+    WorkoutSetHistoryQuery query,
+  ) async {
+    return WorkoutSetHistoryPage(
+      items: const [],
+      totalCount: 0,
+      limit: query.limit,
+      offset: query.offset,
+    );
+  }
+
+  @override
+  Future<List<WorkoutSet>> setsForWorkoutSession(
+    WorkoutSessionId workoutSessionId,
+  ) async {
+    return const [];
+  }
+
+  @override
+  Future<WorkoutSetTimelinePage> timelineForExercise(
+    WorkoutSetTimelineQuery query,
+  ) async {
+    return WorkoutSetTimelinePage(
+      items: const [],
+      hasMore: false,
+      nextCursor: null,
+    );
   }
 }

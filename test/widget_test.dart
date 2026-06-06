@@ -286,6 +286,9 @@ AppDependencies _testAppDependencies({
     ),
     workoutSetRepository: workoutSetRepository,
     saveWorkoutSet: SaveWorkoutSet(workoutSetRepository),
+    workoutSessionController: WorkoutSessionController(
+      workoutSetRepository: workoutSetRepository,
+    ),
     getExerciseAnalytics: GetExerciseAnalytics(workoutSetRepository),
     getMuscleLoadDashboard: GetMuscleLoadDashboard(
       workoutSetRepository: workoutSetRepository,

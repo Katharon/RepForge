@@ -56,6 +56,7 @@ void main() {
     expect(saved.load, LoadKg(80));
     expect(saved.repetitions, Repetitions(8));
     expect(saved.comment, SetComment('Controlled'));
+    expect(saved.workoutSessionId, isNull);
   });
 
   testWidgets('quick log strings are localized in German', (tester) async {
@@ -124,6 +125,61 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(repository.savedSets.single.exerciseRef.id, 'seated_cable_row');
+  });
+
+  testWidgets('quick log attaches saved sets to the active workout session', (
+    tester,
+  ) async {
+    final repository = _FakeWorkoutSetRepository();
+    final workoutSessionController = WorkoutSessionController(
+      workoutSetRepository: repository,
+      workoutSessionIdProvider: () => WorkoutSessionId('active-session'),
+      nowProvider: () => DateTime.utc(2026, 6, 5, 11),
+    );
+    await workoutSessionController.start(
+      sourceName: 'Push',
+      exerciseRefs: [
+        ExerciseRef.official(
+          id: OfficialExerciseId('barbell_bench_press'),
+          displayNameSnapshot: 'Barbell Bench Press',
+          catalogVersionSnapshot: '2026.06.0',
+        ),
+      ],
+    );
+    final controller = QuickLogSetController(
+      exerciseCatalogRepository: _FakeExerciseCatalogRepository(),
+      saveWorkoutSet: SaveWorkoutSet(repository),
+      workoutSessionController: workoutSessionController,
+      workoutSetIdProvider: () => WorkoutSetId('quick-session-set'),
+      nowProvider: () => DateTime.utc(2026, 6, 5, 11, 10),
+    );
+
+    await tester.pumpWidget(
+      _testApp(
+        FilledButton(
+          onPressed: () => controller.show(_capturedContext!),
+          child: const Text('Open quick log'),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Open quick log'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byKey(const Key('quick_log_load_field')), '90');
+    await tester.enterText(
+      find.byKey(const Key('quick_log_repetitions_field')),
+      '6',
+    );
+    await tester.tap(find.byKey(const Key('quick_log_save_button')));
+    await tester.pumpAndSettle();
+
+    final saved = repository.savedSets.single;
+    expect(saved.workoutSessionId, WorkoutSessionId('active-session'));
+    expect(workoutSessionController.snapshot.activeSummary?.setCount, 1);
+    expect(workoutSessionController.snapshot.activeSummary?.totalVolumeKg, 540);
+
+    await workoutSessionController.dispose();
   });
 }
 
@@ -234,7 +290,9 @@ final class _FakeWorkoutSetRepository implements WorkoutSetRepository {
   Future<List<WorkoutSet>> setsForWorkoutSession(
     WorkoutSessionId workoutSessionId,
   ) async {
-    return const [];
+    return savedSets
+        .where((set) => set.workoutSessionId == workoutSessionId)
+        .toList(growable: false);
   }
 
   @override

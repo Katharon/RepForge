@@ -36,6 +36,8 @@ GoRouter createAppRouter({required AppDependencies dependencies}) {
                     workoutSetRepository: dependencies.workoutSetRepository,
                     getTodayReadiness: dependencies.getTodayReadiness,
                   ),
+                  workoutSessionController:
+                      dependencies.workoutSessionController,
                   logSetAction: (context) {
                     return _quickLogController(dependencies).show(context);
                   },
@@ -57,6 +59,7 @@ GoRouter createAppRouter({required AppDependencies dependencies}) {
                         dependencies.ensureOfficialCatalogImported,
                   ),
                 ),
+                workoutSessionController: dependencies.workoutSessionController,
                 onOpenExercise: (exerciseRef) {
                   context.push(
                     _exerciseDetailLocation(AppRoute.groups, exerciseRef),
@@ -121,6 +124,7 @@ QuickLogSetController _quickLogController(AppDependencies dependencies) {
     exerciseCatalogRepository: dependencies.exerciseCatalogRepository,
     saveWorkoutSet: dependencies.saveWorkoutSet,
     ensureCatalogImported: dependencies.ensureOfficialCatalogImported,
+    workoutSessionController: dependencies.workoutSessionController,
   );
 }
 
@@ -148,6 +152,7 @@ GoRoute _exerciseDetailRoute(
               loadSettingsProfile: dependencies.loadSettingsProfile.call,
               ensureCatalogImported: dependencies.ensureOfficialCatalogImported,
             ),
+        workoutSessionController: dependencies.workoutSessionController,
         onLogSet: (exerciseRef) {
           return _quickLogController(dependencies).show(context, exerciseRef);
         },

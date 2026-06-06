@@ -17,6 +17,8 @@ Purpose: fastest path to action.
 Contains:
 
 - readiness summary,
+- active workout-session banner when a local session is in progress or has just
+  completed,
 - recent training summary,
 - rest timer if active,
 - quick set logging from the local official exercise catalog,
@@ -37,6 +39,8 @@ Contains now:
 - Setgraph-inspired split/folder categories:
   My Exercises, Full Body, Upper Body, Lower Body, Push, Pull, Legs, and Core,
 - category drill-in to matching local catalog exercises,
+- local workout-session starter and active/completed session banner inside a
+  selected category,
 - search within the selected category,
 - exercise rows open Exercise Detail with recent history and quick logging,
 - disabled/future New workout action,
@@ -44,7 +48,6 @@ Contains now:
 
 Later:
 
-- start session,
 - create/edit/archive groups,
 - create/edit custom splits,
 - assign/reorder exercises,
@@ -55,6 +58,11 @@ Implementation note: Slice 57 relabels the visible Groups destination to
 Train/Training while keeping the internal `groups` route stable. Category
 filtering is a deterministic presentation/read-model helper based on existing
 catalog metadata, not coaching guidance.
+
+Implementation note: Slice 61 adds the first lightweight session state. Starting
+a session from a Train category creates an in-memory active session, logs future
+sets with the existing optional session ID, and shows compact active/completed
+summary cards without adding a full planner.
 
 ## Exercises
 
@@ -87,6 +95,8 @@ Contains now:
 - compared-to-previous-session metric summary,
 - bounded recent set history grouped by local calendar date,
 - visible Log Set action preselected to the current exercise.
+- active workout-session banner when a local session is in progress or has just
+  completed.
 
 Later:
 
@@ -115,6 +125,10 @@ limited-history notice when more sets exist.
 Implementation note: Slice 60 adds a compact next-set signal inside Exercise
 Detail only after a set is saved. It stays advisory, dismissible, and non-modal;
 logging remains available regardless of the signal.
+
+Implementation note: Slice 61 threads active workout-session context through
+Exercise Detail so users can keep orientation while logging, without changing
+the existing detail refresh or adaptive-suggestion behavior.
 
 ## Analytics
 

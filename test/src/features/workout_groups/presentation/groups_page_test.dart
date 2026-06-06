@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:repforge/src/app/localization/app_localizations.dart';
 import 'package:repforge/src/core/theme/theme.dart';
 import 'package:repforge/src/features/exercise_catalog/presentation/exercise_catalog_presentation.dart';
+import 'package:repforge/src/features/training_log/application/training_log_application.dart';
 import 'package:repforge/src/features/training_log/domain/training_log_domain.dart';
 import 'package:repforge/src/features/workout_groups/presentation/workout_groups_presentation.dart';
 
@@ -98,6 +99,91 @@ void main() {
     expect(find.text('Barbell Bench Press'), findsOneWidget);
     expect(find.text('Dumbbell Shoulder Press'), findsOneWidget);
     expect(find.text('Seated Cable Row'), findsNothing);
+  });
+
+  testWidgets('category view can start a local workout session', (
+    tester,
+  ) async {
+    _useLargeViewport(tester);
+    final repository = _FakeWorkoutSetRepository();
+    final workoutSessionController = WorkoutSessionController(
+      workoutSetRepository: repository,
+      workoutSessionIdProvider: () => WorkoutSessionId('push-session'),
+      nowProvider: () => DateTime.utc(2026, 6, 5, 9),
+    );
+    addTearDown(workoutSessionController.dispose);
+
+    await tester.pumpWidget(
+      _testApp(
+        GroupsPage(
+          loader: _StaticTrainPageLoader(_trainModel()),
+          workoutSessionController: workoutSessionController,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Push'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('No active session'), findsOneWidget);
+    expect(find.text('Start a Push session with 2 planned exercises.'), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('train_start_workout_button')));
+    await tester.pumpAndSettle();
+
+    expect(workoutSessionController.snapshot.active?.id, WorkoutSessionId('push-session'));
+    expect(find.byKey(const Key('workout_session_active_card')), findsOneWidget);
+    expect(find.text('Active session'), findsOneWidget);
+    expect(find.text('Push'), findsOneWidget);
+    expect(find.text('0m'), findsOneWidget);
+    expect(find.text('0 kg'), findsOneWidget);
+  });
+
+  testWidgets('active session banner completes with compact summary', (
+    tester,
+  ) async {
+    _useLargeViewport(tester);
+    final repository = _FakeWorkoutSetRepository();
+    final workoutSessionController = WorkoutSessionController(
+      workoutSetRepository: repository,
+      workoutSessionIdProvider: () => WorkoutSessionId('push-session'),
+      nowProvider: () => DateTime.utc(2026, 6, 5, 9, 30),
+    );
+    addTearDown(workoutSessionController.dispose);
+
+    await tester.pumpWidget(
+      _testApp(
+        GroupsPage(
+          loader: _StaticTrainPageLoader(_trainModel()),
+          workoutSessionController: workoutSessionController,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Push'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('train_start_workout_button')));
+    await tester.pumpAndSettle();
+    await repository.save(
+      _set(
+        id: 'session-set',
+        workoutSessionId: WorkoutSessionId('push-session'),
+      ),
+    );
+    await workoutSessionController.refreshActiveSummary();
+    await tester.pumpAndSettle();
+
+    expect(find.text('1'), findsWidgets);
+    expect(find.text('800 kg'), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('workout_session_complete_button')));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('workout_session_completed_card')), findsOneWidget);
+    expect(find.text('Workout complete'), findsOneWidget);
+    expect(find.text('Top exercise: Barbell Bench Press'), findsOneWidget);
   });
 
   testWidgets('opening Pull shows pull-relevant exercises', (tester) async {
@@ -320,5 +406,86 @@ final class _FailingTrainPageLoader implements TrainPageLoader {
   @override
   Future<TrainLandingViewModel> load({Locale? locale}) {
     return Future<TrainLandingViewModel>.error(StateError('boom'));
+  }
+}
+
+WorkoutSet _set({
+  required String id,
+  WorkoutSessionId? workoutSessionId,
+}) {
+  return WorkoutSet(
+    id: WorkoutSetId(id),
+    exerciseRef: ExerciseRef.official(
+      id: OfficialExerciseId('barbell_bench_press'),
+      displayNameSnapshot: 'Barbell Bench Press',
+      catalogVersionSnapshot: '2026.06.0',
+    ),
+    repetitions: Repetitions(10),
+    load: LoadKg(80),
+    performedAt: PerformedAt(DateTime.utc(2026, 6, 5, 9, 35)),
+    workoutSessionId: workoutSessionId,
+  );
+}
+
+final class _FakeWorkoutSetRepository implements WorkoutSetRepository {
+  final List<WorkoutSet> savedSets = [];
+
+  @override
+  Future<void> save(WorkoutSet set) async {
+    savedSets.add(set);
+  }
+
+  @override
+  Future<void> deleteById(WorkoutSetId id) async {}
+
+  @override
+  Future<WorkoutSet?> findById(WorkoutSetId id) async => null;
+
+  @override
+  Future<List<WorkoutSet>> historyForExercise(ExerciseRef exerciseRef) async {
+    return const [];
+  }
+
+  @override
+  Future<WorkoutSetDailySummary> dailySummary(
+    WorkoutSetDailySummaryQuery query,
+  ) async {
+    return const WorkoutSetDailySummary(
+      setCount: 0,
+      totalVolumeKg: 0,
+      lastLoggedSet: null,
+    );
+  }
+
+  @override
+  Future<WorkoutSetHistoryPage> searchHistory(
+    WorkoutSetHistoryQuery query,
+  ) async {
+    return WorkoutSetHistoryPage(
+      items: const [],
+      totalCount: 0,
+      limit: query.limit,
+      offset: query.offset,
+    );
+  }
+
+  @override
+  Future<List<WorkoutSet>> setsForWorkoutSession(
+    WorkoutSessionId workoutSessionId,
+  ) async {
+    return savedSets
+        .where((set) => set.workoutSessionId == workoutSessionId)
+        .toList(growable: false);
+  }
+
+  @override
+  Future<WorkoutSetTimelinePage> timelineForExercise(
+    WorkoutSetTimelineQuery query,
+  ) async {
+    return WorkoutSetTimelinePage(
+      items: const [],
+      hasMore: false,
+      nextCursor: null,
+    );
   }
 }

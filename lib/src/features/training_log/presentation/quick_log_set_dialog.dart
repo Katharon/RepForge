@@ -17,6 +17,7 @@ final class QuickLogSetController {
     required this.exerciseCatalogRepository,
     required this.saveWorkoutSet,
     this.ensureCatalogImported,
+    this.workoutSessionController,
     this.workoutSetIdProvider = _defaultWorkoutSetId,
     this.nowProvider = DateTime.now,
   });
@@ -24,6 +25,7 @@ final class QuickLogSetController {
   final ExerciseCatalogRepository exerciseCatalogRepository;
   final SaveWorkoutSet saveWorkoutSet;
   final EnsureOfficialCatalogImported? ensureCatalogImported;
+  final WorkoutSessionController? workoutSessionController;
   final WorkoutSetIdProvider workoutSetIdProvider;
   final QuickLogNowProvider nowProvider;
 
@@ -38,6 +40,7 @@ final class QuickLogSetController {
           exerciseCatalogRepository: exerciseCatalogRepository,
           saveWorkoutSet: saveWorkoutSet,
           ensureCatalogImported: ensureCatalogImported,
+          workoutSessionController: workoutSessionController,
           workoutSetIdProvider: workoutSetIdProvider,
           nowProvider: nowProvider,
           initialExerciseRef: initialExerciseRef,
@@ -60,6 +63,7 @@ class _QuickLogSetDialog extends StatefulWidget {
     required this.workoutSetIdProvider,
     required this.nowProvider,
     this.ensureCatalogImported,
+    this.workoutSessionController,
     this.initialExerciseRef,
   });
 
@@ -68,6 +72,7 @@ class _QuickLogSetDialog extends StatefulWidget {
   final EnsureOfficialCatalogImported? ensureCatalogImported;
   final WorkoutSetIdProvider workoutSetIdProvider;
   final QuickLogNowProvider nowProvider;
+  final WorkoutSessionController? workoutSessionController;
   final ExerciseRef? initialExerciseRef;
 
   @override
@@ -370,6 +375,11 @@ class _QuickLogSetDialogState extends State<_QuickLogSetDialog> {
     });
 
     try {
+      final workoutSessionId = widget
+          .workoutSessionController
+          ?.snapshot
+          .active
+          ?.id;
       await widget.saveWorkoutSet(
         WorkoutSetForm(
           targetExerciseRef: ExerciseRef.official(
@@ -384,7 +394,11 @@ class _QuickLogSetDialogState extends State<_QuickLogSetDialog> {
           commentInput: _commentController.text,
         ),
         workoutSetId: widget.workoutSetIdProvider(),
+        workoutSessionId: workoutSessionId,
       );
+      if (workoutSessionId != null) {
+        await widget.workoutSessionController?.refreshActiveSummary();
+      }
       if (!mounted) {
         return;
       }

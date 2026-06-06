@@ -7,6 +7,8 @@ import '../../../core/theme/theme.dart';
 import '../../../core/widgets/widgets.dart';
 import '../../recovery/domain/recovery_domain.dart';
 import '../../rest_timer/domain/rest_timer_domain.dart';
+import '../../training_log/application/training_log_application.dart';
+import '../../training_log/presentation/training_log_presentation.dart';
 import 'today_dashboard_loader.dart';
 import 'today_dashboard_models.dart';
 
@@ -23,9 +25,15 @@ final class TodayDashboardState {
 }
 
 class TodayPage extends StatefulWidget {
-  const TodayPage({required this.loader, super.key, this.logSetAction});
+  const TodayPage({
+    required this.loader,
+    super.key,
+    this.workoutSessionController,
+    this.logSetAction,
+  });
 
   final TodayDashboardLoader loader;
+  final WorkoutSessionController? workoutSessionController;
   final TodayLogSetAction? logSetAction;
 
   @override
@@ -64,6 +72,7 @@ class _TodayPageState extends State<TodayPage> {
             _TodayStateBody(
               state: _state,
               onRetry: _load,
+              workoutSessionController: widget.workoutSessionController,
               logSetAction: widget.logSetAction,
             ),
           ],
@@ -114,11 +123,13 @@ class _TodayStateBody extends StatelessWidget {
   const _TodayStateBody({
     required this.state,
     required this.onRetry,
+    required this.workoutSessionController,
     required this.logSetAction,
   });
 
   final TodayDashboardState state;
   final VoidCallback onRetry;
+  final WorkoutSessionController? workoutSessionController;
   final TodayLogSetAction? logSetAction;
 
   @override
@@ -130,6 +141,7 @@ class _TodayStateBody extends StatelessWidget {
         return _TodayEmptyState(
           dashboard: state.dashboard,
           onReload: onRetry,
+          workoutSessionController: workoutSessionController,
           logSetAction: logSetAction,
         );
       case TodayDashboardStatus.error:
@@ -138,6 +150,7 @@ class _TodayStateBody extends StatelessWidget {
         return _TodaySuccessState(
           dashboard: state.dashboard!,
           onReload: onRetry,
+          workoutSessionController: workoutSessionController,
           logSetAction: logSetAction,
         );
     }
@@ -170,11 +183,13 @@ class _TodayEmptyState extends StatelessWidget {
   const _TodayEmptyState({
     required this.dashboard,
     required this.onReload,
+    required this.workoutSessionController,
     required this.logSetAction,
   });
 
   final TodayDashboardReadModel? dashboard;
   final VoidCallback onReload;
+  final WorkoutSessionController? workoutSessionController;
   final TodayLogSetAction? logSetAction;
 
   @override
@@ -184,6 +199,7 @@ class _TodayEmptyState extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        _WorkoutSessionSection(controller: workoutSessionController),
         AppCard(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -270,11 +286,13 @@ class _TodaySuccessState extends StatelessWidget {
   const _TodaySuccessState({
     required this.dashboard,
     required this.onReload,
+    required this.workoutSessionController,
     required this.logSetAction,
   });
 
   final TodayDashboardReadModel dashboard;
   final VoidCallback onReload;
+  final WorkoutSessionController? workoutSessionController;
   final TodayLogSetAction? logSetAction;
 
   @override
@@ -282,6 +300,7 @@ class _TodaySuccessState extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        _WorkoutSessionSection(controller: workoutSessionController),
         _MetricStrip(dashboard: dashboard),
         const SizedBox(height: RepForgeSpacing.md),
         _ReadinessCard(dashboard: dashboard),
@@ -302,6 +321,40 @@ class _TodaySuccessState extends StatelessWidget {
     if (saved) {
       onReload();
     }
+  }
+}
+
+class _WorkoutSessionSection extends StatelessWidget {
+  const _WorkoutSessionSection({required this.controller});
+
+  final WorkoutSessionController? controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = this.controller;
+    if (controller == null) {
+      return const SizedBox.shrink();
+    }
+
+    return StreamBuilder<WorkoutSessionSnapshot>(
+      stream: controller.changes,
+      initialData: controller.snapshot,
+      builder: (context, snapshot) {
+        final sessionState = snapshot.data ?? const WorkoutSessionSnapshot();
+        if (sessionState.active == null &&
+            sessionState.completedSummary == null) {
+          return const SizedBox.shrink();
+        }
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            WorkoutSessionStatusCard(controller: controller),
+            const SizedBox(height: RepForgeSpacing.md),
+          ],
+        );
+      },
+    );
   }
 }
 

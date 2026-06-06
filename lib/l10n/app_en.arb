@@ -1465,6 +1465,146 @@
       }
     }
   },
+  "workoutSessionNoActiveTitle": "No active session",
+  "@workoutSessionNoActiveTitle": {
+    "description": "Title for the Train category session starter when no workout session is active."
+  },
+  "workoutSessionStartMessage": "Start a {source} session with {count} planned exercises.",
+  "@workoutSessionStartMessage": {
+    "description": "Message for starting a workout session from a Train category.",
+    "placeholders": {
+      "source": {
+        "type": "String",
+        "example": "Push"
+      },
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "workoutSessionStart": "Start workout",
+  "@workoutSessionStart": {
+    "description": "Button label for starting a workout session."
+  },
+  "workoutSessionStartSemantics": "Start {source} workout",
+  "@workoutSessionStartSemantics": {
+    "description": "Semantic label for starting a workout session from a category.",
+    "placeholders": {
+      "source": {
+        "type": "String",
+        "example": "Push"
+      }
+    }
+  },
+  "workoutSessionActiveTitle": "Active session",
+  "@workoutSessionActiveTitle": {
+    "description": "Title for an active workout session status card."
+  },
+  "workoutSessionCompletedTitle": "Workout complete",
+  "@workoutSessionCompletedTitle": {
+    "description": "Title for a completed workout session summary card."
+  },
+  "workoutSessionActiveSemantics": "Active session, {source}, {duration}, {sets} sets, {exercises} exercises, {volume}.",
+  "@workoutSessionActiveSemantics": {
+    "description": "Semantic label summarizing an active workout session.",
+    "placeholders": {
+      "source": {
+        "type": "String",
+        "example": "Push"
+      },
+      "duration": {
+        "type": "String",
+        "example": "42m"
+      },
+      "sets": {
+        "type": "int",
+        "example": "8"
+      },
+      "exercises": {
+        "type": "int",
+        "example": "3"
+      },
+      "volume": {
+        "type": "String",
+        "example": "3200 kg"
+      }
+    }
+  },
+  "workoutSessionCompletedSemantics": "Completed workout, {source}, {duration}, {sets} sets, {exercises} exercises, {volume}.",
+  "@workoutSessionCompletedSemantics": {
+    "description": "Semantic label summarizing a completed workout session.",
+    "placeholders": {
+      "source": {
+        "type": "String",
+        "example": "Push"
+      },
+      "duration": {
+        "type": "String",
+        "example": "42m"
+      },
+      "sets": {
+        "type": "int",
+        "example": "8"
+      },
+      "exercises": {
+        "type": "int",
+        "example": "3"
+      },
+      "volume": {
+        "type": "String",
+        "example": "3200 kg"
+      }
+    }
+  },
+  "workoutSessionSource": "{source}",
+  "@workoutSessionSource": {
+    "description": "Visible workout session source/category label.",
+    "placeholders": {
+      "source": {
+        "type": "String",
+        "example": "Push"
+      }
+    }
+  },
+  "workoutSessionCompleting": "Completing",
+  "@workoutSessionCompleting": {
+    "description": "Button label while completing a workout session."
+  },
+  "workoutSessionComplete": "Complete",
+  "@workoutSessionComplete": {
+    "description": "Button label for completing a workout session."
+  },
+  "workoutSessionDuration": "Duration",
+  "@workoutSessionDuration": {
+    "description": "Workout session duration metric label."
+  },
+  "workoutSessionSets": "Sets",
+  "@workoutSessionSets": {
+    "description": "Workout session set count metric label."
+  },
+  "workoutSessionExercises": "Exercises",
+  "@workoutSessionExercises": {
+    "description": "Workout session exercise count metric label."
+  },
+  "workoutSessionVolume": "Volume",
+  "@workoutSessionVolume": {
+    "description": "Workout session volume metric label."
+  },
+  "workoutSessionNoSets": "No sets logged in this session.",
+  "@workoutSessionNoSets": {
+    "description": "Completed workout session summary when no sets were logged."
+  },
+  "workoutSessionTopExercise": "Top exercise: {exercise}",
+  "@workoutSessionTopExercise": {
+    "description": "Completed workout session summary for the highest-volume exercise.",
+    "placeholders": {
+      "exercise": {
+        "type": "String",
+        "example": "Barbell Bench Press"
+      }
+    }
+  },
   "settingsPlaceholderMessage": "Settings will stay local-first when implemented.",
   "@settingsPlaceholderMessage": {
     "description": "Placeholder message for the settings destination."

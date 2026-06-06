@@ -11,6 +11,7 @@ import 'package:repforge/src/features/rest_timer/application/rest_timer_applicat
 import 'package:repforge/src/features/rest_timer/domain/rest_timer_domain.dart';
 import 'package:repforge/src/features/rest_timer/presentation/rest_timer_presentation.dart';
 import 'package:repforge/src/features/today/presentation/today_presentation.dart';
+import 'package:repforge/src/features/training_log/application/training_log_application.dart';
 import 'package:repforge/src/features/training_log/data/repositories/drift_workout_set_repository.dart';
 import 'package:repforge/src/features/training_log/domain/training_log_domain.dart';
 import 'package:repforge/src/shared/data/local/repforge_database.dart';
@@ -107,6 +108,38 @@ void main() {
     expect(find.text('Quick action'), findsOneWidget);
     expect(find.text('Training signal'), findsOneWidget);
     expect(find.text('Readiness estimate'), findsOneWidget);
+  });
+
+  testWidgets('active workout session banner renders on Today', (tester) async {
+    final repository = _FakeWorkoutSetRepository();
+    final workoutSessionController = WorkoutSessionController(
+      workoutSetRepository: repository,
+      workoutSessionIdProvider: () => WorkoutSessionId('today-session'),
+      nowProvider: () => DateTime.utc(2026, 6, 1, 9),
+    );
+    addTearDown(workoutSessionController.dispose);
+    await workoutSessionController.start(
+      sourceName: 'Push',
+      exerciseRefs: [_benchRef],
+    );
+
+    await tester.pumpWidget(
+      _testApp(
+        TodayPage(
+          loader: _StaticTodayDashboardLoader(_successModel()),
+          workoutSessionController: workoutSessionController,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('workout_session_active_card')), findsOneWidget);
+    expect(find.text('Active session'), findsOneWidget);
+    expect(find.text('Push'), findsOneWidget);
+    expect(
+      _semanticsLabel('Active session, Push, 0m, 0 sets, 0 exercises, 0 kg.'),
+      findsOneWidget,
+    );
   });
 
   testWidgets('success state remains readable at increased text scale', (
@@ -384,6 +417,12 @@ TodayDashboardReadModel _successModel() {
 
 final _today = DateTime.utc(2026, 6);
 
+final _benchRef = ExerciseRef.official(
+  id: OfficialExerciseId('barbell_bench_press'),
+  displayNameSnapshot: 'Barbell Bench Press',
+  catalogVersionSnapshot: '2026.06.0',
+);
+
 extension on TodayDashboardReadModel {
   TodayDashboardReadModel copyWith({ReadinessReadModel? readiness}) {
     return TodayDashboardReadModel(
@@ -453,4 +492,61 @@ final class _InMemoryReadinessCheckInRepository
 
   @override
   Future<void> save(ReadinessCheckIn checkIn) async {}
+}
+
+final class _FakeWorkoutSetRepository implements WorkoutSetRepository {
+  @override
+  Future<void> save(WorkoutSet set) async {}
+
+  @override
+  Future<void> deleteById(WorkoutSetId id) async {}
+
+  @override
+  Future<WorkoutSet?> findById(WorkoutSetId id) async => null;
+
+  @override
+  Future<List<WorkoutSet>> historyForExercise(ExerciseRef exerciseRef) async {
+    return const [];
+  }
+
+  @override
+  Future<WorkoutSetDailySummary> dailySummary(
+    WorkoutSetDailySummaryQuery query,
+  ) async {
+    return const WorkoutSetDailySummary(
+      setCount: 0,
+      totalVolumeKg: 0,
+      lastLoggedSet: null,
+    );
+  }
+
+  @override
+  Future<WorkoutSetHistoryPage> searchHistory(
+    WorkoutSetHistoryQuery query,
+  ) async {
+    return WorkoutSetHistoryPage(
+      items: const [],
+      totalCount: 0,
+      limit: query.limit,
+      offset: query.offset,
+    );
+  }
+
+  @override
+  Future<List<WorkoutSet>> setsForWorkoutSession(
+    WorkoutSessionId workoutSessionId,
+  ) async {
+    return const [];
+  }
+
+  @override
+  Future<WorkoutSetTimelinePage> timelineForExercise(
+    WorkoutSetTimelineQuery query,
+  ) async {
+    return WorkoutSetTimelinePage(
+      items: const [],
+      hasMore: false,
+      nextCursor: null,
+    );
+  }
 }

@@ -57,6 +57,7 @@ final class AppDependencies {
     required this.configuration,
     required this.workoutSetRepository,
     required this.saveWorkoutSet,
+    required this.workoutSessionController,
     required this.getExerciseAnalytics,
     required this.getMuscleLoadDashboard,
     required this.exerciseCatalogRepository,
@@ -103,6 +104,7 @@ final class AppDependencies {
     required this.configuration,
     required this.workoutSetRepository,
     required this.saveWorkoutSet,
+    required this.workoutSessionController,
     required this.getExerciseAnalytics,
     required this.getMuscleLoadDashboard,
     required this.exerciseCatalogRepository,
@@ -149,6 +151,7 @@ final class AppDependencies {
   final AppConfiguration configuration;
   final WorkoutSetRepository workoutSetRepository;
   final SaveWorkoutSet saveWorkoutSet;
+  final WorkoutSessionController workoutSessionController;
   final GetExerciseAnalytics getExerciseAnalytics;
   final GetMuscleLoadDashboard getMuscleLoadDashboard;
   final ExerciseCatalogRepository exerciseCatalogRepository;
@@ -255,6 +258,9 @@ final class CompositionRoot {
     final composedDatabase = database ?? databaseFactory.createDatabase();
     final workoutSetRepository = DriftWorkoutSetRepository(composedDatabase);
     final saveWorkoutSet = SaveWorkoutSet(workoutSetRepository);
+    final workoutSessionController = WorkoutSessionController(
+      workoutSetRepository: workoutSetRepository,
+    );
     final exerciseCatalogRepository = DriftExerciseCatalogRepository(
       composedDatabase,
     );
@@ -352,6 +358,7 @@ final class CompositionRoot {
         configuration: configuration,
         workoutSetRepository: workoutSetRepository,
         saveWorkoutSet: saveWorkoutSet,
+        workoutSessionController: workoutSessionController,
         getExerciseAnalytics: getExerciseAnalytics,
         getMuscleLoadDashboard: getMuscleLoadDashboard,
         exerciseCatalogRepository: exerciseCatalogRepository,
@@ -399,6 +406,7 @@ final class CompositionRoot {
       configuration: configuration,
       workoutSetRepository: workoutSetRepository,
       saveWorkoutSet: saveWorkoutSet,
+      workoutSessionController: workoutSessionController,
       getExerciseAnalytics: getExerciseAnalytics,
       getMuscleLoadDashboard: getMuscleLoadDashboard,
       exerciseCatalogRepository: exerciseCatalogRepository,
@@ -439,7 +447,10 @@ final class CompositionRoot {
       purchaseVerificationSource: composedPurchaseVerificationSource,
       verifyPurchaseEntitlement: verifyPurchaseEntitlement,
       entitlementCachePolicy: entitlementCachePolicy,
-      closeOwnedResources: composedDatabase.close,
+      closeOwnedResources: () async {
+        await workoutSessionController.dispose();
+        await composedDatabase.close();
+      },
     );
   }
 }

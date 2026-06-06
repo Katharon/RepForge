@@ -198,6 +198,18 @@ The migration is additive and non-destructive. Existing workout sets, catalog
 rows, settings, onboarding status, groups, and backup-compatible data remain
 unchanged.
 
+## Slice 61 lightweight workout sessions
+
+Slice 61 does not change the Drift schema. It reuses the existing optional
+`workout_sets.workout_session_id` column for sets logged while a volatile
+in-memory workout session is active.
+
+The active session itself is not persisted in this first slice. Completing a
+session reads local sets by `WorkoutSessionId` and derives a compact summary.
+If a future slice persists session headers, resumes sessions after process
+death, or adds templates/planning, that migration must be additive and preserve
+all existing `workout_session_id` links on logged sets.
+
 ## Slice 37 optional sync metadata boundary
 
 Slice 37 does not change the Drift schema. It adds only pure-Dart sync metadata
