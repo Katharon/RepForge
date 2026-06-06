@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:repforge/src/app/localization/app_localizations.dart';
 import 'package:repforge/src/core/theme/theme.dart';
+import 'package:repforge/src/features/analytics/presentation/analytics_presentation.dart';
 import 'package:repforge/src/features/exercise_catalog/presentation/exercise_catalog_presentation.dart';
 import 'package:repforge/src/features/training_log/domain/training_log_domain.dart';
 
@@ -147,6 +148,36 @@ void main() {
       expect(find.text('8 reps x 80 kg'), findsOneWidget);
     },
   );
+
+  testWidgets('Analytics and 1RM cards open chart callbacks', (tester) async {
+    _useLargeViewport(tester);
+    final openedMetrics = <AnalyticsMetric>[];
+
+    await tester.pumpWidget(
+      _testApp(
+        ExerciseDetailPage(
+          exerciseRef: _benchRef,
+          loader: _StaticExerciseDetailLoader(_detailModel()),
+          onLogSet: (_) async => false,
+          onOpenAnalytics: (exerciseRef, metric) {
+            expect(exerciseRef, _benchRef);
+            openedMetrics.add(metric);
+          },
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Analytics'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('1RM'));
+    await tester.pumpAndSettle();
+
+    expect(openedMetrics, [
+      AnalyticsMetric.volumeKg,
+      AnalyticsMetric.estimatedOneRepMaxKg,
+    ]);
+  });
 
   testWidgets('German localization covers detail labels', (tester) async {
     _useLargeViewport(tester);

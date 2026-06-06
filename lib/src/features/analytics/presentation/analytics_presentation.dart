@@ -1,6 +1,9 @@
 export 'analytics_metric.dart';
 export 'analytics_page.dart';
 export 'analytics_range.dart';
+export 'exercise_analytics_chart_loader.dart';
+export 'exercise_analytics_chart_page.dart';
+export 'exercise_analytics_chart_range.dart';
 export 'exercise_analytics_loader.dart';
 export 'exercise_analytics_view_model.dart';
 export 'muscle_load_dashboard_loader.dart';

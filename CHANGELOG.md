@@ -15,6 +15,13 @@
 
 ### Added
 
+- Added Slice 59 Exercise Analytics chart screen reachable from Exercise Detail
+  Analytics and 1RM entry cards, with localized metric and range selectors,
+  selected point summaries, loading/empty/error/one-point/multi-point states,
+  bounded latest-100-set chart loading, All-range limited-history copy, and
+  widget/route coverage without new chart dependencies, new analytics formulas,
+  schema migrations, coach UI, adaptive next-set UI, custom editors, cloud
+  services, Firebase, sync, social, wearable/health, ads, or payment changes.
 - Added Slice 58 Exercise Detail and set history dashboard reachable from Train
   category rows and the full Exercises catalog, with stable exercise-reference
   routing, localized title/tags, compact Analytics and 1RM entry cards,

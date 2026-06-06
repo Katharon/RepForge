@@ -92,6 +92,23 @@ compares it with the previous equal-length period `[start - duration, start)`.
 The UI-facing use case reads WorkoutSet timeline pages with an explicit
 `maxHistorySets` bound; it does not call unbounded exercise history APIs.
 
+Slice 59 exercise chart UI uses presentation-only point ranges:
+
+- D: latest one-day window ending at the load time.
+- W: latest seven-day window.
+- 2W: latest fourteen-day window.
+- M: latest thirty-day window.
+- 3M: latest ninety-day window.
+- 6M: latest one-hundred-eighty-day window.
+- All: all points available inside the bounded latest-set load.
+
+The chart adapter reads at most the latest 100 local sets for the selected
+exercise through `timelineForExercise`. If more sets exist, the UI labels the
+chart as limited history. This is a display cap, not a new analytics formula.
+Per-set chart values follow the existing formulas: sets = `1`, repetitions =
+logged reps, volume = `load * repetitions`, kg/rep = logged load for that set,
+and estimated 1RM = Epley v1.
+
 ## Estimated 1RM
 
 Support multiple formulas later, but start with one formula and document confidence.

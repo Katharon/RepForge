@@ -408,7 +408,7 @@
   "@exerciseDetailAnalyticsTitle": {
     "description": "Titel der Analyse-Einstiegskarte im Uebungsdetail."
   },
-  "exerciseDetailAnalyticsMessage": "Vollstaendige Diagramme kommen im naechsten Slice.",
+  "exerciseDetailAnalyticsMessage": "Diagrammtrends fuer diese Uebung oeffnen.",
   "@exerciseDetailAnalyticsMessage": {
     "description": "Platzhaltertext der Analyse-Einstiegskarte im Uebungsdetail."
   },
@@ -416,7 +416,7 @@
   "@exerciseDetailOneRepMaxTitle": {
     "description": "Titel der 1RM-Einstiegskarte im Uebungsdetail."
   },
-  "exerciseDetailOneRepMaxMessage": "Kurze Schaetzung jetzt, volle Ansicht spaeter.",
+  "exerciseDetailOneRepMaxMessage": "Das geschaetzte 1RM-Diagramm oeffnen.",
   "@exerciseDetailOneRepMaxMessage": {
     "description": "Platzhaltertext der 1RM-Einstiegskarte im Uebungsdetail."
   },
@@ -1135,6 +1135,124 @@
   "onboardingErrorMessage": "Versuche es erneut, ohne lokale Daten zu aendern.",
   "@onboardingErrorMessage": {
     "description": "Fehlertext fuer Onboarding."
+  },
+  "exerciseAnalyticsChartTitle": "Uebungsdiagramm",
+  "@exerciseAnalyticsChartTitle": {
+    "description": "Titel fuer Uebungs-Analysediagramm."
+  },
+  "exerciseAnalyticsMetricSelectorLabel": "Metrikauswahl",
+  "@exerciseAnalyticsMetricSelectorLabel": {
+    "description": "Semantiklabel fuer Metrikauswahl."
+  },
+  "exerciseAnalyticsRangeTitle": "Bereich",
+  "@exerciseAnalyticsRangeTitle": {
+    "description": "Sichtbares Label fuer Bereichsauswahl."
+  },
+  "exerciseAnalyticsRangeSelectorLabel": "Bereichsauswahl",
+  "@exerciseAnalyticsRangeSelectorLabel": {
+    "description": "Semantiklabel fuer Bereichsauswahl."
+  },
+  "exerciseAnalyticsRangeDay": "T",
+  "@exerciseAnalyticsRangeDay": {
+    "description": "Ein-Tages-Bereich."
+  },
+  "exerciseAnalyticsRangeWeek": "W",
+  "@exerciseAnalyticsRangeWeek": {
+    "description": "Ein-Wochen-Bereich."
+  },
+  "exerciseAnalyticsRangeTwoWeeks": "2W",
+  "@exerciseAnalyticsRangeTwoWeeks": {
+    "description": "Zwei-Wochen-Bereich."
+  },
+  "exerciseAnalyticsRangeMonth": "M",
+  "@exerciseAnalyticsRangeMonth": {
+    "description": "Ein-Monats-Bereich."
+  },
+  "exerciseAnalyticsRangeThreeMonths": "3M",
+  "@exerciseAnalyticsRangeThreeMonths": {
+    "description": "Drei-Monats-Bereich."
+  },
+  "exerciseAnalyticsRangeSixMonths": "6M",
+  "@exerciseAnalyticsRangeSixMonths": {
+    "description": "Sechs-Monats-Bereich."
+  },
+  "exerciseAnalyticsRangeAll": "Alle",
+  "@exerciseAnalyticsRangeAll": {
+    "description": "Alle verfuegbaren begrenzten Verlaufsdaten."
+  },
+  "exerciseAnalyticsChartLoading": "Uebungsdiagramm wird geladen",
+  "@exerciseAnalyticsChartLoading": {
+    "description": "Ladetext fuer Uebungsdiagramm."
+  },
+  "exerciseAnalyticsChartEmptyTitle": "Noch keine Diagrammdaten",
+  "@exerciseAnalyticsChartEmptyTitle": {
+    "description": "Leerzustandstitel fuer Uebungsdiagramm."
+  },
+  "exerciseAnalyticsChartEmptyMessage": "Protokolliere Saetze fuer diese Uebung, um ein lokales Diagramm zu zeichnen.",
+  "@exerciseAnalyticsChartEmptyMessage": {
+    "description": "Leerzustandstext fuer Uebungsdiagramm."
+  },
+  "exerciseAnalyticsOneRepMaxUnavailableTitle": "Geschaetztes 1RM nicht verfuegbar",
+  "@exerciseAnalyticsOneRepMaxUnavailableTitle": {
+    "description": "Nicht-verfuegbar-Titel fuer 1RM-Metrik."
+  },
+  "exerciseAnalyticsOneRepMaxUnavailableMessage": "Protokolliere in diesem Bereich einen gueltigen Satz, um 1RM zu schaetzen.",
+  "@exerciseAnalyticsOneRepMaxUnavailableMessage": {
+    "description": "Nicht-verfuegbar-Text fuer 1RM-Metrik."
+  },
+  "exerciseAnalyticsChartErrorTitle": "Uebungsdiagramm konnte nicht geladen werden",
+  "@exerciseAnalyticsChartErrorTitle": {
+    "description": "Fehlertitel fuer Uebungsdiagramm."
+  },
+  "exerciseAnalyticsChartErrorMessage": "Versuche es erneut, ohne lokale Trainingsdaten zu aendern.",
+  "@exerciseAnalyticsChartErrorMessage": {
+    "description": "Fehlertext fuer Uebungsdiagramm."
+  },
+  "exerciseAnalyticsSelectedPointTitle": "Ausgewaehlter Punkt",
+  "@exerciseAnalyticsSelectedPointTitle": {
+    "description": "Titel fuer ausgewaehlten Diagrammpunkt."
+  },
+  "exerciseAnalyticsSelectedPointSemantics": "Zusammenfassung des ausgewaehlten Punkts",
+  "@exerciseAnalyticsSelectedPointSemantics": {
+    "description": "Semantikprefix fuer ausgewaehlten Diagrammpunkt."
+  },
+  "exerciseAnalyticsChartSemantics": "Uebungsdiagramm fuer {metric}",
+  "@exerciseAnalyticsChartSemantics": {
+    "description": "Semantiklabel fuer Uebungsdiagramm.",
+    "placeholders": {
+      "metric": {
+        "type": "String",
+        "example": "Volumen"
+      }
+    }
+  },
+  "exerciseAnalyticsChartPointsLabel": "Punkte",
+  "@exerciseAnalyticsChartPointsLabel": {
+    "description": "Label fuer Anzahl von Diagrammpunkten."
+  },
+  "exerciseAnalyticsSetSummary": "{repetitions} Wdh. x {load}",
+  "@exerciseAnalyticsSetSummary": {
+    "description": "Satzzusammenfassung im ausgewaehlten Punkt.",
+    "placeholders": {
+      "repetitions": {
+        "type": "int",
+        "example": "8"
+      },
+      "load": {
+        "type": "String",
+        "example": "80 kg"
+      }
+    }
+  },
+  "exerciseAnalyticsLimitedHistory": "Das Diagramm nutzt die letzten {limit} lokalen Saetze fuer diese Uebung.",
+  "@exerciseAnalyticsLimitedHistory": {
+    "description": "Hinweis bei erreichter begrenzter Verlaufsladung.",
+    "placeholders": {
+      "limit": {
+        "type": "int",
+        "example": "100"
+      }
+    }
   },
   "settingsPlaceholderMessage": "Einstellungen bleiben bei der Umsetzung lokal-first.",
   "@settingsPlaceholderMessage": {

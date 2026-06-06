@@ -345,14 +345,14 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get exerciseDetailAnalyticsMessage =>
-      'Vollstaendige Diagramme kommen im naechsten Slice.';
+      'Diagrammtrends fuer diese Uebung oeffnen.';
 
   @override
   String get exerciseDetailOneRepMaxTitle => '1RM';
 
   @override
   String get exerciseDetailOneRepMaxMessage =>
-      'Kurze Schaetzung jetzt, volle Ansicht spaeter.';
+      'Das geschaetzte 1RM-Diagramm oeffnen.';
 
   @override
   String get exerciseDetailComparedTitle => 'Vergleich zur vorherigen Einheit';
@@ -1076,6 +1076,90 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get onboardingErrorMessage =>
       'Versuche es erneut, ohne lokale Daten zu aendern.';
+
+  @override
+  String get exerciseAnalyticsChartTitle => 'Uebungsdiagramm';
+
+  @override
+  String get exerciseAnalyticsMetricSelectorLabel => 'Metrikauswahl';
+
+  @override
+  String get exerciseAnalyticsRangeTitle => 'Bereich';
+
+  @override
+  String get exerciseAnalyticsRangeSelectorLabel => 'Bereichsauswahl';
+
+  @override
+  String get exerciseAnalyticsRangeDay => 'T';
+
+  @override
+  String get exerciseAnalyticsRangeWeek => 'W';
+
+  @override
+  String get exerciseAnalyticsRangeTwoWeeks => '2W';
+
+  @override
+  String get exerciseAnalyticsRangeMonth => 'M';
+
+  @override
+  String get exerciseAnalyticsRangeThreeMonths => '3M';
+
+  @override
+  String get exerciseAnalyticsRangeSixMonths => '6M';
+
+  @override
+  String get exerciseAnalyticsRangeAll => 'Alle';
+
+  @override
+  String get exerciseAnalyticsChartLoading => 'Uebungsdiagramm wird geladen';
+
+  @override
+  String get exerciseAnalyticsChartEmptyTitle => 'Noch keine Diagrammdaten';
+
+  @override
+  String get exerciseAnalyticsChartEmptyMessage =>
+      'Protokolliere Saetze fuer diese Uebung, um ein lokales Diagramm zu zeichnen.';
+
+  @override
+  String get exerciseAnalyticsOneRepMaxUnavailableTitle =>
+      'Geschaetztes 1RM nicht verfuegbar';
+
+  @override
+  String get exerciseAnalyticsOneRepMaxUnavailableMessage =>
+      'Protokolliere in diesem Bereich einen gueltigen Satz, um 1RM zu schaetzen.';
+
+  @override
+  String get exerciseAnalyticsChartErrorTitle =>
+      'Uebungsdiagramm konnte nicht geladen werden';
+
+  @override
+  String get exerciseAnalyticsChartErrorMessage =>
+      'Versuche es erneut, ohne lokale Trainingsdaten zu aendern.';
+
+  @override
+  String get exerciseAnalyticsSelectedPointTitle => 'Ausgewaehlter Punkt';
+
+  @override
+  String get exerciseAnalyticsSelectedPointSemantics =>
+      'Zusammenfassung des ausgewaehlten Punkts';
+
+  @override
+  String exerciseAnalyticsChartSemantics(String metric) {
+    return 'Uebungsdiagramm fuer $metric';
+  }
+
+  @override
+  String get exerciseAnalyticsChartPointsLabel => 'Punkte';
+
+  @override
+  String exerciseAnalyticsSetSummary(int repetitions, String load) {
+    return '$repetitions Wdh. x $load';
+  }
+
+  @override
+  String exerciseAnalyticsLimitedHistory(int limit) {
+    return 'Das Diagramm nutzt die letzten $limit lokalen Saetze fuer diese Uebung.';
+  }
 
   @override
   String get settingsPlaceholderMessage =>

@@ -82,18 +82,35 @@ Purpose: inspect one exercise before logging or analyzing.
 Contains now:
 
 - localized exercise title and metadata chips,
-- compact Analytics and 1RM entry cards as honest placeholders for the next
-  chart slice,
+- compact Analytics and 1RM entry cards that open the Exercise Analytics chart
+  screen for the same stable exercise reference,
 - compared-to-previous-session metric summary,
 - bounded recent set history grouped by local calendar date,
 - visible Log Set action preselected to the current exercise.
 
 Later:
 
-- full charts and range interactions,
 - deeper timeline pagination,
 - custom-exercise editing once custom exercises are implemented,
 - coach/adaptive next-set UI only in its explicit later slice.
+
+## Exercise Analytics
+
+Purpose: inspect one exercise's local trend before deciding what to do next.
+
+Contains now:
+
+- stable exercise title carried from Exercise Detail,
+- metric selector for Sets, Reps, Volume, kg/rep, and Estimated 1RM,
+- range selector for D, W, 2W, M, 3M, 6M, and All,
+- deterministic lightweight chart for local logged sets,
+- selected point summary with metric value, local date/time, reps, and load,
+- honest empty, unavailable, error, one-point, multi-point, and
+  limited-history states.
+
+Implementation note: Slice 59 keeps the chart local-first and bounded. The All
+range uses the latest 100 local sets loaded through the timeline API and shows a
+limited-history notice when more sets exist.
 
 ## Analytics
 
@@ -110,7 +127,6 @@ Contains now:
 
 Later:
 
-- exercise selection/detail handoff,
 - richer date-bounded muscle load queries,
 - catalog-authored activation weights,
 - optional schematic visuals that are not body heatmaps unless explicitly scoped,

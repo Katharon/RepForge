@@ -621,7 +621,7 @@ abstract class AppLocalizations {
   /// Exercise Detail analytics entry placeholder message.
   ///
   /// In en, this message translates to:
-  /// **'Full charts land in the next slice.'**
+  /// **'Open chart trends for this exercise.'**
   String get exerciseDetailAnalyticsMessage;
 
   /// Exercise Detail estimated one-rep max entry card title.
@@ -633,7 +633,7 @@ abstract class AppLocalizations {
   /// Exercise Detail estimated one-rep max entry placeholder message.
   ///
   /// In en, this message translates to:
-  /// **'Quick estimate now, full view later.'**
+  /// **'Open the estimated 1RM chart.'**
   String get exerciseDetailOneRepMaxMessage;
 
   /// Exercise Detail previous-comparable-session summary title.
@@ -1895,6 +1895,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Try again without changing local data.'**
   String get onboardingErrorMessage;
+
+  /// Title for the per-exercise analytics chart screen and chart card.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercise chart'**
+  String get exerciseAnalyticsChartTitle;
+
+  /// Semantic label for the exercise analytics metric selector.
+  ///
+  /// In en, this message translates to:
+  /// **'Metric selector'**
+  String get exerciseAnalyticsMetricSelectorLabel;
+
+  /// Visible label for the exercise analytics range selector.
+  ///
+  /// In en, this message translates to:
+  /// **'Range'**
+  String get exerciseAnalyticsRangeTitle;
+
+  /// Semantic label for the exercise analytics range selector.
+  ///
+  /// In en, this message translates to:
+  /// **'Range selector'**
+  String get exerciseAnalyticsRangeSelectorLabel;
+
+  /// One-day exercise analytics range label.
+  ///
+  /// In en, this message translates to:
+  /// **'D'**
+  String get exerciseAnalyticsRangeDay;
+
+  /// One-week exercise analytics range label.
+  ///
+  /// In en, this message translates to:
+  /// **'W'**
+  String get exerciseAnalyticsRangeWeek;
+
+  /// Two-week exercise analytics range label.
+  ///
+  /// In en, this message translates to:
+  /// **'2W'**
+  String get exerciseAnalyticsRangeTwoWeeks;
+
+  /// One-month exercise analytics range label.
+  ///
+  /// In en, this message translates to:
+  /// **'M'**
+  String get exerciseAnalyticsRangeMonth;
+
+  /// Three-month exercise analytics range label.
+  ///
+  /// In en, this message translates to:
+  /// **'3M'**
+  String get exerciseAnalyticsRangeThreeMonths;
+
+  /// Six-month exercise analytics range label.
+  ///
+  /// In en, this message translates to:
+  /// **'6M'**
+  String get exerciseAnalyticsRangeSixMonths;
+
+  /// All available bounded-history exercise analytics range label.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get exerciseAnalyticsRangeAll;
+
+  /// Loading message for the exercise analytics chart screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading exercise chart'**
+  String get exerciseAnalyticsChartLoading;
+
+  /// Empty-state title for the exercise analytics chart screen.
+  ///
+  /// In en, this message translates to:
+  /// **'No chart data yet'**
+  String get exerciseAnalyticsChartEmptyTitle;
+
+  /// Empty-state message for the exercise analytics chart screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Log sets for this exercise to draw a local chart.'**
+  String get exerciseAnalyticsChartEmptyMessage;
+
+  /// Unavailable-state title for the estimated one-rep-max metric on the exercise chart screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated 1RM unavailable'**
+  String get exerciseAnalyticsOneRepMaxUnavailableTitle;
+
+  /// Unavailable-state message for the estimated one-rep-max metric on the exercise chart screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Log a valid set in this range to estimate 1RM.'**
+  String get exerciseAnalyticsOneRepMaxUnavailableMessage;
+
+  /// Error title for the exercise analytics chart screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercise chart could not load'**
+  String get exerciseAnalyticsChartErrorTitle;
+
+  /// Error message for the exercise analytics chart screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again without changing local training data.'**
+  String get exerciseAnalyticsChartErrorMessage;
+
+  /// Title for the selected chart point summary.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected point'**
+  String get exerciseAnalyticsSelectedPointTitle;
+
+  /// Semantic prefix for the selected chart point summary.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected point summary'**
+  String get exerciseAnalyticsSelectedPointSemantics;
+
+  /// Semantic label for the exercise analytics chart.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercise chart for {metric}'**
+  String exerciseAnalyticsChartSemantics(String metric);
+
+  /// Plural-neutral label appended to a semantic chart point count.
+  ///
+  /// In en, this message translates to:
+  /// **'points'**
+  String get exerciseAnalyticsChartPointsLabel;
+
+  /// Set summary inside selected chart point details.
+  ///
+  /// In en, this message translates to:
+  /// **'{repetitions} reps x {load}'**
+  String exerciseAnalyticsSetSummary(int repetitions, String load);
+
+  /// Notice shown when the chart loader reached the bounded history limit.
+  ///
+  /// In en, this message translates to:
+  /// **'Chart uses the latest {limit} local sets for this exercise.'**
+  String exerciseAnalyticsLimitedHistory(int limit);
 
   /// Placeholder message for the settings destination.
   ///

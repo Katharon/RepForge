@@ -408,7 +408,7 @@
   "@exerciseDetailAnalyticsTitle": {
     "description": "Exercise Detail analytics entry card title."
   },
-  "exerciseDetailAnalyticsMessage": "Full charts land in the next slice.",
+  "exerciseDetailAnalyticsMessage": "Open chart trends for this exercise.",
   "@exerciseDetailAnalyticsMessage": {
     "description": "Exercise Detail analytics entry placeholder message."
   },
@@ -416,7 +416,7 @@
   "@exerciseDetailOneRepMaxTitle": {
     "description": "Exercise Detail estimated one-rep max entry card title."
   },
-  "exerciseDetailOneRepMaxMessage": "Quick estimate now, full view later.",
+  "exerciseDetailOneRepMaxMessage": "Open the estimated 1RM chart.",
   "@exerciseDetailOneRepMaxMessage": {
     "description": "Exercise Detail estimated one-rep max entry placeholder message."
   },
@@ -1210,6 +1210,124 @@
   "onboardingErrorMessage": "Try again without changing local data.",
   "@onboardingErrorMessage": {
     "description": "Onboarding error message."
+  },
+  "exerciseAnalyticsChartTitle": "Exercise chart",
+  "@exerciseAnalyticsChartTitle": {
+    "description": "Title for the per-exercise analytics chart screen and chart card."
+  },
+  "exerciseAnalyticsMetricSelectorLabel": "Metric selector",
+  "@exerciseAnalyticsMetricSelectorLabel": {
+    "description": "Semantic label for the exercise analytics metric selector."
+  },
+  "exerciseAnalyticsRangeTitle": "Range",
+  "@exerciseAnalyticsRangeTitle": {
+    "description": "Visible label for the exercise analytics range selector."
+  },
+  "exerciseAnalyticsRangeSelectorLabel": "Range selector",
+  "@exerciseAnalyticsRangeSelectorLabel": {
+    "description": "Semantic label for the exercise analytics range selector."
+  },
+  "exerciseAnalyticsRangeDay": "D",
+  "@exerciseAnalyticsRangeDay": {
+    "description": "One-day exercise analytics range label."
+  },
+  "exerciseAnalyticsRangeWeek": "W",
+  "@exerciseAnalyticsRangeWeek": {
+    "description": "One-week exercise analytics range label."
+  },
+  "exerciseAnalyticsRangeTwoWeeks": "2W",
+  "@exerciseAnalyticsRangeTwoWeeks": {
+    "description": "Two-week exercise analytics range label."
+  },
+  "exerciseAnalyticsRangeMonth": "M",
+  "@exerciseAnalyticsRangeMonth": {
+    "description": "One-month exercise analytics range label."
+  },
+  "exerciseAnalyticsRangeThreeMonths": "3M",
+  "@exerciseAnalyticsRangeThreeMonths": {
+    "description": "Three-month exercise analytics range label."
+  },
+  "exerciseAnalyticsRangeSixMonths": "6M",
+  "@exerciseAnalyticsRangeSixMonths": {
+    "description": "Six-month exercise analytics range label."
+  },
+  "exerciseAnalyticsRangeAll": "All",
+  "@exerciseAnalyticsRangeAll": {
+    "description": "All available bounded-history exercise analytics range label."
+  },
+  "exerciseAnalyticsChartLoading": "Loading exercise chart",
+  "@exerciseAnalyticsChartLoading": {
+    "description": "Loading message for the exercise analytics chart screen."
+  },
+  "exerciseAnalyticsChartEmptyTitle": "No chart data yet",
+  "@exerciseAnalyticsChartEmptyTitle": {
+    "description": "Empty-state title for the exercise analytics chart screen."
+  },
+  "exerciseAnalyticsChartEmptyMessage": "Log sets for this exercise to draw a local chart.",
+  "@exerciseAnalyticsChartEmptyMessage": {
+    "description": "Empty-state message for the exercise analytics chart screen."
+  },
+  "exerciseAnalyticsOneRepMaxUnavailableTitle": "Estimated 1RM unavailable",
+  "@exerciseAnalyticsOneRepMaxUnavailableTitle": {
+    "description": "Unavailable-state title for the estimated one-rep-max metric on the exercise chart screen."
+  },
+  "exerciseAnalyticsOneRepMaxUnavailableMessage": "Log a valid set in this range to estimate 1RM.",
+  "@exerciseAnalyticsOneRepMaxUnavailableMessage": {
+    "description": "Unavailable-state message for the estimated one-rep-max metric on the exercise chart screen."
+  },
+  "exerciseAnalyticsChartErrorTitle": "Exercise chart could not load",
+  "@exerciseAnalyticsChartErrorTitle": {
+    "description": "Error title for the exercise analytics chart screen."
+  },
+  "exerciseAnalyticsChartErrorMessage": "Try again without changing local training data.",
+  "@exerciseAnalyticsChartErrorMessage": {
+    "description": "Error message for the exercise analytics chart screen."
+  },
+  "exerciseAnalyticsSelectedPointTitle": "Selected point",
+  "@exerciseAnalyticsSelectedPointTitle": {
+    "description": "Title for the selected chart point summary."
+  },
+  "exerciseAnalyticsSelectedPointSemantics": "Selected point summary",
+  "@exerciseAnalyticsSelectedPointSemantics": {
+    "description": "Semantic prefix for the selected chart point summary."
+  },
+  "exerciseAnalyticsChartSemantics": "Exercise chart for {metric}",
+  "@exerciseAnalyticsChartSemantics": {
+    "description": "Semantic label for the exercise analytics chart.",
+    "placeholders": {
+      "metric": {
+        "type": "String",
+        "example": "Volume"
+      }
+    }
+  },
+  "exerciseAnalyticsChartPointsLabel": "points",
+  "@exerciseAnalyticsChartPointsLabel": {
+    "description": "Plural-neutral label appended to a semantic chart point count."
+  },
+  "exerciseAnalyticsSetSummary": "{repetitions} reps x {load}",
+  "@exerciseAnalyticsSetSummary": {
+    "description": "Set summary inside selected chart point details.",
+    "placeholders": {
+      "repetitions": {
+        "type": "int",
+        "example": "8"
+      },
+      "load": {
+        "type": "String",
+        "example": "80 kg"
+      }
+    }
+  },
+  "exerciseAnalyticsLimitedHistory": "Chart uses the latest {limit} local sets for this exercise.",
+  "@exerciseAnalyticsLimitedHistory": {
+    "description": "Notice shown when the chart loader reached the bounded history limit.",
+    "placeholders": {
+      "limit": {
+        "type": "int",
+        "example": "100"
+      }
+    }
   },
   "settingsPlaceholderMessage": "Settings will stay local-first when implemented.",
   "@settingsPlaceholderMessage": {

@@ -64,7 +64,7 @@ GoRouter createAppRouter({required AppDependencies dependencies}) {
                 },
               );
             },
-            routes: [_exerciseDetailRoute(dependencies)],
+            routes: [_exerciseDetailRoute(dependencies, AppRoute.groups)],
           ),
           _branch(
             route: AppRoute.exercises,
@@ -82,7 +82,7 @@ GoRouter createAppRouter({required AppDependencies dependencies}) {
                 },
               );
             },
-            routes: [_exerciseDetailRoute(dependencies)],
+            routes: [_exerciseDetailRoute(dependencies, AppRoute.exercises)],
           ),
           _branch(
             route: AppRoute.analytics,
@@ -124,7 +124,10 @@ QuickLogSetController _quickLogController(AppDependencies dependencies) {
   );
 }
 
-GoRoute _exerciseDetailRoute(AppDependencies dependencies) {
+GoRoute _exerciseDetailRoute(
+  AppDependencies dependencies,
+  AppRoute parentRoute,
+) {
   return GoRoute(
     path: 'exercise/:source/:id',
     builder: (context, state) {
@@ -140,8 +143,32 @@ GoRoute _exerciseDetailRoute(AppDependencies dependencies) {
         onLogSet: (exerciseRef) {
           return _quickLogController(dependencies).show(context, exerciseRef);
         },
+        onOpenAnalytics: (exerciseRef, initialMetric) {
+          context.push(
+            _exerciseAnalyticsLocation(parentRoute, exerciseRef, initialMetric),
+          );
+        },
       );
     },
+    routes: [
+      GoRoute(
+        path: 'analytics',
+        builder: (context, state) {
+          final exerciseRef = _exerciseRefFromRoute(state);
+          final initialMetric = _analyticsMetricFromRoute(state);
+          return ExerciseAnalyticsChartPage(
+            exerciseRef: exerciseRef,
+            title: exerciseRef.displayNameSnapshot,
+            initialMetric: initialMetric,
+            loader: RepositoryExerciseAnalyticsChartLoader(
+              workoutSetRepository: dependencies.workoutSetRepository,
+              exerciseRef: exerciseRef,
+              title: exerciseRef.displayNameSnapshot,
+            ),
+          );
+        },
+      ),
+    ],
   );
 }
 
@@ -151,6 +178,24 @@ String _exerciseDetailLocation(AppRoute parent, ExerciseRef exerciseRef) {
         '${parent.path}/exercise/${exerciseRef.source.name}/${exerciseRef.id}',
     queryParameters: {
       'name': exerciseRef.displayNameSnapshot,
+      if (exerciseRef.catalogVersionSnapshot != null)
+        'catalogVersion': exerciseRef.catalogVersionSnapshot!,
+    },
+  ).toString();
+}
+
+String _exerciseAnalyticsLocation(
+  AppRoute parent,
+  ExerciseRef exerciseRef,
+  AnalyticsMetric initialMetric,
+) {
+  return Uri(
+    path:
+        '${parent.path}/exercise/${exerciseRef.source.name}/${exerciseRef.id}'
+        '/analytics',
+    queryParameters: {
+      'name': exerciseRef.displayNameSnapshot,
+      'metric': initialMetric.name,
       if (exerciseRef.catalogVersionSnapshot != null)
         'catalogVersion': exerciseRef.catalogVersionSnapshot!,
     },
@@ -176,6 +221,14 @@ ExerciseRef _exerciseRefFromRoute(GoRouterState state) {
   return ExerciseRef.custom(
     id: CustomExerciseId(id),
     displayNameSnapshot: displayName,
+  );
+}
+
+AnalyticsMetric _analyticsMetricFromRoute(GoRouterState state) {
+  final metricName = state.uri.queryParameters['metric'];
+  return AnalyticsMetric.values.firstWhere(
+    (metric) => metric.name == metricName,
+    orElse: () => AnalyticsMetric.volumeKg,
   );
 }
 

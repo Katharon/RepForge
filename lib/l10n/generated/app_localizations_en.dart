@@ -340,14 +340,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exerciseDetailAnalyticsMessage =>
-      'Full charts land in the next slice.';
+      'Open chart trends for this exercise.';
 
   @override
   String get exerciseDetailOneRepMaxTitle => '1RM';
 
   @override
-  String get exerciseDetailOneRepMaxMessage =>
-      'Quick estimate now, full view later.';
+  String get exerciseDetailOneRepMaxMessage => 'Open the estimated 1RM chart.';
 
   @override
   String get exerciseDetailComparedTitle => 'Compared to previous';
@@ -1063,6 +1062,90 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingErrorMessage => 'Try again without changing local data.';
+
+  @override
+  String get exerciseAnalyticsChartTitle => 'Exercise chart';
+
+  @override
+  String get exerciseAnalyticsMetricSelectorLabel => 'Metric selector';
+
+  @override
+  String get exerciseAnalyticsRangeTitle => 'Range';
+
+  @override
+  String get exerciseAnalyticsRangeSelectorLabel => 'Range selector';
+
+  @override
+  String get exerciseAnalyticsRangeDay => 'D';
+
+  @override
+  String get exerciseAnalyticsRangeWeek => 'W';
+
+  @override
+  String get exerciseAnalyticsRangeTwoWeeks => '2W';
+
+  @override
+  String get exerciseAnalyticsRangeMonth => 'M';
+
+  @override
+  String get exerciseAnalyticsRangeThreeMonths => '3M';
+
+  @override
+  String get exerciseAnalyticsRangeSixMonths => '6M';
+
+  @override
+  String get exerciseAnalyticsRangeAll => 'All';
+
+  @override
+  String get exerciseAnalyticsChartLoading => 'Loading exercise chart';
+
+  @override
+  String get exerciseAnalyticsChartEmptyTitle => 'No chart data yet';
+
+  @override
+  String get exerciseAnalyticsChartEmptyMessage =>
+      'Log sets for this exercise to draw a local chart.';
+
+  @override
+  String get exerciseAnalyticsOneRepMaxUnavailableTitle =>
+      'Estimated 1RM unavailable';
+
+  @override
+  String get exerciseAnalyticsOneRepMaxUnavailableMessage =>
+      'Log a valid set in this range to estimate 1RM.';
+
+  @override
+  String get exerciseAnalyticsChartErrorTitle =>
+      'Exercise chart could not load';
+
+  @override
+  String get exerciseAnalyticsChartErrorMessage =>
+      'Try again without changing local training data.';
+
+  @override
+  String get exerciseAnalyticsSelectedPointTitle => 'Selected point';
+
+  @override
+  String get exerciseAnalyticsSelectedPointSemantics =>
+      'Selected point summary';
+
+  @override
+  String exerciseAnalyticsChartSemantics(String metric) {
+    return 'Exercise chart for $metric';
+  }
+
+  @override
+  String get exerciseAnalyticsChartPointsLabel => 'points';
+
+  @override
+  String exerciseAnalyticsSetSummary(int repetitions, String load) {
+    return '$repetitions reps x $load';
+  }
+
+  @override
+  String exerciseAnalyticsLimitedHistory(int limit) {
+    return 'Chart uses the latest $limit local sets for this exercise.';
+  }
 
   @override
   String get settingsPlaceholderMessage =>

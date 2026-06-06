@@ -61,7 +61,8 @@ Each slice is an incremental Codex task. Codex should implement exactly one slic
 - [55 — Legal, compliance, privacy, and safety review](slice_55_legal_compliance_privacy_safety_review.md) — done
 - [56 — Backward compatibility and runtime resilience hardening](slice_56_backward_compatibility_and_runtime_resilience_hardening.md) — done
 - [57 — Train tab and split/folder navigation](slice_57_train_tab_and_split_navigation.md) — done
-- [58 — Exercise detail and set history dashboard](slice_58_exercise_detail_and_set_history_dashboard.md) — blocked pending final validation and commit
+- [58 — Exercise detail and set history dashboard](slice_58_exercise_detail_and_set_history_dashboard.md) — done
+- [59 — Exercise analytics chart screen](slice_59_exercise_analytics_chart_screen.md) — done
 
 ## Release rhythm
 

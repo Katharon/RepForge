@@ -66,6 +66,14 @@ previous-session copy, preselected Log Set behavior, refresh after save,
 English/German localization, and semantic labels for Analytics, 1RM, Log Set,
 and set rows.
 
+Slice 59 extends exercise-level analytics chart coverage: Exercise Detail
+Analytics and 1RM card navigation, chart loading/empty/error/one-point/
+multi-point states, deterministic metric and range selector behavior, selected
+point summaries with metric value and local date/time, estimated-1RM
+unavailable copy, English/German localization, selector/chart/summary
+semantics, and proof that the UI uses bounded timeline loading instead of
+unbounded exercise history.
+
 ## Integration/E2E tests
 
 Critical flow:

@@ -163,6 +163,21 @@ void main() {
 
     expect(find.text('No set history yet'), findsOneWidget);
     expect(find.text('Compared to previous'), findsOneWidget);
+
+    await tester.tap(find.text('Open chart trends for this exercise.'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Exercise chart'), findsWidgets);
+    expect(find.text('No chart data yet'), findsOneWidget);
+
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Open the estimated 1RM chart.'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Exercise chart'), findsWidgets);
+    expect(find.text('Estimated 1RM unavailable'), findsOneWidget);
   });
 
   testWidgets('tapping an exercise in Exercises opens Exercise Detail', (

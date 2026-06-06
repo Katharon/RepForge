@@ -6,11 +6,14 @@ import 'package:intl/intl.dart';
 import '../../../app/localization/app_localizations.dart';
 import '../../../core/theme/theme.dart';
 import '../../../core/widgets/widgets.dart';
+import '../../analytics/presentation/analytics_presentation.dart';
 import '../../training_log/domain/training_log_domain.dart';
 import 'exercise_detail_loader.dart';
 
 typedef ExerciseDetailLogSetAction =
     Future<bool> Function(ExerciseRef exerciseRef);
+typedef ExerciseDetailAnalyticsAction =
+    void Function(ExerciseRef exerciseRef, AnalyticsMetric initialMetric);
 
 enum ExerciseDetailUiStatus { loading, empty, error, success }
 
@@ -28,11 +31,13 @@ class ExerciseDetailPage extends StatefulWidget {
     required this.loader,
     required this.onLogSet,
     super.key,
+    this.onOpenAnalytics,
   });
 
   final ExerciseRef exerciseRef;
   final ExerciseDetailLoader loader;
   final ExerciseDetailLogSetAction onLogSet;
+  final ExerciseDetailAnalyticsAction? onOpenAnalytics;
 
   @override
   State<ExerciseDetailPage> createState() => _ExerciseDetailPageState();
@@ -86,7 +91,13 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
           SliverAppBar.large(title: Text(title)),
           AppResponsiveSliverList(
             maxWidth: 840,
-            children: [_ExerciseDetailStateBody(state: _state, onRetry: _load)],
+            children: [
+              _ExerciseDetailStateBody(
+                state: _state,
+                onRetry: _load,
+                onOpenAnalytics: _openAnalytics,
+              ),
+            ],
           ),
         ],
       ),
@@ -140,13 +151,23 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
     }
     await _load();
   }
+
+  void _openAnalytics(AnalyticsMetric initialMetric) {
+    final exerciseRef = _state.model?.exerciseRef ?? widget.exerciseRef;
+    widget.onOpenAnalytics?.call(exerciseRef, initialMetric);
+  }
 }
 
 class _ExerciseDetailStateBody extends StatelessWidget {
-  const _ExerciseDetailStateBody({required this.state, required this.onRetry});
+  const _ExerciseDetailStateBody({
+    required this.state,
+    required this.onRetry,
+    required this.onOpenAnalytics,
+  });
 
   final ExerciseDetailUiState state;
   final VoidCallback onRetry;
+  final ValueChanged<AnalyticsMetric> onOpenAnalytics;
 
   @override
   Widget build(BuildContext context) {
@@ -196,15 +217,22 @@ class _ExerciseDetailStateBody extends StatelessWidget {
       case ExerciseDetailUiStatus.empty:
       case ExerciseDetailUiStatus.success:
         final model = state.model!;
-        return _ExerciseDetailContent(model: model);
+        return _ExerciseDetailContent(
+          model: model,
+          onOpenAnalytics: onOpenAnalytics,
+        );
     }
   }
 }
 
 class _ExerciseDetailContent extends StatelessWidget {
-  const _ExerciseDetailContent({required this.model});
+  const _ExerciseDetailContent({
+    required this.model,
+    required this.onOpenAnalytics,
+  });
 
   final ExerciseDetailViewModel model;
+  final ValueChanged<AnalyticsMetric> onOpenAnalytics;
 
   @override
   Widget build(BuildContext context) {
@@ -215,7 +243,10 @@ class _ExerciseDetailContent extends StatelessWidget {
       children: [
         _ExerciseHeaderCard(model: model),
         const SizedBox(height: RepForgeSpacing.md),
-        _ExerciseDetailEntryCards(title: model.title),
+        _ExerciseDetailEntryCards(
+          title: model.title,
+          onOpenAnalytics: onOpenAnalytics,
+        ),
         const SizedBox(height: RepForgeSpacing.md),
         _ExerciseSummaryCard(model: model.summary),
         const SizedBox(height: RepForgeSpacing.md),
@@ -280,9 +311,13 @@ class _ExerciseHeaderCard extends StatelessWidget {
 }
 
 class _ExerciseDetailEntryCards extends StatelessWidget {
-  const _ExerciseDetailEntryCards({required this.title});
+  const _ExerciseDetailEntryCards({
+    required this.title,
+    required this.onOpenAnalytics,
+  });
 
   final String title;
+  final ValueChanged<AnalyticsMetric> onOpenAnalytics;
 
   @override
   Widget build(BuildContext context) {
@@ -298,6 +333,7 @@ class _ExerciseDetailEntryCards extends StatelessWidget {
             semanticsLabel: localizations.exerciseDetailAnalyticsSemantics(
               title,
             ),
+            onTap: () => onOpenAnalytics(AnalyticsMetric.volumeKg),
           ),
         ),
         const SizedBox(width: RepForgeSpacing.md),
@@ -309,6 +345,7 @@ class _ExerciseDetailEntryCards extends StatelessWidget {
             semanticsLabel: localizations.exerciseDetailOneRepMaxSemantics(
               title,
             ),
+            onTap: () => onOpenAnalytics(AnalyticsMetric.estimatedOneRepMaxKg),
           ),
         ),
       ],
@@ -322,33 +359,39 @@ class _EntryCard extends StatelessWidget {
     required this.title,
     required this.message,
     required this.semanticsLabel,
+    required this.onTap,
   });
 
   final IconData icon;
   final String title;
   final String message;
   final String semanticsLabel;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return Semantics(
       label: semanticsLabel,
       button: true,
-      child: AppCard(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(icon, color: RepForgeColorTokens.accentPrimaryGreen),
-            const SizedBox(height: RepForgeSpacing.sm),
-            Text(title, style: Theme.of(context).textTheme.titleMedium),
-            const SizedBox(height: RepForgeSpacing.xs),
-            Text(
-              message,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: RepForgeColorTokens.textSecondary,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(RepForgeRadius.md),
+        onTap: onTap,
+        child: AppCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(icon, color: RepForgeColorTokens.accentPrimaryGreen),
+              const SizedBox(height: RepForgeSpacing.sm),
+              Text(title, style: Theme.of(context).textTheme.titleMedium),
+              const SizedBox(height: RepForgeSpacing.xs),
+              Text(
+                message,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: RepForgeColorTokens.textSecondary,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

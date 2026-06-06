@@ -38,34 +38,8 @@ runtime, health/wearable runtime, ads, payment changes, or schema migrations.
 
 ## Validation Result
 
-Pre-block validation passed earlier in this slice:
-
-- `git status --short`
-- `git rev-parse --short HEAD`
-- `git log --oneline -12`
-- `flutter pub get`
-- `flutter gen-l10n`
-- `dart run tool/validate_catalog.dart`
-- `dart run build_runner build --delete-conflicting-outputs`
-- focused Flutter tests for exercise catalog, workout groups, training log,
-  analytics, and app routing/widget smoke coverage
-- `flutter analyze`
-- `git diff --check`
-
-After the final localization-label patch, repo-local validation passed:
-
-- `git diff --check`
-- `git diff --exit-code -- lib test` reported intentional Slice 58 diffs
-- domain Drift/SQLite import guardrail returned no hits
-- domain Flutter/UI import guardrail returned no hits
-- no-cloud/backend guardrail hit existing boundary docs/fake gateways plus this
-  slice's boundary note, with no new runtime cloud dependency
-
-Final `dart format`, Flutter test suites, `scripts/check.sh`,
-`flutter build apk --debug`, and the required commit could not be completed in
-this environment because Dart/Flutter attempted SDK-cache writes outside the
-workspace and the required escalation was automatically rejected after the
-environment hit its usage limit.
+Slice 58 is committed as `86f20d7`. Validation details remain recorded in the
+slice status log and changelog from that commit.
 
 ## Follow-ups
 
