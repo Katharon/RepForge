@@ -1252,6 +1252,81 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get workoutSessionNoActiveTitle => 'No active session';
+
+  @override
+  String workoutSessionStartMessage(String source, int count) {
+    return 'Start a $source session with $count planned exercises.';
+  }
+
+  @override
+  String get workoutSessionStart => 'Start workout';
+
+  @override
+  String workoutSessionStartSemantics(String source) {
+    return 'Start $source workout';
+  }
+
+  @override
+  String get workoutSessionActiveTitle => 'Active session';
+
+  @override
+  String get workoutSessionCompletedTitle => 'Workout complete';
+
+  @override
+  String workoutSessionActiveSemantics(
+    String source,
+    String duration,
+    int sets,
+    int exercises,
+    String volume,
+  ) {
+    return 'Active session, $source, $duration, $sets sets, $exercises exercises, $volume.';
+  }
+
+  @override
+  String workoutSessionCompletedSemantics(
+    String source,
+    String duration,
+    int sets,
+    int exercises,
+    String volume,
+  ) {
+    return 'Completed workout, $source, $duration, $sets sets, $exercises exercises, $volume.';
+  }
+
+  @override
+  String workoutSessionSource(String source) {
+    return '$source';
+  }
+
+  @override
+  String get workoutSessionCompleting => 'Completing';
+
+  @override
+  String get workoutSessionComplete => 'Complete';
+
+  @override
+  String get workoutSessionDuration => 'Duration';
+
+  @override
+  String get workoutSessionSets => 'Sets';
+
+  @override
+  String get workoutSessionExercises => 'Exercises';
+
+  @override
+  String get workoutSessionVolume => 'Volume';
+
+  @override
+  String get workoutSessionNoSets => 'No sets logged in this session.';
+
+  @override
+  String workoutSessionTopExercise(String exercise) {
+    return 'Top exercise: $exercise';
+  }
+
+  @override
   String get settingsPlaceholderMessage =>
       'Settings will stay local-first when implemented.';
 }

@@ -2196,6 +2196,120 @@ abstract class AppLocalizations {
   /// **'Chart uses the latest {limit} local sets for this exercise.'**
   String exerciseAnalyticsLimitedHistory(int limit);
 
+  /// Title for the Train category session starter when no workout session is active.
+  ///
+  /// In en, this message translates to:
+  /// **'No active session'**
+  String get workoutSessionNoActiveTitle;
+
+  /// Message for starting a workout session from a Train category.
+  ///
+  /// In en, this message translates to:
+  /// **'Start a {source} session with {count} planned exercises.'**
+  String workoutSessionStartMessage(String source, int count);
+
+  /// Button label for starting a workout session.
+  ///
+  /// In en, this message translates to:
+  /// **'Start workout'**
+  String get workoutSessionStart;
+
+  /// Semantic label for starting a workout session from a category.
+  ///
+  /// In en, this message translates to:
+  /// **'Start {source} workout'**
+  String workoutSessionStartSemantics(String source);
+
+  /// Title for an active workout session status card.
+  ///
+  /// In en, this message translates to:
+  /// **'Active session'**
+  String get workoutSessionActiveTitle;
+
+  /// Title for a completed workout session summary card.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout complete'**
+  String get workoutSessionCompletedTitle;
+
+  /// Semantic label summarizing an active workout session.
+  ///
+  /// In en, this message translates to:
+  /// **'Active session, {source}, {duration}, {sets} sets, {exercises} exercises, {volume}.'**
+  String workoutSessionActiveSemantics(
+    String source,
+    String duration,
+    int sets,
+    int exercises,
+    String volume,
+  );
+
+  /// Semantic label summarizing a completed workout session.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed workout, {source}, {duration}, {sets} sets, {exercises} exercises, {volume}.'**
+  String workoutSessionCompletedSemantics(
+    String source,
+    String duration,
+    int sets,
+    int exercises,
+    String volume,
+  );
+
+  /// Visible workout session source/category label.
+  ///
+  /// In en, this message translates to:
+  /// **'{source}'**
+  String workoutSessionSource(String source);
+
+  /// Button label while completing a workout session.
+  ///
+  /// In en, this message translates to:
+  /// **'Completing'**
+  String get workoutSessionCompleting;
+
+  /// Button label for completing a workout session.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete'**
+  String get workoutSessionComplete;
+
+  /// Workout session duration metric label.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get workoutSessionDuration;
+
+  /// Workout session set count metric label.
+  ///
+  /// In en, this message translates to:
+  /// **'Sets'**
+  String get workoutSessionSets;
+
+  /// Workout session exercise count metric label.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercises'**
+  String get workoutSessionExercises;
+
+  /// Workout session volume metric label.
+  ///
+  /// In en, this message translates to:
+  /// **'Volume'**
+  String get workoutSessionVolume;
+
+  /// Completed workout session summary when no sets were logged.
+  ///
+  /// In en, this message translates to:
+  /// **'No sets logged in this session.'**
+  String get workoutSessionNoSets;
+
+  /// Completed workout session summary for the highest-volume exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Top exercise: {exercise}'**
+  String workoutSessionTopExercise(String exercise);
+
   /// Placeholder message for the settings destination.
   ///
   /// In en, this message translates to:

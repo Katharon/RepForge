@@ -1266,6 +1266,82 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get workoutSessionNoActiveTitle => 'Keine aktive Einheit';
+
+  @override
+  String workoutSessionStartMessage(String source, int count) {
+    return 'Starte eine $source-Einheit mit $count geplanten Uebungen.';
+  }
+
+  @override
+  String get workoutSessionStart => 'Workout starten';
+
+  @override
+  String workoutSessionStartSemantics(String source) {
+    return '$source-Workout starten';
+  }
+
+  @override
+  String get workoutSessionActiveTitle => 'Aktive Einheit';
+
+  @override
+  String get workoutSessionCompletedTitle => 'Workout abgeschlossen';
+
+  @override
+  String workoutSessionActiveSemantics(
+    String source,
+    String duration,
+    int sets,
+    int exercises,
+    String volume,
+  ) {
+    return 'Aktive Einheit, $source, $duration, $sets Saetze, $exercises Uebungen, $volume.';
+  }
+
+  @override
+  String workoutSessionCompletedSemantics(
+    String source,
+    String duration,
+    int sets,
+    int exercises,
+    String volume,
+  ) {
+    return 'Abgeschlossenes Workout, $source, $duration, $sets Saetze, $exercises Uebungen, $volume.';
+  }
+
+  @override
+  String workoutSessionSource(String source) {
+    return '$source';
+  }
+
+  @override
+  String get workoutSessionCompleting => 'Wird abgeschlossen';
+
+  @override
+  String get workoutSessionComplete => 'Abschliessen';
+
+  @override
+  String get workoutSessionDuration => 'Dauer';
+
+  @override
+  String get workoutSessionSets => 'Saetze';
+
+  @override
+  String get workoutSessionExercises => 'Uebungen';
+
+  @override
+  String get workoutSessionVolume => 'Volumen';
+
+  @override
+  String get workoutSessionNoSets =>
+      'Keine Saetze in dieser Einheit protokolliert.';
+
+  @override
+  String workoutSessionTopExercise(String exercise) {
+    return 'Top-Uebung: $exercise';
+  }
+
+  @override
   String get settingsPlaceholderMessage =>
       'Einstellungen bleiben bei der Umsetzung lokal-first.';
 }

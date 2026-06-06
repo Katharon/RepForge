@@ -87,7 +87,7 @@ final class WorkoutSessionSummary {
     required DateTime startedAt,
     required DateTime measuredAt,
     required Iterable<WorkoutSessionExerciseProgress> exerciseProgress,
-    this.completedAt,
+    DateTime? completedAt,
   }) : startedAt = startedAt.toUtc(),
        measuredAt = measuredAt.toUtc(),
        completedAt = completedAt?.toUtc(),

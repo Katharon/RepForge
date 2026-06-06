@@ -8,6 +8,7 @@ import '../../../core/widgets/widgets.dart';
 import '../../recovery/domain/recovery_domain.dart';
 import '../../rest_timer/domain/rest_timer_domain.dart';
 import '../../training_log/application/training_log_application.dart';
+import '../../training_log/domain/training_log_domain.dart';
 import '../../training_log/presentation/training_log_presentation.dart';
 import 'today_dashboard_loader.dart';
 import 'today_dashboard_models.dart';
