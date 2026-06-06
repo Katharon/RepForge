@@ -224,6 +224,36 @@ void main() {
     expect(find.text('6 reps x 75 kg'), findsOneWidget);
   });
 
+  testWidgets('selected point warning renders for unusually high values', (
+    tester,
+  ) async {
+    _useLargeViewport(tester);
+    await tester.pumpWidget(
+      _testApp(
+        ExerciseAnalyticsChartPage(
+          exerciseRef: _benchRef,
+          title: 'Barbell Bench Press',
+          loader: _StaticExerciseAnalyticsChartLoader(
+            _chartModel(
+              points: [
+                _point(id: 'set-1', repetitions: 101, loadKg: 80),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Check logged values'), findsOneWidget);
+    expect(
+      _semanticsLabelContaining(
+        'Warning, unusually high logged value. Check logged values.',
+      ),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('estimated 1RM unavailable state renders with no valid data', (
     tester,
   ) async {

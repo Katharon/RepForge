@@ -495,7 +495,8 @@ class _SelectedPointSummary extends StatelessWidget {
     );
     final semantics =
         '${localizations.exerciseAnalyticsSelectedPointSemantics}, '
-        '$metricLabel $metricValue, $dateLabel, $setLabel';
+        '$metricLabel $metricValue, $dateLabel, $setLabel'
+        '${point.hasInputWarning ? '. ${localizations.inputGuardWarningSemantics}' : ''}';
 
     return Semantics(
       label: semantics,
@@ -528,6 +529,13 @@ class _SelectedPointSummary extends StatelessWidget {
                 Text(setLabel, style: Theme.of(context).textTheme.bodyMedium),
               ],
             ),
+            if (point.hasInputWarning) ...[
+              const SizedBox(height: RepForgeSpacing.sm),
+              InputChip(
+                avatar: const Icon(Icons.warning_amber, size: 18),
+                label: Text(localizations.inputGuardWarningBadge),
+              ),
+            ],
           ],
         ),
       ),

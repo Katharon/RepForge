@@ -223,6 +223,33 @@ void main() {
     expect(find.text('1250 kg'), findsOneWidget);
   });
 
+  testWidgets('unusually high daily volume displays a warning', (tester) async {
+    await tester.pumpWidget(
+      _testApp(
+        TodayPage(
+          loader: _StaticTodayDashboardLoader(
+            _successModel(totalVolumeKg: 100001),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Unusually high daily volume. Check logged values.'), findsOneWidget);
+    expect(
+      _semanticsLabelContaining(
+        'Volume today, 100001 kg. Unusually high daily volume.',
+      ),
+      findsOneWidget,
+    );
+    expect(
+      _semanticsLabel(
+        'Warning, unusually high logged value. Check logged values.',
+      ),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('last logged set summary is displayed when available', (
     tester,
   ) async {
@@ -330,6 +357,13 @@ Finder _semanticsLabel(String label) {
   });
 }
 
+Finder _semanticsLabelContaining(String labelPart) {
+  return find.byWidgetPredicate((widget) {
+    final label = widget is Semantics ? widget.properties.label : null;
+    return label?.contains(labelPart) ?? false;
+  });
+}
+
 final class _PendingTodayDashboardLoader implements TodayDashboardLoader {
   @override
   Future<TodayDashboardReadModel> load() {
@@ -399,10 +433,10 @@ TodayDashboardReadModel _emptyModel() {
   );
 }
 
-TodayDashboardReadModel _successModel() {
+TodayDashboardReadModel _successModel({double totalVolumeKg = 1250}) {
   return TodayDashboardReadModel(
     setCount: 4,
-    totalVolumeKg: 1250,
+    totalVolumeKg: totalVolumeKg,
     lastLoggedSet: const TodayLastLoggedSetViewModel(
       exerciseName: 'Barbell Bench Press',
       repetitions: 5,

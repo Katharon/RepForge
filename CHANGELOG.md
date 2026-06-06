@@ -15,6 +15,12 @@
 
 ### Added
 
+- Added Slice 63 input-guard implementation work in progress with pure-Dart
+  workout-set warning thresholds, quick-log confirmation copy, post-save Undo
+  affordance, and display warning coverage started for Today, Exercise Detail,
+  and Analytics without cloud services, Firebase, sync, social, wearable/health,
+  ads, payment changes, medical claims, silent clamping, or historical data
+  rewrites.
 - Added Slice 62 custom exercises and custom training folders MVP with local
   custom exercise create/edit/archive, additive Drift schema v10 persistence,
   official/custom exercise list badges, custom quick-log refs, local Train

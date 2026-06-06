@@ -136,6 +136,13 @@ final class ExerciseAnalyticsChartPointViewModel {
 
   double get kgPerRep => loadKg;
 
+  bool get hasInputWarning {
+    return const WorkoutSetInputGuard().isSetUnusuallyHigh(
+      repetitions: Repetitions(repetitions),
+      load: LoadKg(loadKg),
+    );
+  }
+
   double get estimatedOneRepMaxKg {
     final estimate = const EpleyOneRepMaxFormula().estimate(
       load: LoadKg(loadKg),

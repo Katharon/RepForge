@@ -291,6 +291,7 @@ AppDependencies _testAppDependencies({
     ),
     workoutSetRepository: workoutSetRepository,
     saveWorkoutSet: SaveWorkoutSet(workoutSetRepository),
+    deleteWorkoutSet: DeleteWorkoutSet(workoutSetRepository),
     workoutSessionController: WorkoutSessionController(
       workoutSetRepository: workoutSetRepository,
     ),

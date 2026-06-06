@@ -93,6 +93,47 @@ void main() {
     },
   );
 
+  testWidgets('unusually high history sets show a warning badge', (
+    tester,
+  ) async {
+    _useLargeViewport(tester);
+    await tester.pumpWidget(
+      _testApp(
+        ExerciseDetailPage(
+          exerciseRef: _benchRef,
+          loader: _StaticExerciseDetailLoader(
+            _detailModel(
+              historyGroups: [
+                ExerciseDetailHistoryGroupViewModel(
+                  localDate: DateTime(2026, 6, 5),
+                  sets: [
+                    ExerciseDetailSetViewModel(
+                      performedAt: DateTime(2026, 6, 5, 9, 30),
+                      repetitions: 101,
+                      loadKg: 80,
+                      hasInputWarning: true,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          onLogSet: (_) async => false,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('101 reps x 80 kg'), findsOneWidget);
+    expect(find.text('Check logged values'), findsOneWidget);
+    expect(
+      _semanticsLabel(
+        'Set, 101 reps at 80 kg. Warning, unusually high logged value. Check logged values.',
+      ),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('previous summary shows deterministic deltas', (tester) async {
     _useLargeViewport(tester);
     await tester.pumpWidget(
@@ -605,11 +646,13 @@ ExerciseDetailViewModel _detailModel({
                 loadKg: 80,
                 label: WorkoutSetLabel.personalRecord,
                 comment: 'Controlled',
+                hasInputWarning: false,
               ),
               ExerciseDetailSetViewModel(
                 performedAt: DateTime(2026, 6, 5, 9, 20),
                 repetitions: 9,
                 loadKg: 80,
+                hasInputWarning: false,
               ),
             ],
           ),

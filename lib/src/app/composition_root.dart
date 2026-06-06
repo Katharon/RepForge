@@ -57,6 +57,7 @@ final class AppDependencies {
     required this.configuration,
     required this.workoutSetRepository,
     required this.saveWorkoutSet,
+    required this.deleteWorkoutSet,
     required this.workoutSessionController,
     required this.getExerciseAnalytics,
     required this.getMuscleLoadDashboard,
@@ -105,6 +106,7 @@ final class AppDependencies {
     required this.configuration,
     required this.workoutSetRepository,
     required this.saveWorkoutSet,
+    required this.deleteWorkoutSet,
     required this.workoutSessionController,
     required this.getExerciseAnalytics,
     required this.getMuscleLoadDashboard,
@@ -153,6 +155,7 @@ final class AppDependencies {
   final AppConfiguration configuration;
   final WorkoutSetRepository workoutSetRepository;
   final SaveWorkoutSet saveWorkoutSet;
+  final DeleteWorkoutSet deleteWorkoutSet;
   final WorkoutSessionController workoutSessionController;
   final GetExerciseAnalytics getExerciseAnalytics;
   final GetMuscleLoadDashboard getMuscleLoadDashboard;
@@ -261,6 +264,7 @@ final class CompositionRoot {
     final composedDatabase = database ?? databaseFactory.createDatabase();
     final workoutSetRepository = DriftWorkoutSetRepository(composedDatabase);
     final saveWorkoutSet = SaveWorkoutSet(workoutSetRepository);
+    final deleteWorkoutSet = DeleteWorkoutSet(workoutSetRepository);
     final workoutSessionController = WorkoutSessionController(
       workoutSetRepository: workoutSetRepository,
     );
@@ -361,6 +365,7 @@ final class CompositionRoot {
         configuration: configuration,
         workoutSetRepository: workoutSetRepository,
         saveWorkoutSet: saveWorkoutSet,
+        deleteWorkoutSet: deleteWorkoutSet,
         workoutSessionController: workoutSessionController,
         getExerciseAnalytics: getExerciseAnalytics,
         getMuscleLoadDashboard: getMuscleLoadDashboard,
@@ -410,6 +415,7 @@ final class CompositionRoot {
       configuration: configuration,
       workoutSetRepository: workoutSetRepository,
       saveWorkoutSet: saveWorkoutSet,
+      deleteWorkoutSet: deleteWorkoutSet,
       workoutSessionController: workoutSessionController,
       getExerciseAnalytics: getExerciseAnalytics,
       getMuscleLoadDashboard: getMuscleLoadDashboard,

@@ -258,6 +258,7 @@ final class ExerciseDetailSetViewModel {
     required this.performedAt,
     required this.repetitions,
     required this.loadKg,
+    required this.hasInputWarning,
     this.label = WorkoutSetLabel.none,
     this.comment,
   });
@@ -265,6 +266,7 @@ final class ExerciseDetailSetViewModel {
   final DateTime performedAt;
   final int repetitions;
   final double loadKg;
+  final bool hasInputWarning;
   final WorkoutSetLabel label;
   final String? comment;
 }
@@ -293,6 +295,10 @@ List<ExerciseDetailHistoryGroupViewModel> _groupHistory(List<WorkoutSet> sets) {
             performedAt: local,
             repetitions: set.repetitions.value,
             loadKg: set.load.value,
+            hasInputWarning: const WorkoutSetInputGuard().isSetUnusuallyHigh(
+              repetitions: set.repetitions,
+              load: set.load,
+            ),
             label: set.label,
             comment: set.comment?.value,
           ),

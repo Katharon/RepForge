@@ -66,6 +66,7 @@ Each slice is an incremental Codex task. Codex should implement exactly one slic
 - [60 — In-session logging and adaptive coach UI](slice_60_in_session_logging_and_adaptive_coach_ui.md) — done
 - [61 — Workout session state and completion summary](slice_61_workout_session_state_and_completion_summary.md) — done
 - [62 — Custom exercises and custom training folders MVP](slice_62_custom_exercises_and_custom_training_folders_mvp.md) — done
+- [63 — Input guards, undo/edit, and extreme-value protection](slice_63_input_guards_undo_edit_extreme_value_protection.md) — in progress
 
 ## Release rhythm
 

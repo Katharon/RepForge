@@ -408,6 +408,7 @@ QuickLogSetController _quickLogController(AppDependencies dependencies) {
     exerciseCatalogRepository: dependencies.exerciseCatalogRepository,
     customExerciseRepository: dependencies.customExerciseRepository,
     saveWorkoutSet: dependencies.saveWorkoutSet,
+    deleteWorkoutSet: dependencies.deleteWorkoutSet,
     ensureCatalogImported: dependencies.ensureOfficialCatalogImported,
     workoutSessionController: dependencies.workoutSessionController,
   );

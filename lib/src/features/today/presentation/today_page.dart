@@ -393,6 +393,9 @@ class _MetricStrip extends StatelessWidget {
                 label: localizations.todayVolume,
                 value: _formatKilograms(context, dashboard.totalVolumeKg),
                 color: RepForgeColorTokens.metricVolumeBlue,
+                warning: dashboard.hasUnusuallyHighDailyVolume
+                    ? localizations.todayHighVolumeWarning
+                    : null,
               ),
             ),
           ],
@@ -407,16 +410,23 @@ class _MetricCard extends StatelessWidget {
     required this.label,
     required this.value,
     required this.color,
+    this.warning,
   });
 
   final String label;
   final String value;
   final Color color;
+  final String? warning;
 
   @override
   Widget build(BuildContext context) {
+    final warning = this.warning;
+    final semanticsLabel = warning == null
+        ? '$label, $value'
+        : '$label, $value. $warning';
+
     return Semantics(
-      label: '$label, $value',
+      label: semanticsLabel,
       child: AppCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -434,8 +444,31 @@ class _MetricCard extends StatelessWidget {
                 context,
               ).textTheme.metricValue.copyWith(color: color),
             ),
+            if (warning != null) ...[
+              const SizedBox(height: RepForgeSpacing.sm),
+              _InputGuardWarningChip(message: warning),
+            ],
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _InputGuardWarningChip extends StatelessWidget {
+  const _InputGuardWarningChip({required this.message});
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
+    return Semantics(
+      label: localizations.inputGuardWarningSemantics,
+      child: InputChip(
+        avatar: const Icon(Icons.warning_amber, size: 18),
+        label: Text(message),
       ),
     );
   }

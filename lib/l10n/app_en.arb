@@ -1807,6 +1807,62 @@
   "@customFolderEmptyMessage": {
     "description": "Empty message for a custom folder with no assigned exercises."
   },
+  "quickLogUnusuallyHighTitle": "Check logged values",
+  "@quickLogUnusuallyHighTitle": {
+    "description": "Title for suspicious workout set input confirmation."
+  },
+  "quickLogUnusuallyHighMessage": "These values look unusually high. Save them anyway?",
+  "@quickLogUnusuallyHighMessage": {
+    "description": "Message asking users to confirm suspicious but valid set input."
+  },
+  "quickLogUnusuallyHighSemantics": "Unusually high set values confirmation",
+  "@quickLogUnusuallyHighSemantics": {
+    "description": "Semantic label for the suspicious set confirmation dialog."
+  },
+  "quickLogUnusuallyHighCancel": "Review values",
+  "@quickLogUnusuallyHighCancel": {
+    "description": "Cancel action for suspicious set confirmation."
+  },
+  "quickLogUnusuallyHighConfirm": "Save anyway",
+  "@quickLogUnusuallyHighConfirm": {
+    "description": "Confirm action for suspicious set confirmation."
+  },
+  "quickLogUnusuallyHighRepsReason": "Repetitions are unusually high.",
+  "@quickLogUnusuallyHighRepsReason": {
+    "description": "Reason shown when repetitions exceed the soft warning threshold."
+  },
+  "quickLogUnusuallyHighLoadReason": "Load is unusually high.",
+  "@quickLogUnusuallyHighLoadReason": {
+    "description": "Reason shown when load exceeds the soft warning threshold."
+  },
+  "quickLogUnusuallyHighSetVolumeReason": "Set volume is unusually high.",
+  "@quickLogUnusuallyHighSetVolumeReason": {
+    "description": "Reason shown when single-set volume exceeds the soft warning threshold."
+  },
+  "quickLogUnusuallyHighDailyVolumeReason": "Daily volume is unusually high.",
+  "@quickLogUnusuallyHighDailyVolumeReason": {
+    "description": "Reason shown when daily volume exceeds the soft warning threshold."
+  },
+  "quickLogSavedSnackBar": "Set saved.",
+  "@quickLogSavedSnackBar": {
+    "description": "Snackbar text after saving a workout set."
+  },
+  "quickLogUndoAction": "Undo",
+  "@quickLogUndoAction": {
+    "description": "Snackbar action that deletes the just-saved set."
+  },
+  "inputGuardWarningBadge": "Check logged values",
+  "@inputGuardWarningBadge": {
+    "description": "Small warning label for unusually high logged values."
+  },
+  "inputGuardWarningSemantics": "Warning, unusually high logged value. Check logged values.",
+  "@inputGuardWarningSemantics": {
+    "description": "Semantic label for unusually high logged value warning badges."
+  },
+  "todayHighVolumeWarning": "Unusually high daily volume. Check logged values.",
+  "@todayHighVolumeWarning": {
+    "description": "Warning copy for unusually high Today volume."
+  },
   "settingsPlaceholderMessage": "Settings will stay local-first when implemented.",
   "@settingsPlaceholderMessage": {
     "description": "Placeholder message for the settings destination."

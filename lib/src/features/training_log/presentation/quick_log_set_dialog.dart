@@ -17,7 +17,9 @@ final class QuickLogSetController {
     required this.exerciseCatalogRepository,
     required this.saveWorkoutSet,
     this.customExerciseRepository,
+    this.deleteWorkoutSet,
     this.ensureCatalogImported,
+    this.inputGuard = const WorkoutSetInputGuard(),
     this.workoutSessionController,
     this.workoutSetIdProvider = _defaultWorkoutSetId,
     this.nowProvider = DateTime.now,
@@ -26,7 +28,9 @@ final class QuickLogSetController {
   final ExerciseCatalogRepository exerciseCatalogRepository;
   final CustomExerciseRepository? customExerciseRepository;
   final SaveWorkoutSet saveWorkoutSet;
+  final DeleteWorkoutSet? deleteWorkoutSet;
   final EnsureOfficialCatalogImported? ensureCatalogImported;
+  final WorkoutSetInputGuard inputGuard;
   final WorkoutSessionController? workoutSessionController;
   final WorkoutSetIdProvider workoutSetIdProvider;
   final QuickLogNowProvider nowProvider;
@@ -35,7 +39,7 @@ final class QuickLogSetController {
     BuildContext context, [
     ExerciseRef? initialExerciseRef,
   ]) async {
-    final saved = await showDialog<bool>(
+    final savedSet = await showDialog<WorkoutSet>(
       context: context,
       builder: (context) {
         return _QuickLogSetDialog(
@@ -43,6 +47,7 @@ final class QuickLogSetController {
           customExerciseRepository: customExerciseRepository,
           saveWorkoutSet: saveWorkoutSet,
           ensureCatalogImported: ensureCatalogImported,
+          inputGuard: inputGuard,
           workoutSessionController: workoutSessionController,
           workoutSetIdProvider: workoutSetIdProvider,
           nowProvider: nowProvider,
@@ -51,7 +56,42 @@ final class QuickLogSetController {
       },
     );
 
-    return saved ?? false;
+    if (savedSet == null) {
+      return false;
+    }
+
+    if (context.mounted) {
+      _showSavedSnackBar(context, savedSet);
+    }
+    return true;
+  }
+
+  void _showSavedSnackBar(BuildContext context, WorkoutSet savedSet) {
+    final localizations = AppLocalizations.of(context);
+    final deleteWorkoutSet = this.deleteWorkoutSet;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(localizations.quickLogSavedSnackBar),
+        action: deleteWorkoutSet == null
+            ? null
+            : SnackBarAction(
+                label: localizations.quickLogUndoAction,
+                onPressed: () {
+                  unawaited(_undoSavedSet(deleteWorkoutSet, savedSet));
+                },
+              ),
+      ),
+    );
+  }
+
+  Future<void> _undoSavedSet(
+    DeleteWorkoutSet deleteWorkoutSet,
+    WorkoutSet savedSet,
+  ) async {
+    await deleteWorkoutSet(savedSet.id);
+    if (savedSet.workoutSessionId != null) {
+      await workoutSessionController?.refreshActiveSummary();
+    }
   }
 }
 
@@ -66,6 +106,7 @@ class _QuickLogSetDialog extends StatefulWidget {
     required this.saveWorkoutSet,
     required this.workoutSetIdProvider,
     required this.nowProvider,
+    required this.inputGuard,
     this.ensureCatalogImported,
     this.workoutSessionController,
     this.initialExerciseRef,
@@ -77,6 +118,7 @@ class _QuickLogSetDialog extends StatefulWidget {
   final EnsureOfficialCatalogImported? ensureCatalogImported;
   final WorkoutSetIdProvider workoutSetIdProvider;
   final QuickLogNowProvider nowProvider;
+  final WorkoutSetInputGuard inputGuard;
   final WorkoutSessionController? workoutSessionController;
   final ExerciseRef? initialExerciseRef;
 
@@ -228,7 +270,7 @@ class _QuickLogSetDialogState extends State<_QuickLogSetDialog> {
       ),
       actions: [
         TextButton(
-          onPressed: _isSaving ? null : () => Navigator.of(context).pop(false),
+          onPressed: _isSaving ? null : () => Navigator.of(context).pop(),
           child: Text(localizations.quickLogCancel),
         ),
         FilledButton.icon(
@@ -399,22 +441,36 @@ class _QuickLogSetDialogState extends State<_QuickLogSetDialog> {
     }
 
     setState(() {
-      _isSaving = true;
       _error = null;
     });
 
+    final form = WorkoutSetForm(
+      targetExerciseRef: exercise.toExerciseRef(),
+      loadKgInput: _loadController.text,
+      repetitionsInput: _repetitionsController.text,
+      performedAt: widget.nowProvider(),
+      labelInput: _label.storageValue,
+      commentInput: _commentController.text,
+    );
+
     try {
+      final warning = widget.inputGuard.evaluate(form.toGuardInput());
+      if (warning.hasWarning) {
+        final confirmed = await _confirmSuspiciousInput(warning);
+        if (!mounted || !confirmed) {
+          return;
+        }
+      }
+
+      setState(() {
+        _isSaving = true;
+        _error = null;
+      });
+
       final workoutSessionId =
           widget.workoutSessionController?.snapshot.active?.id;
-      await widget.saveWorkoutSet(
-        WorkoutSetForm(
-          targetExerciseRef: exercise.toExerciseRef(),
-          loadKgInput: _loadController.text,
-          repetitionsInput: _repetitionsController.text,
-          performedAt: widget.nowProvider(),
-          labelInput: _label.storageValue,
-          commentInput: _commentController.text,
-        ),
+      final savedSet = await widget.saveWorkoutSet(
+        form,
         workoutSetId: widget.workoutSetIdProvider(),
         workoutSessionId: workoutSessionId,
       );
@@ -425,7 +481,7 @@ class _QuickLogSetDialogState extends State<_QuickLogSetDialog> {
         return;
       }
 
-      Navigator.of(context).pop(true);
+      Navigator.of(context).pop(savedSet);
     } catch (error) {
       if (!mounted) {
         return;
@@ -437,6 +493,51 @@ class _QuickLogSetDialogState extends State<_QuickLogSetDialog> {
       });
     }
   }
+
+  Future<bool> _confirmSuspiciousInput(
+    WorkoutSetInputGuardResult warning,
+  ) async {
+    final localizations = AppLocalizations.of(context);
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          key: const Key('quick_log_unusually_high_confirmation_dialog'),
+          title: Text(localizations.quickLogUnusuallyHighTitle),
+          content: Semantics(
+            label: localizations.quickLogUnusuallyHighSemantics,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(localizations.quickLogUnusuallyHighMessage),
+                const SizedBox(height: RepForgeSpacing.md),
+                for (final reason in warning.reasons)
+                  Text(
+                    '- ${_warningReasonText(localizations, reason)}',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              key: const Key('quick_log_unusually_high_cancel_button'),
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(localizations.quickLogUnusuallyHighCancel),
+            ),
+            FilledButton(
+              key: const Key('quick_log_unusually_high_confirm_button'),
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(localizations.quickLogUnusuallyHighConfirm),
+            ),
+          ],
+        );
+      },
+    );
+
+    return confirmed ?? false;
+  }
 }
 
 String _labelText(AppLocalizations localizations, WorkoutSetLabel label) {
@@ -447,6 +548,22 @@ String _labelText(AppLocalizations localizations, WorkoutSetLabel label) {
     WorkoutSetLabel.personalRecord => localizations.quickLogLabelPersonalRecord,
     WorkoutSetLabel.dropSet => localizations.quickLogLabelDropSet,
     WorkoutSetLabel.pain => localizations.quickLogLabelPain,
+  };
+}
+
+String _warningReasonText(
+  AppLocalizations localizations,
+  WorkoutSetInputWarningReason reason,
+) {
+  return switch (reason) {
+    WorkoutSetInputWarningReason.highRepetitions =>
+      localizations.quickLogUnusuallyHighRepsReason,
+    WorkoutSetInputWarningReason.highLoad =>
+      localizations.quickLogUnusuallyHighLoadReason,
+    WorkoutSetInputWarningReason.highSetVolume =>
+      localizations.quickLogUnusuallyHighSetVolumeReason,
+    WorkoutSetInputWarningReason.highDailyVolume =>
+      localizations.quickLogUnusuallyHighDailyVolumeReason,
   };
 }
 

@@ -1,5 +1,6 @@
 import '../../recovery/domain/recovery_domain.dart';
 import '../../rest_timer/presentation/rest_timer_presentation.dart';
+import '../../training_log/domain/training_log_domain.dart';
 
 final class TodayDashboardReadModel {
   const TodayDashboardReadModel({
@@ -22,6 +23,12 @@ final class TodayDashboardReadModel {
 
   bool get hasReadinessEstimate =>
       readiness.status == ReadinessReadModelStatus.available;
+
+  bool get hasUnusuallyHighDailyVolume {
+    return const WorkoutSetInputGuard().isDailyVolumeUnusuallyHigh(
+      totalVolumeKg,
+    );
+  }
 }
 
 final class TodayLastLoggedSetViewModel {

@@ -1732,6 +1732,62 @@
   "@customFolderEmptyMessage": {
     "description": "Leerzustandstext fuer Ordner ohne Uebungen."
   },
+  "quickLogUnusuallyHighTitle": "Werte pruefen",
+  "@quickLogUnusuallyHighTitle": {
+    "description": "Titel fuer Bestaetigung bei auffaelligen Satzwerten."
+  },
+  "quickLogUnusuallyHighMessage": "Diese Werte wirken ungewoehnlich hoch. Trotzdem speichern?",
+  "@quickLogUnusuallyHighMessage": {
+    "description": "Text fuer Bestaetigung bei auffaelligen, aber gueltigen Satzwerten."
+  },
+  "quickLogUnusuallyHighSemantics": "Bestaetigung fuer ungewoehnlich hohe Satzwerte",
+  "@quickLogUnusuallyHighSemantics": {
+    "description": "Semantiklabel fuer Bestaetigungsdialog bei auffaelligen Satzwerten."
+  },
+  "quickLogUnusuallyHighCancel": "Werte pruefen",
+  "@quickLogUnusuallyHighCancel": {
+    "description": "Abbrechen-Aktion fuer auffaellige Satzwerte."
+  },
+  "quickLogUnusuallyHighConfirm": "Trotzdem speichern",
+  "@quickLogUnusuallyHighConfirm": {
+    "description": "Bestaetigungsaktion fuer auffaellige Satzwerte."
+  },
+  "quickLogUnusuallyHighRepsReason": "Wiederholungen sind ungewoehnlich hoch.",
+  "@quickLogUnusuallyHighRepsReason": {
+    "description": "Grund, wenn Wiederholungen den weichen Warnwert ueberschreiten."
+  },
+  "quickLogUnusuallyHighLoadReason": "Gewicht ist ungewoehnlich hoch.",
+  "@quickLogUnusuallyHighLoadReason": {
+    "description": "Grund, wenn Gewicht den weichen Warnwert ueberschreitet."
+  },
+  "quickLogUnusuallyHighSetVolumeReason": "Satzvolumen ist ungewoehnlich hoch.",
+  "@quickLogUnusuallyHighSetVolumeReason": {
+    "description": "Grund, wenn Satzvolumen den weichen Warnwert ueberschreitet."
+  },
+  "quickLogUnusuallyHighDailyVolumeReason": "Tagesvolumen ist ungewoehnlich hoch.",
+  "@quickLogUnusuallyHighDailyVolumeReason": {
+    "description": "Grund, wenn Tagesvolumen den weichen Warnwert ueberschreitet."
+  },
+  "quickLogSavedSnackBar": "Satz gespeichert.",
+  "@quickLogSavedSnackBar": {
+    "description": "Snackbar-Text nach dem Speichern eines Satzes."
+  },
+  "quickLogUndoAction": "Rueckgaengig",
+  "@quickLogUndoAction": {
+    "description": "Snackbar-Aktion zum Loeschen des gerade gespeicherten Satzes."
+  },
+  "inputGuardWarningBadge": "Werte pruefen",
+  "@inputGuardWarningBadge": {
+    "description": "Kleines Warnlabel fuer ungewoehnlich hohe protokollierte Werte."
+  },
+  "inputGuardWarningSemantics": "Warnung, ungewoehnlich hoher protokollierter Wert. Werte pruefen.",
+  "@inputGuardWarningSemantics": {
+    "description": "Semantiklabel fuer Warnbadge bei ungewoehnlich hohen Werten."
+  },
+  "todayHighVolumeWarning": "Ungewoehnlich hohes Tagesvolumen. Werte pruefen.",
+  "@todayHighVolumeWarning": {
+    "description": "Warntext fuer ungewoehnlich hohes Tagesvolumen."
+  },
   "settingsPlaceholderMessage": "Einstellungen bleiben bei der Umsetzung lokal-first.",
   "@settingsPlaceholderMessage": {
     "description": "Platzhaltertext fuer Einstellungen."

@@ -59,6 +59,129 @@ void main() {
     expect(saved.workoutSessionId, isNull);
   });
 
+  testWidgets('high repetitions trigger confirmation and can be cancelled', (
+    tester,
+  ) async {
+    final repository = _FakeWorkoutSetRepository();
+    final controller = QuickLogSetController(
+      exerciseCatalogRepository: _FakeExerciseCatalogRepository(),
+      saveWorkoutSet: SaveWorkoutSet(repository),
+      workoutSetIdProvider: () => WorkoutSetId('quick-high-reps'),
+    );
+
+    await tester.pumpWidget(
+      _testApp(
+        FilledButton(
+          onPressed: () => controller.show(_capturedContext!),
+          child: const Text('Open quick log'),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Open quick log'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byKey(const Key('quick_log_load_field')), '40');
+    await tester.enterText(
+      find.byKey(const Key('quick_log_repetitions_field')),
+      '101',
+    );
+    await tester.tap(find.byKey(const Key('quick_log_save_button')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Check logged values'), findsOneWidget);
+    expect(find.text('Repetitions are unusually high.'), findsOneWidget);
+
+    await tester.tap(
+      find.byKey(const Key('quick_log_unusually_high_cancel_button')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(repository.savedSets, isEmpty);
+    expect(find.text('Log set'), findsOneWidget);
+  });
+
+  testWidgets('high load and high set volume can be saved after confirmation', (
+    tester,
+  ) async {
+    final repository = _FakeWorkoutSetRepository();
+    final controller = QuickLogSetController(
+      exerciseCatalogRepository: _FakeExerciseCatalogRepository(),
+      saveWorkoutSet: SaveWorkoutSet(repository),
+      workoutSetIdProvider: () => WorkoutSetId('quick-high-load-volume'),
+    );
+
+    await tester.pumpWidget(
+      _testApp(
+        FilledButton(
+          onPressed: () => controller.show(_capturedContext!),
+          child: const Text('Open quick log'),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Open quick log'));
+    await tester.pumpAndSettle();
+    await tester.enterText(
+      find.byKey(const Key('quick_log_load_field')),
+      '501',
+    );
+    await tester.enterText(
+      find.byKey(const Key('quick_log_repetitions_field')),
+      '41',
+    );
+    await tester.tap(find.byKey(const Key('quick_log_save_button')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Load is unusually high.'), findsOneWidget);
+    expect(find.text('Set volume is unusually high.'), findsOneWidget);
+
+    await tester.tap(
+      find.byKey(const Key('quick_log_unusually_high_confirm_button')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(repository.savedSets.single.id, WorkoutSetId('quick-high-load-volume'));
+    expect(repository.savedSets.single.load, LoadKg(501));
+    expect(repository.savedSets.single.repetitions, Repetitions(41));
+  });
+
+  testWidgets('malformed and invalid values remain blocked before warning', (
+    tester,
+  ) async {
+    final repository = _FakeWorkoutSetRepository();
+    final controller = QuickLogSetController(
+      exerciseCatalogRepository: _FakeExerciseCatalogRepository(),
+      saveWorkoutSet: SaveWorkoutSet(repository),
+      workoutSetIdProvider: () => WorkoutSetId('quick-invalid'),
+    );
+
+    await tester.pumpWidget(
+      _testApp(
+        FilledButton(
+          onPressed: () => controller.show(_capturedContext!),
+          child: const Text('Open quick log'),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Open quick log'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byKey(const Key('quick_log_load_field')), '-1');
+    await tester.enterText(
+      find.byKey(const Key('quick_log_repetitions_field')),
+      '0',
+    );
+    await tester.tap(find.byKey(const Key('quick_log_save_button')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Set could not be saved. Check the values.'), findsOneWidget);
+    expect(find.text('Check logged values'), findsNothing);
+    expect(repository.savedSets, isEmpty);
+  });
+
   testWidgets('quick log strings are localized in German', (tester) async {
     final repository = _FakeWorkoutSetRepository();
     final controller = QuickLogSetController(
@@ -165,6 +288,49 @@ void main() {
     expect(saved.exerciseRef.catalogVersionSnapshot, isNull);
   });
 
+  testWidgets('custom exercise logging uses the same guard path', (tester) async {
+    final repository = _FakeWorkoutSetRepository();
+    final controller = QuickLogSetController(
+      exerciseCatalogRepository: _FakeExerciseCatalogRepository(),
+      customExerciseRepository: _FakeCustomExerciseRepository(),
+      saveWorkoutSet: SaveWorkoutSet(repository),
+      workoutSetIdProvider: () => WorkoutSetId('quick-custom-guarded'),
+    );
+
+    await tester.pumpWidget(
+      _testApp(
+        FilledButton(
+          onPressed: () => controller.show(_capturedContext!),
+          child: const Text('Open quick log'),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Open quick log'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Cable Fly'));
+    await tester.enterText(
+      find.byKey(const Key('quick_log_load_field')),
+      '600',
+    );
+    await tester.enterText(
+      find.byKey(const Key('quick_log_repetitions_field')),
+      '1',
+    );
+    await tester.tap(find.byKey(const Key('quick_log_save_button')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Load is unusually high.'), findsOneWidget);
+
+    await tester.tap(
+      find.byKey(const Key('quick_log_unusually_high_confirm_button')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(repository.savedSets.single.exerciseRef.source, ExerciseSource.custom);
+  });
+
   testWidgets('quick log attaches saved sets to the active workout session', (
     tester,
   ) async {
@@ -218,6 +384,101 @@ void main() {
     expect(workoutSessionController.snapshot.activeSummary?.totalVolumeKg, 540);
 
     await workoutSessionController.dispose();
+  });
+
+  testWidgets('active-session logging uses the same guard path', (tester) async {
+    final repository = _FakeWorkoutSetRepository();
+    final workoutSessionController = WorkoutSessionController(
+      workoutSetRepository: repository,
+      workoutSessionIdProvider: () => WorkoutSessionId('guarded-session'),
+      nowProvider: () => DateTime.utc(2026, 6, 5, 11),
+    );
+    await workoutSessionController.start(
+      sourceName: 'Push',
+      exerciseRefs: [
+        ExerciseRef.official(
+          id: OfficialExerciseId('barbell_bench_press'),
+          displayNameSnapshot: 'Barbell Bench Press',
+          catalogVersionSnapshot: '2026.06.0',
+        ),
+      ],
+    );
+    final controller = QuickLogSetController(
+      exerciseCatalogRepository: _FakeExerciseCatalogRepository(),
+      saveWorkoutSet: SaveWorkoutSet(repository),
+      workoutSessionController: workoutSessionController,
+      workoutSetIdProvider: () => WorkoutSetId('quick-session-guarded'),
+    );
+
+    await tester.pumpWidget(
+      _testApp(
+        FilledButton(
+          onPressed: () => controller.show(_capturedContext!),
+          child: const Text('Open quick log'),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Open quick log'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byKey(const Key('quick_log_load_field')), '40');
+    await tester.enterText(
+      find.byKey(const Key('quick_log_repetitions_field')),
+      '120',
+    );
+    await tester.tap(find.byKey(const Key('quick_log_save_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.byKey(const Key('quick_log_unusually_high_confirm_button')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(repository.savedSets.single.workoutSessionId, WorkoutSessionId('guarded-session'));
+    expect(workoutSessionController.snapshot.activeSummary?.setCount, 1);
+
+    await workoutSessionController.dispose();
+  });
+
+  testWidgets('post-save snackbar exposes undo when delete is available', (
+    tester,
+  ) async {
+    final repository = _FakeWorkoutSetRepository();
+    final controller = QuickLogSetController(
+      exerciseCatalogRepository: _FakeExerciseCatalogRepository(),
+      saveWorkoutSet: SaveWorkoutSet(repository),
+      deleteWorkoutSet: DeleteWorkoutSet(repository),
+      workoutSetIdProvider: () => WorkoutSetId('quick-undo-set'),
+    );
+
+    await tester.pumpWidget(
+      _testApp(
+        FilledButton(
+          onPressed: () => controller.show(_capturedContext!),
+          child: const Text('Open quick log'),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Open quick log'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byKey(const Key('quick_log_load_field')), '80');
+    await tester.enterText(
+      find.byKey(const Key('quick_log_repetitions_field')),
+      '8',
+    );
+    await tester.tap(find.byKey(const Key('quick_log_save_button')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Set saved.'), findsOneWidget);
+    expect(find.text('Undo'), findsOneWidget);
+
+    await tester.tap(find.text('Undo'));
+    await tester.pumpAndSettle();
+
+    expect(repository.deletedIds.single, WorkoutSetId('quick-undo-set'));
+    expect(repository.savedSets, isEmpty);
   });
 }
 
@@ -326,6 +587,7 @@ final class _FakeCustomExerciseRepository implements CustomExerciseRepository {
 
 final class _FakeWorkoutSetRepository implements WorkoutSetRepository {
   final List<WorkoutSet> savedSets = [];
+  final List<WorkoutSetId> deletedIds = [];
 
   @override
   Future<void> save(WorkoutSet set) async {
@@ -333,7 +595,10 @@ final class _FakeWorkoutSetRepository implements WorkoutSetRepository {
   }
 
   @override
-  Future<void> deleteById(WorkoutSetId id) async {}
+  Future<void> deleteById(WorkoutSetId id) async {
+    deletedIds.add(id);
+    savedSets.removeWhere((set) => set.id == id);
+  }
 
   @override
   Future<WorkoutSet?> findById(WorkoutSetId id) async => null;

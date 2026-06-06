@@ -48,6 +48,13 @@ final class WorkoutSetForm {
     );
   }
 
+  WorkoutSetInputGuardInput toGuardInput() {
+    return WorkoutSetInputGuardInput(
+      repetitions: _parseRepetitions(),
+      load: _parseLoad(),
+    );
+  }
+
   Repetitions _parseRepetitions() {
     final value = int.tryParse(repetitionsInput.trim());
     if (value == null) {

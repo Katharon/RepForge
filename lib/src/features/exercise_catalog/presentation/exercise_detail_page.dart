@@ -725,12 +725,19 @@ class _HistorySetCard extends StatelessWidget {
       set.repetitions,
       loadText,
     );
+    final warningLabel = set.hasInputWarning
+        ? localizations.inputGuardWarningBadge
+        : null;
 
     return Semantics(
-      label: localizations.exerciseDetailSetSemantics(
-        set.repetitions,
-        loadText,
-      ),
+      label:
+          localizations.exerciseDetailSetSemantics(
+            set.repetitions,
+            loadText,
+          ) +
+          (set.hasInputWarning
+              ? '. ${localizations.inputGuardWarningSemantics}'
+              : ''),
       child: AppCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -754,6 +761,13 @@ class _HistorySetCard extends StatelessWidget {
             if (set.label != WorkoutSetLabel.none) ...[
               const SizedBox(height: RepForgeSpacing.sm),
               InputChip(label: Text(_labelText(localizations, set.label))),
+            ],
+            if (warningLabel != null) ...[
+              const SizedBox(height: RepForgeSpacing.sm),
+              InputChip(
+                avatar: const Icon(Icons.warning_amber, size: 18),
+                label: Text(warningLabel),
+              ),
             ],
             if (set.comment != null) ...[
               const SizedBox(height: RepForgeSpacing.sm),
